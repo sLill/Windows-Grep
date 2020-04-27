@@ -39,19 +39,63 @@
       <Component Id="ProductComponent" Guid="{6919196A-7A70-42F3-8139-F7D2654958E6}" Win64="$(var.Win64)">
         <File Id="WIndowsGrep.exe" Name="WindowsGrep.exe" Source="$(var.WindowsGrep.TargetDir)..\publish\WindowsGrep.exe" Vital="yes" KeyPath="yes" DiskId="1" />
 
+      <!--Registry Keys for context menu items-->
       </Component>
       <Component Id="RegistryEntries" Guid="{1A24E1EC-CAD7-4C37-8423-95BD5D77FC7F}">
-        <RegistryKey Root="HKCR"
+          
+          <!--Administrator keys-->
+          <RegistryKey Root="HKCR"
                      Key="Directory\Background\shell\WindowsGrep"
               Action="createAndRemoveOnUninstall">
           <RegistryValue Type="string" Value="Windows Grep" KeyPath="yes"/>
           <RegistryValue Type="string" Name="Icon" Value="C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe"/>
         </RegistryKey>
+        
         <RegistryKey Root="HKCR"
                      Key="Directory\Background\shell\WindowsGrep\command"
                      Action="createAndRemoveOnUninstall">
           <RegistryValue Type="string" Value="&quot;C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe&quot; 	&quot;--cd=%v.&quot;"/>
         </RegistryKey>
+        
+        <RegistryKey Root="HKCR"
+                     Key="*\shell\WindowsGrep"
+                     Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Value="Windows Grep"/>
+          <RegistryValue Type="string" Name="Icon" Value="C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe"/>
+        </RegistryKey>
+        
+        <RegistryKey Root="HKCR"
+                     Key="*\shell\WindowsGrep\command"
+                     Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Value="&quot;C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe&quot; 	&quot;--cd=%v.&quot;"/>
+        </RegistryKey>
+        
+        <!--<RegistryKey Root="HKCR"
+                     Key="CLSID\{323464D0-C4F7-4F97-9B9F-1D00A221F5B6}"
+                     Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Value="Windows Grep"/>
+        </RegistryKey>
+        
+        <RegistryKey Root="HKCR"
+                     Key="CLSID\{323464D0-C4F7-4F97-9B9F-1D00A221F5B6}\InProcServer32"
+                     Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Value="C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe"/>
+          <RegistryValue Type="string" Name="ThreadingModel" Value="Both"/>
+        </RegistryKey>-->
+        
+        <!--<RegistryKey Root="HKCR"
+                     Key="*\shellex\ContextMenuHandlers\WindowsGrep"
+                     Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Value="{323464D0-C4F7-4F97-9B9F-1D00A221F5B6}"/>
+        </RegistryKey>-->
+        
+        <!--{323464D0-C4F7-4F97-9B9F-1D00A221F5B6}-->
+        <!--HKEY_CLASSES_ROOT\*\shell-->
+        
+       <!--Non-administrator keys-->
+        <!--HKEY_CURRENT_USER\Software\Classes\*\shell-->
+        <!--HKEY_CURRENT_USER\Software\Classes\directory\Background\shell-->
+      <!--HKEY_CURRENT_USER\Software\Classes\directory\shell-->
       </Component>
     </ComponentGroup>
   </Fragment>
