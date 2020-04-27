@@ -22,7 +22,7 @@
     <Feature Id="ProductFeature" Title="WindowsGrep.Setup" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
     </Feature>
-
+          
     <UIRef Id="WixUI_WindowsGrep"/>
   </Product>
 
@@ -33,18 +33,21 @@
       </Directory>
     </Directory>
   </Fragment>
-
+    
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="ProductComponent" Guid="{6919196A-7A70-42F3-8139-F7D2654958E6}" Win64="$(var.Win64)">
-        <File Id="WIndowsGrep.exe" Name="WindowsGrep.exe" Source="$(var.WindowsGrep.TargetDir)..\publish\WindowsGrep.exe" Vital="yes" KeyPath="yes" DiskId="1" />
-
-      <!--Registry Keys for context menu items-->
+        <File Id="grep.exe" Name="grep.exe" Source="$(var.WindowsGrep.TargetDir)..\publish\WindowsGrep.exe" Vital="yes" KeyPath="yes" DiskId="1" />
       </Component>
-      <Component Id="RegistryEntries" Guid="{1A24E1EC-CAD7-4C37-8423-95BD5D77FC7F}">
+              
+      <Component Id ="Path" Guid="{90BFF968-E5F2-49A0-A534-66BAA45DF4DF}" KeyPath="yes">
+          <Environment Id="PATH" Name="PATH" Value="C:\Program Files (x86)\WindowsGrep" Permanent="yes" Part="last" Action="set" System="no"/>
+      </Component>
+      
+      <!--<Component Id="RegistryEntries" Guid="{1A24E1EC-CAD7-4C37-8423-95BD5D77FC7F}">-->
           
           <!--Administrator keys-->
-          <RegistryKey Root="HKCR"
+          <!--<RegistryKey Root="HKCR"
                      Key="Directory\Background\shell\WindowsGrep"
               Action="createAndRemoveOnUninstall">
           <RegistryValue Type="string" Value="Windows Grep" KeyPath="yes"/>
@@ -54,7 +57,7 @@
         <RegistryKey Root="HKCR"
                      Key="Directory\Background\shell\WindowsGrep\command"
                      Action="createAndRemoveOnUninstall">
-          <RegistryValue Type="string" Value="&quot;C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe&quot; 	&quot;--cd=%v.&quot;"/>
+          <RegistryValue Type="string" Value="&quot;C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe&quot; 	&quot;cd=%v.&quot;"/>
         </RegistryKey>
         
         <RegistryKey Root="HKCR"
@@ -67,8 +70,8 @@
         <RegistryKey Root="HKCR"
                      Key="*\shell\WindowsGrep\command"
                      Action="createAndRemoveOnUninstall">
-          <RegistryValue Type="string" Value="&quot;C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe&quot; 	&quot;--cd=%v.&quot;"/>
-        </RegistryKey>
+          <RegistryValue Type="string" Value="&quot;C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe&quot; 	&quot;cd=%v.&quot;"/>
+        </RegistryKey>-->
         
         <!--<RegistryKey Root="HKCR"
                      Key="CLSID\{323464D0-C4F7-4F97-9B9F-1D00A221F5B6}"
@@ -96,7 +99,7 @@
         <!--HKEY_CURRENT_USER\Software\Classes\*\shell-->
         <!--HKEY_CURRENT_USER\Software\Classes\directory\Background\shell-->
       <!--HKEY_CURRENT_USER\Software\Classes\directory\shell-->
-      </Component>
+      <!--</Component>-->
     </ComponentGroup>
   </Fragment>
 </Wix>
