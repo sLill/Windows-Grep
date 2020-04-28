@@ -15,7 +15,7 @@ namespace WindowsGrep
                 try
                 {
                     string Command = Console.ReadLine();
-                    string CommandResult = ProcessCommand(Command);
+                    string CommandResult = GrepEngine.ProcessCommand(Command);
 
                     Console.WriteLine(CommandResult);
                 }
@@ -28,22 +28,6 @@ namespace WindowsGrep
         #endregion Main
 
         #region Methods..
-        #region ProcessCommand
-        private static string ProcessCommand(string commandRaw)
-        {
-            string Result = string.Empty;
-
-            string[] commandCollection = commandRaw.Split('|');
-            foreach (string command in commandCollection)
-            {
-                var CommandArgs = ConsoleUtils.DiscoverCommandArgs(command);
-                ConsoleCommand ConsoleCommand = new ConsoleCommand() { CommandArgs = CommandArgs };
-                Result = GrepEngine.ProcessGrepCommand(ConsoleCommand);
-            }
-
-            return Result;
-        }
-        #endregion ProcessCommand
         #endregion Methods..
     }
 }

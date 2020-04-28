@@ -20,14 +20,7 @@ namespace WindowsGrep.Common
             {
                 bool ExpectsParameter = flag.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
                 List<string> DescriptionCollection = flag.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.ToList();
-                
-                // Search filter 
-                if (flag == ConsoleFlag.Default)
-                {
-                    string SearchFilterPattern = "\"(?<SearchFilter>[^\"]*)\"";
-                    CommandArgs[ConsoleFlag.Default] = Regex.Match(commandRaw, SearchFilterPattern).Groups["SearchFilter"].Value;
-                }
-
+               
                 DescriptionCollection?.ForEach(description =>
                 {
                     string FlagPattern = $"(^|\\s|-)(?<FlagDescriptor>{description})";
@@ -40,12 +33,22 @@ namespace WindowsGrep.Common
                     }
                     else if (Matches.Count > 0)
                     {
-                        CommandArgs[flag] = Matches.Select(match => match.Groups["Argument"].Value).FirstOrDefault();
+                        string Argument = Matches.Select(match => match.Groups["Argument"].Value).FirstOrDefault();
+                        CommandArgs[flag] = Argument;
+
+                        if (Argument.Length > 0)
+                        {
+                            commandRaw.Replace(Argument, null);
+                        }
                     }
                 });
             });
 
-            if (CommandArgs[ConsoleFlag.Default] == string.Empty)
+            // Search term
+            string SearchFilterPattern = "\"(?<SearchFilter>[^\"]*)\"";
+            CommandArgs[ConsoleFlag.SearchTerm] = Regex.Match(commandRaw, SearchFilterPattern).Groups["SearchFilter"].Value;
+
+            if (CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
             {
                 throw new Exception("Search term not supplied");
             }

@@ -7,8 +7,8 @@ namespace WindowsGrep.Common
 {
     public enum ConsoleFlag
     {
-        // The default required filter string provided by the user
-        Default,
+        // The only required filter provided by the user
+        SearchTerm,
 
         // Suppress normal output; Instead print a count of matching lines for each input file
         [DescriptionCollection("-c", "--count")]
