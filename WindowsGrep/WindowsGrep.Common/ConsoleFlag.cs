@@ -10,9 +10,14 @@ namespace WindowsGrep.Common
         // The only required filter provided by the user
         SearchTerm,
 
+        // Targets a specific file directory
+        [ExpectsParameter(true)]
+        [DescriptionCollection("-d", "--directory=")]
+        Directory,
+
         // Suppress normal output; Instead print a count of matching lines for each input file
-        [DescriptionCollection("-c", "--count")]
-        Count,
+        //[DescriptionCollection("-c", "--count")]
+        //Count,
 
         // Interprets patterns as fixed strings, not regular expressions
         [DescriptionCollection("-F", "--fixed-strings")]

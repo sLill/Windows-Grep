@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using WindowsGrep.Common;
+using WindowsGrep.Engine;
 
 namespace WindowsGrep.Engine
 {
@@ -22,9 +25,11 @@ namespace WindowsGrep.Engine
         #region Methods..
 
         #region BeginSearch
-        private static void BeginSearch(ConsoleCommand consoleCommand, ConcurrentDictionary<string, GrepResult> GrepResultCollection)
+        private static void BeginSearch(ConsoleCommand consoleCommand, ConcurrentDictionary<string, List<GrepResult>> GrepResultCollection)
         {
-            string InitialPath = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.File) ? consoleCommand.CommandArgs[ConsoleFlag.File] : Environment.CurrentDirectory;
+            // User specified file should overrule specified directory
+            string InitialPath = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Directory) ? consoleCommand.CommandArgs[ConsoleFlag.Directory] : Environment.CurrentDirectory;
+            InitialPath = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.File) ? consoleCommand.CommandArgs[ConsoleFlag.File] : InitialPath;
 
             List<string> Files = null;
             if (GrepResultCollection.Any())
@@ -35,33 +40,55 @@ namespace WindowsGrep.Engine
             {
                 Files = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Recursive) ? Directory.GetFiles(InitialPath, "*", SearchOption.AllDirectories).ToList() : Directory.GetFiles(InitialPath, "*", SearchOption.TopDirectoryOnly).ToList();
             }
-
+            
+            // Read in files one at a time to match against
+            string SearchTermPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @"\b" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"\b" : consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
             Files.AsParallel().ForAll(file =>
             {
-                string fileRaw = File.ReadAllText(file);
+                string fileRaw = string.Join(string.Empty, File.ReadLines(file));
 
-                //using (FileStream fileStream = File.OpenRead(file))
-                //{
-                //    int BufferSize = 4096;
-                //    using (StreamReader streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
-                //    {
-                //        string Line;
-                //        while ((Line = streamReader.ReadLine()) != null)
-                //        {
+                RegexOptions OptionsFlags = 0;
+                if (consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase))
+                {
+                    OptionsFlags |= RegexOptions.IgnoreCase;
+                }
 
-                //        }
-                //    }
-                //}
+                var Matches = Regex.Matches(fileRaw, SearchTermPattern, OptionsFlags);
+                if (Matches.Any())
+                {
+                    if (!GrepResultCollection.ContainsKey(file))
+                    {
+                        GrepResultCollection[file] = new List<GrepResult>();
+                    }
+
+                    Matches.ToList().ForEach(match =>
+                    {
+                        GrepResultCollection[file].Add(new GrepResult(file));
+                    });
+                }             
             });
         }
         #endregion BeginSearch
+
+        #region FormatCommandResult
+        private static string FormatCommandResult(IDictionary<string, List<GrepResult>> grepResultCollection)
+        {
+            StringBuilder Result = new StringBuilder(Environment.NewLine);
+
+            Result.Append($"[{grepResultCollection.Sum(x => x.Value.Count)} result(s) {grepResultCollection.Keys.Count} file(s)]{Environment.NewLine}");
+            Result.Append(string.Join(Environment.NewLine, grepResultCollection.Select(result => result.Key)));
+
+            Result.Append(Environment.NewLine);
+            return Result.ToString();
+        }
+        #endregion FormatCommandResult
 
         #region ProcessCommand
         public static string ProcessCommand(string commandRaw)
         {
             string Result = string.Empty;
 
-            ConcurrentDictionary<string, GrepResult> GrepResultCollection = new ConcurrentDictionary<string, GrepResult>();
+            ConcurrentDictionary<string, List<GrepResult>> GrepResultCollection = new ConcurrentDictionary<string, List<GrepResult>>();
 
             string[] commandCollection = commandRaw.Split('|');
             foreach (string command in commandCollection)
@@ -72,6 +99,7 @@ namespace WindowsGrep.Engine
                 BeginSearch(ConsoleCommand, GrepResultCollection);
             }
 
+            Result = FormatCommandResult(GrepResultCollection);
             return Result;
         }
         #endregion ProcessCommand

@@ -44,10 +44,10 @@
           <Environment Id="PATH" Name="PATH" Value="C:\Program Files (x86)\WindowsGrep" Permanent="yes" Part="last" Action="set" System="no"/>
       </Component>
       
-      <!--<Component Id="RegistryEntries" Guid="{1A24E1EC-CAD7-4C37-8423-95BD5D77FC7F}">-->
+      <Component Id="RegistryEntries" Guid="{1A24E1EC-CAD7-4C37-8423-95BD5D77FC7F}">
           
           <!--Administrator keys-->
-          <!--<RegistryKey Root="HKCR"
+          <RegistryKey Root="HKCR"
                      Key="Directory\Background\shell\WindowsGrep"
               Action="createAndRemoveOnUninstall">
           <RegistryValue Type="string" Value="Windows Grep" KeyPath="yes"/>
@@ -57,10 +57,10 @@
         <RegistryKey Root="HKCR"
                      Key="Directory\Background\shell\WindowsGrep\command"
                      Action="createAndRemoveOnUninstall">
-          <RegistryValue Type="string" Value="&quot;C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe&quot; 	&quot;cd=%v.&quot;"/>
+          <RegistryValue Type="string" Value="C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe"/>
         </RegistryKey>
         
-        <RegistryKey Root="HKCR"
+        <!--<RegistryKey Root="HKCR"
                      Key="*\shell\WindowsGrep"
                      Action="createAndRemoveOnUninstall">
           <RegistryValue Type="string" Value="Windows Grep"/>
@@ -99,7 +99,7 @@
         <!--HKEY_CURRENT_USER\Software\Classes\*\shell-->
         <!--HKEY_CURRENT_USER\Software\Classes\directory\Background\shell-->
       <!--HKEY_CURRENT_USER\Software\Classes\directory\shell-->
-      <!--</Component>-->
+      </Component>
     </ComponentGroup>
   </Fragment>
 </Wix>

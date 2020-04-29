@@ -26,7 +26,7 @@ namespace WindowsGrep.Common
                     string FlagPattern = $"(^|\\s|-)(?<FlagDescriptor>{description})";
                     FlagPattern = ExpectsParameter ? FlagPattern + "\\s*(?<Argument>\\S*)" : FlagPattern;
                    
-                    var Matches = Regex.Matches(commandRaw.ToLower(), FlagPattern.ToLower());
+                    var Matches = Regex.Matches(commandRaw, FlagPattern, RegexOptions.IgnoreCase);
                     if (ExpectsParameter && Matches.Count > 1)
                     {
                         throw new Exception("Arguments of parameter type cannot be specified more than once");
