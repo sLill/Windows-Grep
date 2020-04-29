@@ -29,28 +29,25 @@ namespace WindowsGrep.Common
                     var Matches = Regex.Matches(commandRaw, FlagPattern, RegexOptions.IgnoreCase);
                     if (ExpectsParameter && Matches.Count > 1)
                     {
-                        throw new Exception("Arguments of parameter type cannot be specified more than once");
+                        throw new Exception("Error: Arguments of parameter type cannot be specified more than once");
                     }
                     else if (Matches.Count > 0)
                     {
                         string Argument = Matches.Select(match => match.Groups["Argument"].Value).FirstOrDefault();
                         CommandArgs[flag] = Argument;
 
-                        if (Argument.Length > 0)
-                        {
-                            commandRaw.Replace(Argument, null);
-                        }
+                        commandRaw = Regex.Replace(commandRaw, FlagPattern, string.Empty);
                     }
                 });
             });
 
             // Search term
-            string SearchFilterPattern = "\"(?<SearchFilter>[^\"]*)\"";
-            CommandArgs[ConsoleFlag.SearchTerm] = Regex.Match(commandRaw, SearchFilterPattern).Groups["SearchFilter"].Value;
+            string SearchFilterPattern = commandRaw.Trim();
+            CommandArgs[ConsoleFlag.SearchTerm] = SearchFilterPattern;
 
             if (CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
             {
-                throw new Exception("Search term not supplied");
+                throw new Exception("Error: Search term not supplied");
             }
 
             return CommandArgs;

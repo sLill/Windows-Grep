@@ -51,13 +51,13 @@
                      Key="Directory\Background\shell\WindowsGrep"
               Action="createAndRemoveOnUninstall">
           <RegistryValue Type="string" Value="Windows Grep" KeyPath="yes"/>
-          <RegistryValue Type="string" Name="Icon" Value="C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe"/>
+          <RegistryValue Type="string" Name="Icon" Value="C:\Program Files (x86)\WindowsGrep\grep.exe"/>
         </RegistryKey>
         
         <RegistryKey Root="HKCR"
                      Key="Directory\Background\shell\WindowsGrep\command"
                      Action="createAndRemoveOnUninstall">
-          <RegistryValue Type="string" Value="C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe"/>
+          <RegistryValue Type="string" Value="C:\Program Files (x86)\WindowsGrep\grep.exe"/>
         </RegistryKey>
         
         <!--<RegistryKey Root="HKCR"
