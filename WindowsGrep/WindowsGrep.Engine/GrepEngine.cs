@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using WindowsGrep.Common;
-using WindowsGrep.Engine;
 
 namespace WindowsGrep.Engine
 {
@@ -40,7 +38,7 @@ namespace WindowsGrep.Engine
             {
                 Files = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Recursive) ? Directory.GetFiles(InitialPath, "*", SearchOption.AllDirectories).ToList() : Directory.GetFiles(InitialPath, "*", SearchOption.TopDirectoryOnly).ToList();
             }
-            
+
             // Read in files one at a time to match against
             string SearchTermPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @"\b" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"\b" : consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
             Files.AsParallel().ForAll(file =>
@@ -65,7 +63,7 @@ namespace WindowsGrep.Engine
                     {
                         GrepResultCollection[file].Add(new GrepResult(file));
                     });
-                }             
+                }
             });
         }
         #endregion BeginSearch

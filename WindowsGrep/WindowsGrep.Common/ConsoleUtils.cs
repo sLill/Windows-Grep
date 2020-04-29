@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace WindowsGrep.Common
@@ -20,12 +19,12 @@ namespace WindowsGrep.Common
             {
                 bool ExpectsParameter = flag.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
                 List<string> DescriptionCollection = flag.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.ToList();
-               
+
                 DescriptionCollection?.ForEach(description =>
                 {
                     string FlagPattern = $"(^|\\s|-)(?<FlagDescriptor>{description})";
                     FlagPattern = ExpectsParameter ? FlagPattern + "\\s*(?<Argument>\\S*)" : FlagPattern;
-                   
+
                     var Matches = Regex.Matches(commandRaw, FlagPattern, RegexOptions.IgnoreCase);
                     if (ExpectsParameter && Matches.Count > 1)
                     {

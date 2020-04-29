@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WindowsGrep.Engine
+﻿namespace WindowsGrep.Engine
 {
     public class GrepResult
     {

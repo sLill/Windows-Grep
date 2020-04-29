@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-
-namespace WindowsGrep.Common
+﻿namespace WindowsGrep.Common
 {
     public enum ConsoleFlag
     {

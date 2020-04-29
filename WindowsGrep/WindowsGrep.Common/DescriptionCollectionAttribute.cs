@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace WindowsGrep.Common
 {
@@ -12,7 +9,7 @@ namespace WindowsGrep.Common
         #endregion Properties..
 
         #region Constructors..
-        public DescriptionCollectionAttribute(params string[] descriptions) 
+        public DescriptionCollectionAttribute(params string[] descriptions)
         {
             this.Value = descriptions;
         }
