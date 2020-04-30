@@ -57,7 +57,7 @@
         <RegistryKey Root="HKCR"
                      Key="Directory\Background\shell\WindowsGrep\command"
                      Action="createAndRemoveOnUninstall">
-          <RegistryValue Type="string" Value="&quot;C:\Program Files (x86)\WindowsGrep\WindowsGrep.exe&quot; 	&quot;cd=%v.&quot;"/>
+          <RegistryValue Type="string" Value="C:\Program Files (x86)\WindowsGrep\grep.exe"/>
         </RegistryKey>
         
         <!--<RegistryKey Root="HKCR"

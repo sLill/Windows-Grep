@@ -27,9 +27,9 @@ namespace WindowsGrep.Common
                 DescriptionCollection?.ForEach(description =>
                 {
                     string FlagPattern = $"(^|\\s|-)(?<FlagDescriptor>{description})";
-                    FlagPattern = ExpectsParameter ? FlagPattern + "\\s*(?<Argument>\\S*)" : FlagPattern;
+                    FlagPattern = ExpectsParameter ? FlagPattern + "\\s*(?<Argument>\\S*)\\s*" : FlagPattern;
 
-                    var Matches = Regex.Matches(commandRaw, FlagPattern, RegexOptions.IgnoreCase);
+                    var Matches = Regex.Matches(commandRaw, FlagPattern);
                     if (ExpectsParameter && Matches.Count > 1)
                     {
                         throw new Exception("Error: Arguments of parameter type cannot be specified more than once");
@@ -45,9 +45,7 @@ namespace WindowsGrep.Common
             });
 
             // Search term
-            string SearchFilterPattern = commandRaw.Trim();
-            CommandArgs[ConsoleFlag.SearchTerm] = SearchFilterPattern;
-
+            CommandArgs[ConsoleFlag.SearchTerm] = commandRaw;
             if (CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
             {
                 throw new Exception("Error: Search term not supplied");

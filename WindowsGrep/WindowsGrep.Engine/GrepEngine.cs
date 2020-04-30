@@ -80,7 +80,7 @@ namespace WindowsGrep.Engine
                         lock (_LockObject)
                         {
                             string ItemBuffer = new string(' ', (MaxFileNameLength - file.Length) + 4);
-                            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file}{ItemBuffer}" });
+                            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file}{ItemBuffer}{Environment.NewLine}" });
 
                             int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
                             int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
