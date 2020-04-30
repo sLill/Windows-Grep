@@ -6,7 +6,7 @@
 
 This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
-<br/><br/>
+<br/>
 
 <h2>==USAGE==</h2>
 
@@ -15,7 +15,7 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 
 <b>\-Windows Explorer\-</b> <br/>
 <img src="https://i.imgur.com/itZXt8i.png" width="400"> <br/>
-![image](https://i.imgur.com/dpJDgEo.png) <br/>
+![image](https://i.imgur.com/dpJDgEo.png) <br/><br/>
 
 <h2>==REFERENCE==</h2>
 
