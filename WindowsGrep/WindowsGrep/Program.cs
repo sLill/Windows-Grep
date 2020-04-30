@@ -1,4 +1,5 @@
 ﻿using System;
+using WindowsGrep.Common;
 using WindowsGrep.Engine;
 
 namespace WindowsGrep
@@ -8,7 +9,6 @@ namespace WindowsGrep
         #region Main
         static void Main(string[] args)
         {
-
             // ReadMe
             if (args.Length == 0)
             {
@@ -19,15 +19,17 @@ namespace WindowsGrep
             do
             {
                 string Command = args.Length == 0 ? Console.ReadLine() : string.Join(" ", args);
-
-                try
+                if (Command.Length > 0)
                 {
-                    string CommandResult = GrepEngine.ProcessCommand(Command);
-                    Console.WriteLine(CommandResult);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
+                    try
+                    {
+                        var CommandResults = GrepEngine.ProcessCommand(Command);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        //Console.WriteLine(ex.ToString());
+                    }
                 }
             }
             while (args.Length == 0);

@@ -33,6 +33,21 @@
 
         // Searches also in the subdirectories of the target directory
         [DescriptionCollection("-r", "--recursive")]
-        Recursive
+        Recursive,
+
+        // Restricts search to files with the specified extensions. Comma delimited.
+        [ExpectsParameter(true)]
+        [DescriptionCollection("-t", "--filetype-include=")]
+        FileTypeInclusions,
+
+        // Excludes all files with the specified extensions. Comma delimited
+        [ExpectsParameter(true)]
+        [DescriptionCollection("-T", "--filetype-exclude=")]
+        FileTypeExclusions,
+
+        // Write outputs to specified file
+        [ExpectsParameter(true)]
+        [DescriptionCollection("-w", "--write=")]
+        Write
     }
 }

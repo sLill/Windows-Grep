@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -8,6 +9,9 @@ namespace WindowsGrep.Common
 {
     public static class ConsoleUtils
     {
+        #region Member Variables..
+        #endregion Member Variables..
+
         #region Methods..
         #region DiscoverCommandArgs
         public static IDictionary<ConsoleFlag, string> DiscoverCommandArgs(string commandRaw)
@@ -52,6 +56,31 @@ namespace WindowsGrep.Common
             return CommandArgs;
         }
         #endregion DiscoverCommandArgs
+
+        #region WriteConsoleItem
+        public static void WriteConsoleItem(ConsoleItem consoleItem)
+        {
+            ConsoleColor ConsoleBackgroundOriginalColor = Console.BackgroundColor;
+            ConsoleColor ConsoleForegroundOriginalColor = Console.ForegroundColor;
+
+            Console.BackgroundColor = consoleItem.BackgroundColor;
+            Console.ForegroundColor = consoleItem.ForegroundColor;
+            Console.Write(consoleItem.Value);
+
+            Console.BackgroundColor = ConsoleBackgroundOriginalColor;
+            Console.ForegroundColor = ConsoleForegroundOriginalColor;
+        }
+        #endregion WriteConsoleItem
+
+        #region WriteConsoleItemCollection
+        public static void WriteConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
+        {
+            consoleItemCollection.ForEach(consoleItem => 
+            {
+                WriteConsoleItem(consoleItem);
+            });
+        }
+        #endregion WriteConsoleItemCollection
         #endregion Methods..
     }
 }
