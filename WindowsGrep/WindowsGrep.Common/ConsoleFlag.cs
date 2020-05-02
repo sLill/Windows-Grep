@@ -25,7 +25,7 @@
         // Obtain patterns from a specific file
         [ExpectsParameter(true)]
         [DescriptionCollection("-f", "--file=")]
-        File,
+        TargetFile,
 
         // Ignore case distinctions in patterns and input data
         [DescriptionCollection("-i", "--ignore-case")]
@@ -44,6 +44,10 @@
         [ExpectsParameter(true)]
         [DescriptionCollection("-T", "--filetype-exclude=")]
         FileTypeExclusions,
+
+        // Match against file names rather than file content
+        [DescriptionCollection("-k", "--filenames-only")]
+        FileNamesOnly,
 
         // Write outputs to specified file
         [ExpectsParameter(true)]
