@@ -116,13 +116,13 @@ namespace WindowsGrep.Engine
 
                         grepResultCollection.AddItem(GrepResult);
 
+                        List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
+                        string ItemBuffer = new string(' ', (MaxFileNameLength - file.Length) + 4);
+
                         lock (_LockObject)
                         {
-                            List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
-                            string ItemBuffer = new string(' ', (MaxFileNameLength - file.Length) + 4);
-
                             // FileName
-                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file}{ItemBuffer}{Environment.NewLine}" });
+                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file}{ItemBuffer}" });
 
                             int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
                             int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
@@ -170,19 +170,22 @@ namespace WindowsGrep.Engine
                     int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
                     int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
 
-                    // Context start
-                    ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
+                    lock (_LockObject)
+                    {
+                        // Context start
+                        ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
 
-                    // Context matched
-                    ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.MatchedString });
+                        // Context matched
+                        ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.MatchedString });
 
-                    // Context end
-                    ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(ContextMatchEndIndex, GrepResult.ContextString.Length - ContextMatchEndIndex) });
+                        // Context end
+                        ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(ContextMatchEndIndex, GrepResult.ContextString.Length - ContextMatchEndIndex) });
 
-                    // Empty buffer
-                    ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
+                        // Empty buffer
+                        ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
 
-                    ConsoleUtils.WriteConsoleItemCollection(ConsoleItemCollection);
+                        ConsoleUtils.WriteConsoleItemCollection(ConsoleItemCollection);
+                    }
                 }
             });
         }
