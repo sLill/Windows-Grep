@@ -1,4 +1,4 @@
-<h2>==TO INSTALL==</h2>
+<h2>TO INSTALL</h2>
 
 1. Visit the release tab (https://github.com/sLill/Windows-BudgetGrep/releases)
 2. Download WindowsGrepSetup.msi (This is the only file you need)
@@ -6,7 +6,7 @@
 
 This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
-<h2>==REFERENCE==</h2>
+<h2>REFERENCE</h2>
 
 |                           |    |                       |
 | ------------------------- | -- | :-------------------: |
@@ -23,7 +23,7 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 
 <br/>
 
-<h2>==USAGE==</h2>
+<h2>USAGE</h2>
 
 <b>\-Cmd/Powershell\-</b> <br/>
 ![image](https://i.imgur.com/ydwbx2F.png) <br/><br/><br/>
