@@ -106,7 +106,6 @@ namespace WindowsGrep.Engine
         {
             // Read in files one at a time to match against
             string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @".{0,50}+\b" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"\b.{0,50}" : @".{0,50}" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + ".{0,50}";
-            int MaxFileNameLength = files.Max(x => x.Length);
 
             files.AsParallel().ForAll(file =>
             {
@@ -128,10 +127,10 @@ namespace WindowsGrep.Engine
                             grepResultCollection.AddItem(GrepResult);
 
                             List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
-                            string ItemBuffer = new string(' ', (MaxFileNameLength - file.Length) + 4);
+                            //string ItemBuffer = new string(' ', (MaxFileNameLength - file.Length) + 4);
 
                             // FileName
-                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file}{ItemBuffer}" });
+                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file}  " });
 
                             int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
                             int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
@@ -152,8 +151,7 @@ namespace WindowsGrep.Engine
                         });
                     }
                 }
-                catch (Exception) 
-                { }
+                catch (Exception) { }
             });
         }
         #endregion SearchByFileContent
