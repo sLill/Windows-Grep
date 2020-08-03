@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -104,14 +105,14 @@ namespace WindowsGrep.Engine
         private static void SearchByFileContent(ThreadSafeCollection<GrepResult> grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
         {
             // Read in files one at a time to match against
-            string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @".{0,50}\b" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"\b.{0,50}" : @".{0,50}" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + ".{0,50}";
+            string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @".{0,50}+\b" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"\b.{0,50}" : @".{0,50}" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + ".{0,50}";
             int MaxFileNameLength = files.Max(x => x.Length);
 
             files.AsParallel().ForAll(file =>
             {
                 try
                 {
-                    string fileRaw = string.Join(string.Empty, File.ReadLines(file));
+                    string fileRaw = File.ReadAllText(file);
                     var Matches = Regex.Matches(fileRaw, SearchPattern, optionsFlags);
 
                     if (Matches.Any())
@@ -151,7 +152,8 @@ namespace WindowsGrep.Engine
                         });
                     }
                 }
-                catch (Exception) { }
+                catch (Exception) 
+                { }
             });
         }
         #endregion SearchByFileContent

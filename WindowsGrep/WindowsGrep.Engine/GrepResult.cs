@@ -17,10 +17,12 @@
         #endregion Properties..
 
         #region Constructors..
+        #region GrepResult
         public GrepResult(string sourceFile)
         {
             SourceFile = sourceFile;
         }
+        #endregion GrepResult
         #endregion Constructors..
     }
 }
