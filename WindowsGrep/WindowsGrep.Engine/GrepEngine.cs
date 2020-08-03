@@ -1,28 +1,30 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.RegularExpressions;
 using WindowsGrep.Common;
 
 namespace WindowsGrep.Engine
 {
-    public class GrepEngine
+    public static class GrepEngine
     {
         #region Member Variables..
-        private static object _LockObject = new object();
         #endregion Member Variables..
 
         #region Properties..
         #endregion Properties..
 
         #region Constructors..
+        static GrepEngine()
+        {
+            MatchFound += ConsoleUtils.WriteConsoleItemCollection;
+        }
         #endregion Constructors..
+
+        #region Event Handlers..
+        public static event EventHandler MatchFound;
+        #endregion Event Handlers..
 
         #region Methods..
         #region BeginSearch
@@ -127,33 +129,29 @@ namespace WindowsGrep.Engine
                             List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
                             string ItemBuffer = new string(' ', (MaxFileNameLength - file.Length) + 4);
 
-                            lock (_LockObject)
-                            {
-                                // FileName
-                                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file}{ItemBuffer}" });
+                            // FileName
+                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file}{ItemBuffer}" });
 
-                                int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
-                                int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
+                            int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
+                            int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
 
-                                // Context start
-                                ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
+                            // Context start
+                            ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
 
-                                // Context matched
-                                ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.MatchedString });
+                            // Context matched
+                            ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.MatchedString });
 
-                                // Context end
-                                ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(ContextMatchEndIndex, GrepResult.ContextString.Length - ContextMatchEndIndex) });
+                            // Context end
+                            ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(ContextMatchEndIndex, GrepResult.ContextString.Length - ContextMatchEndIndex) });
 
-                                // Empty buffer
-                                ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
+                            // Empty buffer
+                            ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
 
-                                ConsoleUtils.WriteConsoleItemCollection(ConsoleItemCollection);
-                            }
+                            MatchFound?.Invoke(ConsoleItemCollection, EventArgs.Empty);
                         });
                     }
                 }
-                catch (Exception ex)
-                { }
+                catch (Exception) { }
             });
         }
         #endregion SearchByFileContent
@@ -163,26 +161,26 @@ namespace WindowsGrep.Engine
         {
             files.AsParallel().ForAll(file =>
             {
-                string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @"\b" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"\b" : consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
-                var Matches = Regex.Matches(file, SearchPattern, optionsFlags);
-
-                if (Matches.Any())
+                try
                 {
-                    GrepResult GrepResult = new GrepResult(file)
+                    string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @"\b" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"\b" : consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
+                    var Matches = Regex.Matches(file, SearchPattern, optionsFlags);
+
+                    if (Matches.Any())
                     {
-                        ContextString = file,
-                        MatchedString = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm]
-                    };
+                        GrepResult GrepResult = new GrepResult(file)
+                        {
+                            ContextString = file,
+                            MatchedString = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm]
+                        };
 
-                    grepResultCollection.AddItem(GrepResult);
+                        grepResultCollection.AddItem(GrepResult);
 
-                    List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
+                        List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
 
-                    int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
-                    int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
+                        int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
+                        int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
 
-                    lock (_LockObject)
-                    {
                         // Context start
                         ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
 
@@ -195,9 +193,10 @@ namespace WindowsGrep.Engine
                         // Empty buffer
                         ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
 
-                        ConsoleUtils.WriteConsoleItemCollection(ConsoleItemCollection);
+                        MatchFound?.Invoke(ConsoleItemCollection, EventArgs.Empty);
                     }
                 }
+                catch (Exception) { }
             });
         }
         #endregion SearchByFileName

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -10,6 +9,7 @@ namespace WindowsGrep.Common
     public static class ConsoleUtils
     {
         #region Member Variables..
+        private static object _consoleLock = new object();
         #endregion Member Variables..
 
         #region Methods..
@@ -71,12 +71,16 @@ namespace WindowsGrep.Common
         #endregion WriteConsoleItem
 
         #region WriteConsoleItemCollection
-        public static void WriteConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
+        public static void WriteConsoleItemCollection(object sender, EventArgs e)
         {
-            consoleItemCollection.ForEach(consoleItem => 
+            var ConsoleItemCollection = sender as List<ConsoleItem>;
+            lock (_consoleLock)
             {
-                WriteConsoleItem(consoleItem);
-            });
+                ConsoleItemCollection.ForEach(consoleItem =>
+                {
+                    WriteConsoleItem(consoleItem);
+                });
+            }
         }
         #endregion WriteConsoleItemCollection
         #endregion Methods..
