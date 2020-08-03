@@ -1,3 +1,5 @@
+Much of the same capability as Unix grep with like half of the speed because ya know, Windows ¯\\\_(ツ)_/¯
+
 <h2>TO INSTALL</h2>
 
 1. Visit the release tab (https://github.com/sLill/Windows-BudgetGrep/releases)
