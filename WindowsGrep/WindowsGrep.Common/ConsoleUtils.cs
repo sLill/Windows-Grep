@@ -36,9 +36,29 @@ namespace WindowsGrep.Common
                     }
                     else if (Matches.Count > 0)
                     {
-                        string Argument = Matches.Select(match => match.Groups["Argument"].Value).FirstOrDefault();
-                        CommandArgs[flag] = Argument;
+                        string Argument = Matches.Select(match => match.Groups["Argument"].Value?.Trim()).FirstOrDefault();
 
+                        // Filter invalid strings from beginning/end of argument
+                        List<char> FilterCharacterCollection = flag.GetCustomAttribute<FilterCharacterCollectionAttribute>()?.Value.ToList();
+                        while (true && FilterCharacterCollection != null)
+                        {
+                            bool argumentModified = false;
+                            FilterCharacterCollection.ForEach(character =>
+                            {
+                                if (Argument.StartsWith(character) || Argument.EndsWith(character))
+                                {
+                                    Argument = Argument.Trim(character);
+                                    argumentModified = true;
+                                }
+                            });
+
+                            if (!argumentModified)
+                            {
+                                break;
+                            }
+                        }
+
+                        CommandArgs[flag] = Argument;
                         commandRaw = Regex.Replace(commandRaw, FlagPattern, string.Empty);
                     }
                 });

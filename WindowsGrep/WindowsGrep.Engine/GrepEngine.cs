@@ -55,8 +55,8 @@ namespace WindowsGrep.Engine
             string[] FileTypeInclusions = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeInclusions) ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeInclusions].Split(new char[] { ',', ';' }) : null;
             string[] FileTypeExclusions = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeExclusions) ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeExclusions].Split(new char[] { ',', ';' }) : null;
 
-            Files = FileTypeInclusions == null ? Files : Files.Where(file => FileTypeInclusions.Contains(Path.GetExtension(file))).ToList();
-            Files = FileTypeExclusions == null ? Files : Files.Where(file => !FileTypeExclusions.Contains(Path.GetExtension(file))).ToList();
+            Files = FileTypeInclusions == null ? Files : Files.Where(file => FileTypeInclusions.Contains(Path.GetExtension(file).Trim('.'))).ToList();
+            Files = FileTypeExclusions == null ? Files : Files.Where(file => !FileTypeExclusions.Contains(Path.GetExtension(file).Trim('.'))).ToList();
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red , Value = $"{Environment.NewLine}[Searching {Files.Count} file(s)]{Environment.NewLine}" });
 

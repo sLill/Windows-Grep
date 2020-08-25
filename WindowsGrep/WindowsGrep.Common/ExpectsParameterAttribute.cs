@@ -2,6 +2,9 @@
 
 namespace WindowsGrep.Common
 {
+    /// <summary>
+    /// When set to true, the associated property expects an additional user argument to follow
+    /// </summary>
     public class ExpectsParameterAttribute : Attribute
     {
         #region Properties..

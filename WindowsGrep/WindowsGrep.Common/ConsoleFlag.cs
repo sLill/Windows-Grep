@@ -7,6 +7,7 @@
 
         // Targets a specific file directory
         [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"', '\\')]
         [DescriptionCollection("-d", "--directory=")]
         Directory,
 
@@ -24,6 +25,7 @@
 
         // Obtain patterns from a specific file
         [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"', '\\')]
         [DescriptionCollection("-f", "--file=")]
         TargetFile,
 
@@ -37,11 +39,13 @@
 
         // Restricts search to files with the specified extensions. Comma delimited.
         [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"', '.', '\\')]
         [DescriptionCollection("-t", "--filetype-include=")]
         FileTypeInclusions,
 
         // Excludes all files with the specified extensions. Comma delimited
         [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"', '.', '\\')]
         [DescriptionCollection("-T", "--filetype-exclude=")]
         FileTypeExclusions,
 
@@ -51,6 +55,7 @@
 
         // Write outputs to specified file
         [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"', '\\')]
         [DescriptionCollection("-w", "--write=")]
         Write
     }
