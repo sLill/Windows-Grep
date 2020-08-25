@@ -105,7 +105,7 @@ namespace WindowsGrep.Engine
         private static void SearchByFileContent(ThreadSafeCollection<GrepResult> grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
         {
             // Read in files one at a time to match against
-            string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @".{0,50}+\b" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"\b.{0,50}" : @".{0,50}" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + ".{0,50}";
+            string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @".{0,50}(?<MatchedString>[\b\B]?" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"[\b\B]?).{0,50}" : @".{0,50}?(?<MatchedString>" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + ").{0,50}";
 
             files.AsParallel().ForAll(file =>
             {
@@ -132,14 +132,14 @@ namespace WindowsGrep.Engine
                             // FileName
                             ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file}  " });
 
-                            int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
-                            int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
+                            int ContextMatchStartIndex = match.Groups["MatchedString"].Index;
+                            int ContextMatchEndIndex = match.Groups["MatchedString"].Index + match.Groups["MatchedString"].Length;
 
                             // Context start
                             ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
 
                             // Context matched
-                            ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.MatchedString });
+                            ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.ContextString.Substring(ContextMatchStartIndex, ContextMatchEndIndex) });
 
                             // Context end
                             ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(ContextMatchEndIndex, GrepResult.ContextString.Length - ContextMatchEndIndex) });

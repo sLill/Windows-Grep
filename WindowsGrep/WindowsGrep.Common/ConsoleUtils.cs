@@ -27,7 +27,9 @@ namespace WindowsGrep.Common
                 DescriptionCollection?.ForEach(description =>
                 {
                     string FlagPattern = $"(^|\\s|-)(?<FlagDescriptor>{description})\\s?";
-                    FlagPattern = ExpectsParameter ? FlagPattern + "\\s?(?<Argument>([\\\\/]*[\\s\\S]*[\\\\/]+(\\s?[^-])*)|[^\\s]+)\\s*" : FlagPattern;
+
+                    //FlagPattern = ExpectsParameter ? FlagPattern + "\\s?(?<Argument>([\\\\/]*[\\s\\S]*[\\\\/]+(\\s?[^-])*)|[^\\s]+)\\s*" : FlagPattern;
+                    FlagPattern = ExpectsParameter ? FlagPattern + "\\s?(?<Argument>([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+)\\s*" : FlagPattern;
 
                     var Matches = Regex.Matches(commandRaw, FlagPattern);
                     if (ExpectsParameter && Matches.Count > 1)
@@ -59,13 +61,13 @@ namespace WindowsGrep.Common
                         }
 
                         CommandArgs[flag] = Argument;
-                        commandRaw = Regex.Replace(commandRaw, FlagPattern, string.Empty);
+                        commandRaw = Regex.Replace(commandRaw, FlagPattern, " ");
                     }
                 });
             });
 
             // Search term
-            CommandArgs[ConsoleFlag.SearchTerm] = commandRaw;
+            CommandArgs[ConsoleFlag.SearchTerm] = commandRaw.Trim();
             if (CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
             {
                 throw new Exception("Error: Search term not supplied");
