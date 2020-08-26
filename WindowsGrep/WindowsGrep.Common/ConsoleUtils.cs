@@ -9,7 +9,6 @@ namespace WindowsGrep.Common
     public static class ConsoleUtils
     {
         #region Member Variables..
-        private static object _consoleLock = new object();
         #endregion Member Variables..
 
         #region Methods..
@@ -80,15 +79,12 @@ namespace WindowsGrep.Common
         #region WriteConsoleItem
         public static void WriteConsoleItem(ConsoleItem consoleItem)
         {
-            ConsoleColor ConsoleBackgroundOriginalColor = Console.BackgroundColor;
-            ConsoleColor ConsoleForegroundOriginalColor = Console.ForegroundColor;
-
             Console.BackgroundColor = consoleItem.BackgroundColor;
             Console.ForegroundColor = consoleItem.ForegroundColor;
+            
             Console.Write(consoleItem.Value);
 
-            Console.BackgroundColor = ConsoleBackgroundOriginalColor;
-            Console.ForegroundColor = ConsoleForegroundOriginalColor;
+            Console.ResetColor();
         }
         #endregion WriteConsoleItem
 
@@ -96,11 +92,14 @@ namespace WindowsGrep.Common
         public static void WriteConsoleItemCollection(object sender, EventArgs e)
         {
             var ConsoleItemCollection = sender as List<ConsoleItem>;
-            lock (_consoleLock)
+            lock (Console.Out)
             {
                 ConsoleItemCollection.ForEach(consoleItem =>
                 {
                     WriteConsoleItem(consoleItem);
+
+                    // This seems to help give the console enough time to finalize changes made to background/foreground color properties
+                    System.Threading.Thread.Sleep(5);
                 });
             }
         }

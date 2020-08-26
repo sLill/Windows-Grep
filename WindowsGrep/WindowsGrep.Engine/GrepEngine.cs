@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using WindowsGrep.Common;
 
@@ -127,19 +128,22 @@ namespace WindowsGrep.Engine
                             grepResultCollection.AddItem(GrepResult);
 
                             List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
-                            //string ItemBuffer = new string(' ', (MaxFileNameLength - file.Length) + 4);
 
                             // FileName
-                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file}  " });
+                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file} " });
 
-                            int ContextMatchStartIndex = match.Groups["MatchedString"].Index;
-                            int ContextMatchEndIndex = match.Groups["MatchedString"].Index + match.Groups["MatchedString"].Length;
+                            // Line number
+                            int LineNumber = fileRaw.Substring(0, fileRaw.IndexOf(GrepResult.MatchedString)).Split('\n').Length;
+                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
+
+                            int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString);
+                            int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
 
                             // Context start
                             ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
 
                             // Context matched
-                            ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.ContextString.Substring(ContextMatchStartIndex, ContextMatchEndIndex) });
+                            ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.ContextString.Substring(ContextMatchStartIndex, GrepResult.MatchedString.Length) });
 
                             // Context end
                             ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(ContextMatchEndIndex, GrepResult.ContextString.Length - ContextMatchEndIndex) });
@@ -151,7 +155,8 @@ namespace WindowsGrep.Engine
                         });
                     }
                 }
-                catch (Exception) { }
+                catch (Exception ex)
+                { }
             });
         }
         #endregion SearchByFileContent

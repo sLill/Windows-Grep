@@ -28,7 +28,6 @@ namespace WindowsGrep
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message + Environment.NewLine);
-                        //Console.WriteLine(ex.ToString());
                     }
                 }
             }
