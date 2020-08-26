@@ -29,6 +29,10 @@
         [DescriptionCollection("-f", "--file=")]
         TargetFile,
 
+        // Ignore breaks in-between lines within the file
+        [DescriptionCollection("-b", "--ignore-breaks")]
+        IgnoreBreaks,
+
         // Ignore case distinctions in patterns and input data
         [DescriptionCollection("-i", "--ignore-case")]
         IgnoreCase,

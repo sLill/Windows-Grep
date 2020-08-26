@@ -89,8 +89,8 @@ namespace WindowsGrep.Engine
             List<ConsoleItem> Result = null;
             var GrepResultCollection = new ThreadSafeCollection<GrepResult>();
 
-            string[] commandCollection = commandRaw.Split('|');
-            foreach (string command in commandCollection)
+            string[] CommandCollection = commandRaw.Split('|');
+            foreach (string command in CommandCollection)
             {
                 var CommandArgs = ConsoleUtils.DiscoverCommandArgs(command);
                 ConsoleCommand ConsoleCommand = new ConsoleCommand() { CommandArgs = CommandArgs };
@@ -106,14 +106,27 @@ namespace WindowsGrep.Engine
         private static void SearchByFileContent(ThreadSafeCollection<GrepResult> grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
         {
             // Read in files one at a time to match against
-            string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @".{0,50}(?<MatchedString>[\b\B]?" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"[\b\B]?).{0,50}" : @".{0,50}?(?<MatchedString>" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + ").{0,50}";
+            string SearchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
+            string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) 
+                ? @"(?:(?!" + SearchTerm + @").){0,50}?(?<MatchedString>[\b\B]?" + SearchTerm + @"[\b\B]?)(?:(?!" + SearchTerm + @").){0,50}"
+                : @"(?:(?!" + SearchTerm + @").){0,50}?(?<MatchedString>" + SearchTerm + @")(?:(?!" + SearchTerm + @").){0,50}";
 
             files.AsParallel().ForAll(file =>
             {
                 try
                 {
-                    string fileRaw = File.ReadAllText(file);
-                    var Matches = Regex.Matches(fileRaw, SearchPattern, optionsFlags);
+                    MatchCollection Matches = null;
+
+                    string FileRaw = File.ReadAllText(file);
+                    if (consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks))
+                    {
+                        string fileLineBreakFiltered = FileRaw.Replace("\r", string.Empty).Replace("\n", "");
+                        Matches = Regex.Matches(fileLineBreakFiltered, SearchPattern, optionsFlags);
+                    }
+                    else
+                    {
+                        Matches = Regex.Matches(FileRaw, SearchPattern, optionsFlags);
+                    }
 
                     if (Matches.Any())
                     {
@@ -133,10 +146,13 @@ namespace WindowsGrep.Engine
                             ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file} " });
 
                             // Line number
-                            int LineNumber = fileRaw.Substring(0, fileRaw.IndexOf(GrepResult.MatchedString)).Split('\n').Length;
-                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
+                            if (!consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks))
+                            {
+                                int LineNumber = FileRaw.Substring(0, match.Groups["MatchedString"].Index).Split('\n').Length;
+                                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
+                            }
 
-                            int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString);
+                            int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase) ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
                             int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
 
                             // Context start
@@ -155,7 +171,7 @@ namespace WindowsGrep.Engine
                         });
                     }
                 }
-                catch (Exception ex)
+                catch (Exception ex) 
                 { }
             });
         }
