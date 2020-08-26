@@ -14,6 +14,7 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 | ------------------------- | -- | :-------------------: |
 | Recursive Search          | -r | --recursive           |
 | Target Directory          | -d | --directory=          |
+| Ignore Line Breaks        | -b | --ignore-breaks       |
 | Ignore Case               | -i | --ignore-case         |
 | Target File               | -f | --file=               |
 | Plain Text Search         | -F | --fixed-strings       |
