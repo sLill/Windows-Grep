@@ -27,8 +27,7 @@ namespace WindowsGrep.Common
                 {
                     string FlagPattern = $"(^|\\s|-)(?<FlagDescriptor>{description})\\s?";
 
-                    //FlagPattern = ExpectsParameter ? FlagPattern + "\\s?(?<Argument>([\\\\/]*[\\s\\S]*[\\\\/]+(\\s?[^-])*)|[^\\s]+)\\s*" : FlagPattern;
-                    FlagPattern = ExpectsParameter ? FlagPattern + "\\s?(?<Argument>([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+)\\s*" : FlagPattern;
+                    FlagPattern = ExpectsParameter ? FlagPattern + "(?<Argument>[\\\\/\\s\\S]+?(?=\\s[-]\\S\\s))\\s*" : FlagPattern;
 
                     var Matches = Regex.Matches(commandRaw, FlagPattern);
                     if (ExpectsParameter && Matches.Count > 1)
