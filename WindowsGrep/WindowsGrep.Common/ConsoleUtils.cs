@@ -27,7 +27,8 @@ namespace WindowsGrep.Common
                 {
                     string FlagPattern = $"(^|\\s|-)(?<FlagDescriptor>{description})\\s?";
 
-                    FlagPattern = ExpectsParameter ? FlagPattern + "(?<Argument>[\\\\/\\s\\S]+?(?=\\s[-]\\S\\s))\\s*" : FlagPattern;
+                    //FlagPattern = ExpectsParameter ? FlagPattern + "(?<Argument>[\\\\/\\s\\S]+?(?=\\s[-]\\S\\s))\\s*" : FlagPattern;
+                    FlagPattern = ExpectsParameter ? FlagPattern + "(?<Argument>((['\"][^'\"]+.)|([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+))\\s*" : FlagPattern;
 
                     var Matches = Regex.Matches(commandRaw, FlagPattern);
                     if (ExpectsParameter && Matches.Count > 1)
@@ -36,7 +37,7 @@ namespace WindowsGrep.Common
                     }
                     else if (Matches.Count > 0)
                     {
-                        string Argument = Matches.Select(match => match.Groups["Argument"].Value?.Trim()).FirstOrDefault();
+                        string Argument = Matches.Select(match => match.Groups["Argument"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
 
                         // Filter invalid strings from beginning/end of argument
                         List<char> FilterCharacterCollection = flag.GetCustomAttribute<FilterCharacterCollectionAttribute>()?.Value.ToList();
