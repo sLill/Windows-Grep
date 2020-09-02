@@ -5,8 +5,9 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using WindowsGrep.View.Windows;
 
-namespace WindowsGrep.UI
+namespace WindowsGrep
 {
     public partial class App : Application
     {

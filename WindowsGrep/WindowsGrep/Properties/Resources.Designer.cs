@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WindowsGrep.UI.Properties {
+namespace WindowsGrep.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace WindowsGrep.UI.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WindowsGrep.UI.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WindowsGrep.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,35 @@ namespace WindowsGrep.UI.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] grep {
+            get {
+                object obj = ResourceManager.GetObject("grep", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ================= Windows Grep =================
+        ///
+        ///-r	--recursive			: Recursive search
+        ///-d	--directory=			: Target directory
+        ///-b	--ignore-breaks			: Ignore line breaks
+        ///-i	--ignore-case			: Ignore case
+        ///-f	--file=				: Target file
+        ///-F	--fixed-strings			: Interprets patterns as fixed strings
+        ///-G	--basic-regexp			: Interprets patterns as basic regular expressions (default)
+        ///-t	--filetype-inclusion=		: Filters all files of non-specified type (comma or semicolon delimited)
+        ///-T	--filetype-exclusion=		: Filters  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ReadMe {
+            get {
+                return ResourceManager.GetString("ReadMe", resourceCulture);
             }
         }
     }
