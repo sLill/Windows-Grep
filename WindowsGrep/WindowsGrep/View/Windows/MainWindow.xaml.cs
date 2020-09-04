@@ -64,7 +64,6 @@ namespace WindowsGrep.View.Windows
             MainWindowViewModel.ReleaseShortcuts(windowHandle);
         }
         #endregion ReleaseShortcuts
-
         #endregion Methods..
     }
 }
