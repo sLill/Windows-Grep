@@ -15,6 +15,11 @@
         //[DescriptionCollection("-c", "--count")]
         //Count,
 
+        // Returns local text surrounding the search term in each result
+        [ExpectsParameter(true)]
+        [DescriptionCollection("-c", "--context=")]
+        Context,
+
         // Interprets patterns as fixed strings, not regular expressions
         [DescriptionCollection("-F", "--fixed-strings")]
         FixedStrings,

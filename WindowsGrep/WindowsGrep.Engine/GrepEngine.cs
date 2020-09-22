@@ -105,12 +105,17 @@ namespace WindowsGrep.Engine
         #region SearchByFileContent
         private static void SearchByFileContent(ThreadSafeCollection<GrepResult> grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
         {
-            // Read in files one at a time to match against
+            // Build search pattern
             string SearchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
-            string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) 
-                ? @"(?:(?!" + SearchTerm + @").){0,50}?(?<MatchedString>[\b\B]?" + SearchTerm + @"[\b\B]?)(?:(?!" + SearchTerm + @").){0,50}"
-                : @"(?:(?!" + SearchTerm + @").){0,50}?(?<MatchedString>" + SearchTerm + @")(?:(?!" + SearchTerm + @").){0,50}";
 
+            int ContextLength = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Context) ? Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.Context]) : 0;
+            string ContextPattern = ContextLength <= 0 ? string.Empty : @"(?:(?!" + SearchTerm + @").){0," + ContextLength.ToString() + @"}";
+
+            string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) 
+                ?  ContextPattern + @"(?<MatchedString>[\b\B]?" + SearchTerm + @"[\b\B]?)" + ContextPattern
+                : ContextPattern + @"(?<MatchedString>" + SearchTerm + @")" + ContextPattern;
+
+            // Read in files one at a time to match against
             files.AsParallel().ForAll(file =>
             {
                 try

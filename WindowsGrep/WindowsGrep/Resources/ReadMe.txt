@@ -1,7 +1,8 @@
 ================= Windows Grep =================
 
 -r	--recursive			: Recursive search
--d	--directory=			: Target directory
+-d	--directory=			: Target directory (encapsulated by '' or "")
+-c	--context=			: Return n leading/trailing surrounding characters
 -b	--ignore-breaks			: Ignore line breaks
 -i	--ignore-case			: Ignore case
 -f	--file=				: Target file
