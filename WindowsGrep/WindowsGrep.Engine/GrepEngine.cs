@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using WindowsGrep.Common;
 
@@ -58,14 +59,51 @@ namespace WindowsGrep.Engine
 
             if (FileNamesOnlyFlag)
             {
-                // Build for filename search
+                // Build filename search pattern
                 SearchPattern = FixedStringsFlag ? @"\b" + SearchTerm + @"\b" : SearchTerm;
             }
             else
             { 
-                // Build for content search
+                // Build file content search pattern
                 int ContextLength = ContextFlag ? Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.Context]) : 0;
                 string ContextPattern = ContextLength <= 0 ? string.Empty : @"(?:(?!" + SearchTerm + @").){0," + ContextLength.ToString() + @"}";
+
+                // Searches utilizing regular expression group index accessors \n need to increment each group index by one to accommodate
+                // being embedded within GrepEngine's MatchedString grouping below
+                if (!FixedStringsFlag)
+                {
+                    string GroupIndexorPattern = @"\\(?<Indexor>\d)";
+                    Regex.Matches(SearchTerm, GroupIndexorPattern).Cast<Match>().ToList().ForEach(match => 
+                    {
+                        // Count consecutive escaped characters
+                        int consecutiveCharacterCount = 1;
+                        for (int i = match.Index-1; i > 0; i--)
+                        {
+                            if (SearchTerm[i] == '\\')
+                            {
+                                consecutiveCharacterCount++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        // An even number of consecutive escaped characters means this is not a real match
+                        if (consecutiveCharacterCount % 2 == 1)
+                        {
+                            // Increment previous group indexor and replace it in the SearchTerm
+                            int Indexor = Convert.ToInt32(match.Groups["Indexor"].Value);
+                            Indexor++;
+
+                            var StringBuilder = new StringBuilder(SearchTerm);
+                            StringBuilder.Remove(match.Index, match.Value.Length);
+                            StringBuilder.Insert(match.Index, @"\" + Indexor.ToString());
+
+                            SearchTerm = StringBuilder.ToString();
+                        }
+                    });
+                }
 
                 SearchPattern = FixedStringsFlag
                     ? ContextPattern + @"(?<MatchedString>[\b\B]?" + SearchTerm + @"[\b\B]?)" + ContextPattern
@@ -87,7 +125,7 @@ namespace WindowsGrep.Engine
                 GrepResult GrepResult = new GrepResult(filename)
                 {
                     ContextString = match.Captures.FirstOrDefault().Value,
-                    MatchedString = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm]
+                    MatchedString = match.Groups["MatchedString"].Value
                 };
 
                 grepResultCollection.AddItem(GrepResult);
@@ -163,22 +201,37 @@ namespace WindowsGrep.Engine
         private static List<string> GetFiles(ConsoleCommand consoleCommand, IList<GrepResult> grepResultCollection, string filepath)
         {
             bool RecursiveFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Recursive);
+            bool TargetFileFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.TargetFile);
 
             List<string> Files = null;
 
             if (grepResultCollection.Any())
             {
-                Files = grepResultCollection.Select(result => result.SourceFile).ToList();
+                if (TargetFileFlag)
+                {
+                    Files = grepResultCollection.Where(x => x.SourceFile == filepath).Select(result => result.SourceFile).ToList();
+                }
+                else
+                {
+                    Files = grepResultCollection.Select(result => result.SourceFile).ToList();
+                }
             }
             else
             {
-                var EnumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = FileAttributes.System };
-                if (RecursiveFlag)
+                if (TargetFileFlag)
                 {
-                    EnumerationOptions.RecurseSubdirectories = true;
+                    Files = new List<string>() { filepath };
                 }
+                else
+                {
+                    var EnumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = FileAttributes.System };
+                    if (RecursiveFlag)
+                    {
+                        EnumerationOptions.RecurseSubdirectories = true;
+                    }
 
-                Files = Directory.GetFiles(Path.TrimEndingDirectorySeparator(filepath.TrimEnd()), "*", EnumerationOptions).ToList();
+                    Files = Directory.GetFiles(Path.TrimEndingDirectorySeparator(filepath.TrimEnd()), "*", EnumerationOptions).ToList();
+                }
             }
 
             return Files;
@@ -245,6 +298,7 @@ namespace WindowsGrep.Engine
 
             // Build search pattern
             string SearchPattern = BuildSearchPattern(consoleCommand);
+            Regex SearchRegex = new Regex(SearchPattern, optionsFlags);
 
             int FileReadFailedCount = 0;
             int FileWriteFailedCount = 0;
@@ -266,11 +320,11 @@ namespace WindowsGrep.Engine
                     if (IgnoreBreaksFlag)
                     {
                         string fileLineBreakFiltered = FileRaw.Replace("\r", string.Empty).Replace("\n", "");
-                        Matches = Regex.Matches(fileLineBreakFiltered, SearchPattern, optionsFlags);
+                        Matches = SearchRegex.Matches(fileLineBreakFiltered);
                     }
                     else
                     {
-                        Matches = Regex.Matches(FileRaw, SearchPattern, optionsFlags);
+                        Matches = SearchRegex.Matches(FileRaw);
                     }
 
                     if (Matches.Any())
@@ -292,7 +346,11 @@ namespace WindowsGrep.Engine
                                     File.Delete(file);
 
                                     ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
-                                    DeleteSuccessCount++;
+
+                                    lock (_searchLock)
+                                    {
+                                        DeleteSuccessCount++;
+                                    }
                                 }
                                 else if (ReplaceFlag)
                                 {
@@ -302,20 +360,31 @@ namespace WindowsGrep.Engine
 
                                     string MatchesText = Matches.Count == 1 ? "match" : "matches";
                                     ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{Matches.Count} {MatchesText}" });
-                                    ReplacedSuccessCount += Matches.Count;
+
+                                    lock (_searchLock)
+                                    {
+                                        ReplacedSuccessCount += Matches.Count;
+                                    }
                                 }
                             }
                             catch (Exception ex)
                             {
                                 ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Gray, BackgroundColor = ConsoleColor.DarkRed, Value = $"Access Denied" });
-                                FileWriteFailedCount++;
+
+                                lock (_searchLock)
+                                {
+                                    FileWriteFailedCount++;
+                                }
                             }
                             finally
                             {
                                 // Empty buffer
                                 ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
 
-                                FilesMatchedCount++;
+                                lock (_searchLock)
+                                {
+                                    FilesMatchedCount++;
+                                }
 
                                 MatchFound?.Invoke(ConsoleItemCollection, EventArgs.Empty);
                             }
@@ -334,7 +403,10 @@ namespace WindowsGrep.Engine
                                 BuildSearchResultsFileContent(consoleCommand, grepResultCollection, Matches, file, FileRaw);
                             }
 
-                            FilesMatchedCount++;
+                            lock (_searchLock)
+                            {
+                                FilesMatchedCount++;
+                            }
                         }
                     }
                 }
