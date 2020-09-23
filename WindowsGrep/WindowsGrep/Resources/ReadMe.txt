@@ -1,7 +1,7 @@
 ================= Windows Grep =================
 
 -r	--recursive			: Recursive search
--d	--directory=			: Target directory (encapsulated by '' or "")
+-d	--directory=			: Target directory (surround with ' or ")
 -c	--context=			: Return n leading/trailing surrounding characters
 -b	--ignore-breaks			: Ignore line breaks
 -i	--ignore-case			: Ignore case
@@ -11,4 +11,5 @@
 -t	--filetype-inclusion=		: Filters all files of non-specified type (comma or semicolon delimited)
 -T	--filetype-exclusion=		: Filters files of specified type (comma or semicolon delimited)
 -k	--filenames-only		: Match against file names rather than file content
+-R	--replace=			: Replace text in matched files (surround with ' or ")
 -w	--write=			: Write output to specified filepath

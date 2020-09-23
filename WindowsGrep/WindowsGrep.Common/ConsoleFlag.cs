@@ -2,7 +2,6 @@
 {
     public enum ConsoleFlag
     {
-        // The only required filter provided by the user
         SearchTerm,
 
         // Targets a specific file directory
@@ -46,7 +45,7 @@
         [DescriptionCollection("-r", "--recursive")]
         Recursive,
 
-        // Restricts search to files with the specified extensions. Comma delimited.
+        // Restricts search to files with the specified extensions. Comma delimited
         [ExpectsParameter(true)]
         [FilterCharacterCollection('\'', '"', '.', '\\')]
         [DescriptionCollection("-t", "--filetype-include=")]
@@ -61,6 +60,12 @@
         // Match against file names rather than file content
         [DescriptionCollection("-k", "--filenames-only")]
         FileNamesOnly,
+
+        // Replace instances of the search term with the replace parameter
+        [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"')]
+        [DescriptionCollection("-R", "--replace")]
+        Replace,
 
         // Write outputs to specified file
         [ExpectsParameter(true)]
