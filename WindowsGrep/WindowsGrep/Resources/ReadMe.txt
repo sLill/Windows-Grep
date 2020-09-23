@@ -12,4 +12,5 @@
 -T	--filetype-exclusion=		: Filters files of specified type (comma or semicolon delimited)
 -k	--filenames-only		: Match against file names rather than file content
 -R	--replace=			: Replace text in matched files (surround with ' or ")
+-D	--delete-files		: Delete files returned in search
 -w	--write=			: Write output to specified filepath

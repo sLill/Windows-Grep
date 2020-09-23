@@ -30,130 +30,140 @@ namespace WindowsGrep.Engine
         #endregion Event Handlers..
 
         #region Methods..
-
-        #region BeginReplace
-        private static void BeginReplace(ConsoleCommand consoleCommand, ThreadSafeCollection<GrepResult> grepResultCollection)
+        #region BeginProcessCommand
+        private static void BeginProcessCommand(ConsoleCommand consoleCommand, ThreadSafeCollection<GrepResult> grepResultCollection)
         {
             string Filepath = GetPath(consoleCommand);
             List<string> Files = GetFiles(consoleCommand, grepResultCollection, Filepath);
             Files = GetFilteredFiles(consoleCommand, Files);
 
-            RegexOptions OptionsFlags = GetRegexOptions(consoleCommand);
-            string SearchPattern = BuildSearchPattern(consoleCommand);
-
-            int AffectedFilesTotal = 0;
-            int ReplacedCountTotal = 0;
-            int UnwriteableCount = 0;
-
-            // Preview
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[Searching {Files.Count} file(s)]{Environment.NewLine}" });
 
-            Files.AsParallel().ForAll(file =>
-            {
-                try
-                {
-                    string FileRaw = File.ReadAllText(file);
-                    MatchCollection Matches = Regex.Matches(FileRaw, SearchPattern, OptionsFlags);
-
-                    if (Matches.Any())
-                    {
-                        // Replace all occurrences in file
-                        FileRaw = Regex.Replace(FileRaw, SearchPattern, consoleCommand.CommandArgs[ConsoleFlag.Replace]);
-
-                        List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
-
-                        // FileName
-                        ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file} " });
-
-                        // Overwrite file
-                        try
-                        {
-                            File.WriteAllText(file, FileRaw);
-
-                            ReplacedCountTotal += Matches.Count;
-                            AffectedFilesTotal++;
-
-                            // Occurrences
-                            string MatchesText = Matches.Count == 1 ? "match" : "matches";
-                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{Matches.Count} {MatchesText}" });
-
-                        }
-                        catch (Exception ex)
-                        {
-                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Gray, BackgroundColor= ConsoleColor.DarkRed, Value = $"Access Denied" });
-                            UnwriteableCount++;
-                        }
-                        finally
-                        {
-                            ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
-                            MatchFound?.Invoke(ConsoleItemCollection, EventArgs.Empty);
-                        }
-                    }
-                }
-                catch (Exception ex) { }
-            });
-
-            // Notify the user of any files that could not be written to
-            if (UnwriteableCount > 0)
-            {
-                string UnwriteableFiles = $"[{UnwriteableCount} file(s) unwriteable/inaccessible]";
-                ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = UnwriteableFiles });
-                ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine });
-            }
-
-            string Summary = $"[{ReplacedCountTotal} occurrence(s) replaced in {AffectedFilesTotal} file(s)]";
-            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = Summary });
-            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
-        }
-        #endregion BeginReplace
-
-        #region BeginSearch
-        private static void BeginSearch(ConsoleCommand consoleCommand, ThreadSafeCollection<GrepResult> grepResultCollection)
-        {
-            string Filepath = GetPath(consoleCommand);
-            List<string> Files = GetFiles(consoleCommand, grepResultCollection, Filepath);
-            Files = GetFilteredFiles(consoleCommand, Files);
-
-            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red , Value = $"{Environment.NewLine}[Searching {Files.Count} file(s)]{Environment.NewLine}" });
-
             RegexOptions OptionsFlags = GetRegexOptions(consoleCommand);
-
-            bool FileNamesOnly = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
-            if (FileNamesOnly)
-            {
-                SearchByFileName(grepResultCollection, Files, consoleCommand, OptionsFlags);
-            }
-            else
-            {
-                SearchByFileContent(grepResultCollection, Files, consoleCommand, OptionsFlags);
-            }
-
-            string SearchSummary = $"[{grepResultCollection.Count} result(s) {grepResultCollection.Select(x => x.SourceFile).Distinct().Count()} file(s)]";           
-            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = SearchSummary });
+            ProcessCommand(grepResultCollection, Files, consoleCommand, OptionsFlags);
+            
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
         }
-        #endregion BeginSearch
-
+        #endregion BeginProcessCommand
 
         #region BuildSearchPattern
         private static string BuildSearchPattern(ConsoleCommand consoleCommand)
         {
+            bool FixedStringsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
+            bool FileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
+            bool ContextFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Context);
+
+            string SearchPattern = string.Empty;
             string SearchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
 
-            int ContextLength = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Context) ? Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.Context]) : 0;
-            string ContextPattern = ContextLength <= 0 ? string.Empty : @"(?:(?!" + SearchTerm + @").){0," + ContextLength.ToString() + @"}";
+            if (FileNamesOnlyFlag)
+            {
+                // Build for filename search
+                SearchPattern = FixedStringsFlag ? @"\b" + SearchTerm + @"\b" : SearchTerm;
+            }
+            else
+            { 
+                // Build for content search
+                int ContextLength = ContextFlag ? Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.Context]) : 0;
+                string ContextPattern = ContextLength <= 0 ? string.Empty : @"(?:(?!" + SearchTerm + @").){0," + ContextLength.ToString() + @"}";
 
-            string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings)
-                ? ContextPattern + @"(?<MatchedString>[\b\B]?" + SearchTerm + @"[\b\B]?)" + ContextPattern
-                : ContextPattern + @"(?<MatchedString>" + SearchTerm + @")" + ContextPattern;
+                SearchPattern = FixedStringsFlag
+                    ? ContextPattern + @"(?<MatchedString>[\b\B]?" + SearchTerm + @"[\b\B]?)" + ContextPattern
+                    : ContextPattern + @"(?<MatchedString>" + SearchTerm + @")" + ContextPattern;
+            }
 
             return SearchPattern;
         }
         #endregion BuildSearchPattern
 
+        #region BuildSearchResultsFileContent
+        private static void BuildSearchResultsFileContent(ConsoleCommand consoleCommand, ThreadSafeCollection<GrepResult> grepResultCollection, MatchCollection matches, string filename, string fileRaw)
+        {
+            bool IgnoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
+            bool IgnoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
+
+            matches.ToList().ForEach(match =>
+            {
+                GrepResult GrepResult = new GrepResult(filename)
+                {
+                    ContextString = match.Captures.FirstOrDefault().Value,
+                    MatchedString = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm]
+                };
+
+                grepResultCollection.AddItem(GrepResult);
+
+                List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
+
+                // FileName
+                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{filename} " });
+
+                // Line number
+                if (!IgnoreBreaksFlag)
+                {
+                    int LineNumber = fileRaw.Substring(0, match.Groups["MatchedString"].Index).Split('\n').Length;
+                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
+                }
+
+                int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, IgnoreCaseFlag ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+                int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
+
+                // Context start
+                ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
+
+                // Context matched
+                ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.ContextString.Substring(ContextMatchStartIndex, GrepResult.MatchedString.Length) });
+
+                // Context end
+                ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(ContextMatchEndIndex, GrepResult.ContextString.Length - ContextMatchEndIndex) });
+
+                // Empty buffer
+                ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
+
+                MatchFound?.Invoke(ConsoleItemCollection, EventArgs.Empty);
+            });
+        }
+        #endregion BuildSearchResultsFileContent
+
+        #region BuildSearchResultsFilename
+        private static void BuildSearchResultsFilename(ConsoleCommand consoleCommand, ThreadSafeCollection<GrepResult> grepResultCollection, MatchCollection matches, string filename)
+        {
+            if (matches.Any())
+            {
+                GrepResult GrepResult = new GrepResult(filename)
+                {
+                    ContextString = filename,
+                    MatchedString = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm]
+                };
+
+                grepResultCollection.AddItem(GrepResult);
+
+                List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
+
+                int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
+                int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
+
+                // Context start
+                ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
+
+                // Context matched
+                ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.MatchedString });
+
+                // Context end
+                ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(ContextMatchEndIndex, GrepResult.ContextString.Length - ContextMatchEndIndex) });
+
+                // Empty buffer
+                ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
+
+                MatchFound?.Invoke(ConsoleItemCollection, EventArgs.Empty);
+            }
+        }
+        #endregion BuildSearchResultsFilename
+
         #region GetFiles
         private static List<string> GetFiles(ConsoleCommand consoleCommand, IList<GrepResult> grepResultCollection, string filepath)
         {
+            bool RecursiveFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Recursive);
+
             List<string> Files = null;
 
             if (grepResultCollection.Any())
@@ -163,7 +173,7 @@ namespace WindowsGrep.Engine
             else
             {
                 var EnumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = FileAttributes.System };
-                if (consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Recursive))
+                if (RecursiveFlag)
                 {
                     EnumerationOptions.RecurseSubdirectories = true;
                 }
@@ -183,8 +193,11 @@ namespace WindowsGrep.Engine
         /// <returns>Returns files filtered by Inclusion/Exclusion type parameters</returns>
         private static List<string> GetFilteredFiles(ConsoleCommand consoleCommand, List<string> files)
         {
-            string[] FileTypeInclusions = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeInclusions) ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeInclusions].Split(new char[] { ',', ';' }) : null;
-            string[] FileTypeExclusions = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeExclusions) ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeExclusions].Split(new char[] { ',', ';' }) : null;
+            bool FilTypeInclusionFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeInclusions);
+            bool FilTypeExclusionFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeExclusions);
+
+            string[] FileTypeInclusions = FilTypeInclusionFlag ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeInclusions].Split(new char[] { ',', ';' }) : null;
+            string[] FileTypeExclusions = FilTypeExclusionFlag ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeExclusions].Split(new char[] { ',', ';' }) : null;
 
             files = FileTypeInclusions == null ? files : files.Where(file => FileTypeInclusions.Contains(Path.GetExtension(file).Trim('.'))).ToList();
             files = FileTypeExclusions == null ? files : files.Where(file => !FileTypeExclusions.Contains(Path.GetExtension(file).Trim('.'))).ToList();
@@ -196,9 +209,12 @@ namespace WindowsGrep.Engine
         #region GetPath
         private static string GetPath(ConsoleCommand consoleCommand)
         {
+            bool DirectoryFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Directory);
+            bool TargetFileFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.TargetFile);
+
             // User specified file should overrule specified directory
-            string Filepath = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Directory) ? consoleCommand.CommandArgs[ConsoleFlag.Directory] : Environment.CurrentDirectory;
-            Filepath = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.TargetFile) ? consoleCommand.CommandArgs[ConsoleFlag.TargetFile] : Filepath;
+            string Filepath = DirectoryFlag ? consoleCommand.CommandArgs[ConsoleFlag.Directory] : Environment.CurrentDirectory;
+            Filepath = TargetFileFlag ? consoleCommand.CommandArgs[ConsoleFlag.TargetFile] : Filepath;
 
             return Filepath;
         }
@@ -208,8 +224,9 @@ namespace WindowsGrep.Engine
         private static RegexOptions GetRegexOptions(ConsoleCommand consoleCommand)
         {
             RegexOptions OptionsFlags = 0;
-            
-            if (consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase))
+            bool IgnoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
+
+            if (IgnoreCaseFlag)
             {
                 OptionsFlags |= RegexOptions.IgnoreCase;
             }
@@ -219,42 +236,24 @@ namespace WindowsGrep.Engine
         #endregion GetRegexOptions
 
         #region ProcessCommand
-        public static List<ConsoleItem> ProcessCommand(string commandRaw)
+        private static void ProcessCommand(ThreadSafeCollection<GrepResult> grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
         {
-            List<ConsoleItem> Result = null;
-            var GrepResultCollection = new ThreadSafeCollection<GrepResult>();
+            bool DeleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
+            bool ReplaceFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
+            bool FileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
+            bool IgnoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
 
-            string[] CommandCollection = commandRaw.Split('|');
-            foreach (string command in CommandCollection)
-            {
-                var CommandArgs = ConsoleUtils.DiscoverCommandArgs(command);
-                ConsoleCommand ConsoleCommand = new ConsoleCommand() { CommandArgs = CommandArgs };
-
-                if (ConsoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace))
-                {
-                    // Replace command
-                    BeginReplace(ConsoleCommand, GrepResultCollection);
-                }
-                else
-                {
-                    // Search command
-                    BeginSearch(ConsoleCommand, GrepResultCollection);
-                }
-            }
-
-            return Result;
-        }
-        #endregion ProcessCommand
-
-        #region SearchByFileContent
-        private static void SearchByFileContent(ThreadSafeCollection<GrepResult> grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
-        {
             // Build search pattern
             string SearchPattern = BuildSearchPattern(consoleCommand);
 
-            int UnreadableCount = 0;
+            int FileReadFailedCount = 0;
+            int FileWriteFailedCount = 0;
 
-            // Read in files one at a time to match against
+            int DeleteSuccessCount = 0;
+            int ReplacedSuccessCount = 0;
+
+            int FilesMatchedCount = 0;
+
             files.AsParallel().ForAll(file =>
             {
                 try
@@ -264,7 +263,7 @@ namespace WindowsGrep.Engine
                     string FileRaw = File.ReadAllText(file);
 
                     // Apply linebreak filtering options
-                    if (consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks))
+                    if (IgnoreBreaksFlag)
                     {
                         string fileLineBreakFiltered = FileRaw.Replace("\r", string.Empty).Replace("\n", "");
                         Matches = Regex.Matches(fileLineBreakFiltered, SearchPattern, optionsFlags);
@@ -276,110 +275,151 @@ namespace WindowsGrep.Engine
 
                     if (Matches.Any())
                     {
-                        Matches.ToList().ForEach(match =>
+                        // Write operations
+                        bool isWriteOperation = ReplaceFlag || DeleteFlag;
+                        if (isWriteOperation)
                         {
-                            GrepResult GrepResult = new GrepResult(file)
-                            {
-                                ContextString = match.Captures.FirstOrDefault().Value,
-                                MatchedString = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm]
-                            };
-
-                            grepResultCollection.AddItem(GrepResult);
-
                             List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
 
                             // FileName
                             ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file} " });
 
-                            // Line number
-                            if (!consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks))
+                            try
                             {
-                                int LineNumber = FileRaw.Substring(0, match.Groups["MatchedString"].Index).Split('\n').Length;
-                                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
+                                if (DeleteFlag)
+                                {
+                                    // Delete file
+                                    File.Delete(file);
+
+                                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
+                                    DeleteSuccessCount++;
+                                }
+                                else if (ReplaceFlag)
+                                {
+                                    // Replace all occurrences in file
+                                    FileRaw = Regex.Replace(FileRaw, SearchPattern, consoleCommand.CommandArgs[ConsoleFlag.Replace]);
+                                    File.WriteAllText(file, FileRaw);
+
+                                    string MatchesText = Matches.Count == 1 ? "match" : "matches";
+                                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{Matches.Count} {MatchesText}" });
+                                    ReplacedSuccessCount += Matches.Count;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Gray, BackgroundColor = ConsoleColor.DarkRed, Value = $"Access Denied" });
+                                FileWriteFailedCount++;
+                            }
+                            finally
+                            {
+                                // Empty buffer
+                                ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
+
+                                FilesMatchedCount++;
+
+                                MatchFound?.Invoke(ConsoleItemCollection, EventArgs.Empty);
+                            }
+                        }
+
+                        // Read operations
+                        else
+                        {
+                           
+                            if (FileNamesOnlyFlag)
+                            {
+                                BuildSearchResultsFilename(consoleCommand, grepResultCollection, Matches, file);
+                            }
+                            else
+                            {
+                                BuildSearchResultsFileContent(consoleCommand, grepResultCollection, Matches, file, FileRaw);
                             }
 
-                            int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase) ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
-                            int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
-
-                            // Context start
-                            ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
-
-                            // Context matched
-                            ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.ContextString.Substring(ContextMatchStartIndex, GrepResult.MatchedString.Length) });
-
-                            // Context end
-                            ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(ContextMatchEndIndex, GrepResult.ContextString.Length - ContextMatchEndIndex) });
-
-                            // Empty buffer
-                            ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
-
-                            MatchFound?.Invoke(ConsoleItemCollection, EventArgs.Empty);
-                        });
+                            FilesMatchedCount++;
+                        }
                     }
                 }
-                catch (Exception ex) 
-                { 
-                    lock(_searchLock)
+                catch (Exception ex)
+                {
+                    lock (_searchLock)
                     {
-                        UnreadableCount++;
+                        FileReadFailedCount++;
                     }
                 }
             });
 
-            // Notify the user of any files that could not be read from
-            if (UnreadableCount > 0)
+            // Notify the user of any files that could not be read from or written to
+            PublishFileAccessSummary(FileReadFailedCount, FileWriteFailedCount);
+
+            // Publish command summary to console
+            PublishCommandSummary(consoleCommand, grepResultCollection, FilesMatchedCount, DeleteSuccessCount, ReplacedSuccessCount);
+        }
+        #endregion ProcessCommand
+
+        #region PublishCommandSummary
+        private static void PublishCommandSummary(ConsoleCommand consoleCommand, IList<GrepResult> grepResultCollection, int filesMatchedCount, int deleteSuccessCount, int replaceSuccessCount)
+        {
+            bool DeleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
+            bool ReplaceFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
+
+            string Summary = string.Empty;
+            if (DeleteFlag)
             {
-                string UnreachableFiles = $"[{UnreadableCount} file(s) unreadable/inaccessible]";
-                ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = UnreachableFiles });
+                Summary = $"[{deleteSuccessCount} of {filesMatchedCount} file(s) deleted]";
+
+            }
+            else if (ReplaceFlag)
+            {
+                Summary = $"[{replaceSuccessCount} occurrence(s) replaced in {filesMatchedCount} file(s)]";
+            }
+            else
+            {
+                Summary = $"[{grepResultCollection.Count} result(s) {filesMatchedCount} file(s)]";
+            }
+
+            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = Summary });
+        }
+        #endregion PublishCommandSummary
+
+        #region PublishFileAccessSummary
+        private static void PublishFileAccessSummary(int fileReadFailedCount, int fileWriteFailedCount)
+        {
+            if (fileReadFailedCount > 0 || fileWriteFailedCount > 0)
+            {
+                if (fileReadFailedCount > 0)
+                {
+                    string UnreachableFiles = $"[{fileReadFailedCount} file(s) unreadable/inaccessible]";
+                    ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = UnreachableFiles });
+                }
+
+                if (fileWriteFailedCount > 0)
+                {
+                    string UnwriteableFiles = $"[{fileWriteFailedCount} file(s) could not be modified]";
+                    ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = UnwriteableFiles });
+                }
+
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine });
             }
         }
-        #endregion SearchByFileContent
+        #endregion PublishFileAccessSummary
 
-        #region SearchByFileName
-        private static void SearchByFileName(ThreadSafeCollection<GrepResult> grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
+        #region RunCommand
+        public static List<ConsoleItem> RunCommand(string commandRaw)
         {
-            files.AsParallel().ForAll(file =>
+            List<ConsoleItem> Result = null;
+            var GrepResultCollection = new ThreadSafeCollection<GrepResult>();
+
+            string[] CommandCollection = commandRaw.Split('|');
+            foreach (string command in CommandCollection)
             {
-                try
-                {
-                    string SearchPattern = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings) ? @"\b" + consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] + @"\b" : consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
-                    var Matches = Regex.Matches(file, SearchPattern, optionsFlags);
+                var CommandArgs = ConsoleUtils.DiscoverCommandArgs(command);
+                ConsoleCommand ConsoleCommand = new ConsoleCommand() { CommandArgs = CommandArgs };
 
-                    if (Matches.Any())
-                    {
-                        GrepResult GrepResult = new GrepResult(file)
-                        {
-                            ContextString = file,
-                            MatchedString = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm]
-                        };
+                BeginProcessCommand(ConsoleCommand, GrepResultCollection);
+            }
 
-                        grepResultCollection.AddItem(GrepResult);
-
-                        List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
-
-                        int ContextMatchStartIndex = GrepResult.ContextString.IndexOf(GrepResult.MatchedString, StringComparison.OrdinalIgnoreCase);
-                        int ContextMatchEndIndex = ContextMatchStartIndex + GrepResult.MatchedString.Length;
-
-                        // Context start
-                        ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(0, ContextMatchStartIndex) });
-
-                        // Context matched
-                        ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = GrepResult.MatchedString });
-
-                        // Context end
-                        ConsoleItemCollection.Add(new ConsoleItem() { Value = GrepResult.ContextString.Substring(ContextMatchEndIndex, GrepResult.ContextString.Length - ContextMatchEndIndex) });
-
-                        // Empty buffer
-                        ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
-
-                        MatchFound?.Invoke(ConsoleItemCollection, EventArgs.Empty);
-                    }
-                }
-                catch (Exception) { }
-            });
+            return Result;
         }
-        #endregion SearchByFileName
+        #endregion RunCommand
         #endregion Methods..
     }
 }

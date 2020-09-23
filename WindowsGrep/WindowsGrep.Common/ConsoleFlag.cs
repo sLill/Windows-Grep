@@ -67,6 +67,10 @@
         [DescriptionCollection("-R", "--replace")]
         Replace,
 
+        // Delete files returned in search
+        [DescriptionCollection("-D", "--delete-files")]
+        Delete,
+
         // Write outputs to specified file
         [ExpectsParameter(true)]
         [FilterCharacterCollection('\'', '"', '\\')]
