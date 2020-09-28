@@ -23,7 +23,10 @@ namespace WindowsGrep
                 {
                     try
                     {
-                        var CommandResults = GrepEngine.RunCommand(Command);
+                        GrepResultCollection grepResultCollection = new GrepResultCollection();
+                        grepResultCollection.ItemAdded += OnResultAdded;
+
+                        GrepEngine.RunCommand(Command, grepResultCollection);
                     }
                     catch (Exception ex)
                     {
@@ -36,6 +39,15 @@ namespace WindowsGrep
         #endregion Main
 
         #region Methods..
+        #region Event Handlers..
+        #region OnResultAdded
+        private static void OnResultAdded(object sender, EventArgs e)
+        {
+            var GrepResult = sender as GrepResult;
+            ConsoleUtils.WriteConsoleItemCollection(GrepResult.ToConsoleItemCollection());
+        }
+        #endregion OnResultAdded
+        #endregion Event Handlers..
         #endregion Methods..
     }
 }
