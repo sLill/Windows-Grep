@@ -122,11 +122,15 @@ namespace WindowsGrep.Engine
 
             matches.ToList().ForEach(match =>
             {
-                GrepResult GrepResult = new GrepResult(filename)
+                string ContextString = match.Captures.FirstOrDefault().Value;
+                string MatchedString = match.Groups["MatchedString"].Value;
+                int ContextStringIndex = ContextString.IndexOf(MatchedString, IgnoreCaseFlag ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+
+                GrepResult GrepResult = new GrepResult(filename, ResultScope.FileContent)
                 {
-                    ContextString = match.Captures.FirstOrDefault().Value,
-                    MatchedString = match.Groups["MatchedString"].Value,
-                    CaseSensitive = !IgnoreCaseFlag
+                    ContextString = ContextString,
+                    ContextStringStartIndex = ContextStringIndex,
+                    MatchedString = MatchedString,
                 };
 
                 // Line number
@@ -141,21 +145,22 @@ namespace WindowsGrep.Engine
         }
         #endregion BuildSearchResultsFileContent
 
-        #region BuildSearchResultsFilename
-        private static void BuildSearchResultsFilename(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, List<(string FileName, Match Match)> matchedFiles)
+        #region BuildSearchResultsFileName
+        private static void BuildSearchResultsFileName(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, List<(string FileName, Match Match)> matchedFiles)
         {
             matchedFiles.ForEach(matchedFile =>
             {
-                GrepResult GrepResult = new GrepResult(matchedFile.FileName)
+                GrepResult GrepResult = new GrepResult(matchedFile.FileName, ResultScope.FileName)
                 {
                     ContextString = matchedFile.FileName,
+                    ContextStringStartIndex = matchedFile.Match.Index,
                     MatchedString = matchedFile.Match.Value
                 };
 
                 grepResultCollection.AddItem(GrepResult);
             });
         }
-        #endregion BuildSearchResultsFilename
+        #endregion BuildSearchResultsFileName
 
         #region GetFiles
         private static List<string> GetFiles(ConsoleCommand consoleCommand, IList<GrepResult> grepResultCollection, string filepath)
@@ -278,7 +283,7 @@ namespace WindowsGrep.Engine
                     .Select(x => (x, SearchRegex.Matches(x).Aggregate((x1, x2) => x1.Index > x2.Index ? x1 : x2))).ToList();
 
                 FilesMatchedCount = Matches.Count;
-                BuildSearchResultsFilename(consoleCommand, grepResultCollection, Matches);
+                BuildSearchResultsFileName(consoleCommand, grepResultCollection, Matches);
             }
             else
             {

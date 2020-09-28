@@ -8,13 +8,13 @@ namespace WindowsGrep.Engine
     public class GrepResult
     {
         #region Properties..
-        #region CaseSensitive
-        public bool CaseSensitive { get; set; }
-        #endregion CaseSensitive
-
         #region ContextString
         public string ContextString { get; set; }
         #endregion ContextString
+
+        #region ContextStringStartIndex
+        public int ContextStringStartIndex { get; set; }
+        #endregion ContextStContextStringStartIndexring
 
         #region LineNumber
         public int LineNumber { get; set; } = -1;
@@ -24,6 +24,10 @@ namespace WindowsGrep.Engine
         public string MatchedString { get; set; }
         #endregion MatchedString
 
+        #region Scope
+        public ResultScope Scope { get; set; }
+        #endregion Scope
+
         #region SourceFile
         public string SourceFile { get; set; }
         #endregion SourceFile
@@ -31,8 +35,9 @@ namespace WindowsGrep.Engine
 
         #region Constructors..
         #region GrepResult
-        public GrepResult(string sourceFile)
+        public GrepResult(string sourceFile, ResultScope resultScope)
         {
+            Scope = resultScope;
             SourceFile = sourceFile;
         }
         #endregion GrepResult
@@ -44,29 +49,42 @@ namespace WindowsGrep.Engine
         {
             List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
 
-            // FileName
-            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
-
-            // Line number
-            if (LineNumber > -1)
+            if (Scope == ResultScope.FileContent)
             {
-                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
+                // FileName
+                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
+
+                // Line number
+                if (LineNumber > -1)
+                {
+                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
+                }
+
+                // Context start
+                ConsoleItemCollection.Add(new ConsoleItem() { Value = ContextString.Substring(0, ContextStringStartIndex) });
+
+                // Context matched
+                ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = ContextString.Substring(ContextStringStartIndex, MatchedString.Length) });
+
+                // Context end
+                int ContextMatchEndIndex = ContextStringStartIndex + MatchedString.Length;
+                ConsoleItemCollection.Add(new ConsoleItem() { Value = ContextString.Substring(ContextMatchEndIndex, ContextString.Length - ContextMatchEndIndex) });
+            }
+            else
+            {
+                // Context start
+                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = ContextString.Substring(0, ContextStringStartIndex) });
+
+                // Context matched
+                ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
+
+                // Context end
+                int ContextMatchEndIndex = ContextStringStartIndex + MatchedString.Length;
+                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = ContextString.Substring(ContextMatchEndIndex, ContextString.Length - ContextMatchEndIndex) });
             }
 
-            int ContextMatchStartIndex = ContextString.IndexOf(MatchedString, CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
-            int ContextMatchEndIndex = ContextMatchStartIndex + MatchedString.Length;
-
-            // Context start
-            ConsoleItemCollection.Add(new ConsoleItem() { Value = ContextString.Substring(0, ContextMatchStartIndex) });
-
-            // Context matched
-            ConsoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = ContextString.Substring(ContextMatchStartIndex, MatchedString.Length) });
-
-            // Context end
-            ConsoleItemCollection.Add(new ConsoleItem() { Value = ContextString.Substring(ContextMatchEndIndex, ContextString.Length - ContextMatchEndIndex) });
-
             // Empty buffer
-            ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
+            ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
 
             return ConsoleItemCollection;
         }
@@ -74,13 +92,16 @@ namespace WindowsGrep.Engine
 
         public string ToString(char separator)
         {
+            string Result = string.Empty;
+
             string LineNumberString = string.Empty;
             if (LineNumber > -1)
             {
                 LineNumberString = $"Line {LineNumber}";
             }
 
-            return $"{SourceFile}{separator}{LineNumberString}{separator}{ContextString}";
+            Result = Scope == ResultScope.FileName ? SourceFile : $"{SourceFile}{separator}{LineNumberString}{separator}{ContextString}";
+            return Result;
         }
         #endregion Methods..
     }
