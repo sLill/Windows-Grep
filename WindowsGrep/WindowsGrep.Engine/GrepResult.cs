@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using WindowsGrep.Common;
 
 namespace WindowsGrep.Engine
@@ -14,10 +15,6 @@ namespace WindowsGrep.Engine
         #region ContextString
         public string ContextString { get; set; }
         #endregion ContextString
-
-        #region FileName
-        public string FileName { get; set; }
-        #endregion FileName
 
         #region LineNumber
         public int LineNumber { get; set; } = -1;
@@ -42,14 +39,13 @@ namespace WindowsGrep.Engine
         #endregion Constructors..
 
         #region Methods..
-
         #region ToConsoleItemCollection
         public List<ConsoleItem> ToConsoleItemCollection()
         {
             List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
 
             // FileName
-            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{FileName} " });
+            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
 
             // Line number
             if (LineNumber > -1)
@@ -75,6 +71,17 @@ namespace WindowsGrep.Engine
             return ConsoleItemCollection;
         }
         #endregion ToConsoleItemCollection
+
+        public string ToString(char separator)
+        {
+            string LineNumberString = string.Empty;
+            if (LineNumber > -1)
+            {
+                LineNumberString = $"Line {LineNumber}";
+            }
+
+            return $"{SourceFile}{separator}{LineNumberString}{separator}{ContextString}";
+        }
         #endregion Methods..
     }
 }

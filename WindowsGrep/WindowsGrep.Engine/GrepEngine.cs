@@ -27,6 +27,8 @@ namespace WindowsGrep.Engine
         #region BeginProcessCommand
         private static void BeginProcessCommand(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection)
         {
+            bool WriteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
+
             string Filepath = GetPath(consoleCommand);
             List<string> Files = GetFiles(consoleCommand, grepResultCollection, Filepath);
             Files = GetFilteredFiles(consoleCommand, Files);
@@ -35,6 +37,11 @@ namespace WindowsGrep.Engine
 
             RegexOptions OptionsFlags = GetRegexOptions(consoleCommand);
             ProcessCommand(grepResultCollection, Files, consoleCommand, OptionsFlags);
+
+            if (WriteFlag)
+            {
+                grepResultCollection.Write(consoleCommand.CommandArgs[ConsoleFlag.Write]);
+            }
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
         }
@@ -117,7 +124,6 @@ namespace WindowsGrep.Engine
             {
                 GrepResult GrepResult = new GrepResult(filename)
                 {
-                    FileName = filename,
                     ContextString = match.Captures.FirstOrDefault().Value,
                     MatchedString = match.Groups["MatchedString"].Value,
                     CaseSensitive = !IgnoreCaseFlag
@@ -142,7 +148,6 @@ namespace WindowsGrep.Engine
             {
                 GrepResult GrepResult = new GrepResult(matchedFile.FileName)
                 {
-                    FileName = matchedFile.FileName,
                     ContextString = matchedFile.FileName,
                     MatchedString = matchedFile.Match.Value
                 };
