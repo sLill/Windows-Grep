@@ -59,7 +59,7 @@ namespace WindowsGrep.Engine
             if (FileNamesOnlyFlag)
             {
                 // Build filename search pattern
-                SearchPattern = FixedStringsFlag ? @"\b" + SearchTerm + @"\b" : SearchTerm;
+                SearchPattern = SearchTerm;
             }
             else
             {
@@ -100,9 +100,8 @@ namespace WindowsGrep.Engine
                     });
                 }
 
-                SearchPattern = FixedStringsFlag
-                    ? @"(?<MatchedString>[\b\B]?" + SearchTerm + @"[\b\B]?)"
-                    : @"(?<MatchedString>" + SearchTerm + @")";
+                SearchTerm = FixedStringsFlag ? Regex.Escape(SearchTerm) : SearchTerm;
+                SearchPattern = @"(?<MatchedString>" + SearchTerm + @")";
             }
 
             return SearchPattern;
@@ -269,6 +268,7 @@ namespace WindowsGrep.Engine
         #region ProcessCommand
         private static void ProcessCommand(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
         {
+            bool FixedStringsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
             bool DeleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
             bool ReplaceFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
             bool WriteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
