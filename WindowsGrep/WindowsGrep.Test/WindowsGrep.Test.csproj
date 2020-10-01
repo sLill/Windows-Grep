@@ -9,7 +9,25 @@
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Flags\Context\TestData\" />
+    <Folder Include="Flags\FixedStrings\TestData\" />
+    <Folder Include="Flags\IgnoreBreaks\TestData\" />
+    <Folder Include="Flags\IgnoreCase\TestData\" />
+    <Folder Include="Flags\FileTypeInclusion\TestData\" />
+    <Folder Include="Flags\FileTypeExclusion\TestData\" />
+    <Folder Include="Flags\FileNamesOnly\TestData\" />
+    <Folder Include="Flags\Replace\TestData\" />
+    <Folder Include="Flags\Delete\TestData\" />
+    <Folder Include="Flags\Write\TestData\" />
+    <Folder Include="Flags\TargetFile\TestData\" />
+    <Folder Include="Flags\BasicRegex\TestData\" />
+    <Folder Include="Flags\Directory\TestData\" />
+    <Folder Include="Flags\Recursive\TestData\" />
+    <Folder Include="RegularExpressions\" />
   </ItemGroup>
 
 </Project>

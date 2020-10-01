@@ -1,8 +1,8 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace WindowsGrep.Test
+namespace WindowsGrep.Test.Flags.FileTypeExclusion
 {
-    public class Tests
+    public class FileTypeExclusionTests
     {
         #region Setup..
         [SetUp]
@@ -16,7 +16,7 @@ namespace WindowsGrep.Test
         public void Test1()
         {
             Assert.Pass();
-        } 
+        }
         #endregion Tests..
     }
 }
