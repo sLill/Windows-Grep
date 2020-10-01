@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGrep", "WindowsGrep\WindowsGrep.csproj", "{7A91084C-811A-41DC-B32C-5B813780FC6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep", "WindowsGrep\WindowsGrep.csproj", "{7A91084C-811A-41DC-B32C-5B813780FC6E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D04E73B5-B449-4BFC-BDF9-C4EBD2BA31B0} = {D04E73B5-B449-4BFC-BDF9-C4EBD2BA31B0}
 		{73291BEC-A1C4-446F-BB99-1340927759CB} = {73291BEC-A1C4-446F-BB99-1340927759CB}
@@ -11,12 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGrep", "WindowsGrep\
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WindowsGrep.Setup", "WindowsGrep.Setup\WindowsGrep.Setup.wixproj", "{A48323C9-046D-40F4-97B5-20C9A249E1E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGrep.Engine", "WindowsGrep.Engine\WindowsGrep.Engine.csproj", "{D04E73B5-B449-4BFC-BDF9-C4EBD2BA31B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep.Engine", "WindowsGrep.Engine\WindowsGrep.Engine.csproj", "{D04E73B5-B449-4BFC-BDF9-C4EBD2BA31B0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{73291BEC-A1C4-446F-BB99-1340927759CB} = {73291BEC-A1C4-446F-BB99-1340927759CB}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGrep.Common", "WindowsGrep.Common\WindowsGrep.Common.csproj", "{73291BEC-A1C4-446F-BB99-1340927759CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep.Common", "WindowsGrep.Common\WindowsGrep.Common.csproj", "{73291BEC-A1C4-446F-BB99-1340927759CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGrep.Test", "WindowsGrep.Test\WindowsGrep.Test.csproj", "{FB63970D-0F99-4231-B15B-CFE33D64DD52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,14 @@ Global
 		{73291BEC-A1C4-446F-BB99-1340927759CB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73291BEC-A1C4-446F-BB99-1340927759CB}.Release|x86.ActiveCfg = Release|Any CPU
 		{73291BEC-A1C4-446F-BB99-1340927759CB}.Release|x86.Build.0 = Release|Any CPU
+		{FB63970D-0F99-4231-B15B-CFE33D64DD52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB63970D-0F99-4231-B15B-CFE33D64DD52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB63970D-0F99-4231-B15B-CFE33D64DD52}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB63970D-0F99-4231-B15B-CFE33D64DD52}.Debug|x86.Build.0 = Debug|Any CPU
+		{FB63970D-0F99-4231-B15B-CFE33D64DD52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB63970D-0F99-4231-B15B-CFE33D64DD52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB63970D-0F99-4231-B15B-CFE33D64DD52}.Release|x86.ActiveCfg = Release|Any CPU
+		{FB63970D-0F99-4231-B15B-CFE33D64DD52}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
