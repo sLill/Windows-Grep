@@ -71,6 +71,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_Alphanumeric
 
+        #region FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-F -f '{TestFilePath}' " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_SpecialCharacter
+
         #region FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Alpha
         [Test]
         public void FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Alpha()
@@ -119,6 +135,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Alphanumeric
 
+        #region FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-F -f '{TestFilePath}' .*";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_SpecialCharacter
+
         #region FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Alpha
         [Test]
         public void FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Alpha()
@@ -158,14 +190,30 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string Command = $"-F -f '{TestFilePath}' the 4 lazy";
+            string Command = $"-F -f '{TestFilePath}' fox hops";
             var GrepResultCollection = new GrepResultCollection();
 
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count == 2);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
         #endregion FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Alphanumeric
+
+        #region FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-F -f '{TestFilePath}' .?";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_SpecialCharacter
 
         #region FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Alpha
         [Test]
@@ -215,6 +263,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Alphanumeric
 
+        #region FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-F -f '{TestFilePath}' " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_SpecialCharacter
+
         #region FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Alpha
         [Test]
         public void FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Alpha()
@@ -262,6 +326,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(GrepResultCollection.Count == 1);
         }
         #endregion FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Alphanumeric
+
+        #region FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"--fixed-strings -f '{TestFilePath}' " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_SpecialCharacter
 
         #region FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Alpha
         [Test]
@@ -311,6 +391,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Alphanumeric
 
+        #region FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"--fixed-strings -f '{TestFilePath}' .*";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_SpecialCharacter
+
         #region FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Alpha
         [Test]
         public void FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Alpha()
@@ -350,14 +446,30 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string Command = $"--fixed-strings -f '{TestFilePath}' the 4 lazy";
+            string Command = $"--fixed-strings -f '{TestFilePath}' fox hops";
             var GrepResultCollection = new GrepResultCollection();
 
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count == 2);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
         #endregion FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Alphanumeric
+
+        #region FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"--fixed-strings -f '{TestFilePath}' .?";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_SpecialCharacter
 
         #region FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Alpha
         [Test]
@@ -406,6 +518,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(GrepResultCollection.Count == 4);
         }
         #endregion FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Alphanumeric 
+
+        #region FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"--fixed-strings -f '{TestFilePath}' " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_SpecialCharacter 
         #endregion FlagFirst..
 
         #region FlagMiddle..
@@ -457,6 +585,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_Alphanumeric
 
+        #region FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-i -F -f '{TestFilePath}' " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_SpecialCharacter
+
         #region FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Alpha
         [Test]
         public void FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Alpha()
@@ -505,6 +649,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Alphanumeric
 
+        #region FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-i -F -f '{TestFilePath}' .*";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_SpecialCharacter
+
         #region FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Alpha
         [Test]
         public void FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Alpha()
@@ -544,14 +704,30 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string Command = $"-i -F -f '{TestFilePath}' the 4 lazy";
+            string Command = $"-i -F -f '{TestFilePath}' fox hops";
             var GrepResultCollection = new GrepResultCollection();
 
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count == 2);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
         #endregion FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Alphanumeric
+
+        #region FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-i -F -f '{TestFilePath}' .?";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_SpecialCharacter
 
         #region FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Alpha
         [Test]
@@ -601,6 +777,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Alphanumeric
 
+        #region FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-i -F -f '{TestFilePath}' " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_SpecialCharacter
+
         #region FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Alpha
         [Test]
         public void FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Alpha()
@@ -648,6 +840,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(GrepResultCollection.Count == 1);
         }
         #endregion FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Alphanumeric
+
+        #region FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-i --fixed-strings -f '{TestFilePath}' " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_SpecialCharacter
 
         #region FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Alpha
         [Test]
@@ -697,6 +905,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Alphanumeric
 
+        #region FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-i --fixed-strings -f '{TestFilePath}' .*";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_SpecialCharacter
+
         #region FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Alpha
         [Test]
         public void FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Alpha()
@@ -736,14 +960,30 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' the 4 lazy";
+            string Command = $"-i --fixed-strings -f '{TestFilePath}' fox hops";
             var GrepResultCollection = new GrepResultCollection();
 
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count == 2);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
         #endregion FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Alphanumeric
+
+        #region FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-i --fixed-strings -f '{TestFilePath}' .?";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_SpecialCharacter
 
         #region FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Alpha
         [Test]
@@ -792,6 +1032,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(GrepResultCollection.Count == 4);
         }
         #endregion FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Alphanumeric 
+
+        #region FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-i --fixed-strings -f '{TestFilePath}' " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_SpecialCharacter 
         #endregion FlagMiddle..
 
         #region FlagLast..
@@ -843,6 +1099,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_Alphanumeric
 
+        #region FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-f '{TestFilePath}' -F " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_SpecialCharacter
+
         #region FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Alpha
         [Test]
         public void FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Alpha()
@@ -891,6 +1163,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Alphanumeric
 
+        #region FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-f '{TestFilePath}' -F .*";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_SpecialCharacter
+
         #region FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Alpha
         [Test]
         public void FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Alpha()
@@ -930,14 +1218,30 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string Command = $"-f '{TestFilePath}' -F the 4 lazy";
+            string Command = $"-f '{TestFilePath}' -F fox hops";
             var GrepResultCollection = new GrepResultCollection();
 
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count == 2);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
         #endregion FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Alphanumeric
+
+        #region FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-f '{TestFilePath}' -F .?";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_SpecialCharacter
 
         #region FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Alpha
         [Test]
@@ -987,6 +1291,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Alphanumeric
 
+        #region FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-f '{TestFilePath}' -F " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_SpecialCharacter
+
         #region FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Alpha
         [Test]
         public void FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Alpha()
@@ -1034,6 +1354,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(GrepResultCollection.Count == 1);
         }
         #endregion FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Alphanumeric
+
+        #region FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-f '{TestFilePath}' --fixed-strings " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_SpecialCharacter
 
         #region FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Alpha
         [Test]
@@ -1083,6 +1419,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         }
         #endregion FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Alphanumeric
 
+        #region FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-f '{TestFilePath}' --fixed-strings .*";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_SpecialCharacter
+
         #region FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Alpha
         [Test]
         public void FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Alpha()
@@ -1122,14 +1474,30 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string Command = $"-f '{TestFilePath}' --fixed-strings the 4 lazy";
+            string Command = $"-f '{TestFilePath}' --fixed-strings fox hops";
             var GrepResultCollection = new GrepResultCollection();
 
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count == 2);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
         #endregion FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Alphanumeric
+
+        #region FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-f '{TestFilePath}' --fixed-strings .?";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_SpecialCharacter
 
         #region FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Alpha
         [Test]
@@ -1178,6 +1546,22 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(GrepResultCollection.Count == 4);
         }
         #endregion FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Alphanumeric 
+
+        #region FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_SpecialCharacter
+        [Test]
+        public void FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_SpecialCharacter()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string Command = $"-f '{TestFilePath}' --fixed-strings " + @"\s";
+            var GrepResultCollection = new GrepResultCollection();
+
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 2);
+        }
+        #endregion FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_SpecialCharacter 
         #endregion FlagLast..
         #endregion Tests..
     }

@@ -1,4 +1,4 @@
-﻿Did you know Switzerland eats the most chocolate equating to 10 kilos per person per year?
-The quick brown fox jumps 8 times over the 4 lazy dogs and their 10 lazy owners who work with 10 lazy programmers
-The quick brown fox jumps 8 times over the 4 lazy dogs and their 10 lazy owners who work with 10 lazy programmers
+﻿Did you know Switzerland eats the most chocolate equating to 10 kilos per person per year.?
+The quick brown fox jumps 8 times over the 4 lazy \s dogs and their 10 lazy owners who work with 10 lazy programmers
+The quick brown fox hops 8 times over the 4 lazy \s dogs and their 10 lazy owners who work with 10 lazy programmers
 Naughty, naughty
