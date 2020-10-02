@@ -33,6 +33,9 @@ namespace WindowsGrep.Engine
             List<string> Files = GetFiles(consoleCommand, grepResultCollection, Filepath);
             Files = GetFilteredFiles(consoleCommand, Files);
 
+            // Clear the result collection between chained commands so that only the results of the final command are returned
+            grepResultCollection.Clear();
+
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[Searching {Files.Count} file(s)]{Environment.NewLine}" });
 
             RegexOptions OptionsFlags = GetRegexOptions(consoleCommand);

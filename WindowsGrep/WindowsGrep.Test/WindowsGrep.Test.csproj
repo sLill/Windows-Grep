@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <Folder Include="Flags\Context\TestData\" />
-    <Folder Include="Flags\FixedStrings\TestData\" />
     <Folder Include="Flags\IgnoreBreaks\TestData\" />
     <Folder Include="Flags\IgnoreCase\TestData\" />
     <Folder Include="Flags\FileTypeInclusion\TestData\" />
@@ -28,6 +27,25 @@
     <Folder Include="Flags\Directory\TestData\" />
     <Folder Include="Flags\Recursive\TestData\" />
     <Folder Include="RegularExpressions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WindowsGrep.Engine\WindowsGrep.Engine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
