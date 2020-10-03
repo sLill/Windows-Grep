@@ -28,7 +28,7 @@ namespace WindowsGrep.Common
 
         #region Methods..
         #region AddItem
-        public void AddItem(T item)
+        public virtual void AddItem(T item)
         {
             lock(_LockObject)
             {

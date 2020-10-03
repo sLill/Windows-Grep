@@ -89,12 +89,11 @@ namespace WindowsGrep.Common
         #endregion WriteConsoleItem
 
         #region WriteConsoleItemCollection
-        public static void WriteConsoleItemCollection(object sender, EventArgs e)
+        public static void WriteConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
         {
-            var ConsoleItemCollection = sender as List<ConsoleItem>;
             lock (Console.Out)
             {
-                ConsoleItemCollection.ForEach(consoleItem =>
+                consoleItemCollection.ForEach(consoleItem =>
                 {
                     WriteConsoleItem(consoleItem);
 
