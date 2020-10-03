@@ -32,7 +32,7 @@ namespace WindowsGrep.Engine
 
         #region Methods..
         #region BeginProcessCommand
-        private static void BeginProcessCommand(ConsoleCommand consoleCommand, ThreadSafeCollection<GrepResult> grepResultCollection)
+        private static void BeginProcessCommand(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection)
         {
             string Filepath = GetPath(consoleCommand);
             List<string> Files = GetFiles(consoleCommand, grepResultCollection, Filepath);
@@ -68,42 +68,42 @@ namespace WindowsGrep.Engine
                 int ContextLength = ContextFlag ? Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.Context]) : 0;
                 string ContextPattern = ContextLength <= 0 ? string.Empty : @"(?:(?!" + SearchTerm + @").){0," + ContextLength.ToString() + @"}";
 
-                // Searches utilizing regular expression group index accessors \n need to increment each group index by one to accommodate
-                // being embedded within GrepEngine's MatchedString grouping below
-                if (!FixedStringsFlag)
-                {
-                    string GroupIndexorPattern = @"\\(?<Indexor>\d)";
-                    Regex.Matches(SearchTerm, GroupIndexorPattern).Cast<Match>().ToList().ForEach(match => 
-                    {
-                        // Count consecutive escaped characters
-                        int consecutiveCharacterCount = 1;
-                        for (int i = match.Index-1; i > 0; i--)
-                        {
-                            if (SearchTerm[i] == '\\')
-                            {
-                                consecutiveCharacterCount++;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
+                //// Searches utilizing regular expression group index accessors \n need to increment each group index by one to accommodate
+                //// being embedded within GrepEngine's MatchedString grouping below
+                //if (!FixedStringsFlag)
+                //{
+                //    string GroupIndexorPattern = @"\\(?<Indexor>\d)";
+                //    Regex.Matches(SearchTerm, GroupIndexorPattern).Cast<Match>().ToList().ForEach(match => 
+                //    {
+                //        // Count consecutive escaped characters
+                //        int consecutiveCharacterCount = 1;
+                //        for (int i = match.Index-1; i > 0; i--)
+                //        {
+                //            if (SearchTerm[i] == '\\')
+                //            {
+                //                consecutiveCharacterCount++;
+                //            }
+                //            else
+                //            {
+                //                break;
+                //            }
+                //        }
 
-                        // An even number of consecutive escaped characters means this is not a real match
-                        if (consecutiveCharacterCount % 2 == 1)
-                        {
-                            // Increment previous group indexor and replace it in the SearchTerm
-                            int Indexor = Convert.ToInt32(match.Groups["Indexor"].Value);
-                            Indexor++;
+                //        // An even number of consecutive escaped characters means this is not a real match
+                //        if (consecutiveCharacterCount % 2 == 1)
+                //        {
+                //            // Increment previous group indexor and replace it in the SearchTerm
+                //            int Indexor = Convert.ToInt32(match.Groups["Indexor"].Value);
+                //            Indexor++;
 
-                            var StringBuilder = new StringBuilder(SearchTerm);
-                            StringBuilder.Remove(match.Index, match.Value.Length);
-                            StringBuilder.Insert(match.Index, @"\" + Indexor.ToString());
+                //            var StringBuilder = new StringBuilder(SearchTerm);
+                //            StringBuilder.Remove(match.Index, match.Value.Length);
+                //            StringBuilder.Insert(match.Index, @"\" + Indexor.ToString());
 
-                            SearchTerm = StringBuilder.ToString();
-                        }
-                    });
-                }
+                //            SearchTerm = StringBuilder.ToString();
+                //        }
+                //    });
+                //}
 
                 SearchPattern = FixedStringsFlag
                     ? ContextPattern + @"(?<MatchedString>[\b\B]?" + SearchTerm + @"[\b\B]?)" + ContextPattern
@@ -163,7 +163,7 @@ namespace WindowsGrep.Engine
         #endregion BuildSearchResultsFileContent
 
         #region BuildSearchResultsFilename
-        private static void BuildSearchResultsFilename(ConsoleCommand consoleCommand, ThreadSafeCollection<GrepResult> grepResultCollection, List<(string FileName, Match Match)> matchedFiles)
+        private static void BuildSearchResultsFilename(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, List<(string FileName, Match Match)> matchedFiles)
         {
             matchedFiles.ForEach(matchedFile =>
             {
@@ -289,7 +289,7 @@ namespace WindowsGrep.Engine
         #endregion GetRegexOptions
 
         #region ProcessCommand
-        private static void ProcessCommand(ThreadSafeCollection<GrepResult> grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
+        private static void ProcessCommand(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
         {
             bool DeleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
             bool ReplaceFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
@@ -481,10 +481,9 @@ namespace WindowsGrep.Engine
         #endregion PublishFileAccessSummary
 
         #region RunCommand
-        public static List<ConsoleItem> RunCommand(string commandRaw)
+        public static void RunCommand(string commandRaw)
         {
-            List<ConsoleItem> Result = null;
-            var GrepResultCollection = new ThreadSafeCollection<GrepResult>();
+            var GrepResultCollection = new GrepResultCollection();
 
             string[] CommandCollection = commandRaw.Split('|');
             foreach (string command in CommandCollection)
@@ -494,8 +493,6 @@ namespace WindowsGrep.Engine
 
                 BeginProcessCommand(ConsoleCommand, GrepResultCollection);
             }
-
-            return Result;
         }
         #endregion RunCommand
         #endregion Methods..

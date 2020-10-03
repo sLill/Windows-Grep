@@ -23,7 +23,7 @@ namespace WindowsGrep
                 {
                     try
                     {
-                        var CommandResults = GrepEngine.RunCommand(Command);
+                        GrepEngine.RunCommand(Command);
                     }
                     catch (Exception ex)
                     {
