@@ -6,12 +6,13 @@ using WindowsGrep.Engine;
 
 namespace WindowsGrep.Test.Flags.FixedStrings
 {
-    public class FixedStringsTests
+    public class FixedStringsTests : TestBase
     {
-        #region Properties..
+        #region Member Variables..
         private string _testDataRelativePath = @"Flags\FixedStrings\TestData";
+        #endregion Member Variables..
 
-        public string TestDataDirectory { get; private set; }
+        #region Properties..
         #endregion Properties..
 
         #region Setup
