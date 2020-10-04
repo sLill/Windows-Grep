@@ -1,7 +1,9 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using WindowsGrep.Common;
 using WindowsGrep.Engine;
 
 namespace WindowsGrep.Test.Flags.FixedStrings
@@ -9,7 +11,9 @@ namespace WindowsGrep.Test.Flags.FixedStrings
     public class FixedStringsTests : TestBase
     {
         #region Member Variables..
-        private string _testDataRelativePath = @"Flags\FixedStrings\TestData";
+        private string _FlagDescriptorShort;
+        private string _FlagDescriptorLong;
+        private string _TestDataRelativePath = @"Flags\FixedStrings\TestData";
         #endregion Member Variables..
 
         #region Properties..
@@ -19,7 +23,11 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.ProjectDirectory, _testDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.ProjectDirectory, _TestDataRelativePath);
+
+            List<string> DescriptionCollection = ConsoleFlag.FixedStrings.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
+            _FlagDescriptorShort = DescriptionCollection[0];
+            _FlagDescriptorLong = DescriptionCollection[1];
         }
         #endregion Setup
 
@@ -33,7 +41,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -50,7 +58,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -67,7 +75,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -84,7 +92,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -101,7 +109,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -118,7 +126,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -135,7 +143,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -152,7 +160,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -169,7 +177,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -186,7 +194,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -203,7 +211,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -220,7 +228,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -237,7 +245,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -254,7 +262,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
 
             var GrepResultCollection = new GrepResultCollection();
@@ -272,7 +280,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -289,7 +297,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -306,7 +314,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -323,7 +331,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -340,7 +348,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -357,7 +365,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -374,7 +382,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -391,7 +399,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -408,7 +416,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -425,7 +433,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -442,7 +450,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -459,7 +467,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -476,7 +484,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -493,7 +501,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -510,7 +518,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -527,7 +535,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -544,7 +552,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -561,7 +569,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"--fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -580,7 +588,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -597,7 +605,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -614,7 +622,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -631,7 +639,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -648,7 +656,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -665,7 +673,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -682,7 +690,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -699,7 +707,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -716,7 +724,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -733,7 +741,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -750,7 +758,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -767,7 +775,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -784,7 +792,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -801,7 +809,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
 
             var GrepResultCollection = new GrepResultCollection();
@@ -819,7 +827,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -836,7 +844,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-i -F -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -853,7 +861,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -870,7 +878,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -887,7 +895,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -904,7 +912,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -921,7 +929,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -938,7 +946,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -955,7 +963,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -972,7 +980,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -989,7 +997,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1006,7 +1014,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1023,7 +1031,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1040,7 +1048,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1057,7 +1065,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1074,7 +1082,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1091,7 +1099,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1108,7 +1116,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-i --fixed-strings -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1127,7 +1135,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1144,7 +1152,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1161,7 +1169,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1178,7 +1186,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1195,7 +1203,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1212,7 +1220,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1229,7 +1237,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1246,7 +1254,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1263,7 +1271,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1280,7 +1288,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1297,7 +1305,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1314,7 +1322,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1331,7 +1339,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1348,7 +1356,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
 
             var GrepResultCollection = new GrepResultCollection();
@@ -1366,7 +1374,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1383,7 +1391,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} -F";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1400,7 +1408,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1417,7 +1425,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1434,7 +1442,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1451,7 +1459,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1468,7 +1476,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1485,7 +1493,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1502,7 +1510,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1519,7 +1527,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1536,7 +1544,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1553,7 +1561,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1570,7 +1578,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1587,7 +1595,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1604,7 +1612,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1621,7 +1629,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1638,7 +1646,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
@@ -1655,7 +1663,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} --fixed-strings";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);

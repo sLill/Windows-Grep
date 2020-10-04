@@ -24,7 +24,6 @@
     <Folder Include="Flags\TargetFile\TestData\" />
     <Folder Include="Flags\BasicRegex\TestData\" />
     <Folder Include="Flags\Directory\TestData\" />
-    <Folder Include="Flags\Recursive\TestData\" />
     <Folder Include="RegularExpressions\" />
   </ItemGroup>
 
