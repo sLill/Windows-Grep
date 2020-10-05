@@ -19,7 +19,6 @@
     <Folder Include="Flags\FileNamesOnly\TestData\" />
     <Folder Include="Flags\Replace\TestData\" />
     <Folder Include="Flags\Delete\TestData\" />
-    <Folder Include="Flags\Write\TestData\" />
     <Folder Include="Flags\TargetFile\TestData\" />
     <Folder Include="Flags\BasicRegex\TestData\" />
     <Folder Include="Flags\Directory\TestData\" />
