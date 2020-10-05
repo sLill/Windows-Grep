@@ -22,7 +22,7 @@
     <Folder Include="Flags\TargetFile\TestData\" />
     <Folder Include="Flags\BasicRegex\TestData\" />
     <Folder Include="Flags\Directory\TestData\" />
-    <Folder Include="RegularExpressions\" />
+    <Folder Include="RegularExpressions\TestData\" />
   </ItemGroup>
 
   <ItemGroup>

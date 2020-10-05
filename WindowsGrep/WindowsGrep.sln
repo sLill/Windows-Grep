@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep.Engine", "Windo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep.Common", "WindowsGrep.Common\WindowsGrep.Common.csproj", "{73291BEC-A1C4-446F-BB99-1340927759CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGrep.Test", "WindowsGrep.Test\WindowsGrep.Test.csproj", "{FB63970D-0F99-4231-B15B-CFE33D64DD52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep.Test", "WindowsGrep.Test\WindowsGrep.Test.csproj", "{FB63970D-0F99-4231-B15B-CFE33D64DD52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
