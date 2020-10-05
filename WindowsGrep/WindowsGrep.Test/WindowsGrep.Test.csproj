@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <Folder Include="Flags\Context\TestData\" />
-    <Folder Include="Flags\IgnoreBreaks\TestData\" />
     <Folder Include="Flags\FileTypeInclusion\TestData\" />
     <Folder Include="Flags\FileTypeExclusion\TestData\" />
     <Folder Include="Flags\FileNamesOnly\TestData\" />

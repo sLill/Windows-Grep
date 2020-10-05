@@ -112,7 +112,7 @@ namespace WindowsGrep.Engine
         #endregion BuildSearchPattern
 
         #region BuildSearchResultsFileContent
-        private static void BuildSearchResultsFileContent(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, MatchCollection matches, string filename, string fileRaw, string searchPattern)
+        private static void BuildSearchResultsFileContent(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, List<Match> matches, string filename, string fileRaw, string searchPattern)
         {
             bool IgnoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
             bool IgnoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
@@ -307,19 +307,22 @@ namespace WindowsGrep.Engine
                 {
                     try
                     {
-                        MatchCollection Matches = null;
+                        List<Match> Matches = new List<Match>();
 
                         string FileRaw = File.ReadAllText(file);
 
                         // Apply linebreak filtering options
                         if (IgnoreBreaksFlag)
                         {
-                            string fileLineBreakFiltered = FileRaw.Replace("\r", string.Empty).Replace("\n", "");
-                            Matches = SearchRegex.Matches(fileLineBreakFiltered);
+                            string FileLineBreakFilteredNull = FileRaw.Replace("\r", string.Empty).Replace("\n", string.Empty);
+                            string FileLineBreakFilteredSpace = Regex.Replace(FileRaw, @"[\r\n]+", " ");
+
+                            Matches.AddRange(SearchRegex.Matches(FileLineBreakFilteredNull));
+                            Matches.AddRange(SearchRegex.Matches(FileLineBreakFilteredSpace));
                         }
                         else
                         {
-                            Matches = SearchRegex.Matches(FileRaw);
+                            Matches = SearchRegex.Matches(FileRaw).ToList();
                         }
 
                         if (Matches.Any())
