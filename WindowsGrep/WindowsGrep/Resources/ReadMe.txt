@@ -1,8 +1,9 @@
 ================= Windows Grep =================
+*Enclose any filepath parameters in single/double quotes
 
 -r	--recursive			: Recursive search
 -d	--directory=			: Target directory (surround with ' or ")
--c	--context=			: Return n leading/trailing surrounding characters
+-c	--context=			: Return n leading/trailing characters surrounding the matched term
 -b	--ignore-breaks			: Ignore line breaks
 -i	--ignore-case			: Ignore case
 -f	--file=				: Target file
