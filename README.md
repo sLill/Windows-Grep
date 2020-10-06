@@ -10,6 +10,8 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 
 <h2>REFERENCE</h2>
 
+*Enclose file/folder path parameters with single or double quotes
+
 |                           |    |                       |
 | ------------------------- | -- | :-------------------: |
 | Recursive Search          | -r | --recursive           |
@@ -32,8 +34,8 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 <h2>USAGE</h2>
 
 <h4>Cmd/Powershell</h4> <br/>
-![image](https://i.imgur.com/5tOOiZN.png) <br/><br/><br/>
+<img src="https://i.imgur.com/5tOOiZN.png" width="600"><br/><br/><br/>
 
 <h4>Windows Explorer</h4> <br/>
 <img src="https://i.imgur.com/itZXt8i.png" width="400"> <br/>
-![image](https://i.imgur.com/9qHhciw.png) <br/><br/>
+<img src="https://i.imgur.com/9qHhciw.png" width="800"><br/><br/>
