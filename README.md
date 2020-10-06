@@ -1,4 +1,4 @@
-Get the same capability as Unix grep with moderately less speed because ya know, Windows ¯\\\_(ツ)_/¯
+Get the same capability as Unix grep with like half the speed because ya know, Windows ¯\\\_(ツ)_/¯
 
 <h2>TO INSTALL</h2>
 
@@ -31,9 +31,9 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 
 <h2>USAGE</h2>
 
-<b>\-Cmd/Powershell\-</b> <br/>
-![image](https://i.imgur.com/ydwbx2F.png) <br/><br/><br/>
+<h4>Cmd/Powershell</h4> <br/>
+![image](https://i.imgur.com/5tOOiZN.png) <br/><br/><br/>
 
-<b>\-Windows Explorer\-</b> <br/>
+<h4>Windows Explorer</h4> <br/>
 <img src="https://i.imgur.com/itZXt8i.png" width="400"> <br/>
-![image](https://i.imgur.com/dpJDgEo.png) <br/><br/>
+![image](https://i.imgur.com/9qHhciw.png) <br/><br/>
