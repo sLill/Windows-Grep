@@ -29,6 +29,9 @@ namespace WindowsGrep.Test.Flags.Delete
             List<string> DescriptionCollection = ConsoleFlag.Delete.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
             _FlagDescriptorShort = DescriptionCollection[0];
             _FlagDescriptorLong = DescriptionCollection[1];
+
+            // Build TestData directory if it doesn't exist yet
+            System.IO.Directory.CreateDirectory(TestDataDirectory);
         }
         #endregion Setup
 
