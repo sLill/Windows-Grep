@@ -1,5 +1,5 @@
 ================= Windows Grep =================
-*Enclose any filepath parameters in single/double quotes
+*Enclose file/folder path parameters with single or double quotes
 
 -r	--recursive			: Recursive search
 -d	--directory=			: Target directory (surround with ' or ")
