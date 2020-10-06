@@ -1,4 +1,4 @@
-Much of the same capability as Unix grep with like half of the speed because ya know, Windows ¯\\\_(ツ)_/¯
+Get the same capability as Unix grep with moderately less speed because ya know, Windows ¯\\\_(ツ)_/¯
 
 <h2>TO INSTALL</h2>
 
