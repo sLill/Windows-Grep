@@ -53,6 +53,26 @@ namespace WindowsGrep.Test.Flags.Write
             File.Delete(_testOutputFilePath);
         }
         #endregion Write_FlagFirst_FlagShort 
+
+        #region Write_FlagFirst_FlagLong
+        [Test]
+        public void Write_FlagFirst_FlagLong()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "Write.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "quick brown";
+            string Command = $"{_FlagDescriptorLong} '{_testOutputFilePath}' -f '{TestFilePath}' {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(File.Exists(_testOutputFilePath));
+            Assert.IsTrue(FileHasData(_testOutputFilePath));
+
+            File.Delete(_testOutputFilePath);
+        }
+        #endregion Write_FlagFirst_FlagLong 
         #endregion FlagFirst..
 
         #region FlagMiddle..
@@ -75,6 +95,26 @@ namespace WindowsGrep.Test.Flags.Write
             File.Delete(_testOutputFilePath);
         }
         #endregion Write_FlagMiddle_FlagShort 
+
+        #region Write_FlagMiddle_FlagLong
+        [Test]
+        public void Write_FlagMiddle_FlagLong()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "Write.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "quick brown";
+            string Command = $"-f '{TestFilePath}' {_FlagDescriptorLong} '{_testOutputFilePath}' {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(File.Exists(_testOutputFilePath));
+            Assert.IsTrue(FileHasData(_testOutputFilePath));
+
+            File.Delete(_testOutputFilePath);
+        }
+        #endregion Write_FlagMiddle_FlagLong 
         #endregion FlagMiddle..
 
         #region FlagLast..
@@ -97,6 +137,26 @@ namespace WindowsGrep.Test.Flags.Write
             File.Delete(_testOutputFilePath);
         }
         #endregion Write_FlagLast_FlagShort 
+
+        #region Write_FlagLast_FlagLong
+        [Test]
+        public void Write_FlagLast_FlagLong()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "Write.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "quick brown";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong} '{_testOutputFilePath}'";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(File.Exists(_testOutputFilePath));
+            Assert.IsTrue(FileHasData(_testOutputFilePath));
+
+            File.Delete(_testOutputFilePath);
+        }
+        #endregion Write_FlagLast_FlagLong 
         #endregion FlagLast..
         #endregion Tests..
 
