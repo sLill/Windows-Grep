@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WindowsGrep.Common;
 using WindowsGrep.Engine;
 
@@ -24,7 +25,7 @@ namespace WindowsGrep
                     try
                     {
                         GrepResultCollection grepResultCollection = new GrepResultCollection();
-                        grepResultCollection.ItemAdded += OnResultAdded;
+                        grepResultCollection.ItemsAdded += OnResultsAdded;
 
                         GrepEngine.RunCommand(Command, grepResultCollection);
                     }
@@ -40,13 +41,13 @@ namespace WindowsGrep
 
         #region Methods..
         #region Event Handlers..
-        #region OnResultAdded
-        private static void OnResultAdded(object sender, EventArgs e)
+        #region OnResultsAdded
+        private static void OnResultsAdded(object sender, EventArgs e)
         {
-            var GrepResult = sender as GrepResult;
-            ConsoleUtils.WriteConsoleItemCollection(GrepResult.ToConsoleItemCollection());
+            var GrepResults = sender as List<GrepResult>;
+            GrepResults.ForEach(result => ConsoleUtils.WriteConsoleItemCollection(result.ToConsoleItemCollection()));
         }
-        #endregion OnResultAdded
+        #endregion OnResultsAdded
         #endregion Event Handlers..
         #endregion Methods..
     }

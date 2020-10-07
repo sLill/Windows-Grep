@@ -54,21 +54,12 @@ namespace WindowsGrep.Engine
         private static string BuildSearchPattern(ConsoleCommand consoleCommand)
         {
             bool FixedStringsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
-            bool FileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
 
             string SearchPattern = string.Empty;
             string SearchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
 
-            if (FileNamesOnlyFlag)
-            {
-                // Build filename search pattern
-                SearchPattern = SearchTerm;
-            }
-            else
-            {
-                SearchTerm = FixedStringsFlag ? Regex.Escape(SearchTerm) : SearchTerm;
-                SearchPattern = @"(?<MatchedString>" + SearchTerm + @")";
-            }
+            SearchTerm = FixedStringsFlag ? Regex.Escape(SearchTerm) : SearchTerm;
+            SearchPattern = @"(?<MatchedString>" + SearchTerm + @")";
 
             return SearchPattern;
         }
@@ -122,23 +113,6 @@ namespace WindowsGrep.Engine
             });
         }
         #endregion BuildSearchResultsFileContent
-
-        #region BuildSearchResultsFileName
-        private static void BuildSearchResultsFileName(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, List<(string FileName, Match Match)> matchedFiles)
-        {
-            matchedFiles.ForEach(matchedFile =>
-            {
-                GrepResult GrepResult = new GrepResult(matchedFile.FileName, ResultScope.FileName)
-                {
-                    ContextString = matchedFile.FileName,
-                    ContextStringStartIndex = matchedFile.Match.Index,
-                    MatchedString = matchedFile.Match.Value
-                };
-
-                grepResultCollection.AddItem(GrepResult);
-            });
-        }
-        #endregion BuildSearchResultsFileName
 
         #region GetFiles
         private static List<string> GetFiles(ConsoleCommand consoleCommand, IList<GrepResult> grepResultCollection, string filepath)
@@ -255,14 +229,41 @@ namespace WindowsGrep.Engine
 
             if (FileNamesOnlyFlag)
             {
-                Regex FileNameRegex = new Regex(@"^(.+)[\/\\]([^\/\\]+)$");
+                Regex FileNameRegex = new Regex(@"^(.+)[\/\\](?<FileName>[^\/\\]+)$");
 
-                var Matches = files
-                    .Where(x => SearchRegex.IsMatch(Path.GetFileNameWithoutExtension(x)))
-                    .Select(x => (x, SearchRegex.Matches(x).Aggregate((x1, x2) => x1.Index > x2.Index ? x1 : x2))).ToList();
+                var Matches = new List<GrepResult>();
+                files.ToList().ForEach(file =>
+                {
+                    // Don't want to waste any time on files that have already been added 
+                    bool FileAdded = Matches.Any(x => x.SourceFile == file);
 
-                FilesMatchedCount = Matches.Count;
-                BuildSearchResultsFileName(consoleCommand, grepResultCollection, Matches);
+                    if (!FileAdded)
+                    {
+                        // Parse filename from path
+                        var FileNameMatch = FileNameRegex.Match(file)?.Groups["FileName"];
+                        if (FileNameMatch != null)
+                        {
+                            // Query against filename
+                            var SearchMatch = SearchRegex.Match(FileNameMatch.Value);
+                            if (SearchMatch != Match.Empty)
+                            {
+                                var MatchedString = SearchMatch.Groups["MatchedString"];
+
+                                GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
+                                {
+                                    ContextString = file,
+                                    ContextStringStartIndex = FileNameMatch.Index + MatchedString.Index,
+                                    MatchedString = MatchedString.Value,
+                                };
+
+                                Matches.Add(GrepResult);
+                            }
+                        }
+                    }
+                });
+
+                FilesMatchedCount = Matches.Count();
+                grepResultCollection.AddItemRange(Matches);
             }
             else
             {
@@ -430,7 +431,7 @@ namespace WindowsGrep.Engine
         public static void RunCommand(string commandRaw, GrepResultCollection grepResultCollection)
         {
             string SplitPattern = @"\|(?![^{]*}|[^\(]*\)|[^\[]*\])";
-            string[] CommandCollection = Regex.Split(commandRaw, SplitPattern); 
+            string[] CommandCollection = Regex.Split(commandRaw, SplitPattern);
 
             foreach (string command in CommandCollection)
             {

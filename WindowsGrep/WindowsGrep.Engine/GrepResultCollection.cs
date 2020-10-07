@@ -16,7 +16,7 @@ namespace WindowsGrep.Engine
         #endregion Properties..
 
         #region Events..
-        public event EventHandler ItemAdded;
+        public event EventHandler ItemsAdded;
         #endregion Events..
 
         #region Constructors..
@@ -27,9 +27,17 @@ namespace WindowsGrep.Engine
         public override void AddItem(GrepResult item)
         {
             base.AddItem(item);
-            ItemAdded?.Invoke(item, EventArgs.Empty);
+            ItemsAdded?.Invoke(new List<GrepResult>() { item }, EventArgs.Empty);
         }
         #endregion AddItem
+
+        #region AddItemRange
+        public override void AddItemRange(IEnumerable<GrepResult> itemCollection)
+        {
+            base.AddItemRange(itemCollection);
+            ItemsAdded?.Invoke(itemCollection, EventArgs.Empty);
+        }
+        #endregion AddItemRange
 
         #region Write
         public void Write(string fileName)

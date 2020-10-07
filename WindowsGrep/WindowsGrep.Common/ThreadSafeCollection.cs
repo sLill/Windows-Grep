@@ -36,6 +36,16 @@ namespace WindowsGrep.Common
             }
         }
         #endregion AddItem
+
+        #region AddItemRange
+        public virtual void AddItemRange(IEnumerable<T> item)
+        {
+            lock (_LockObject)
+            {
+                this.AddRange(item);
+            }
+        }
+        #endregion AddItemRange
         #endregion Methods..    
     }
 }

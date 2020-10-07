@@ -20,7 +20,6 @@
     <Folder Include="Flags\FileNamesOnly\TestData\" />
     <Folder Include="Flags\Replace\TestData\" />
     <Folder Include="Flags\BasicRegex\TestData\" />
-    <Folder Include="ChainCommands\" />
   </ItemGroup>
 
   <ItemGroup>
