@@ -66,43 +66,6 @@ namespace WindowsGrep.Engine
             }
             else
             {
-                // Searches utilizing regular expression group index accessors \n need to increment each group index by one to accommodate
-                // being embedded within GrepEngine's MatchedString grouping below
-                if (!FixedStringsFlag)
-                {
-                    string GroupIndexorPattern = @"\\(?<Indexor>\d)";
-                    Regex.Matches(SearchTerm, GroupIndexorPattern).Cast<Match>().ToList().ForEach(match =>
-                    {
-                        // Count consecutive escaped characters
-                        int consecutiveCharacterCount = 1;
-                        for (int i = match.Index - 1; i > 0; i--)
-                        {
-                            if (SearchTerm[i] == '\\')
-                            {
-                                consecutiveCharacterCount++;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-
-                        // An even number of consecutive escaped characters means this is not a real match
-                        if (consecutiveCharacterCount % 2 == 1)
-                        {
-                            // Increment previous group indexor and replace it in the SearchTerm
-                            int Indexor = Convert.ToInt32(match.Groups["Indexor"].Value);
-                            Indexor++;
-
-                            var StringBuilder = new StringBuilder(SearchTerm);
-                            StringBuilder.Remove(match.Index, match.Value.Length);
-                            StringBuilder.Insert(match.Index, @"\" + Indexor.ToString());
-
-                            SearchTerm = StringBuilder.ToString();
-                        }
-                    });
-                }
-
                 SearchTerm = FixedStringsFlag ? Regex.Escape(SearchTerm) : SearchTerm;
                 SearchPattern = @"(?<MatchedString>" + SearchTerm + @")";
             }
@@ -466,7 +429,9 @@ namespace WindowsGrep.Engine
         #region RunCommand
         public static void RunCommand(string commandRaw, GrepResultCollection grepResultCollection)
         {
-            string[] CommandCollection = commandRaw.Split('|');
+            string SplitPattern = @"\|(?![^{]*}|[^\(]*\)|[^\[]*\])";
+            string[] CommandCollection = Regex.Split(commandRaw, SplitPattern); 
+
             foreach (string command in CommandCollection)
             {
                 var CommandArgs = ConsoleUtils.DiscoverCommandArgs(command);
