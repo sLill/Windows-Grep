@@ -17,7 +17,6 @@
     <Folder Include="Flags\Delete\TestData\" />
     <Folder Include="Flags\FileTypeInclusion\TestData\" />
     <Folder Include="Flags\FileTypeExclusion\TestData\" />
-    <Folder Include="Flags\FileNamesOnly\TestData\" />
     <Folder Include="Flags\Replace\TestData\" />
     <Folder Include="Flags\BasicRegex\TestData\" />
   </ItemGroup>
