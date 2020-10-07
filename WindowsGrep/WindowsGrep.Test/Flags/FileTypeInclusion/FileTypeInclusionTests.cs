@@ -32,9 +32,9 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
         #region Tests..
         #region FlagFirst..
-        #region Recursive_FlagFirst_FlagShort_SingleType
+        #region FileTypeInclusion_FlagFirst_FlagShort_SingleType
         [Test]
-        public void Recursive_FlagFirst_FlagShort_SingleType()
+        public void FileTypeInclusion_FlagFirst_FlagShort_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp";
@@ -45,11 +45,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion Recursive_FlagFirst_FlagShort_SingleType 
+        #endregion FileTypeInclusion_FlagFirst_FlagShort_SingleType 
 
-        #region Recursive_FlagFirst_FlagShort_MultiType_CommaDelimited
+        #region FileTypeInclusion_FlagFirst_FlagShort_MultiType_CommaDelimited
         [Test]
-        public void Recursive_FlagFirst_FlagShort_MultiType_CommaDelimited()
+        public void FileTypeInclusion_FlagFirst_FlagShort_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp,.txt,.php";
@@ -60,11 +60,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 4);
         }
-        #endregion Recursive_FlagFirst_FlagShort_MultiType_CommaDelimited 
+        #endregion FileTypeInclusion_FlagFirst_FlagShort_MultiType_CommaDelimited 
 
-        #region Recursive_FlagFirst_FlagShort_MultiType_SemiColonDelimited
+        #region FileTypeInclusion_FlagFirst_FlagShort_MultiType_SemiColonDelimited
         [Test]
-        public void Recursive_FlagFirst_FlagShort_MultiType_SemiColonDelimited()
+        public void FileTypeInclusion_FlagFirst_FlagShort_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp;.txt";
@@ -75,11 +75,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 2);
         }
-        #endregion Recursive_FlagFirst_FlagShort_MultiType_SemiColonDelimited 
+        #endregion FileTypeInclusion_FlagFirst_FlagShort_MultiType_SemiColonDelimited 
 
-        #region Recursive_FlagFirst_FlagLong_SingleType
+        #region FileTypeInclusion_FlagFirst_FlagLong_SingleType
         [Test]
-        public void IgnoreCase_FlagFirst_FlagLong_SingleType()
+        public void FileTypeInclusion_FlagFirst_FlagLong_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt";
@@ -90,26 +90,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion Recursive_FlagFirst_FlagLong_SingleType 
+        #endregion FileTypeInclusion_FlagFirst_FlagLong_SingleType 
 
-        #region IgnoreCase_FlagFirst_FlagLong_MultiType_CommaDelimited
+        #region FileTypeInclusion_FlagFirst_FlagLong_MultiType_SemiColonDelimited
         [Test]
-        public void IgnoreCase_FlagFirst_FlagLong_MultiType_CommaDelimited()
-        {
-            string SearchTerm = "quick brown fox";
-            string FlagParameter = ".txt,.php";
-            string Command = $"{_FlagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
-
-            var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommand(Command, GrepResultCollection);
-
-            Assert.IsTrue(GrepResultCollection.Count == 3);
-        }
-        #endregion IgnoreCase_FlagFirst_FlagLong_MultiType_CommaDelimited 
-
-        #region IgnoreCase_FlagFirst_FlagLong_MultiType_SemiColonDelimited
-        [Test]
-        public void IgnoreCase_FlagFirst_FlagLong_MultiType_SemiColonDelimited()
+        public void FileTypeInclusion_FlagFirst_FlagLong_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt;.php";
@@ -120,13 +105,13 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 3);
         }
-        #endregion IgnoreCase_FlagFirst_FlagLong_MultiType_SemiColonDelimited 
+        #endregion FileTypeInclusion_FlagFirst_FlagLong_MultiType_SemiColonDelimited 
         #endregion FlagFirst..
 
         #region FlagMiddle..
-        #region Recursive_FlagMiddle_FlagShort_SingleType
+        #region FileTypeInclusion_FlagMiddle_FlagShort_SingleType
         [Test]
-        public void Recursive_FlagMiddle_FlagShort_SingleType()
+        public void FileTypeInclusion_FlagMiddle_FlagShort_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".html";
@@ -137,11 +122,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion Recursive_FlagMiddle_FlagShort_SingleType 
+        #endregion FileTypeInclusion_FlagMiddle_FlagShort_SingleType 
 
-        #region Recursive_FlagMiddle_FlagShort_MultiType_CommaDelimited
+        #region FileTypeInclusion_FlagMiddle_FlagShort_MultiType_CommaDelimited
         [Test]
-        public void Recursive_FlagMiddle_FlagShort_MultiType_CommaDelimited()
+        public void FileTypeInclusion_FlagMiddle_FlagShort_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".html,.txt";
@@ -152,11 +137,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 2);
         }
-        #endregion Recursive_FlagMiddle_FlagShort_MultiType_CommaDelimited 
+        #endregion FileTypeInclusion_FlagMiddle_FlagShort_MultiType_CommaDelimited 
 
-        #region Recursive_FlagMiddle_FlagShort_MultiType_SemiColonDelimited
+        #region FileTypeInclusion_FlagMiddle_FlagShort_MultiType_SemiColonDelimited
         [Test]
-        public void Recursive_FlagMiddle_FlagShort_MultiType_SemiColonDelimited()
+        public void FileTypeInclusion_FlagMiddle_FlagShort_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".html;.txt";
@@ -167,11 +152,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 2);
         }
-        #endregion Recursive_FlagMiddle_FlagShort_MultiType_SemiColonDelimited 
+        #endregion FileTypeInclusion_FlagMiddle_FlagShort_MultiType_SemiColonDelimited 
 
-        #region Recursive_FlagMiddle_FlagLong_SingleType
+        #region FileTypeInclusion_FlagMiddle_FlagLong_SingleType
         [Test]
-        public void IgnoreCase_FlagMiddle_FlagLong_SingleType()
+        public void FileTypeInclusion_FlagMiddle_FlagLong_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".php";
@@ -182,11 +167,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 2);
         }
-        #endregion Recursive_FlagMiddle_FlagLong_SingleType 
+        #endregion FileTypeInclusion_FlagMiddle_FlagLong_SingleType 
 
-        #region IgnoreCase_FlagMiddle_FlagLong_MultiType_CommaDelimited
+        #region FileTypeInclusion_FlagMiddle_FlagLong_MultiType_CommaDelimited
         [Test]
-        public void IgnoreCase_FlagMiddle_FlagLong_MultiType_CommaDelimited()
+        public void FileTypeInclusion_FlagMiddle_FlagLong_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".php,.wg";
@@ -197,11 +182,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 3);
         }
-        #endregion IgnoreCase_FlagMiddle_FlagLong_MultiType_CommaDelimited 
+        #endregion FileTypeInclusion_FlagMiddle_FlagLong_MultiType_CommaDelimited 
 
-        #region IgnoreCase_FlagMiddle_FlagLong_MultiType_SemiColonDelimited
+        #region FileTypeInclusion_FlagMiddle_FlagLong_MultiType_SemiColonDelimited
         [Test]
-        public void IgnoreCase_FlagMiddle_FlagLong_MultiType_SemiColonDelimited()
+        public void FileTypeInclusion_FlagMiddle_FlagLong_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".php;.wg";
@@ -212,13 +197,13 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 3);
         }
-        #endregion IgnoreCase_FlagMiddle_FlagLong_MultiType_SemiColonDelimited 
+        #endregion FileTypeInclusion_FlagMiddle_FlagLong_MultiType_SemiColonDelimited 
         #endregion FlagMiddle..
 
         #region FlagLast..
-        #region Recursive_FlagLast_FlagShort_SingleType
+        #region FileTypeInclusion_FlagLast_FlagShort_SingleType
         [Test]
-        public void Recursive_FlagLast_FlagShort_SingleType()
+        public void FileTypeInclusion_FlagLast_FlagShort_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp";
@@ -229,11 +214,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion Recursive_FlagLast_FlagShort_SingleType 
+        #endregion FileTypeInclusion_FlagLast_FlagShort_SingleType 
 
-        #region Recursive_FlagLast_FlagShort_MultiType_CommaDelimited
+        #region FileTypeInclusion_FlagLast_FlagShort_MultiType_CommaDelimited
         [Test]
-        public void Recursive_FlagLast_FlagShort_MultiType_CommaDelimited()
+        public void FileTypeInclusion_FlagLast_FlagShort_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp,.html";
@@ -244,11 +229,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 2);
         }
-        #endregion Recursive_FlagLast_FlagShort_MultiType_CommaDelimited 
+        #endregion FileTypeInclusion_FlagLast_FlagShort_MultiType_CommaDelimited 
 
-        #region Recursive_FlagLast_FlagShort_MultiType_SemiColonDelimited
+        #region FileTypeInclusion_FlagLast_FlagShort_MultiType_SemiColonDelimited
         [Test]
-        public void Recursive_FlagLast_FlagShort_MultiType_SemiColonDelimited()
+        public void FileTypeInclusion_FlagLast_FlagShort_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp;.html";
@@ -259,11 +244,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 2);
         }
-        #endregion Recursive_FlagLast_FlagShort_MultiType_SemiColonDelimited 
+        #endregion FileTypeInclusion_FlagLast_FlagShort_MultiType_SemiColonDelimited 
 
-        #region Recursive_FlagLast_FlagLong_SingleType
+        #region FileTypeInclusion_FlagLast_FlagLong_SingleType
         [Test]
-        public void IgnoreCase_FlagLast_FlagLong_SingleType()
+        public void FileTypeInclusion_FlagLast_FlagLong_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt";
@@ -274,11 +259,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion Recursive_FlagLast_FlagLong_SingleType 
+        #endregion FileTypeInclusion_FlagLast_FlagLong_SingleType 
 
-        #region IgnoreCase_FlagLast_FlagLong_MultiType_CommaDelimited
+        #region FileTypeInclusion_FlagLast_FlagLong_MultiType_CommaDelimited
         [Test]
-        public void IgnoreCase_FlagLast_FlagLong_MultiType_CommaDelimited()
+        public void FileTypeInclusion_FlagLast_FlagLong_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt,.wg";
@@ -289,11 +274,11 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 2);
         }
-        #endregion IgnoreCase_FlagLast_FlagLong_MultiType_CommaDelimited 
+        #endregion FileTypeInclusion_FlagLast_FlagLong_MultiType_CommaDelimited 
 
-        #region IgnoreCase_FlagLast_FlagLong_MultiType_SemiColonDelimited
+        #region FileTypeInclusion_FlagLast_FlagLong_MultiType_SemiColonDelimited
         [Test]
-        public void IgnoreCase_FlagLast_FlagLong_MultiType_SemiColonDelimited()
+        public void FileTypeInclusion_FlagLast_FlagLong_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt;.wg";
@@ -304,8 +289,23 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
 
             Assert.IsTrue(GrepResultCollection.Count == 2);
         }
-        #endregion IgnoreCase_FlagLast_FlagLong_MultiType_SemiColonDelimited 
+        #endregion FileTypeInclusion_FlagLast_FlagLong_MultiType_SemiColonDelimited 
         #endregion FlagLast..
+
+        #region FileTypeInclusion_FileTypeNotExists
+        [Test]
+        public void FileTypeInclusion_FileTypeNotExists()
+        {
+            string SearchTerm = "quick brown fox";
+            string FlagParameter = ".tig";
+            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 0);
+        }
+        #endregion FileTypeInclusion_FileTypeNotExists 
         #endregion Tests..
     }
 }

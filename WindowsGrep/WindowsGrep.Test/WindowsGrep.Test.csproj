@@ -15,7 +15,6 @@
   <ItemGroup>
     <Folder Include="Flags\Context\TestData\" />
     <Folder Include="Flags\Delete\TestData\" />
-    <Folder Include="Flags\FileTypeExclusion\TestData\" />
     <Folder Include="Flags\Replace\TestData\" />
   </ItemGroup>
 
