@@ -15,10 +15,8 @@
   <ItemGroup>
     <Folder Include="Flags\Context\TestData\" />
     <Folder Include="Flags\Delete\TestData\" />
-    <Folder Include="Flags\FileTypeInclusion\TestData\" />
     <Folder Include="Flags\FileTypeExclusion\TestData\" />
     <Folder Include="Flags\Replace\TestData\" />
-    <Folder Include="Flags\BasicRegex\TestData\" />
   </ItemGroup>
 
   <ItemGroup>
