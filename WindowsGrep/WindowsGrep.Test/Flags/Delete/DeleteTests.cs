@@ -52,6 +52,22 @@ namespace WindowsGrep.Test.Flags.Delete
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
         #endregion Write_FlagFirst_FlagShort 
+
+        #region Write_FlagFirst_FlagLong
+        [Test]
+        public void Write_FlagFirst_FlagLong()
+        {
+            File.WriteAllText(_TestFilePath, "Delete flag test");
+
+            string SearchTerm = "Delete flag test";
+            string Command = $"{_FlagDescriptorLong} -f '{_TestFilePath}' {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsFalse(File.Exists(_TestFilePath));
+        }
+        #endregion Write_FlagFirst_FlagLong 
         #endregion FlagFirst..
 
         #region FlagMiddle..
@@ -70,6 +86,22 @@ namespace WindowsGrep.Test.Flags.Delete
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
         #endregion Write_FlagMiddle_FlagShort 
+
+        #region Write_FlagMiddle_FlagLong
+        [Test]
+        public void Write_FlagMiddle_FlagLong()
+        {
+            File.WriteAllText(_TestFilePath, "Delete flag test");
+
+            string SearchTerm = "Delete flag test";
+            string Command = $"-f '{_TestFilePath}' {_FlagDescriptorLong} {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsFalse(File.Exists(_TestFilePath));
+        }
+        #endregion Write_FlagMiddle_FlagLong 
         #endregion FlagMiddle..
 
         #region FlagLast..
@@ -88,6 +120,22 @@ namespace WindowsGrep.Test.Flags.Delete
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
         #endregion Write_FlagLast_FlagShort 
+
+        #region Write_FlagLast_FlagLong
+        [Test]
+        public void Write_FlagLast_FlagLong()
+        {
+            File.WriteAllText(_TestFilePath, "Delete flag test");
+
+            string SearchTerm = "Delete flag test";
+            string Command = $"-f '{_TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsFalse(File.Exists(_TestFilePath));
+        }
+        #endregion Write_FlagLast_FlagLong 
         #endregion FlagLast..
         #endregion Tests..
 
