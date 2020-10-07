@@ -38,9 +38,9 @@ namespace WindowsGrep.Test.Flags.Replace
 
         #region Tests..
         #region FlagFirst..
-        #region Replace_FlagFirst_FlagShort
+        #region Replace_FlagFirst_FlagShort_SingleQuotes
         [Test]
-        public void Replace_FlagFirst_FlagShort()
+        public void Replace_FlagFirst_FlagShort_SingleQuotes()
         {
             try
             {
@@ -65,11 +65,40 @@ namespace WindowsGrep.Test.Flags.Replace
                 DeleteTestFiles();
             }
         }
-        #endregion Replace_FlagFirst_FlagShort 
+        #endregion Replace_FlagFirst_FlagShort_SingleQuotes 
 
-        #region Replace_FlagFirst_FlagLong
+        #region Replace_FlagFirst_FlagShort_DoubleQuotes
         [Test]
-        public void Replace_FlagFirst_FlagLong()
+        public void Replace_FlagFirst_FlagShort_DoubleQuotes()
+        {
+            try
+            {
+                CreateTestFiles();
+
+                string SearchTerm = "quick brown fox";
+                string ReplaceText = "slow green turtle";
+                string Command = $"{_FlagDescriptorShort} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
+
+                var GrepResultCollection = new GrepResultCollection();
+                GrepEngine.RunCommand(Command, GrepResultCollection);
+
+                // Assert there are no files returned in the grep collection whose text doesn't match the expected text
+                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                DeleteTestFiles();
+            }
+        }
+        #endregion Replace_FlagFirst_FlagShort_DoubleQuotes
+
+        #region Replace_FlagFirst_FlagLong_SingleQuotes
+        [Test]
+        public void Replace_FlagFirst_FlagLong_SingleQuotes()
         {
             try
             {
@@ -94,13 +123,42 @@ namespace WindowsGrep.Test.Flags.Replace
                 DeleteTestFiles();
             }
         }
-        #endregion Replace_FlagFirst_FlagLong 
+        #endregion Replace_FlagFirst_FlagLong_SingleQuotes 
+
+        #region Replace_FlagFirst_FlagLong_DoubleQuotes
+        [Test]
+        public void Replace_FlagFirst_FlagLong_DoubleQuotes()
+        {
+            try
+            {
+                CreateTestFiles();
+
+                string SearchTerm = "quick brown fox";
+                string ReplaceText = "slow green turtle";
+                string Command = $"{_FlagDescriptorLong} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
+
+                var GrepResultCollection = new GrepResultCollection();
+                GrepEngine.RunCommand(Command, GrepResultCollection);
+
+                // Assert there are no files returned in the grep collection whose text doesn't match the expected text
+                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                DeleteTestFiles();
+            }
+        }
+        #endregion Replace_FlagFirst_FlagLong_DoubleQuotes
         #endregion FlagFirst..
 
         #region FlagMiddle..
-        #region Replace_FlagMiddle_FlagShort
+        #region Replace_FlagMiddle_FlagShort_SingleQuotes
         [Test]
-        public void Replace_FlagMiddle_FlagShort()
+        public void Replace_FlagMiddle_FlagShort_SingleQuotes()
         {
             try
             {
@@ -125,11 +183,40 @@ namespace WindowsGrep.Test.Flags.Replace
                 DeleteTestFiles();
             }
         }
-        #endregion Replace_FlagMiddle_FlagShort 
+        #endregion Replace_FlagMiddle_FlagShort_SingleQuotes 
 
-        #region Replace_FlagMiddle_FlagLong
+        #region Replace_FlagMiddle_FlagShort_DoubleQuotes
         [Test]
-        public void Replace_FlagMiddle_FlagLong()
+        public void Replace_FlagMiddle_FlagShort_DoubleQuotes()
+        {
+            try
+            {
+                CreateTestFiles();
+
+                string SearchTerm = "quick brown fox";
+                string ReplaceText = "slow green turtle";
+                string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} \"{ReplaceText}\" {SearchTerm}";
+
+                var GrepResultCollection = new GrepResultCollection();
+                GrepEngine.RunCommand(Command, GrepResultCollection);
+
+                // Assert there are no files returned in the grep collection whose text doesn't match the expected text
+                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                DeleteTestFiles();
+            }
+        }
+        #endregion Replace_FlagMiddle_FlagShort_DoubleQuotes
+
+        #region Replace_FlagMiddle_FlagLong_SingleQuotes
+        [Test]
+        public void Replace_FlagMiddle_FlagLong_SingleQuotes()
         {
             try
             {
@@ -154,13 +241,42 @@ namespace WindowsGrep.Test.Flags.Replace
                 DeleteTestFiles();
             }
         }
-        #endregion Replace_FlagMiddle_FlagLong 
+        #endregion Replace_FlagMiddle_FlagLong_SingleQuotes 
+
+        #region Replace_FlagMiddle_FlagLong_DoubleQuotes
+        [Test]
+        public void Replace_FlagMiddle_FlagLong_DoubleQuotes()
+        {
+            try
+            {
+                CreateTestFiles();
+
+                string SearchTerm = "quick brown fox";
+                string ReplaceText = "slow green turtle";
+                string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} \"{ReplaceText}\" {SearchTerm}";
+
+                var GrepResultCollection = new GrepResultCollection();
+                GrepEngine.RunCommand(Command, GrepResultCollection);
+
+                // Assert there are no files returned in the grep collection whose text doesn't match the expected text
+                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                DeleteTestFiles();
+            }
+        }
+        #endregion Replace_FlagMiddle_FlagLong_DoubleQuotes
         #endregion FlagMiddle..
 
         #region FlagLast..
-        #region Replace_FlagLast_FlagShort
+        #region Replace_FlagLast_FlagShort_SingleQuotes
         [Test]
-        public void Replace_FlagLast_FlagShort()
+        public void Replace_FlagLast_FlagShort_SingleQuotes()
         {
             try
             {
@@ -185,11 +301,40 @@ namespace WindowsGrep.Test.Flags.Replace
                 DeleteTestFiles();
             }
         }
-        #endregion Replace_FlagLast_FlagShort 
+        #endregion Replace_FlagLast_FlagShort_SingleQuotes 
 
-        #region Replace_FlagLast_FlagLong
+        #region Replace_FlagLast_FlagShort_DoubleQuotes
         [Test]
-        public void Replace_FlagLast_FlagLong()
+        public void Replace_FlagLast_FlagShort_DoubleQuotes()
+        {
+            try
+            {
+                CreateTestFiles();
+
+                string SearchTerm = "quick brown fox";
+                string ReplaceText = "slow green turtle";
+                string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} \"{ReplaceText}\"";
+
+                var GrepResultCollection = new GrepResultCollection();
+                GrepEngine.RunCommand(Command, GrepResultCollection);
+
+                // Assert there are no files returned in the grep collection whose text doesn't match the expected text
+                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                DeleteTestFiles();
+            }
+        }
+        #endregion Replace_FlagLast_FlagShort_DoubleQuotes
+
+        #region Replace_FlagLast_FlagLong_SingleQuotes
+        [Test]
+        public void Replace_FlagLast_FlagLong_SingleQuotes()
         {
             try
             {
@@ -214,7 +359,36 @@ namespace WindowsGrep.Test.Flags.Replace
                 DeleteTestFiles();
             }
         }
-        #endregion Replace_FlagLast_FlagLong 
+        #endregion Replace_FlagLast_FlagLong_SingleQuotes 
+
+        #region Replace_FlagLast_FlagLong_DoubleQuotes
+        [Test]
+        public void Replace_FlagLast_FlagLong_DoubleQuotes()
+        {
+            try
+            {
+                CreateTestFiles();
+
+                string SearchTerm = "quick brown fox";
+                string ReplaceText = "slow green turtle";
+                string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} \"{ReplaceText}\"";
+
+                var GrepResultCollection = new GrepResultCollection();
+                GrepEngine.RunCommand(Command, GrepResultCollection);
+
+                // Assert there are no files returned in the grep collection whose text doesn't match the expected text
+                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                DeleteTestFiles();
+            }
+        }
+        #endregion Replace_FlagLast_FlagLong_DoubleQuotes
         #endregion FlagLast..
         #endregion Tests..
 

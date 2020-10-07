@@ -32,9 +32,9 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
         #region Tests..
         #region FlagFirst..
-        #region TargetFile_FlagFirst_FlagShort
+        #region TargetFile_FlagFirst_FlagShort_SingleQuotes
         [Test]
-        public void TargetFile_FlagFirst_FlagShort()
+        public void TargetFile_FlagFirst_FlagShort_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -47,11 +47,28 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
             Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
-        #endregion TargetFile_FlagFirst_FlagShort 
+        #endregion TargetFile_FlagFirst_FlagShort_SingleQuotes 
 
-        #region TargetFile_FlagFirst_FlagLong
+        #region TargetFile_FlagFirst_FlagShort_DoubleQuotes
         [Test]
-        public void TargetFile_FlagFirst_FlagLong()
+        public void TargetFile_FlagFirst_FlagShort_DoubleQuotes()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "fox";
+            string Command = $"{_FlagDescriptorShort} \"{TestFilePath}\" {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+        }
+        #endregion TargetFile_FlagFirst_FlagShort_DoubleQuotes 
+
+        #region TargetFile_FlagFirst_FlagLong_SingleQuotes
+        [Test]
+        public void TargetFile_FlagFirst_FlagLong_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -64,13 +81,30 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
             Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
-        #endregion TargetFile_FlagFirst_FlagLong 
+        #endregion TargetFile_FlagFirst_FlagLong_SingleQuotes
+
+        #region TargetFile_FlagFirst_FlagLong_DoubleQuotes
+        [Test]
+        public void TargetFile_FlagFirst_FlagLong_DoubleQuotes()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "fox";
+            string Command = $"{_FlagDescriptorLong} \"{TestFilePath}\" {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+        }
+        #endregion TargetFile_FlagFirst_FlagLong_DoubleQuotes
         #endregion FlagFirst..
 
         #region FlagMiddle..
-        #region TargetFile_FlagMiddle_FlagShort
+        #region TargetFile_FlagMiddle_FlagShort_SingleQuotes
         [Test]
-        public void TargetFile_FlagMiddle_FlagShort()
+        public void TargetFile_FlagMiddle_FlagShort_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -83,11 +117,28 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
             Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
-        #endregion TargetFile_FlagMiddle_FlagShort 
+        #endregion TargetFile_FlagMiddle_FlagShort_SingleQuotes 
 
-        #region TargetFile_FlagMiddle_FlagLong
+        #region TargetFile_FlagMiddle_FlagShort_DoubleQuotes
         [Test]
-        public void TargetFile_FlagMiddle_FlagLong()
+        public void TargetFile_FlagMiddle_FlagShort_DoubleQuotes()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "fox";
+            string Command = $"-i {_FlagDescriptorShort} \"{TestFilePath}\" {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+        }
+        #endregion TargetFile_FlagMiddle_FlagShort_DoubleQuotes
+
+        #region TargetFile_FlagMiddle_FlagLong_SingleQuotes
+        [Test]
+        public void TargetFile_FlagMiddle_FlagLong_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -100,13 +151,30 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
             Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
-        #endregion TargetFile_FlagMiddle_FlagLong 
+        #endregion TargetFile_FlagMiddle_FlagLong_SingleQuotes 
+
+        #region TargetFile_FlagMiddle_FlagLong_DoubleQuotes
+        [Test]
+        public void TargetFile_FlagMiddle_FlagLong_DoubleQuotes()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "fox";
+            string Command = $"-i {_FlagDescriptorLong} \"{TestFilePath}\" {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+        }
+        #endregion TargetFile_FlagMiddle_FlagLong_DoubleQuotes
         #endregion FlagMiddle..
 
         #region FlagLast..
-        #region TargetFile_FlagLast_FlagShort
+        #region TargetFile_FlagLast_FlagShort_SingleQuotes
         [Test]
-        public void TargetFile_FlagLast_FlagShort()
+        public void TargetFile_FlagLast_FlagShort_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -119,11 +187,28 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
             Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
-        #endregion TargetFile_FlagLast_FlagShort 
+        #endregion TargetFile_FlagLast_FlagShort_SingleQuotes 
 
-        #region TargetFile_FlagLast_FlagLong
+        #region TargetFile_FlagLast_FlagShort_DoubleQuotes
         [Test]
-        public void TargetFile_FlagLast_FlagLong()
+        public void TargetFile_FlagLast_FlagShort_DoubleQuotes()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "fox";
+            string Command = $"{SearchTerm} {_FlagDescriptorShort} \"{TestFilePath}\"";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+        }
+        #endregion TargetFile_FlagLast_FlagShort_DoubleQuotes
+
+        #region TargetFile_FlagLast_FlagLong_SingleQuotes
+        [Test]
+        public void TargetFile_FlagLast_FlagLong_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -136,7 +221,24 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
             Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
-        #endregion TargetFile_FlagLast_FlagLong 
+        #endregion TargetFile_FlagLast_FlagLong_SingleQuotes 
+
+        #region TargetFile_FlagLast_FlagLong_DoubleQuotes
+        [Test]
+        public void TargetFile_FlagLast_FlagLong_DoubleQuotes()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "fox";
+            string Command = $"{SearchTerm} {_FlagDescriptorLong} \"{TestFilePath}\"";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+        }
+        #endregion TargetFile_FlagLast_FlagLong_DoubleQuotes
         #endregion FlagLast..
         #endregion Tests..
     }
