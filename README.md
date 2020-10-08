@@ -1,4 +1,4 @@
-Get the same capability as Unix grep with like half the speed because ya know, Windows ¯\\\_(ツ)_/¯
+<h1>Windows Grep</h1>
 
 <h2>TO INSTALL</h2>
 
@@ -9,8 +9,6 @@ Get the same capability as Unix grep with like half the speed because ya know, W
 This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
 <h2>REFERENCE</h2>
-
-*Enclose file/folder path parameters with single or double quotes
 
 |                           |    |                       |
 | ------------------------- | -- | :-------------------: |
@@ -32,10 +30,9 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 <br/>
 
 <h2>USAGE</h2>
-
 <h4>Cmd/Powershell</h4> <br/>
-<img src="https://i.imgur.com/5tOOiZN.png" width="600"><br/><br/><br/>
+<img src="https://i.imgur.com/5tOOiZN.png" width="600"><br/><br/>
 
-<h4>Windows Explorer</h4> <br/>
-<img src="https://i.imgur.com/itZXt8i.png" width="400"> <br/>
+<h4>Windows Explorer</h4>
+<img src="https://i.imgur.com/itZXt8i.png" width="400">
 <img src="https://i.imgur.com/9qHhciw.png" width="800"><br/><br/>
