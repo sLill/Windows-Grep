@@ -343,6 +343,8 @@ namespace WindowsGrep.Engine
                                     // Empty buffer
                                     ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
 
+                                    ConsoleUtils.WriteConsoleItemCollection(ConsoleItemCollection);
+
                                     lock (_searchLock)
                                     {
                                         FilesMatchedCount++;
