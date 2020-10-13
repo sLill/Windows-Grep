@@ -31,10 +31,14 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 
 <br/>
 
-<h2>USAGE</h2>
-<h4>Cmd/Powershell</h4> <br/>
-<img src="https://i.imgur.com/5tOOiZN.png" width="600"><br/><br/>
+<u>USAGE</u>
+<h4>WindowsGrep can be run from cmd, Powershell or by selecting it from the Windows File Explorer context menu</h4>
+<ul><li>Doing so from Windows Explorer uses the current directory as the root</li></ul> 
 
-<h4>Windows Explorer</h4>
-<img src="https://i.imgur.com/itZXt8i.png" width="400">
-<img src="https://i.imgur.com/9qHhciw.png" width="800"><br/><br/>
+<span style="text-decoration: underline">Cmd/Powershell Examples</span> <br/>
+
+<h4>Recursively search through all directories/sub-directories for a txt file containing the term "foo"</h4>
+<ul><li>grep -d 'C:\Program Files (x86)\' -r -t .txt foo</li></ul>
+
+<h4>Windows Explorer Examples</h4>
+
