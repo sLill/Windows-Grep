@@ -31,7 +31,7 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 
 <br/>
 
-<u>USAGE</u>
+<h2>USAGE</h2>
 <h4>WindowsGrep can be run from cmd, Powershell or by selecting it from the Windows File Explorer context menu</h4>
 <ul><li>Doing so from Windows Explorer uses the current directory as the root</li></ul> 
 
