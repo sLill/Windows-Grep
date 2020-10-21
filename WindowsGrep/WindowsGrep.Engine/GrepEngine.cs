@@ -54,12 +54,14 @@ namespace WindowsGrep.Engine
         private static string BuildSearchPattern(ConsoleCommand consoleCommand)
         {
             bool FixedStringsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
+            bool IgnoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
 
             string SearchPattern = string.Empty;
             string SearchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
+            string IgnoreCaseModifier = IgnoreCaseFlag ? @"(?i)" : string.Empty;
 
             SearchTerm = FixedStringsFlag ? Regex.Escape(SearchTerm) : SearchTerm;
-            SearchPattern = @"(?<MatchedString>" + SearchTerm + @")";
+            SearchPattern = @"(?<MatchedString>" + IgnoreCaseModifier + SearchTerm + @")";
 
             return SearchPattern;
         }
@@ -75,41 +77,35 @@ namespace WindowsGrep.Engine
             // Build file context search pattern
             string SearchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
             int ContextLength = ContextFlag ? Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.Context]) : 0;
-            string ContextPattern = @"(?:(?!" + SearchTerm + @").){0," + ContextLength.ToString() + @"}";
-            Regex ContextRegex = new Regex(ContextPattern + searchPattern + ContextPattern);
+            string ContextPattern = @"(?:(?<ContextString>.{0," + ContextLength.ToString() + @"}?))";
+            Regex ContextRegex = new Regex(ContextPattern + searchPattern);
 
-            int PreviousMatchEndIndex = -1;
             matches.ToList().ForEach(match =>
             {
                 // Rebuild matches with contextual text
-                int ContextStartIndex = (match.Index - ContextLength) < 0 ? 0 : (match.Index - ContextLength);
+                if (ContextFlag)
+                {
+                    int ContextStartIndex = (match.Index - ContextLength) < 0 ? 0 : (match.Index - ContextLength);
+                    match = ContextRegex.Match(fileRaw, ContextStartIndex);
+                }
 
-                // Adjust for previous matches 
-                ContextStartIndex = ContextStartIndex < PreviousMatchEndIndex ? PreviousMatchEndIndex : ContextStartIndex;
-
-                // Build new match
-                Match MatchCopy = ContextFlag ? ContextRegex.Match(fileRaw, ContextStartIndex) : match;
-
-                string ContextString = MatchCopy.Captures.FirstOrDefault().Value;
-                string MatchedString = MatchCopy.Groups["MatchedString"].Value;
-                int ContextStringIndex = ContextString.IndexOf(MatchedString, IgnoreCaseFlag ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
+                string ContextString = ContextFlag ? match.Groups["ContextString"]?.Value ?? string.Empty : string.Empty;
+                string MatchedString = match.Groups["MatchedString"].Value;
 
                 GrepResult GrepResult = new GrepResult(filename, ResultScope.FileContent)
                 {
-                    ContextString = ContextString,
-                    ContextStringStartIndex = ContextStringIndex,
+                    LeadingContextString = ContextString,              
                     MatchedString = MatchedString
                 };
 
                 // Line number
                 if (!IgnoreBreaksFlag)
                 {
-                    int LineNumber = fileRaw.Substring(0, MatchCopy.Groups["MatchedString"].Index).Split('\n').Length;
+                    int LineNumber = fileRaw.Substring(0, match.Groups["MatchedString"].Index).Split('\n').Length;
                     GrepResult.LineNumber = LineNumber;
                 }
 
                 grepResultCollection.AddItem(GrepResult);
-                PreviousMatchEndIndex = match.Index + match.Length;
             });
         }
         #endregion BuildSearchResultsFileContent
@@ -248,12 +244,13 @@ namespace WindowsGrep.Engine
                             if (SearchMatch != Match.Empty)
                             {
                                 var MatchedString = SearchMatch.Groups["MatchedString"];
+                                int TrailingContextStringStartIndex = FileNameMatch.Index + MatchedString.Length;
 
                                 GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
                                 {
-                                    ContextString = file,
-                                    ContextStringStartIndex = FileNameMatch.Index + MatchedString.Index,
+                                    LeadingContextString = file.Substring(0, FileNameMatch.Index),
                                     MatchedString = MatchedString.Value,
+                                    TrailingContextString = file.Substring(TrailingContextStringStartIndex, file.Length - TrailingContextStringStartIndex)
                                 };
 
                                 Matches.Add(GrepResult);
