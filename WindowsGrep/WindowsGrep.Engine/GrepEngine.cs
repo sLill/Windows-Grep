@@ -244,7 +244,7 @@ namespace WindowsGrep.Engine
                             if (SearchMatch != Match.Empty)
                             {
                                 var MatchedString = SearchMatch.Groups["MatchedString"];
-                                int TrailingContextStringStartIndex = FileNameMatch.Index + MatchedString.Length;
+                                int TrailingContextStringStartIndex = FileNameMatch.Index + FileNameMatch.Value.ToLower().IndexOf(MatchedString.Value.ToLower())+ MatchedString.Length;
 
                                 GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
                                 {
