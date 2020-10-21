@@ -2,6 +2,8 @@
 
 Jokes about the Windows file system aside, this is a useful tool that performs as well as paid applications like FileLocator Pro without any additional UI overhead.  
 
+<i>*Be careful when using command flags that modify files like Replace (-R) and Delete (-D). There is no confirmation on these actions.</i>
+
 <h2>TO INSTALL</h2>
 
 1. Visit the release tab (https://github.com/sLill/Windows-BudgetGrep/releases)
