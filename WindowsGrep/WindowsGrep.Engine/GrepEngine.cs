@@ -243,7 +243,6 @@ namespace WindowsGrep.Engine
                             var SearchMatch = SearchRegex.Match(FileNameMatch.Value);
                             if (SearchMatch != Match.Empty)
                             {
-                                var MatchedString = SearchMatch.Groups["MatchedString"];
                                 int TrailingContextStringStartIndex = FileNameMatch.Index + SearchMatch.Index + SearchMatch.Length;
 
                                 GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
