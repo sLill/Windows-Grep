@@ -244,12 +244,12 @@ namespace WindowsGrep.Engine
                             if (SearchMatch != Match.Empty)
                             {
                                 var MatchedString = SearchMatch.Groups["MatchedString"];
-                                int TrailingContextStringStartIndex = FileNameMatch.Index + FileNameMatch.Value.ToLower().IndexOf(MatchedString.Value.ToLower())+ MatchedString.Length;
+                                int TrailingContextStringStartIndex = FileNameMatch.Index + SearchMatch.Index + SearchMatch.Length;
 
                                 GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
                                 {
-                                    LeadingContextString = file.Substring(0, FileNameMatch.Index),
-                                    MatchedString = MatchedString.Value,
+                                    LeadingContextString = file.Substring(0, FileNameMatch.Index + SearchMatch.Index),
+                                    MatchedString = SearchMatch.Value,
                                     TrailingContextString = file.Substring(TrailingContextStringStartIndex, file.Length - TrailingContextStringStartIndex)
                                 };
 
