@@ -2,7 +2,7 @@
 
 Performs as well or better than paid applications like FileLocator Pro without any additional UI overhead.  
 
-<i>*Be careful when using command flags that modify files like Replace (-R) and Delete (-D). There is no confirmation on these actions.</i>
+<i>*Be cautious when using command flags that modify files like Replace (-R) and Delete (-D). There is no confirmation on these actions.</i>
 
 <h2>TO INSTALL</h2>
 
@@ -33,12 +33,13 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 <br/>
 
 <h2>USAGE</h2>
-<h4>WindowsGrep can be run from cmd, Powershell or by selecting it from the Windows File Explorer context menu</h4>
-<ul><li>Doing so from Windows Explorer runs WindowsGrep with the current directory as the root</li></ul> 
+<h3>WindowsGrep can be run from cmd, Powershell or by selecting it from the Windows File Explorer context menu</h4>
+<ul><li>Executing from Windows Explorer runs WindowsGrep with the current directory as the root</li></ul> 
 
-<h4>Cmd/Powershell</h4> <br/>
-<img src="https://i.imgur.com/5tOOiZN.png" width="600"><br/><br/>
+<h3>Flexible Command Order</h3>
+Order of flags and search terms does not matter when building a query. The only requirement is that flags that expect parameters be grouped with their respective parameter value
+<br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
 
-<h4>Windows Explorer</h4>
-<img src="https://i.imgur.com/itZXt8i.png" width="600">
-<img src="https://i.imgur.com/9qHhciw.png" width="600"><br/><br/>
+<h3>Chained Commands</h3>
+Like Unix grep, commands are chainable when delimited by a bar
+<img src="https://i.imgur.com/pjhqRBi.png"> 
