@@ -30,10 +30,10 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 | Delete Files              | -D | --delete-files        |
 | Write Output to File      | -w | --write=              |
 
-<br/>
 
-<i>* See <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.References.CommandFlags">documentation</a> for detailed command descriptions
+<i>* See <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.References.CommandFlags">documentation</a> for detailed command descriptions </i>
 
+</br>
 </br>
 
 <h4>Run from Cmd/Powershell or Windows Explorer</h4>
