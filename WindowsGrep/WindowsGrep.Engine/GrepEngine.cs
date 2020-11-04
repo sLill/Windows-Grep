@@ -321,7 +321,7 @@ namespace WindowsGrep.Engine
                                         }
                                     }
                                 }
-                                catch (Exception ex)
+                                catch
                                 {
                                     ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Gray, BackgroundColor = ConsoleColor.DarkRed, Value = $"Access Denied" });
 
@@ -356,7 +356,7 @@ namespace WindowsGrep.Engine
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         lock (_searchLock)
                         {
