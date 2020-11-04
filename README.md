@@ -48,10 +48,8 @@ Ordering of flags and search terms is flexible. The only requirement is that fla
 </br>
 
 <h4>Chained Commands</h4>
-Like Unix grep, commands are chainable and delimited with a bar
+Like Unix grep, commands are chainable and delimited with a bar</br>
 <img src="https://i.imgur.com/pjhqRBi.png"> 
-
-</br>
 
 <h4>Regular Expressions</h4>
 WindowsGrep is configured to search using regular expressions by default (-G). Add the (-F) flag to queries that should be interpreted literally. The default setting for this can be modified in the application configuration file. 
