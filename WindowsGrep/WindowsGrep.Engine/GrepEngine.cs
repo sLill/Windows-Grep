@@ -17,7 +17,6 @@ namespace WindowsGrep.Engine
         #endregion Properties..
 
         #region Constructors..
-        static GrepEngine() { }
         #endregion Constructors..
 
         #region Methods..
@@ -385,7 +384,6 @@ namespace WindowsGrep.Engine
             if (DeleteFlag)
             {
                 Summary = $"[{deleteSuccessCount} of {filesMatchedCount} file(s) deleted]";
-
             }
             else if (ReplaceFlag)
             {
