@@ -263,7 +263,6 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string SearchTerm = "10";
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
-
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
@@ -810,7 +809,6 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string SearchTerm = "10";
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
-
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
@@ -1356,7 +1354,6 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
             string SearchTerm = "10";
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
-
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
