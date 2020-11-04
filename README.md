@@ -31,58 +31,84 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 | Write Output to File      | -w | --write=              |
 
 <b>Recursive Search &nbsp; (-f &nbsp; --recursive)</b></br>
-&nbsp;&nbsp;&nbsp;Changes the scope of the command from "top level directory only" to "top level directory <b>and all sub-directories</b>"
+Changes the scope of the command from "top level directory only" to "top level directory <b>and all sub-directories</b>"
+
+<br/>
 
 <b>Target Directory &nbsp; (-d &nbsp; --directory=)</b></br>
-&nbsp;&nbsp;&nbsp;Sets the root directory for the command. Take directory as a parameter (Encapsulate in single-quotes '' or double-quotes "")<br/>
-&nbsp;&nbsp;&nbsp;<i>ex. &nbsp;&nbsp; -d 'C:\Users' &nbsp; &nbsp; or &nbsp; &nbsp; --directory='C:\Users'</i>
+Sets the root directory for the command. Take directory as a parameter (Encapsulate in single-quotes '' or double-quotes "")<br/>
+<i>ex. &nbsp;&nbsp; -d 'C:\Users' &nbsp; &nbsp; or &nbsp; &nbsp; --directory='C:\Users'</i>
+
+<br/>
 
 <b>Context Characters &nbsp; (-c &nbsp; --context=)</b></br>
-&nbsp;&nbsp;&nbsp;Set the number of surrounding characters to be returned with each query result. Takes an integer as a parameter<br/>
-&nbsp;&nbsp;&nbsp;<i>ex. &nbsp;&nbsp; -c 50 &nbsp; &nbsp; or &nbsp; &nbsp; --context=50</i>
+Sets the number of surrounding characters to be returned with each query result. Takes an integer as a parameter<br/>
+<i>ex. &nbsp;&nbsp; -c 50 &nbsp; &nbsp; or &nbsp; &nbsp; --context=50</i>
+
+<br/>
 
 <b>Ignore Line Breaks &nbsp; (-b &nbsp; --ignore-breaks)</b></br>
-&nbsp;&nbsp;&nbsp;Ignores new line characters (\r\n) in queried files 
+Ignores new line characters (\r\n) in queried files 
+
+<br/>
 
 <b>Ignore Case &nbsp; (-i &nbsp; --ignore-case)</b></br>
-&nbsp;&nbsp;&nbsp;Ignores character-case mistmatches between the users' search term and queried file content
+Ignores character-case mistmatches between the users' search term and queried file content
+
+<br/>
 
 <b>Target File &nbsp; (-f &nbsp; --file=)</b></br>
-&nbsp;&nbsp;&nbsp;Set the scope of the query to a single file. Takes filepath as a parameter (Encapsulate in single-quotes '' or double-quotes "")<br/>
-&nbsp;&nbsp;&nbsp;<i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
+Sets the scope of the query to a single file. Takes filepath as a parameter (Encapsulate in single-quotes '' or double-quotes "")<br/>
+<i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
+
+<br/>
 
 <b>Plain Text Search &nbsp; (-F &nbsp; --fixed-strings)</b></br>
-&nbsp;&nbsp;&nbsp;Configures the query to interpret the users' search term literally <br/>
-&nbsp;&nbsp;&nbsp;<i>ex. How is Hannah? <b>matches</b> How is Hannah?</i><br/>
-&nbsp;&nbsp;&nbsp;<i>ex. How is Hannah? <b>does not match</b> How is Hanna</i>
+Configures the query to interpret the users' search term literally <br/>
+<i>ex. How is Hannah? <b>matches</b> How is Hannah?</i><br/>
+<i>ex. How is Hannah? <b>does not match</b> How is Hanna</i>
+
+<br/>
 
 <b>Regular Expression Search &nbsp; (-G &nbsp; --basic-regexp)</b></br>
-&nbsp;&nbsp;&nbsp;Configures the query to interpret the users' search term as a regular expression (WindowsGrep default search style)<br/>
-&nbsp;&nbsp;&nbsp;<i>ex. How is Hannah? <b>matches</b> How is Hannah</i><br/>
-&nbsp;&nbsp;&nbsp;<i>ex. How is Hannah? <b>matches</b> How is Hanna</i>
+Configures the query to interpret the users' search term as a regular expression (WindowsGrep default search style)<br/>
+<i>ex. How is Hannah? <b>matches</b> How is Hannah</i><br/>
+<i>ex. How is Hannah? <b>matches</b> How is Hanna</i>
+
+<br/>
 
 <b>Filter on FileType(s) &nbsp; (-t &nbsp; --filetype-inclusion=)</b></br>
-&nbsp;&nbsp;&nbsp;Restricts scope of files in query to those whose extension matches one of the provided extensions. Takes comma or semi-colon delimited list as a parameter<br/>
-&nbsp;&nbsp;&nbsp;<i>ex. &nbsp;&nbsp; -t .cs;.txt &nbsp; or &nbsp; --filetype--inclusion=.cs;.txt</i>
+Restricts scope of files in query to those whose extension matches one of the provided extensions. Takes comma or semi-colon delimited list as a parameter<br/>
+<i>ex. &nbsp;&nbsp; -t .cs;.txt &nbsp; or &nbsp; --filetype--inclusion=.cs;.txt</i>
+
+<br/>
 
 <b>Filter out FileType(s) &nbsp; (-t &nbsp; --filetype-inclusion=)</b></br>
-&nbsp;&nbsp;&nbsp;Restricts scope of files in query to those whose extension does not matche any of the provided extensions. Takes comma or semi-colon delimited list as a parameter<br/>
-&nbsp;&nbsp;&nbsp;<i>ex. &nbsp;&nbsp; -T .jpg;.resx &nbsp; or &nbsp; --filetype--exclusion=.jpg;.resx</i>
+Restricts scope of files in query to those whose extension does not matche any of the provided extensions. Takes comma or semi-colon delimited list as a parameter<br/>
+<i>ex. &nbsp;&nbsp; -T .jpg;.resx &nbsp; or &nbsp; --filetype--exclusion=.jpg;.resx</i>
+
+<br/>
 
 <b>Filenames Only &nbsp; (-i &nbsp; --ignore-case)</b></br>
-&nbsp;&nbsp;&nbsp;Modifies query to match against files names rather than file content
+Modifies query to match against files names rather than file content
+
+<br/>
 
 <b>Replace Text &nbsp; (-R &nbsp; --replace=)</b></br>
-&nbsp;&nbsp;&nbsp;Permanently replaces matched text in returned files with supplied text. Takes string as a parameter (Encapsulate in single-quotes '' or double-quotes "")<br/>
-&nbsp;&nbsp;&nbsp;<i>ex. &nbsp;&nbsp; -R 'Hello there' &nbsp; or &nbsp; --replace='Hello there'</i>
+Permanently replaces matched text in returned files with supplied text. Takes string as a parameter (Encapsulate in single-quotes '' or double-quotes "")<br/>
+<i>ex. &nbsp;&nbsp; -R 'Hello there' &nbsp; or &nbsp; --replace='Hello there'</i>
+
+<br/>
 
 <b>Delete Files &nbsp; (-D &nbsp; --delete)</b></br>
-&nbsp;&nbsp;&nbsp;Deletes all files returned in query 
+Deletes all files returned in query 
+
+<br/>
 
 <b>Write Output to File &nbsp; (-w &nbsp; --write=)</b></br>
-&nbsp;&nbsp;&nbsp;Write query results to an external file. Space delimited by default. Formats as comma-separated when saved with .csv extension. Takes filepath as a parameter (Encapsulate in single-quotes '' or double-quotes "")<br/>
-&nbsp;&nbsp;&nbsp;<i>ex. &nbsp;&nbsp; -w 'MyGrepResuls.txt' &nbsp; or &nbsp; --write='MyGrepResuls.txt'</i><br/>
-&nbsp;&nbsp;&nbsp;<i>ex. &nbsp;&nbsp; -w 'MyGrepResuls.csv' &nbsp; or &nbsp; --write='MyGrepResuls.csv'</i>
+Write query results to an external file. Space delimited by default. Formats as comma-separated when saved with .csv extension. Takes filepath as a parameter (Encapsulate in single-quotes '' or double-quotes "")<br/>
+<i>ex. &nbsp;&nbsp; -w 'MyGrepResuls.txt' &nbsp; or &nbsp; --write='MyGrepResuls.txt'</i><br/>
+<i>ex. &nbsp;&nbsp; -w 'MyGrepResuls.csv' &nbsp; or &nbsp; --write='MyGrepResuls.csv'</i>
 
 <br/>
 
