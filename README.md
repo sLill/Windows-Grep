@@ -59,4 +59,5 @@ WindowsGrep is configured to search using regular expressions by default (-G). A
 </br>
 
 <h4>Writing Output to File</h4>
+
 The default output format when writing (-w) to a file is space delimited. Can be formatted as a list of Comma-Separated Values by saving with a .csv file extension
