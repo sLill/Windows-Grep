@@ -412,7 +412,6 @@ namespace WindowsGrep.Test.Flags.Replace
         }
         #endregion CreateTestFiles
 
-
         #region DeleteTestFiles
         private void DeleteTestFiles()
         {

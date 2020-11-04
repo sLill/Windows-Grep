@@ -407,7 +407,6 @@ namespace WindowsGrep.Test.RegularExpressions
             GrepEngine.RunCommand(Command, GrepResultCollection);
             Assert.IsTrue(GrepResultCollection.Count == 1);
 
-
             // Negative test
             SearchTerm = @"He became so powerful[\.]? the only thing";
             Command = $"-f '{TestFilePath}' {SearchTerm}";
