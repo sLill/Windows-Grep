@@ -19,5 +19,6 @@ jobs:
         dotnet-version: 3.1.301
     - name: Install dependencies
       run: dotnet restore ./WindowsGrep/
+      
     - name: Build
       run: dotnet build --configuration Release --no-restore ./WindowsGrep/
