@@ -31,7 +31,7 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 | Write Output to File      | -w | --write=              |
 
 
-<i>* See <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.References.CommandFlags">documentation</a> for detailed command descriptions </i>
+<i>* See <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
 
 </br>
 </br>
