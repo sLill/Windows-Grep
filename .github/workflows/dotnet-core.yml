@@ -21,5 +21,3 @@ jobs:
       run: dotnet restore ./WindowsGrep/
     - name: Build
       run: dotnet build --configuration Release --no-restore ./WindowsGrep/
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal ./WindowsGrep/
