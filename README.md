@@ -11,7 +11,7 @@ Performs as well or better than paid applications like FileLocator Pro without a
 
 This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
-<h2>== REFERENCE ==</h2>
+<h2>== USAGE ==</h2>
 
 |                           |    |                       |
 | ------------------------- | -- | :-------------------: |
@@ -30,6 +30,39 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 | Delete Files              | -D | --delete-files        |
 | Write Output to File      | -w | --write=              |
 
+<br/>
+
+<i>* See <a href="https://github.com/sLill/Windows-BudgetGrep#reference">documentation</a> for detailed command descriptions
+
+</br>
+
+<h4>Run from Cmd/Powershell or Windows Explorer</h4>
+Running from Windows Explorer opens WindowsGrep with the current directory as the root 
+
+</br>
+
+<h4>Command Order</h4>
+Ordering of flags and search terms is flexible. The only requirement is that flags that expect parameters be grouped with their respective parameter value
+<br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
+
+</br>
+
+<h4>Chained Commands</h4>
+Like Unix grep, commands are chainable and delimited with a bar
+<img src="https://i.imgur.com/pjhqRBi.png"> 
+
+</br>
+
+<h4>Regular Expressions</h4>
+WindowsGrep is configured to search using regular expressions by default (-G). Add the (-F) flag to queries that should be interpreted literally. The default setting for this can be modified in the application configuration file. 
+
+</br>
+
+<h4>Writing Output to File</h4>
+The default output format when writing (-w) to a file is space delimited. Can be formatted as a list of Comma-Separated Values by saving with a .csv file extension 
+
+<h2>== REFERENCE ==</h2>
+
 <b>Recursive Search &nbsp; (-f &nbsp; --recursive)</b></br>
 Changes the scope of the command from "top level directory only" to "top level directory <b>and all sub-directories</b>"
 
@@ -37,13 +70,13 @@ Changes the scope of the command from "top level directory only" to "top level d
 
 <b>Target Directory &nbsp; (-d &nbsp; --directory=)</b></br>
 Sets the root directory for the command. Take directory as a parameter (Encapsulate in single-quotes '' or double-quotes "")<br/>
-<i>ex. &nbsp;&nbsp; -d 'C:\Users' &nbsp; &nbsp; or &nbsp; &nbsp; --directory='C:\Users'</i>
+<i>ex. &nbsp;&nbsp; -d 'C:\Users' &nbsp; or &nbsp; --directory='C:\Users'</i>
 
 <br/>
 
 <b>Context Characters &nbsp; (-c &nbsp; --context=)</b></br>
 Sets the number of surrounding characters to be returned with each query result. Takes an integer as a parameter<br/>
-<i>ex. &nbsp;&nbsp; -c 50 &nbsp; &nbsp; or &nbsp; &nbsp; --context=50</i>
+<i>ex. &nbsp;&nbsp; -c 50 &nbsp; or &nbsp; --context=50</i>
 
 <br/>
 
@@ -109,23 +142,3 @@ Deletes all files returned in query
 Write query results to an external file. Space delimited by default. Formats as comma-separated when saved with .csv extension. Takes filepath as a parameter (Encapsulate in single-quotes '' or double-quotes "")<br/>
 <i>ex. &nbsp;&nbsp; -w 'MyGrepResuls.txt' &nbsp; or &nbsp; --write='MyGrepResuls.txt'</i><br/>
 <i>ex. &nbsp;&nbsp; -w 'MyGrepResuls.csv' &nbsp; or &nbsp; --write='MyGrepResuls.csv'</i>
-
-<br/>
-
-<h2>== USAGE ==</h2>
-<h4>Run from Cmd/Powershell or Windows Explorer</h4>
-Running from Windows Explorer opens WindowsGrep with the current directory as the root 
-
-<h4>Command Order</h4>
-Ordering of flags and search terms is flexible. The only requirement is that flags that expect parameters be grouped with their respective parameter value
-<br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
-
-<h4>Chained Commands</h4>
-Like Unix grep, commands are chainable and delimited with a bar
-<img src="https://i.imgur.com/pjhqRBi.png"> 
-
-<h4>Regular Expressions</h4>
-WindowsGrep is configured to search using regular expressions by default (-G). Add the (-F) flag to queries that should be interpreted literally. The default setting for this can be modified in the application configuration file. 
-
-<h4>Writing Output to File</h4>
-The default output format when writing (-w) to a file is space delimited. Can be formatted as a list of Comma-Separated Values by saving with a .csv file extension 
