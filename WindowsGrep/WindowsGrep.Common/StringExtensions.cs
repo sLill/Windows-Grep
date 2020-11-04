@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WindowsGrep.Common
+﻿namespace WindowsGrep.Common
 {
     public static class StringExtensions
     {

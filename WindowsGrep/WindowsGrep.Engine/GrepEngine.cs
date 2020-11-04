@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using WindowsGrep.Common;
 
@@ -94,7 +91,7 @@ namespace WindowsGrep.Engine
 
                 GrepResult GrepResult = new GrepResult(filename, ResultScope.FileContent)
                 {
-                    LeadingContextString = ContextString,              
+                    LeadingContextString = ContextString,
                     MatchedString = MatchedString
                 };
 

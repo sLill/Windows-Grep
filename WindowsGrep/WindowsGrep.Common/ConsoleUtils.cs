@@ -81,7 +81,7 @@ namespace WindowsGrep.Common
         {
             Console.BackgroundColor = consoleItem.BackgroundColor;
             Console.ForegroundColor = consoleItem.ForegroundColor;
-            
+
             Console.Write(consoleItem.Value);
 
             Console.ResetColor();

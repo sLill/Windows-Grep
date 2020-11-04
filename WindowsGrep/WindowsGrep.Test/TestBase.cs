@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WindowsGrep.Test
+﻿namespace WindowsGrep.Test
 {
     public class TestBase
     {

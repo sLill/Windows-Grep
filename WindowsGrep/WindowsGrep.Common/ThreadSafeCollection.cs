@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace WindowsGrep.Common
 {
@@ -21,7 +17,7 @@ namespace WindowsGrep.Common
         #endregion ThreadSafeCollection
 
         #region ThreadSafeCollection
-        public ThreadSafeCollection(IEnumerable<T> collection) 
+        public ThreadSafeCollection(IEnumerable<T> collection)
            : base(collection) { }
         #endregion ThreadSafeCollection
         #endregion Constructors..
@@ -30,7 +26,7 @@ namespace WindowsGrep.Common
         #region AddItem
         public virtual void AddItem(T item)
         {
-            lock(_LockObject)
+            lock (_LockObject)
             {
                 this.Add(item);
             }

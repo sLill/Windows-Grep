@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using WindowsGrep.Common;
 
 namespace WindowsGrep.Engine
@@ -47,7 +46,7 @@ namespace WindowsGrep.Engine
                 var fileFormat = FileFormat.PlainText;
 
                 string Extension = Path.GetExtension(fileName);
-                switch(Extension.ToUpper())
+                switch (Extension.ToUpper())
                 {
                     case ".CSV":
                     case ".XLSX":
