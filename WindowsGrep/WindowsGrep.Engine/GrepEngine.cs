@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -25,6 +26,8 @@ namespace WindowsGrep.Engine
         {
             bool WriteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
 
+            Stopwatch commandTimer = Stopwatch.StartNew();
+
             string Filepath = GetPath(consoleCommand);
             List<string> Files = GetFiles(consoleCommand, grepResultCollection, Filepath);
             Files = GetFilteredFiles(consoleCommand, Files);
@@ -41,6 +44,10 @@ namespace WindowsGrep.Engine
             {
                 grepResultCollection.Write(consoleCommand.CommandArgs[ConsoleFlag.Write]);
             }
+
+            // Publish command run time
+            commandTimer.Stop();
+            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((commandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
         }
