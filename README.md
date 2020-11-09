@@ -37,28 +37,26 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 <i>* See <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
 
 </br>
-</br>
 
-<h4>Run from Cmd/Powershell or Windows Explorer</h4>
+<b>Run WindowsGrep from Cmd/Powershell or Windows Explorer</b></br>
 Running from Windows Explorer opens WindowsGrep with the current directory as the root 
 
 </br>
 
-<h4>Command Order</h4>
-Ordering of flags and search terms is flexible. The only requirement is that flags that expect parameters be grouped with their respective parameter value
+<b>Command Order</b></br>
+Order of flags and search terms is flexible. The only requirement is that flags that expect parameters be grouped with their respective parameter value
 <br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
 
 </br>
 
-<h4>Chained Commands</h4>
+<b>Chained Commands</b></br>
 Like Unix grep, commands are chainable and delimited with a bar</br>
 <img src="https://i.imgur.com/pjhqRBi.png"> 
 
-<h4>Regular Expressions</h4>
+<b>Regular Expressions</b></br>
 WindowsGrep is configured to search using regular expressions by default (-G). Add the (-F) flag to queries that should be interpreted literally. The default setting for this can be modified in the application configuration file. 
 
 </br>
 
-<h4>Writing Output to File</h4>
-
+<b>Writing Output to File</b></br>
 The default output format when writing (-w) to a file is space delimited. Can be formatted as a list of Comma-Separated Values by saving with a .csv file extension
