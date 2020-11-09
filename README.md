@@ -57,7 +57,7 @@ Recursive(-r) to include all sub-directories. Filename(-k) to target filenames r
 <img src="https://i.imgur.com/scPmoNa.png" height="204" width="495"></br>
 <ul>
   <li><b>WindowsGrep - 11.94 seconds</b></li>
-<li>FileLocator Pro - 14.8 seconds</li>
+<li>FileLocator Pro - 16.8 seconds</li>
 <li>Windows Explorer - 1 minute 39 seconds</li>
 </ul>
 
@@ -68,7 +68,17 @@ The same query with additional filtering (-t) for .exe files to further improve 
 Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
 <img src="https://i.imgur.com/4QqWzb3.png"></br>
 <ul>
-  <li><b>WindowsGrep - 0.93 seconds</b></li>
+  <li><b>WindowsGrep - 0.73 seconds</b></li>
 <li>FileLocator Pro - 1.87 seconds</li>
 <li>Windows Explorer - N/A</li>
 </ul>
+
+#### 3. Searching for a file containing "slow green turtle" using Regular Expressions</br>
+Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
+<img src="https://i.imgur.com/ukKoflJ.png"></br>
+<ul>
+  <li><b>WindowsGrep - 0.68 seconds</b></li>
+<li>FileLocator Pro - 2.27 seconds</li>
+<li>Windows Explorer - N/A</li>
+</ul>
+
