@@ -52,6 +52,8 @@ Order of flags and search terms is flexible. The only requirement is that flags 
 
 <h2>== EXAMPLES ==</h2>
 
+----------------------------------------------------------------------------------------------------------
+
 #### 1. Searching for the grep.exe executable</br>
 Recursive(-r) to include all sub-directories. Filename(-k) to target filenames rather than file content</br>
 <img src="https://i.imgur.com/scPmoNa.png" height="204" width="495"></br>
@@ -62,16 +64,20 @@ Recursive(-r) to include all sub-directories. Filename(-k) to target filenames r
 </ul>
 
 The same query with additional filtering (-t) for .exe files to further improve performance</br>
-<img src="https://i.imgur.com/PeC2mma.png" height="204" width="495"></br></br>
+<img src="https://i.imgur.com/PeC2mma.png" height="204" width="495">
+
+----------------------------------------------------------------------------------------------------------
 
 #### 2. Searching for a file containing "slow green turtle"</br>
 Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
 <img src="https://i.imgur.com/4QqWzb3.png"></br>
 <ul>
-  <li><b>WindowsGrep - 0.73 seconds</b></li>
+  <li><b>WindowsGrep - 0.93 seconds</b></li>
 <li>FileLocator Pro - 1.87 seconds</li>
 <li>Windows Explorer - N/A</li>
 </ul>
+
+----------------------------------------------------------------------------------------------------------
 
 #### 3. Searching for a file containing "slow green turtle" using Regular Expressions</br>
 Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
