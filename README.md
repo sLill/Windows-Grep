@@ -64,7 +64,7 @@ Recursive(-r) to include all sub-directories. Filename(-k) to target filenames r
 The same query with additional filtering (-t) for .exe files to further improve performance</br>
 <img src="https://i.imgur.com/PeC2mma.png" height="204" width="495"></br></br>
 
-#### 2. Searching for the phrase "slow green turtle"</br>
+#### 2. Searching for a file containing "slow green turtle"</br>
 Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
 <img src="https://i.imgur.com/4QqWzb3.png"></br>
 <ul>
