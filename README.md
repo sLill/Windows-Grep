@@ -51,4 +51,27 @@ Like Unix grep, commands are chainable and delimited with a bar</br>
 WindowsGrep is configured to search using regular expressions by default (-G). Add the (-F) flag to queries that should be interpreted literally. The default setting for this can be modified in the application configuration file. 
 
 <b>Writing Output to File</b></br>
-The default output format when writing (-w) to a file is space delimited. Can be formatted as a list of Comma-Separated Values by saving with a .csv file extension
+The default output format when writing (-w) to a file is space delimited. Format as a list of Comma-Separated Values by saving with a .csv file extension
+
+<h2>== EXAMPLES ==</h2>
+
+#### 1. Searching for the grep.exe executable</br>
+Recursive(-r) to include all sub-directories. Filename(-k) to target filenames rather than file content</br>
+<img src="https://i.imgur.com/scPmoNa.png" height="204" width="495"></br>
+<ul>
+  <li><b>WindowsGrep - 11.94 seconds</b></li>
+<li>FileLocator Pro - 14.8 seconds</li>
+<li>Windows Explorer - 1 minute 39 seconds</li>
+</ul>
+
+The same query with additional filtering (-t) for .exe files to further improve performance</br>
+<img src="https://i.imgur.com/PeC2mma.png" height="204" width="495"></br></br>
+
+#### 2. Searching for the phrase "slow green turtle"</br>
+Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
+<img src="https://i.imgur.com/4QqWzb3.png"></br>
+<ul>
+  <li><b>WindowsGrep - 0.93 seconds</b></li>
+<li>FileLocator Pro - 1.87 seconds</li>
+<li>Windows Explorer - N/A</li>
+</ul>
