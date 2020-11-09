@@ -3,7 +3,17 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-budgetgrep/badge)](https://www.codefactor.io/repository/github/slill/windows-budgetgrep)
 ![.NET Core](https://github.com/sLill/Windows-BudgetGrep/workflows/.NET%20Core/badge.svg)
 
-A file search utility. Performs as well or better than paid applications like FileLocator Pro without any additional UI overhead
+A file search utility. Performs as well or better than paid applications like FileLocator Pro without any additional UI overhead</br>
+
+-Supports-</br>
+- Filename and file content searches</br>
+- Regular Expressions</br>
+- Chained commands</br>
+- Filetype filters</br>
+- Written output to external files</br>
+- Mass replacement and deletion actions on queried files</br>
+- Ease of use: Runnable from Cmd, Powershell and Windows Explorer</br>
+
 
 <i>*Be cautious when using command flags that modify files like Replace (-R) and Delete (-D). There is no confirmation on these actions.</i>
 
@@ -36,22 +46,9 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 
 <i>* See <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
 
-<b>Run WindowsGrep from Cmd/Powershell or Windows Explorer</b></br>
-Running from Windows Explorer opens WindowsGrep with the current directory as the root 
-
 <b>Command Order</b></br>
 Order of flags and search terms is flexible. The only requirement is that flags that expect parameters be grouped with their respective parameter value
 <br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
-
-<b>Chained Commands</b></br>
-Like Unix grep, commands are chainable and delimited with a bar</br>
-<img src="https://i.imgur.com/pjhqRBi.png"> 
-
-<b>Regular Expressions</b></br>
-WindowsGrep is configured to search using regular expressions by default (-G). Add the (-F) flag to queries that should be interpreted literally. The default setting for this can be modified in the application configuration file. 
-
-<b>Writing Output to File</b></br>
-The default output format when writing (-w) to a file is space delimited. Format as a list of Comma-Separated Values by saving with a .csv file extension
 
 <h2>== EXAMPLES ==</h2>
 
