@@ -3,7 +3,17 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-budgetgrep/badge)](https://www.codefactor.io/repository/github/slill/windows-budgetgrep)
 ![.NET Core](https://github.com/sLill/Windows-BudgetGrep/workflows/.NET%20Core/badge.svg)
 
-A file search utility. Performs as well or better than paid applications like FileLocator Pro without any additional UI overhead
+A file search utility. Performs as well or better than paid applications like FileLocator Pro without any additional UI overhead</br>
+
+-Supports-</br>
+- Filename and file content searches</br>
+- Regular Expressions</br>
+- Chained commands</br>
+- Filetype filters</br>
+- Written output to external files</br>
+- Mass replacement and deletion actions on queried files</br>
+- Ease of use: Runnable from Cmd, Powershell and Windows Explorer</br>
+
 
 <i>*Be cautious when using command flags that modify files like Replace (-R) and Delete (-D). There is no confirmation on these actions.</i>
 
@@ -36,29 +46,45 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 
 <i>* See <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
 
-</br>
-</br>
-
-<h4>Run from Cmd/Powershell or Windows Explorer</h4>
-Running from Windows Explorer opens WindowsGrep with the current directory as the root 
-
-</br>
-
-<h4>Command Order</h4>
-Ordering of flags and search terms is flexible. The only requirement is that flags that expect parameters be grouped with their respective parameter value
+<b>Command Order</b></br>
+Order of flags and search terms is flexible. The only requirement is that flags that expect parameters be grouped with their respective parameter value
 <br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
 
-</br>
+<h2>== EXAMPLES ==</h2>
 
-<h4>Chained Commands</h4>
-Like Unix grep, commands are chainable and delimited with a bar</br>
-<img src="https://i.imgur.com/pjhqRBi.png"> 
+----------------------------------------------------------------------------------------------------------
 
-<h4>Regular Expressions</h4>
-WindowsGrep is configured to search using regular expressions by default (-G). Add the (-F) flag to queries that should be interpreted literally. The default setting for this can be modified in the application configuration file. 
+#### 1. Searching for the grep.exe executable</br>
+Recursive(-r) to include all sub-directories. Filename(-k) to target filenames rather than file content</br>
+<img src="https://i.imgur.com/scPmoNa.png" height="204" width="495"></br>
+<ul>
+  <li><b>WindowsGrep - 11.94 seconds</b></li>
+<li>FileLocator Pro - 16.8 seconds</li>
+<li>Windows Explorer - 1 minute 39 seconds</li>
+</ul>
 
-</br>
+The same query with additional filtering (-t) for .exe files to further improve performance</br>
+<img src="https://i.imgur.com/PeC2mma.png" height="204" width="495">
 
-<h4>Writing Output to File</h4>
+----------------------------------------------------------------------------------------------------------
 
-The default output format when writing (-w) to a file is space delimited. Can be formatted as a list of Comma-Separated Values by saving with a .csv file extension
+#### 2. Searching for a file containing "slow green turtle"</br>
+Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
+<img src="https://i.imgur.com/4QqWzb3.png"></br>
+<ul>
+  <li><b>WindowsGrep - 0.93 seconds</b></li>
+<li>FileLocator Pro - 1.87 seconds</li>
+<li>Windows Explorer - N/A</li>
+</ul>
+
+----------------------------------------------------------------------------------------------------------
+
+#### 3. Searching for a file containing "slow green turtle" using Regular Expressions</br>
+Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
+<img src="https://i.imgur.com/ukKoflJ.png"></br>
+<ul>
+  <li><b>WindowsGrep - 0.68 seconds</b></li>
+<li>FileLocator Pro - 2.27 seconds</li>
+<li>Windows Explorer - N/A</li>
+</ul>
+
