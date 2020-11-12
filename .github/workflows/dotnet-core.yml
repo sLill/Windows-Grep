@@ -19,5 +19,5 @@ jobs:
         dotnet-version: 5.0
     - name: Install dependencies
       run: dotnet restore ./WindowsGrep/
-    - name: Build
-      run: dotnet build --configuration Release --no-restore ./WindowsGrep/
+    #- name: Build
+    #  run: dotnet build --configuration Release --no-restore ./WindowsGrep/
