@@ -61,6 +61,28 @@
         [DescriptionCollection("-k", "--filenames-only")]
         FileNamesOnly,
 
+        // Return the filesize of items returned in the search as well
+        // as the cumulative size of all files returned
+        [FilterCharacterCollection('\'', '"')]
+        [DescriptionCollection("-z", "--filesize")]
+        FileSize,
+
+        // Return the filesize of items returned in the search that EXCEED this parameter
+        // as well as the cumulative size of all files returned
+        // Default size is kb unless specified. Other accepted sizes are mb, gb, tb
+        [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"')]
+        [DescriptionCollection("-zmin", "--filesize-minimum=")]
+        FileSizeMinimum,
+
+        // Return the filesize of items returned in the search that DO NOT EXCEED this parameter
+        // as well as the cumulative size of all files returned
+        // Default size is kb unless specified. Other accepted sizes are mb, gb, tb
+        [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"')]
+        [DescriptionCollection("-zmax", "--filesize-maximum=")]
+        FileSizeMaximum,
+
         // Replace instances of the search term with the replace parameter
         [ExpectsParameter(true)]
         [FilterCharacterCollection('\'', '"')]
