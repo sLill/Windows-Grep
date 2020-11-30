@@ -11,7 +11,13 @@ namespace WindowsGrep.Engine
     public static class GrepEngine
     {
         #region Member Variables..
-        private static object _searchLock = new object();
+        private static long _FileSizeMinimum = -1;
+        private static long _FileSizeMaximum = -1;
+
+        private static string _FileSizePattern = @"(?<Size>\d+)(?<SizeType>\S{2})?";
+        private static Regex _FileSizeRegex = new Regex(_FileSizePattern);
+
+        private static object _SearchLock = new object();
         #endregion Member Variables..
 
         #region Properties..
@@ -47,8 +53,8 @@ namespace WindowsGrep.Engine
 
             // Publish command run time
             commandTimer.Stop();
-            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((commandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
 
+            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((commandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
         }
         #endregion BeginProcessCommand
@@ -71,7 +77,7 @@ namespace WindowsGrep.Engine
         #endregion BuildSearchPattern
 
         #region BuildSearchResultsFileContent
-        private static void BuildSearchResultsFileContent(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, List<Match> matches, string filename, string fileRaw, string searchPattern)
+        private static void BuildSearchResultsFileContent(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, List<Match> matches, string filename, long fileSize, string fileRaw, string searchPattern)
         {
             bool IgnoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
             bool IgnoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
@@ -97,6 +103,7 @@ namespace WindowsGrep.Engine
 
                 GrepResult GrepResult = new GrepResult(filename, ResultScope.FileContent)
                 {
+                    FileSize = fileSize,
                     LeadingContextString = ContextString,
                     MatchedString = MatchedString
                 };
@@ -213,6 +220,9 @@ namespace WindowsGrep.Engine
             bool WriteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
             bool FileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
             bool IgnoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
+            bool FileSizeFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSize);
+            bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
+            bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
 
             int FileReadFailedCount = 0;
             int FileWriteFailedCount = 0;
@@ -229,13 +239,12 @@ namespace WindowsGrep.Engine
             if (FileNamesOnlyFlag)
             {
                 Regex FileNameRegex = new Regex(@"^(.+)[\/\\](?<FileName>[^\/\\]+)$");
-
                 var Matches = new List<GrepResult>();
+
                 files.ToList().ForEach(file =>
                 {
                     // Don't want to waste any time on files that have already been added 
                     bool FileAdded = Matches.Any(x => x.SourceFile == file);
-
                     if (!FileAdded)
                     {
                         // Parse filename from path
@@ -248,14 +257,22 @@ namespace WindowsGrep.Engine
                             {
                                 int TrailingContextStringStartIndex = FileNameMatch.Index + SearchMatch.Index + SearchMatch.Length;
 
-                                GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
-                                {
-                                    LeadingContextString = file.Substring(0, FileNameMatch.Index + SearchMatch.Index),
-                                    MatchedString = SearchMatch.Value,
-                                    TrailingContextString = file.Substring(TrailingContextStringStartIndex, file.Length - TrailingContextStringStartIndex)
-                                };
+                                // Validate any filesize parameters
+                                var FileSize = FileSizeFlag || FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
+                                bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize);
 
-                                Matches.Add(GrepResult);
+                                if (FileSizevalidateSuccess)
+                                {
+                                    GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
+                                    {
+                                        FileSize = FileSize,
+                                        LeadingContextString = file.Substring(0, FileNameMatch.Index + SearchMatch.Index),
+                                        MatchedString = SearchMatch.Value,
+                                        TrailingContextString = file.Substring(TrailingContextStringStartIndex, file.Length - TrailingContextStringStartIndex)
+                                    };
+
+                                    Matches.Add(GrepResult);
+                                }
                             }
                         }
                     }
@@ -272,100 +289,107 @@ namespace WindowsGrep.Engine
                     {
                         List<Match> Matches = new List<Match>();
 
-                        string FileRaw = File.ReadAllText(file);
+                        // Validate any filesize parameters
+                        var FileSize = FileSizeFlag || FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
+                        bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize);
 
-                        // Apply linebreak filtering options
-                        if (IgnoreBreaksFlag)
+                        if (FileSizevalidateSuccess)
                         {
-                            string FileLineBreakFilteredNull = FileRaw.Replace("\r", string.Empty).Replace("\n", string.Empty);
-                            string FileLineBreakFilteredSpace = Regex.Replace(FileRaw, @"[\r\n]+", " ");
+                            string FileRaw = File.ReadAllText(file);
 
-                            Matches.AddRange(SearchRegex.Matches(FileLineBreakFilteredNull));
-                            Matches.AddRange(SearchRegex.Matches(FileLineBreakFilteredSpace));
-                        }
-                        else
-                        {
-                            Matches = SearchRegex.Matches(FileRaw).ToList();
-                        }
-
-                        if (Matches.Any())
-                        {
-                            // Write operations
-                            bool isWriteOperation = ReplaceFlag || DeleteFlag;
-                            if (isWriteOperation)
+                            // Apply linebreak filtering options
+                            if (IgnoreBreaksFlag)
                             {
-                                List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
+                                string FileLineBreakFilteredNull = FileRaw.Replace("\r", string.Empty).Replace("\n", string.Empty);
+                                string FileLineBreakFilteredSpace = Regex.Replace(FileRaw, @"[\r\n]+", " ");
 
-                                // FileName
-                                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file} " });
+                                Matches.AddRange(SearchRegex.Matches(FileLineBreakFilteredNull));
+                                Matches.AddRange(SearchRegex.Matches(FileLineBreakFilteredSpace));
+                            }
+                            else
+                            {
+                                Matches = SearchRegex.Matches(FileRaw).ToList();
+                            }
 
-                                try
+                            if (Matches.Any())
+                            {
+                                // Write operations
+                                bool isWriteOperation = ReplaceFlag || DeleteFlag;
+                                if (isWriteOperation)
                                 {
-                                    if (DeleteFlag)
+                                    List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
+
+                                    // FileName
+                                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file} " });
+
+                                    try
                                     {
-                                        // Delete file
-                                        File.Delete(file);
-
-                                        ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
-
-                                        lock (_searchLock)
+                                        if (DeleteFlag)
                                         {
-                                            DeleteSuccessCount++;
+                                            // Delete file
+                                            File.Delete(file);
+
+                                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
+
+                                            lock (_SearchLock)
+                                            {
+                                                DeleteSuccessCount++;
+                                            }
+                                        }
+                                        else if (ReplaceFlag)
+                                        {
+                                            // Replace all occurrences in file
+                                            FileRaw = Regex.Replace(FileRaw, SearchPattern, consoleCommand.CommandArgs[ConsoleFlag.Replace]);
+                                            File.WriteAllText(file, FileRaw);
+
+                                            string MatchesText = Matches.Count == 1 ? "match" : "matches";
+                                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{Matches.Count} {MatchesText}" });
+
+                                            lock (_SearchLock)
+                                            {
+                                                ReplacedSuccessCount += Matches.Count;
+                                            }
                                         }
                                     }
-                                    else if (ReplaceFlag)
+                                    catch
                                     {
-                                        // Replace all occurrences in file
-                                        FileRaw = Regex.Replace(FileRaw, SearchPattern, consoleCommand.CommandArgs[ConsoleFlag.Replace]);
-                                        File.WriteAllText(file, FileRaw);
+                                        ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Gray, BackgroundColor = ConsoleColor.DarkRed, Value = $"Access Denied" });
 
-                                        string MatchesText = Matches.Count == 1 ? "match" : "matches";
-                                        ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{Matches.Count} {MatchesText}" });
-
-                                        lock (_searchLock)
+                                        lock (_SearchLock)
                                         {
-                                            ReplacedSuccessCount += Matches.Count;
+                                            FileWriteFailedCount++;
+                                        }
+                                    }
+                                    finally
+                                    {
+                                        // Empty buffer
+                                        ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
+
+                                        ConsoleUtils.WriteConsoleItemCollection(ConsoleItemCollection);
+
+                                        lock (_SearchLock)
+                                        {
+                                            FilesMatchedCount++;
                                         }
                                     }
                                 }
-                                catch
+
+                                // Read operations
+                                else
                                 {
-                                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Gray, BackgroundColor = ConsoleColor.DarkRed, Value = $"Access Denied" });
+                                    BuildSearchResultsFileContent(consoleCommand, grepResultCollection, Matches, file, FileSize, FileRaw, SearchPattern);
 
-                                    lock (_searchLock)
-                                    {
-                                        FileWriteFailedCount++;
-                                    }
-                                }
-                                finally
-                                {
-                                    // Empty buffer
-                                    ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
-
-                                    ConsoleUtils.WriteConsoleItemCollection(ConsoleItemCollection);
-
-                                    lock (_searchLock)
+                                    lock (_SearchLock)
                                     {
                                         FilesMatchedCount++;
                                     }
-                                }
-                            }
-
-                            // Read operations
-                            else
-                            {
-                                BuildSearchResultsFileContent(consoleCommand, grepResultCollection, Matches, file, FileRaw, SearchPattern);
-
-                                lock (_searchLock)
-                                {
-                                    FilesMatchedCount++;
                                 }
                             }
                         }
                     }
                     catch
                     {
-                        lock (_searchLock)
+                        lock (_SearchLock)
                         {
                             FileReadFailedCount++;
                         }
@@ -386,6 +410,9 @@ namespace WindowsGrep.Engine
         {
             bool DeleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
             bool ReplaceFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
+            bool FileSizeFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSize);
+            bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
+            bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
 
             string Summary = string.Empty;
             if (DeleteFlag)
@@ -402,6 +429,16 @@ namespace WindowsGrep.Engine
             }
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = Summary });
+
+            if (FileSizeFlag || FileSizeMinimumFlag || FileSizeMaximumFlag)
+            {
+                var TotalFileSize = grepResultCollection.Sum(x => x.FileSize);
+                var FileSizeReduced = WindowsUtils.GetReducedSize(TotalFileSize, 3, out FileSizeType fileSizeType);
+
+                Summary = $"[{FileSizeReduced} {fileSizeType}(s)]";
+
+                ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = Summary });
+            }
         }
         #endregion PublishCommandSummary
 
@@ -442,6 +479,101 @@ namespace WindowsGrep.Engine
             }
         }
         #endregion RunCommand
+
+        #region ValidateFileSize
+        /// <summary>
+        /// Check that a given filesize is within any filesize parameters
+        /// </summary>
+        /// <returns></returns>
+        private static bool ValidateFileSize(ConsoleCommand consoleCommand, long fileSize)
+        {
+            bool IsValid = true;
+            bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
+
+            if (FileSizeMinimumFlag)
+            {
+                if (_FileSizeMinimum >= 0)
+                {
+                    IsValid &= (fileSize >= _FileSizeMinimum);
+                }
+                else
+                {
+                    try
+                    {
+                        string FileSizeMinimumParameter = consoleCommand.CommandArgs[ConsoleFlag.FileSizeMinimum];
+
+                        var Match = _FileSizeRegex.Match(FileSizeMinimumParameter);
+                        long Size = Convert.ToInt64(Match.Groups["Size"].Value);
+
+                        if (Size < 0)
+                        {
+                            throw new Exception("Error: Size parameter cannot be less than 0");
+                        }
+
+                        long FileSizeModifier = FileSizeType.KB.GetCustomAttribute<ValueAttribute>().Value;
+
+                        string SizeType = Match.Groups["SizeType"].Value.ToUpper();
+                        if (!SizeType.IsNullOrEmpty())
+                        {
+                            FileSizeModifier = Enum.Parse<FileSizeType>(SizeType).GetCustomAttribute<ValueAttribute>().Value;
+                        }
+
+                        _FileSizeMinimum = Size * FileSizeModifier;
+                        IsValid &= (fileSize >= _FileSizeMinimum);
+                    }
+                    catch
+                    {
+                        throw new Exception($"Error: could not parse filesize parameter" +
+                            $"{Environment.NewLine}Format should follow [SIZE] or [SIZE][TYPE]. Acceptable TYPE parameters are kb, mb, gb, tb" +
+                            $"{Environment.NewLine}For more information, visit https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags");
+                    }
+                }
+            }
+
+            bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
+            if (FileSizeMaximumFlag)
+            {
+                if (_FileSizeMaximum >= 0)
+                {
+                    IsValid &= (fileSize <= _FileSizeMaximum);
+                }
+                else
+                {
+                    try
+                    {
+                        string FileSizeMaximumParameter = consoleCommand.CommandArgs[ConsoleFlag.FileSizeMaximum];
+
+                        var Match = _FileSizeRegex.Match(FileSizeMaximumParameter);
+                        long Size = Convert.ToInt64(Match.Groups["Size"].Value);
+
+                        if (Size < 0)
+                        {
+                            throw new Exception("Error: Size parameter cannot be less than 0");
+                        }
+
+                        long FileSizeModifier = FileSizeType.KB.GetCustomAttribute<ValueAttribute>().Value;
+
+                        string SizeType = Match.Groups["SizeType"].Value.ToUpper();
+                        if (!SizeType.IsNullOrEmpty())
+                        {
+                            FileSizeModifier = Enum.Parse<FileSizeType>(SizeType).GetCustomAttribute<ValueAttribute>().Value;
+                        }
+
+                        _FileSizeMaximum = Size * FileSizeModifier;
+                        IsValid &= (fileSize <= _FileSizeMaximum);
+                    }
+                    catch
+                    {
+                        throw new Exception($"Error: could not parse filesize parameter" +
+                            $"{Environment.NewLine}Format should follow [SIZE] or [SIZE][TYPE]. Acceptable TYPE parameters are kb, mb, gb, tb" +
+                            $"{Environment.NewLine}For more information, visit https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags");
+                    }
+                }
+            }
+
+            return IsValid;
+        }
+        #endregion ValidateFileSize
         #endregion Methods..
     }
 }

@@ -7,6 +7,10 @@ namespace WindowsGrep.Engine
     public class GrepResult
     {
         #region Properties..
+        #region FileSize
+        public long FileSize { get; set; }
+        #endregion FileSize
+
         #region LeadingContextString
         public string LeadingContextString { get; set; }
         #endregion LeadingContextString
@@ -53,6 +57,13 @@ namespace WindowsGrep.Engine
                 // FileName
                 ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
 
+                // FileSize
+                if (FileSize > -1)
+                {
+                    var FileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
+                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $"{FileSizeReduced} {fileSizeType}(s) " });
+                }
+
                 // Line number
                 if (LineNumber > -1)
                 {
@@ -78,6 +89,13 @@ namespace WindowsGrep.Engine
 
                 // Context end
                 ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = TrailingContextString });
+
+                // FileSize
+                if (FileSize > -1)
+                {
+                    var FileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
+                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $" {FileSizeReduced} {fileSizeType}(s)" });
+                }
             }
 
             // Empty buffer
@@ -91,13 +109,16 @@ namespace WindowsGrep.Engine
         {
             string Result = string.Empty;
 
-            string LineNumberString = string.Empty;
-            if (LineNumber > -1)
+            string LineNumberString = LineNumber > -1 ? $"Line {LineNumber}" : string.Empty;
+
+            string FileSizeString = string.Empty;
+            if (FileSize > -1)
             {
-                LineNumberString = $"Line {LineNumber}";
+                var FileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
+                FileSizeString = $"{FileSizeReduced} {fileSizeType}(s){separator}";
             }
 
-            Result = Scope == ResultScope.FileName ? SourceFile : $"{SourceFile}{separator}{LineNumberString}{separator}{LeadingContextString}";
+            Result = Scope == ResultScope.FileName ? SourceFile : $"{SourceFile}{separator}{FileSizeString}{LineNumberString}{separator}{LeadingContextString}";
             return Result;
         }
         #endregion Methods..
