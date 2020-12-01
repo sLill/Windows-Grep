@@ -230,7 +230,7 @@ namespace WindowsGrep.Engine
             int DeleteSuccessCount = 0;
             int ReplacedSuccessCount = 0;
 
-            int FilesMatchedCount = 0;
+            int TotalFilesMatchedCount = 0;
 
             // Build content search pattern
             string SearchPattern = BuildSearchPattern(consoleCommand);
@@ -255,30 +255,39 @@ namespace WindowsGrep.Engine
                             var SearchMatch = SearchRegex.Match(FileNameMatch.Value);
                             if (SearchMatch != Match.Empty)
                             {
-                                int TrailingContextStringStartIndex = FileNameMatch.Index + SearchMatch.Index + SearchMatch.Length;
-
-                                // Validate any filesize parameters
-                                var FileSize = FileSizeFlag || FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
-                                bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize);
-
-                                if (FileSizevalidateSuccess)
+                                // Write operations
+                                bool isWriteOperation = ReplaceFlag || DeleteFlag;
+                                if (isWriteOperation)
                                 {
-                                    GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
-                                    {
-                                        FileSize = FileSize,
-                                        LeadingContextString = file.Substring(0, FileNameMatch.Index + SearchMatch.Index),
-                                        MatchedString = SearchMatch.Value,
-                                        TrailingContextString = file.Substring(TrailingContextStringStartIndex, file.Length - TrailingContextStringStartIndex)
-                                    };
+                                    ProcessWriteOperations(consoleCommand, file, SearchPattern, Matches.Count, ref file, ref TotalFilesMatchedCount, ref DeleteSuccessCount, ref ReplacedSuccessCount, ref FileWriteFailedCount);
+                                }
+                                else
+                                {
+                                    int TrailingContextStringStartIndex = FileNameMatch.Index + SearchMatch.Index + SearchMatch.Length;
 
-                                    Matches.Add(GrepResult);
+                                    // Validate any filesize parameters
+                                    var FileSize = FileSizeFlag || FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
+                                    bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize);
+
+                                    if (FileSizevalidateSuccess)
+                                    {
+                                        GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
+                                        {
+                                            FileSize = FileSize,
+                                            LeadingContextString = file.Substring(0, FileNameMatch.Index + SearchMatch.Index),
+                                            MatchedString = SearchMatch.Value,
+                                            TrailingContextString = file.Substring(TrailingContextStringStartIndex, file.Length - TrailingContextStringStartIndex)
+                                        };
+
+                                        Matches.Add(GrepResult);
+                                    }
                                 }
                             }
                         }
                     }
                 });
 
-                FilesMatchedCount = Matches.Count();
+                TotalFilesMatchedCount = Matches.Count();
                 grepResultCollection.AddItemRange(Matches);
             }
             else
@@ -317,71 +326,16 @@ namespace WindowsGrep.Engine
                                 bool isWriteOperation = ReplaceFlag || DeleteFlag;
                                 if (isWriteOperation)
                                 {
-                                    List<ConsoleItem> ConsoleItemCollection = new List<ConsoleItem>();
-
-                                    // FileName
-                                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file} " });
-
-                                    try
-                                    {
-                                        if (DeleteFlag)
-                                        {
-                                            // Delete file
-                                            File.Delete(file);
-
-                                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
-
-                                            lock (_SearchLock)
-                                            {
-                                                DeleteSuccessCount++;
-                                            }
-                                        }
-                                        else if (ReplaceFlag)
-                                        {
-                                            // Replace all occurrences in file
-                                            FileRaw = Regex.Replace(FileRaw, SearchPattern, consoleCommand.CommandArgs[ConsoleFlag.Replace]);
-                                            File.WriteAllText(file, FileRaw);
-
-                                            string MatchesText = Matches.Count == 1 ? "match" : "matches";
-                                            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{Matches.Count} {MatchesText}" });
-
-                                            lock (_SearchLock)
-                                            {
-                                                ReplacedSuccessCount += Matches.Count;
-                                            }
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Gray, BackgroundColor = ConsoleColor.DarkRed, Value = $"Access Denied" });
-
-                                        lock (_SearchLock)
-                                        {
-                                            FileWriteFailedCount++;
-                                        }
-                                    }
-                                    finally
-                                    {
-                                        // Empty buffer
-                                        ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
-
-                                        ConsoleUtils.WriteConsoleItemCollection(ConsoleItemCollection);
-
-                                        lock (_SearchLock)
-                                        {
-                                            FilesMatchedCount++;
-                                        }
-                                    }
+                                    ProcessWriteOperations(consoleCommand, file, SearchPattern, Matches.Count, ref FileRaw, ref TotalFilesMatchedCount, ref DeleteSuccessCount, ref ReplacedSuccessCount, ref FileWriteFailedCount);
                                 }
-
-                                // Read operations
                                 else
                                 {
+                                    // Read operations
                                     BuildSearchResultsFileContent(consoleCommand, grepResultCollection, Matches, file, FileSize, FileRaw, SearchPattern);
 
                                     lock (_SearchLock)
                                     {
-                                        FilesMatchedCount++;
+                                        TotalFilesMatchedCount++;
                                     }
                                 }
                             }
@@ -401,9 +355,76 @@ namespace WindowsGrep.Engine
             PublishFileAccessSummary(FileReadFailedCount, FileWriteFailedCount);
 
             // Publish command summary to console
-            PublishCommandSummary(consoleCommand, grepResultCollection, FilesMatchedCount, DeleteSuccessCount, ReplacedSuccessCount);
+            PublishCommandSummary(consoleCommand, grepResultCollection, TotalFilesMatchedCount, DeleteSuccessCount, ReplacedSuccessCount);
         }
         #endregion ProcessCommand
+
+
+        #region ProcessWriteOperations
+        private static List<ConsoleItem> ProcessWriteOperations(ConsoleCommand consoleCommand, string fileName, string searchPattern, int fileMatchesCount,
+             ref string FileRaw, ref int TotalFilesMatchedCount, ref int DeleteSuccessCount, ref int ReplacedSuccessCount, ref int FileWriteFailedCount)
+        {
+            var ConsoleItemCollection = new List<ConsoleItem>();
+            bool DeleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
+            bool ReplaceFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
+
+            // FileName
+            ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{fileName} " });
+
+            try
+            {
+                if (DeleteFlag)
+                {
+                    // Delete file
+                    File.Delete(fileName);
+
+                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
+
+                    lock (_SearchLock)
+                    {
+                        DeleteSuccessCount++;
+                    }
+                }
+                else if (ReplaceFlag)
+                {
+                    // Replace all occurrences in file
+                    FileRaw = Regex.Replace(FileRaw, searchPattern, consoleCommand.CommandArgs[ConsoleFlag.Replace]);
+                    File.WriteAllText(fileName, FileRaw);
+
+                    string MatchesText = fileMatchesCount == 1 ? "match" : "matches";
+                    ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{fileMatchesCount} {MatchesText}" });
+
+                    lock (_SearchLock)
+                    {
+                        ReplacedSuccessCount += fileMatchesCount;
+                    }
+                }
+            }
+            catch
+            {
+                ConsoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Gray, BackgroundColor = ConsoleColor.DarkRed, Value = $"Access Denied" });
+
+                lock (_SearchLock)
+                {
+                    FileWriteFailedCount++;
+                }
+            }
+            finally
+            {
+                // Empty buffer
+                ConsoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
+
+                ConsoleUtils.WriteConsoleItemCollection(ConsoleItemCollection);
+
+                lock (_SearchLock)
+                {
+                    TotalFilesMatchedCount++;
+                }
+            }
+
+            return ConsoleItemCollection;
+        }
+        #endregion ProcessWriteOperations
 
         #region PublishCommandSummary
         private static void PublishCommandSummary(ConsoleCommand consoleCommand, IList<GrepResult> grepResultCollection, int filesMatchedCount, int deleteSuccessCount, int replaceSuccessCount)
