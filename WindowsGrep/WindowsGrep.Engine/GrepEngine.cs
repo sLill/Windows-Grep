@@ -177,12 +177,12 @@ namespace WindowsGrep.Engine
                         throw new Exception("Error: Size parameter cannot be less than 0");
                     }
 
-                    long FileSizeModifier = FileSizeType.KB.GetCustomAttribute<ValueAttribute>().Value;
+                    long FileSizeModifier = FileSizeType.Kb.GetCustomAttribute<ValueAttribute>().Value;
 
                     string SizeType = Match.Groups["SizeType"].Value.ToUpper();
                     if (!SizeType.IsNullOrEmpty())
                     {
-                        FileSizeModifier = Enum.Parse<FileSizeType>(SizeType).GetCustomAttribute<ValueAttribute>().Value;
+                        FileSizeModifier = Enum.Parse<FileSizeType>(SizeType, true).GetCustomAttribute<ValueAttribute>().Value;
                     }
 
                     FileSizeMaximum = Size * FileSizeModifier;
@@ -219,7 +219,7 @@ namespace WindowsGrep.Engine
                         throw new Exception("Error: Size parameter cannot be less than 0");
                     }
 
-                    long FileSizeModifier = FileSizeType.KB.GetCustomAttribute<ValueAttribute>().Value;
+                    long FileSizeModifier = FileSizeType.Kb.GetCustomAttribute<ValueAttribute>().Value;
 
                     string SizeType = Match.Groups["SizeType"].Value.ToUpper();
                     if (!SizeType.IsNullOrEmpty())
@@ -300,7 +300,6 @@ namespace WindowsGrep.Engine
             bool WriteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
             bool FileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
             bool IgnoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
-            bool FileSizeFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSize);
             bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
             bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
 
@@ -339,7 +338,7 @@ namespace WindowsGrep.Engine
                                 int TrailingContextStringStartIndex = FileNameMatch.Index + SearchMatch.Index + SearchMatch.Length;
 
                                 // Validate any filesize parameters
-                                var FileSize = FileSizeFlag || FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
+                                var FileSize = FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
                                 bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize, FileSizeMin, FileSizeMax);
 
                                 if (FileSizevalidateSuccess)
@@ -371,7 +370,7 @@ namespace WindowsGrep.Engine
                         List<Match> Matches = new List<Match>();
 
                         // Validate any filesize parameters
-                        var FileSize = FileSizeFlag || FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
+                        var FileSize = FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
                         bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize, FileSizeMin, FileSizeMax);
 
                         if (FileSizevalidateSuccess)
@@ -491,7 +490,6 @@ namespace WindowsGrep.Engine
         {
             bool DeleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
             bool ReplaceFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
-            bool FileSizeFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSize);
             bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
             bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
 
@@ -511,12 +509,12 @@ namespace WindowsGrep.Engine
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = Summary });
 
-            if (FileSizeFlag || FileSizeMinimumFlag || FileSizeMaximumFlag)
+            if (FileSizeMinimumFlag || FileSizeMaximumFlag)
             {
                 var TotalFileSize = grepResultCollection.Sum(x => x.FileSize);
                 var FileSizeReduced = WindowsUtils.GetReducedSize(TotalFileSize, 3, out FileSizeType fileSizeType);
 
-                Summary = $"[{FileSizeReduced} {fileSizeType}(s)]";
+                Summary = $" [{FileSizeReduced} {fileSizeType}(s)]";
 
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = Summary });
             }

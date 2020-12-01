@@ -62,7 +62,7 @@ namespace WindowsGrep.Common
             long ReducedSize = size;
 
             var FileSizeTypes = Enum.GetValues<FileSizeType>().Where(x => size > x.GetCustomAttribute<ValueAttribute>().Value);
-            fileSizeType = FileSizeTypes.Any() ? FileSizeTypes.Max() : FileSizeType.KB;
+            fileSizeType = FileSizeTypes.Any() ? FileSizeTypes.Max() : FileSizeType.Kb;
 
             long FileSizeTypeModifier = fileSizeType.GetCustomAttribute<ValueAttribute>().Value;
             return Math.Round(size / (double)FileSizeTypeModifier, 2);
