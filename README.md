@@ -9,7 +9,8 @@ A file search utility. Performs as well or better than paid applications like Fi
 - Filename and file content searches</br>
 - Regular Expressions</br>
 - Chained commands</br>
-- Filetype filters</br>
+- Filetype filterering</br>
+- Filesize filtering</br>
 - Written output to external files</br>
 - Mass replacement and deletion actions on queried files</br>
 - Ease of use: Runnable from Cmd, Powershell and Windows Explorer</br>
@@ -47,12 +48,10 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 <i>* See <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
 
 <b>Command Order</b></br>
-Order of flags and search terms is flexible. The only requirement is that flags that expect parameters be grouped with their respective parameter value
+Order of flags and search terms is flexible. The only requirement is that flags and their parameters be grouped together
 <br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
 
 <h2>== EXAMPLES ==</h2>
-
-----------------------------------------------------------------------------------------------------------
 
 #### 1. Searching for the grep.exe executable</br>
 Recursive(-r) to include all sub-directories. Filename(-k) to target filenames rather than file content</br>
