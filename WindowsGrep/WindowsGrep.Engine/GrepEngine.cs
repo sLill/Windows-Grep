@@ -11,9 +11,6 @@ namespace WindowsGrep.Engine
     public static class GrepEngine
     {
         #region Member Variables..
-        private static long _FileSizeMinimum = -1;
-        private static long _FileSizeMaximum = -1;
-
         private static string _FileSizePattern = @"(?<Size>\d+)(?<SizeType>\S{2})?";
         private static Regex _FileSizeRegex = new Regex(_FileSizePattern);
 
@@ -31,8 +28,7 @@ namespace WindowsGrep.Engine
         private static void BeginProcessCommand(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection)
         {
             bool WriteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
-
-            Stopwatch commandTimer = Stopwatch.StartNew();
+            Stopwatch CommandTimer = Stopwatch.StartNew();
 
             string Filepath = GetPath(consoleCommand);
             List<string> Files = GetFiles(consoleCommand, grepResultCollection, Filepath);
@@ -52,9 +48,9 @@ namespace WindowsGrep.Engine
             }
 
             // Publish command run time
-            commandTimer.Stop();
+            CommandTimer.Stop();
 
-            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((commandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
+            ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((CommandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
         }
         #endregion BeginProcessCommand
@@ -161,6 +157,90 @@ namespace WindowsGrep.Engine
         }
         #endregion GetFiles
 
+        #region GetFileSizeMaximum
+        private static long GetFileSizeMaximum(ConsoleCommand consoleCommand)
+        {
+            long FileSizeMaximum = -1;
+            bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
+
+            if (FileSizeMaximumFlag)
+            {
+                try
+                {
+                    string FileSizeMaximumParameter = consoleCommand.CommandArgs[ConsoleFlag.FileSizeMaximum];
+
+                    var Match = _FileSizeRegex.Match(FileSizeMaximumParameter);
+                    long Size = Convert.ToInt64(Match.Groups["Size"].Value);
+
+                    if (Size < 0)
+                    {
+                        throw new Exception("Error: Size parameter cannot be less than 0");
+                    }
+
+                    long FileSizeModifier = FileSizeType.Kb.GetCustomAttribute<ValueAttribute>().Value;
+
+                    string SizeType = Match.Groups["SizeType"].Value.ToUpper();
+                    if (!SizeType.IsNullOrEmpty())
+                    {
+                        FileSizeModifier = Enum.Parse<FileSizeType>(SizeType, true).GetCustomAttribute<ValueAttribute>().Value;
+                    }
+
+                    FileSizeMaximum = Size * FileSizeModifier;
+                }
+                catch
+                {
+                    throw new Exception($"Error: could not parse filesize parameter" +
+                        $"{Environment.NewLine}Format should follow [SIZE] or [SIZE][TYPE]. Acceptable TYPE parameters are kb, mb, gb, tb" +
+                        $"{Environment.NewLine}For more information, visit https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags");
+                }
+            }
+
+            return FileSizeMaximum;
+        }
+        #endregion GetFileSizeMaximum
+
+        #region GetFileSizeMinimum
+        private static long GetFileSizeMinimum(ConsoleCommand consoleCommand)
+        {
+            long FileSizeMinimum = -1;
+            bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
+
+            if (FileSizeMinimumFlag)
+            {
+                try
+                {
+                    string FileSizeMinimumParameter = consoleCommand.CommandArgs[ConsoleFlag.FileSizeMinimum];
+
+                    var Match = _FileSizeRegex.Match(FileSizeMinimumParameter);
+                    long Size = Convert.ToInt64(Match.Groups["Size"].Value);
+
+                    if (Size < 0)
+                    {
+                        throw new Exception("Error: Size parameter cannot be less than 0");
+                    }
+
+                    long FileSizeModifier = FileSizeType.Kb.GetCustomAttribute<ValueAttribute>().Value;
+
+                    string SizeType = Match.Groups["SizeType"].Value.ToUpper();
+                    if (!SizeType.IsNullOrEmpty())
+                    {
+                        FileSizeModifier = Enum.Parse<FileSizeType>(SizeType).GetCustomAttribute<ValueAttribute>().Value;
+                    }
+
+                    FileSizeMinimum = Size * FileSizeModifier;
+                }
+                catch
+                {
+                    throw new Exception($"Error: could not parse filesize parameter" +
+                        $"{Environment.NewLine}Format should follow [SIZE] or [SIZE][TYPE]. Acceptable TYPE parameters are kb, mb, gb, tb" +
+                        $"{Environment.NewLine}For more information, visit https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags");
+                }
+            }
+
+            return FileSizeMinimum;
+        }
+        #endregion GetFileSizeMinimum
+
         #region GetFilteredFiles
         /// <summary>
         /// </summary>
@@ -220,17 +300,17 @@ namespace WindowsGrep.Engine
             bool WriteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
             bool FileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
             bool IgnoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
-            bool FileSizeFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSize);
             bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
             bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
 
             int FileReadFailedCount = 0;
             int FileWriteFailedCount = 0;
-
             int DeleteSuccessCount = 0;
             int ReplacedSuccessCount = 0;
-
             int TotalFilesMatchedCount = 0;
+
+            long FileSizeMin = GetFileSizeMinimum(consoleCommand);
+            long FileSizeMax = GetFileSizeMaximum(consoleCommand);
 
             // Build content search pattern
             string SearchPattern = BuildSearchPattern(consoleCommand);
@@ -266,8 +346,8 @@ namespace WindowsGrep.Engine
                                     int TrailingContextStringStartIndex = FileNameMatch.Index + SearchMatch.Index + SearchMatch.Length;
 
                                     // Validate any filesize parameters
-                                    var FileSize = FileSizeFlag || FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
-                                    bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize);
+                                    var FileSize = FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
+                                    bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize, FileSizeMin, FileSizeMax);
 
                                     if (FileSizevalidateSuccess)
                                     {
@@ -292,6 +372,11 @@ namespace WindowsGrep.Engine
             }
             else
             {
+                if (consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
+                {
+                    throw new Exception("Error: Search term not supplied");
+                }
+
                 files.AsParallel().ForAll(file =>
                 {
                     try
@@ -299,8 +384,8 @@ namespace WindowsGrep.Engine
                         List<Match> Matches = new List<Match>();
 
                         // Validate any filesize parameters
-                        var FileSize = FileSizeFlag || FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
-                        bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize);
+                        var FileSize = FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
+                        bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize, FileSizeMin, FileSizeMax);
 
                         if (FileSizevalidateSuccess)
                         {
@@ -431,7 +516,6 @@ namespace WindowsGrep.Engine
         {
             bool DeleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
             bool ReplaceFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
-            bool FileSizeFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSize);
             bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
             bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
 
@@ -451,12 +535,12 @@ namespace WindowsGrep.Engine
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = Summary });
 
-            if (FileSizeFlag || FileSizeMinimumFlag || FileSizeMaximumFlag)
+            if (FileSizeMinimumFlag || FileSizeMaximumFlag)
             {
                 var TotalFileSize = grepResultCollection.Sum(x => x.FileSize);
                 var FileSizeReduced = WindowsUtils.GetReducedSize(TotalFileSize, 3, out FileSizeType fileSizeType);
 
-                Summary = $"[{FileSizeReduced} {fileSizeType}(s)]";
+                Summary = $" [{FileSizeReduced} {fileSizeType}(s)]";
 
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = Summary });
             }
@@ -506,91 +590,15 @@ namespace WindowsGrep.Engine
         /// Check that a given filesize is within any filesize parameters
         /// </summary>
         /// <returns></returns>
-        private static bool ValidateFileSize(ConsoleCommand consoleCommand, long fileSize)
+        private static bool ValidateFileSize(ConsoleCommand consoleCommand, long fileSize, long fileSizeMinimum, long fileSizeMaximum)
         {
             bool IsValid = true;
+
             bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
-
-            if (FileSizeMinimumFlag)
-            {
-                if (_FileSizeMinimum >= 0)
-                {
-                    IsValid &= (fileSize >= _FileSizeMinimum);
-                }
-                else
-                {
-                    try
-                    {
-                        string FileSizeMinimumParameter = consoleCommand.CommandArgs[ConsoleFlag.FileSizeMinimum];
-
-                        var Match = _FileSizeRegex.Match(FileSizeMinimumParameter);
-                        long Size = Convert.ToInt64(Match.Groups["Size"].Value);
-
-                        if (Size < 0)
-                        {
-                            throw new Exception("Error: Size parameter cannot be less than 0");
-                        }
-
-                        long FileSizeModifier = FileSizeType.KB.GetCustomAttribute<ValueAttribute>().Value;
-
-                        string SizeType = Match.Groups["SizeType"].Value.ToUpper();
-                        if (!SizeType.IsNullOrEmpty())
-                        {
-                            FileSizeModifier = Enum.Parse<FileSizeType>(SizeType).GetCustomAttribute<ValueAttribute>().Value;
-                        }
-
-                        _FileSizeMinimum = Size * FileSizeModifier;
-                        IsValid &= (fileSize >= _FileSizeMinimum);
-                    }
-                    catch
-                    {
-                        throw new Exception($"Error: could not parse filesize parameter" +
-                            $"{Environment.NewLine}Format should follow [SIZE] or [SIZE][TYPE]. Acceptable TYPE parameters are kb, mb, gb, tb" +
-                            $"{Environment.NewLine}For more information, visit https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags");
-                    }
-                }
-            }
-
             bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
-            if (FileSizeMaximumFlag)
-            {
-                if (_FileSizeMaximum >= 0)
-                {
-                    IsValid &= (fileSize <= _FileSizeMaximum);
-                }
-                else
-                {
-                    try
-                    {
-                        string FileSizeMaximumParameter = consoleCommand.CommandArgs[ConsoleFlag.FileSizeMaximum];
 
-                        var Match = _FileSizeRegex.Match(FileSizeMaximumParameter);
-                        long Size = Convert.ToInt64(Match.Groups["Size"].Value);
-
-                        if (Size < 0)
-                        {
-                            throw new Exception("Error: Size parameter cannot be less than 0");
-                        }
-
-                        long FileSizeModifier = FileSizeType.KB.GetCustomAttribute<ValueAttribute>().Value;
-
-                        string SizeType = Match.Groups["SizeType"].Value.ToUpper();
-                        if (!SizeType.IsNullOrEmpty())
-                        {
-                            FileSizeModifier = Enum.Parse<FileSizeType>(SizeType).GetCustomAttribute<ValueAttribute>().Value;
-                        }
-
-                        _FileSizeMaximum = Size * FileSizeModifier;
-                        IsValid &= (fileSize <= _FileSizeMaximum);
-                    }
-                    catch
-                    {
-                        throw new Exception($"Error: could not parse filesize parameter" +
-                            $"{Environment.NewLine}Format should follow [SIZE] or [SIZE][TYPE]. Acceptable TYPE parameters are kb, mb, gb, tb" +
-                            $"{Environment.NewLine}For more information, visit https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags");
-                    }
-                }
-            }
+            IsValid &= (!FileSizeMinimumFlag || (FileSizeMinimumFlag && fileSize >= fileSizeMinimum));
+            IsValid &= (!FileSizeMaximumFlag || (FileSizeMaximumFlag && fileSize <= fileSizeMaximum));
 
             return IsValid;
         }

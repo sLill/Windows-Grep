@@ -65,10 +65,6 @@ namespace WindowsGrep.Common
 
             // Search term
             CommandArgs[ConsoleFlag.SearchTerm] = commandRaw.Trim();
-            if (CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
-            {
-                throw new Exception("Error: Search term not supplied");
-            }
 
             return CommandArgs;
         }
