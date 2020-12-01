@@ -8,7 +8,6 @@
             => str1.ToLower() == str2.ToLower();
         #endregion EqualsIgnoreCase
 
-
         #region IsNullOrEmpty
         public static bool IsNullOrEmpty(this string value)
             => value == null || value == string.Empty;
