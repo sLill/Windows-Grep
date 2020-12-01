@@ -363,6 +363,11 @@ namespace WindowsGrep.Engine
             }
             else
             {
+                if (consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
+                {
+                    throw new Exception("Error: Search term not supplied");
+                }
+
                 files.AsParallel().ForAll(file =>
                 {
                     try
