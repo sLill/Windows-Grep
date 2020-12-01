@@ -444,7 +444,6 @@ namespace WindowsGrep.Engine
         }
         #endregion ProcessCommand
 
-
         #region ProcessWriteOperations
         private static List<ConsoleItem> ProcessWriteOperations(ConsoleCommand consoleCommand, string fileName, string searchPattern, int fileMatchesCount,
              ref string FileRaw, ref int TotalFilesMatchedCount, ref int DeleteSuccessCount, ref int ReplacedSuccessCount, ref int FileWriteFailedCount)
