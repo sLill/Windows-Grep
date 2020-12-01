@@ -21,25 +21,35 @@ namespace WindowsGrep.Common
         #region GetFileSizeOnDisk
         public static long GetFileSizeOnDisk(string file)
         {
-            FileInfo FileInfo = new FileInfo(file);
-            string DiskRootName = FileInfo.Directory.Root.FullName;
-
-            if (DiskRootName != _DiskRootName)
+            long FileSize = -1;
+            try
             {
-                uint SectorsPerCluster;
-                uint BytesPerSector;
+                FileInfo FileInfo = new FileInfo(file);
+                string DiskRootName = FileInfo.Directory.Root.FullName;
 
-                WindowsApi.GetDiskFreeSpaceW(DiskRootName, out SectorsPerCluster, out BytesPerSector, out _, out _);
+                if (DiskRootName != _DiskRootName)
+                {
+                    uint SectorsPerCluster;
+                    uint BytesPerSector;
 
-                _DiskRootName = DiskRootName;
-                _DiskClusterSize = SectorsPerCluster * BytesPerSector;
+                    WindowsApi.GetDiskFreeSpaceW(DiskRootName, out SectorsPerCluster, out BytesPerSector, out _, out _);
+
+                    _DiskRootName = DiskRootName;
+                    _DiskClusterSize = SectorsPerCluster * BytesPerSector;
+                }
+
+                uint FileSizeHigh;
+                uint FileSizeLow = WindowsApi.GetCompressedFileSizeW(file, out FileSizeHigh);
+
+                FileSize = (long)FileSizeHigh << 32 | FileSizeLow;
+                FileSize = ((FileSize + _DiskClusterSize - 1) / _DiskClusterSize) * _DiskClusterSize;
+            }
+            catch
+            {
+                throw new Exception("Error: Could not evaluate filesize");
             }
 
-            uint FileSizeHigh;
-            uint FileSizeLow = WindowsApi.GetCompressedFileSizeW(file, out FileSizeHigh);
-
-            long FileSize = (long)FileSizeHigh << 32 | FileSizeLow;
-            return ((FileSize + _DiskClusterSize - 1) / _DiskClusterSize) * _DiskClusterSize;
+            return FileSize;
         }
         #endregion GetFileSizeOnDisk
 
@@ -51,9 +61,10 @@ namespace WindowsGrep.Common
         {
             long ReducedSize = size;
 
-            fileSizeType = Enum.GetValues<FileSizeType>().Where(x => size > x.GetCustomAttribute<ValueAttribute>().Value).Max();
-            long FileSizeTypeModifier = fileSizeType.GetCustomAttribute<ValueAttribute>().Value;
+            var FileSizeTypes = Enum.GetValues<FileSizeType>().Where(x => size > x.GetCustomAttribute<ValueAttribute>().Value);
+            fileSizeType = FileSizeTypes.Any() ? FileSizeTypes.Max() : FileSizeType.KB;
 
+            long FileSizeTypeModifier = fileSizeType.GetCustomAttribute<ValueAttribute>().Value;
             return Math.Round(size / (double)FileSizeTypeModifier, 2);
         }
         #endregion GetReducedSize
