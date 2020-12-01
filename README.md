@@ -56,8 +56,9 @@ Order of flags and search terms is flexible. The only requirement is that flags 
 <h2>== EXAMPLES ==</h2>
 
 #### 1. Searching for the grep.exe executable</br>
-Recursive(-r) to include all sub-directories. Filename(-k) to target filenames rather than file content</br>
-<img src="https://i.imgur.com/scPmoNa.png" height="204" width="495"></br>
+Recursive (-r) to include all sub-directories</br>
+Filename (-k) to target filenames rather than file content</br>
+<img src="https://i.imgur.com/scPmoNa.png" height="180" width="455"></br>
 <ul>
   <li><b>WindowsGrep - 11.94 seconds</b></li>
 <li>FileLocator Pro - 16.8 seconds</li>
@@ -65,12 +66,14 @@ Recursive(-r) to include all sub-directories. Filename(-k) to target filenames r
 </ul>
 
 The same query with additional filtering (-t) for .exe files to further improve performance</br>
-<img src="https://i.imgur.com/PeC2mma.png" height="204" width="495">
+<img src="https://i.imgur.com/PeC2mma.png" height="180" width="455">
 
 ----------------------------------------------------------------------------------------------------------
 
-#### 2. Searching for a file containing "slow green turtle"</br>
-Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
+#### 2. Searching for a phrase</br>
+Recursive (-r) to include all sub-directories</br>
+Filter by the .txt filetype (-t)</br>
+Ignore-case (-i)</br>
 <img src="https://i.imgur.com/4QqWzb3.png"></br>
 <ul>
   <li><b>WindowsGrep - 0.93 seconds</b></li>
@@ -80,8 +83,10 @@ Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignor
 
 ----------------------------------------------------------------------------------------------------------
 
-#### 3. Searching for a file containing "slow green turtle" using Regular Expressions</br>
-Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
+#### 3. Searching for a phrase using Regular Expressions</br>
+Recursive (-r) to include all sub-directories</br>
+Filter by the .txt filetype (-t)</br>
+Ignore-case (-i)</br>
 <img src="https://i.imgur.com/ukKoflJ.png"></br>
 <ul>
   <li><b>WindowsGrep - 0.68 seconds</b></li>
