@@ -12,7 +12,7 @@ A file search utility. Performs as well or better than paid applications like Fi
 - Filetype filterering</br>
 - Filesize filtering</br>
 - Written output to external files</br>
-- Mass replacement and deletion actions on queried files</br>
+- Mass replace and delete actions on queried files</br>
 - Ease of use: Runnable from Cmd, Powershell and Windows Explorer</br>
 
 
