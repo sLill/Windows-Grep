@@ -56,8 +56,8 @@ Order of flags and search terms is flexible. The only requirement is that flags 
 <h2>== EXAMPLES ==</h2>
 
 #### 1. Searching for the grep.exe executable</br>
-Recursive (-r) to include all sub-directories</br>
-Filename (-k) to target filenames rather than file content</br></br>
+(-r) Recursive to include all sub-directories</br>
+(-k) Filename to target filenames rather than file content</br></br>
 <img src="https://i.imgur.com/scPmoNa.png" height="180" width="455"></br>
 <ul>
   <li><b>WindowsGrep - 11.94 seconds</b></li>
@@ -71,9 +71,9 @@ The same query with additional filtering (-t) for .exe files to further improve 
 ----------------------------------------------------------------------------------------------------------
 
 #### 2. Searching for a phrase</br>
-Recursive (-r) to include all sub-directories</br>
-Filter by the .txt filetype (-t)</br>
-Ignore case (-i)</br></br>
+(-r) Recursive to include all sub-directories</br>
+(-t) Filter by the .txt filetype</br>
+(-i) Ignore-case</br></br>
 <img src="https://i.imgur.com/4QqWzb3.png"></br>
 <ul>
   <li><b>WindowsGrep - 0.93 seconds</b></li>
@@ -84,9 +84,9 @@ Ignore case (-i)</br></br>
 ----------------------------------------------------------------------------------------------------------
 
 #### 3. Searching for a phrase using Regular Expressions</br>
-Recursive (-r) to include all sub-directories</br>
-Filter by the .txt filetype (-t)</br>
-Ignore case (-i)</br></br>
+(-r) Recursive to include all sub-directories</br>
+(-t) Filter by the .txt filetype</br>
+(-i) Ignore-case</br></br>
 <img src="https://i.imgur.com/ukKoflJ.png"></br>
 <ul>
   <li><b>WindowsGrep - 0.68 seconds</b></li>
