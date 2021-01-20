@@ -94,8 +94,8 @@ namespace WindowsGrep.Engine
                     match = ContextRegex.Match(fileRaw, ContextStartIndex);
                 }
 
-                string ContextString = ContextFlag ? match.Groups["ContextString"]?.Value ?? string.Empty : string.Empty;
-                string MatchedString = match.Groups["MatchedString"].Value;
+                string ContextString = ContextFlag ? $"{Environment.NewLine}{match.Groups["ContextString"]?.Value}" ?? string.Empty : string.Empty;
+                string MatchedString = ContextFlag ? $"{match.Groups["MatchedString"].Value}{Environment.NewLine}" : match.Groups["MatchedString"].Value;
 
                 GrepResult GrepResult = new GrepResult(filename, ResultScope.FileContent)
                 {
