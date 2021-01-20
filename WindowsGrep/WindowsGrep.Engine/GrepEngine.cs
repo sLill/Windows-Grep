@@ -94,8 +94,8 @@ namespace WindowsGrep.Engine
                     int LeadingContextStartIndex = match.Groups["MatchedString"].Index - ContextLength < 0 ? 0 : match.Groups["MatchedString"].Index - ContextLength;
                     int TrailingContextStartIndex = match.Groups["MatchedString"].Index + match.Groups["MatchedString"].Value.Length;
 
-                    LeadingContext = fileRaw.Substring(LeadingContextStartIndex, LeadingContextStartIndex + ContextLength > match.Groups["MatchedString"].Index ? match.Groups["MatchedString"].Index : LeadingContextStartIndex + ContextLength);
-                    TrailingContext = fileRaw.Substring(TrailingContextStartIndex, TrailingContextStartIndex + ContextLength > fileRaw.Length ? fileRaw.Length - TrailingContextStartIndex : ContextLength);
+                    LeadingContext = Environment.NewLine + fileRaw.Substring(LeadingContextStartIndex, LeadingContextStartIndex + ContextLength > fileRaw.Length ? ContextLength - ((LeadingContextStartIndex + ContextLength) - fileRaw.Length) : ContextLength);
+                    TrailingContext = fileRaw.Substring(TrailingContextStartIndex, TrailingContextStartIndex + ContextLength > fileRaw.Length ? fileRaw.Length - TrailingContextStartIndex : ContextLength) + Environment.NewLine;
                 }
 
                 string MatchedString = match.Groups["MatchedString"].Value;
