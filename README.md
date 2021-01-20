@@ -12,7 +12,7 @@ A file search utility. Performs as well or better than paid applications like Fi
 - Filetype filterering</br>
 - Filesize filtering</br>
 - Written output to external files</br>
-- Mass replacement and deletion actions on queried files</br>
+- Mass replace and delete actions on queried files</br>
 - Ease of use: Runnable from Cmd, Powershell and Windows Explorer</br>
 
 
@@ -40,6 +40,8 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 | Filter on FileType(s)     | -t | --filetype-inclusion= |
 | Filter out FileType(s)    | -T | --filetype-exclusion= |
 | Filenames Only            | -k | --filenames-only      |
+| FileSize Minimum          | -z | --filesize-minimum=   |
+| FileSize Maximum          | -Z | --filesize-maximum=   |
 | Replace Text              | -R | --replace=            |
 | Delete Files              | -D | --delete-files        |
 | Write Output to File      | -w | --write=              |
@@ -54,21 +56,24 @@ Order of flags and search terms is flexible. The only requirement is that flags 
 <h2>== EXAMPLES ==</h2>
 
 #### 1. Searching for the grep.exe executable</br>
-Recursive(-r) to include all sub-directories. Filename(-k) to target filenames rather than file content</br>
-<img src="https://i.imgur.com/scPmoNa.png" height="204" width="495"></br>
+(-r) Recursive to include all sub-directories</br>
+(-k) Filename to target filenames rather than file content</br></br>
+<img src="https://i.imgur.com/scPmoNa.png" height="180" width="455"></br>
 <ul>
   <li><b>WindowsGrep - 11.94 seconds</b></li>
 <li>FileLocator Pro - 16.8 seconds</li>
 <li>Windows Explorer - 1 minute 39 seconds</li>
 </ul>
 
-The same query with additional filtering (-t) for .exe files to further improve performance</br>
-<img src="https://i.imgur.com/PeC2mma.png" height="204" width="495">
+The same query with additional filtering (-t) for .exe files to further improve performance</br></br>
+<img src="https://i.imgur.com/PeC2mma.png" height="180" width="455">
 
 ----------------------------------------------------------------------------------------------------------
 
-#### 2. Searching for a file containing "slow green turtle"</br>
-Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
+#### 2. Searching for a phrase</br>
+(-r) Recursive to include all sub-directories</br>
+(-t) Filter by the .txt filetype</br>
+(-i) Ignore-case</br></br>
 <img src="https://i.imgur.com/4QqWzb3.png"></br>
 <ul>
   <li><b>WindowsGrep - 0.93 seconds</b></li>
@@ -78,8 +83,10 @@ Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignor
 
 ----------------------------------------------------------------------------------------------------------
 
-#### 3. Searching for a file containing "slow green turtle" using Regular Expressions</br>
-Recursive(-r) to include all sub-directories. Filter by .txt filetype(-t). Ignore case(-i)</br>
+#### 3. Searching for a phrase using Regular Expressions</br>
+(-r) Recursive to include all sub-directories</br>
+(-t) Filter by the .txt filetype</br>
+(-i) Ignore-case</br></br>
 <img src="https://i.imgur.com/ukKoflJ.png"></br>
 <ul>
   <li><b>WindowsGrep - 0.68 seconds</b></li>
