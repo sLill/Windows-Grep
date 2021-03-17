@@ -65,6 +65,9 @@ namespace WindowsGrep.Engine
             string SearchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
             string IgnoreCaseModifier = IgnoreCaseFlag ? @"(?i)" : string.Empty;
 
+            // Ignore carriage-return and newline characters when using endline regex to match expected behavior from other regex engines
+            SearchTerm = SearchTerm.Replace("$", "[\r\n]*$");
+
             SearchTerm = FixedStringsFlag ? Regex.Escape(SearchTerm) : SearchTerm;
             SearchPattern = @"(?<MatchedString>" + IgnoreCaseModifier + SearchTerm + @")";
 
@@ -109,11 +112,8 @@ namespace WindowsGrep.Engine
                 };
 
                 // Line number
-                if (!IgnoreBreaksFlag)
-                {
-                    int LineNumber = fileRaw.Substring(0, match.Groups["MatchedString"].Index).Split('\n').Length;
-                    GrepResult.LineNumber = LineNumber;
-                }
+                int LineNumber = fileRaw.Substring(0, match.Groups["MatchedString"].Index).Split('\n').Length;
+                GrepResult.LineNumber = LineNumber;
 
                 grepResultCollection.AddItem(GrepResult);
             });
@@ -193,7 +193,7 @@ namespace WindowsGrep.Engine
                 }
                 catch
                 {
-                    throw new Exception($"Error: could not parse filesize parameter" +
+                    throw new Exception($"Error: Could not parse filesize parameter" +
                         $"{Environment.NewLine}Format should follow [SIZE] or [SIZE][TYPE]. Acceptable TYPE parameters are kb, mb, gb, tb" +
                         $"{Environment.NewLine}For more information, visit https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags");
                 }
@@ -285,10 +285,20 @@ namespace WindowsGrep.Engine
         {
             RegexOptions OptionsFlags = 0;
             bool IgnoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
+            bool IgnoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
 
             if (IgnoreCaseFlag)
             {
                 OptionsFlags |= RegexOptions.IgnoreCase;
+            }
+
+            if (IgnoreBreaksFlag)
+            {
+                OptionsFlags |= RegexOptions.Singleline;
+            }
+            else
+            {
+               OptionsFlags |= RegexOptions.Multiline;
             }
 
             return OptionsFlags;
@@ -303,7 +313,6 @@ namespace WindowsGrep.Engine
             bool ReplaceFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
             bool WriteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
             bool FileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
-            bool IgnoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
             bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
             bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
 
@@ -395,20 +404,7 @@ namespace WindowsGrep.Engine
                         {
                             string FileRaw = File.ReadAllText(file);
 
-                            // Apply linebreak filtering options
-                            if (IgnoreBreaksFlag)
-                            {
-                                string FileLineBreakFilteredNull = FileRaw.Replace("\r", string.Empty).Replace("\n", string.Empty);
-                                string FileLineBreakFilteredSpace = Regex.Replace(FileRaw, @"[\r\n]+", " ");
-
-                                Matches.AddRange(SearchRegex.Matches(FileLineBreakFilteredNull));
-                                Matches.AddRange(SearchRegex.Matches(FileLineBreakFilteredSpace));
-                            }
-                            else
-                            {
-                                Matches = SearchRegex.Matches(FileRaw).ToList();
-                            }
-
+                            Matches = SearchRegex.Matches(FileRaw).ToList();
                             if (Matches.Any())
                             {
                                 // Write operations
@@ -417,9 +413,10 @@ namespace WindowsGrep.Engine
                                 {
                                     ProcessWriteOperations(consoleCommand, file, SearchPattern, Matches.Count, ref FileRaw, ref TotalFilesMatchedCount, ref DeleteSuccessCount, ref ReplacedSuccessCount, ref FileWriteFailedCount);
                                 }
+
+                                // Read operations
                                 else
                                 {
-                                    // Read operations
                                     BuildSearchResultsFileContent(consoleCommand, grepResultCollection, Matches, file, FileSize, FileRaw);
 
                                     lock (_SearchLock)

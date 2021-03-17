@@ -32,213 +32,111 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region Tests..
         #region FlagFirst..
-        #region IgnoreBreaks_FlagFirst_FlagShort_NullReplace
+        #region IgnoreBreaks_FlagFirst_FlagShort
         [Test]
-        public void IgnoreBreaks_FlagFirst_FlagShort_NullReplace()
+        public void IgnoreBreaks_FlagFirst_FlagShort()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string SearchTerm = "quickbrown";
+            string SearchTerm = "quick.*brown";
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion IgnoreBreaks_FlagFirst_FlagShort_NullReplace 
+        #endregion IgnoreBreaks_FlagFirst_FlagShort
 
-        #region IgnoreBreaks_FlagFirst_FlagLong_NullReplace
+        #region IgnoreBreaks_FlagFirst_FlagLong
         [Test]
-        public void IgnoreBreaks_FlagFirst_FlagLong_NullReplace()
+        public void IgnoreBreaks_FlagFirst_FlagLong()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string SearchTerm = "quickbrown";
+            string SearchTerm = "quick.*brown";
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion IgnoreBreaks_FlagFirst_FlagLong_NullReplace
-
-        #region IgnoreBreaks_FlagFirst_FlagShort_SpaceReplace
-        [Test]
-        public void IgnoreBreaks_FlagFirst_FlagShort_SpaceReplace()
-        {
-            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
-            Assert.IsTrue(File.Exists(TestFilePath));
-
-            string SearchTerm = "quick brown";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
-
-            var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommand(Command, GrepResultCollection);
-
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
-        }
-        #endregion IgnoreBreaks_FlagFirst_FlagShort_SpaceReplace 
-
-        #region IgnoreBreaks_FlagFirst_FlagLong_SpaceReplace
-        [Test]
-        public void IgnoreBreaks_FlagFirst_FlagLong_SpaceReplace()
-        {
-            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
-            Assert.IsTrue(File.Exists(TestFilePath));
-
-            string SearchTerm = "quick brown";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
-
-            var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommand(Command, GrepResultCollection);
-
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
-        }
-        #endregion IgnoreBreaks_FlagFirst_FlagLong_SpaceReplace
+        #endregion IgnoreBreaks_FlagFirst_FlagLong
         #endregion FlagFirst..
 
         #region FlagMiddle..
-        #region IgnoreBreaks_FlagMiddle_FlagShort_NullReplace
+        #region IgnoreBreaks_FlagMiddle_FlagShort
         [Test]
-        public void IgnoreBreaks_FlagMiddle_FlagShort_NullReplace()
+        public void IgnoreBreaks_FlagMiddle_FlagShort()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string SearchTerm = "quickbrown";
+            string SearchTerm = "quick.*brown";
             string Command = $"-f '{TestFilePath}' {_FlagDescriptorShort} {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion IgnoreBreaks_FlagMiddle_FlagShort_NullReplace 
+        #endregion IgnoreBreaks_FlagMiddle_FlagShort 
 
-        #region IgnoreBreaks_FlagMiddle_FlagLong_NullReplace
+        #region IgnoreBreaks_FlagMiddle_FlagLong
         [Test]
-        public void IgnoreBreaks_FlagMiddle_FlagLong_NullReplace()
+        public void IgnoreBreaks_FlagMiddle_FlagLong()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string SearchTerm = "quickbrown";
+            string SearchTerm = "quick.*brown";
             string Command = $"-f '{TestFilePath}' {_FlagDescriptorLong} {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion IgnoreBreaks_FlagMiddle_FlagLong_NullReplace 
-
-        #region IgnoreBreaks_FlagMiddle_FlagShort_SpaceReplace
-        [Test]
-        public void IgnoreBreaks_FlagMiddle_FlagShort_SpaceReplace()
-        {
-            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
-            Assert.IsTrue(File.Exists(TestFilePath));
-
-            string SearchTerm = "quick brown";
-            string Command = $"-f '{TestFilePath}' {_FlagDescriptorShort} {SearchTerm}";
-
-            var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommand(Command, GrepResultCollection);
-
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
-        }
-        #endregion IgnoreBreaks_FlagMiddle_FlagShort_SpaceReplace 
-
-        #region IgnoreBreaks_FlagMiddle_FlagLong_SpaceReplace
-        [Test]
-        public void IgnoreBreaks_FlagMiddle_FlagLong_SpaceReplace()
-        {
-            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
-            Assert.IsTrue(File.Exists(TestFilePath));
-
-            string SearchTerm = "quick brown";
-            string Command = $"-f '{TestFilePath}' {_FlagDescriptorLong} {SearchTerm}";
-
-            var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommand(Command, GrepResultCollection);
-
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
-        }
-        #endregion IgnoreBreaks_FlagMiddle_FlagLong_SpaceReplace 
+        #endregion IgnoreBreaks_FlagMiddle_FlagLong 
         #endregion FlagMiddle..
 
         #region FlagLast..
-        #region IgnoreBreaks_FlagLast_FlagShort_NullReplace
+        #region IgnoreBreaks_FlagLast_FlagShort
         [Test]
-        public void IgnoreBreaks_FlagLast_FlagShort_NullReplace()
+        public void IgnoreBreaks_FlagLast_FlagShort()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string SearchTerm = "quickbrown";
+            string SearchTerm = "quick.*brown";
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion IgnoreBreaks_FlagLast_FlagShort_NullReplace 
+        #endregion IgnoreBreaks_FlagLast_FlagShort 
 
-        #region IgnoreBreaks_FlagLast_FlagLong_NullReplace
+        #region IgnoreBreaks_FlagLast_FlagLong
         [Test]
-        public void IgnoreBreaks_FlagLast_FlagLong_NullReplace()
+        public void IgnoreBreaks_FlagLast_FlagLong()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
 
-            string SearchTerm = "quickbrown";
+            string SearchTerm = "quick.*brown";
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+            Assert.IsTrue(GrepResultCollection.Count == 1);
         }
-        #endregion IgnoreBreaks_FlagLast_FlagLong_NullReplace 
-
-        #region IgnoreBreaks_FlagLast_FlagShort_SpaceReplace
-        [Test]
-        public void IgnoreBreaks_FlagLast_FlagShort_SpaceReplace()
-        {
-            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
-            Assert.IsTrue(File.Exists(TestFilePath));
-
-            string SearchTerm = "quick brown";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
-
-            var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommand(Command, GrepResultCollection);
-
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
-        }
-        #endregion IgnoreBreaks_FlagLast_FlagShort_SpaceReplace 
-
-        #region IgnoreBreaks_FlagLast_FlagLong_SpaceReplace
-        [Test]
-        public void IgnoreBreaks_FlagLast_FlagLong_SpaceReplace()
-        {
-            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
-            Assert.IsTrue(File.Exists(TestFilePath));
-
-            string SearchTerm = "quick brown";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
-
-            var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommand(Command, GrepResultCollection);
-
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
-        }
-        #endregion IgnoreBreaks_FlagLast_FlagLong_SpaceReplace 
+        #endregion IgnoreBreaks_FlagLast_FlagLong 
         #endregion FlagLast..
 
         #region IgnoreBreaks_NoFlag
@@ -254,9 +152,111 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             var GrepResultCollection = new GrepResultCollection();
             GrepEngine.RunCommand(Command, GrepResultCollection);
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 0);
+            Assert.IsTrue(GrepResultCollection.Count == 0);
         }
         #endregion IgnoreBreaks_NoFlag 
+
+        #region IgnoreBreaks_StartOfLine
+        [Test]
+        public void IgnoreBreaks_StartOfLine()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "^T";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} -b";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion IgnoreBreaks_StartOfLine
+
+        #region IgnoreBreaks_StartOfLine_NoFlag
+        [Test]
+        public void IgnoreBreaks_StartOfLine_NoFlag()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "^a";
+            string Command = $"-f '{TestFilePath}' {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 3);
+        }
+        #endregion IgnoreBreaks_StartOfLine_NoFlag
+
+        #region IgnoreBreaks_EndOfLine
+        [Test]
+        public void IgnoreBreaks_EndOfLine()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "d$";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} -b";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion IgnoreBreaks_EndOfLine
+
+        #region IgnoreBreaks_EndOfLine_NoFlag
+        [Test]
+        public void IgnoreBreaks_EndOfLine_NoFlag()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "d$";
+            string Command = $"-f '{TestFilePath}' {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 3);
+        }
+        #endregion IgnoreBreaks_EndOfLine_NoFlag
+
+        #region IgnoreBreaks_StartOfLineToEndOfLine
+        [Test]
+        public void IgnoreBreaks_StartOfLineToEndOfLine()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "^T.*$";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} -b";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 1);
+        }
+        #endregion IgnoreBreaks_StartOfLineToEndOfLine
+
+        #region IgnoreBreaks_StartOfLineToEndOfLine_NoFlag
+        [Test]
+        public void IgnoreBreaks_StartOfLineToEndOfLine_NoFlag()
+        {
+            string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
+            Assert.IsTrue(File.Exists(TestFilePath));
+
+            string SearchTerm = "^a.*$";
+            string Command = $"-f '{TestFilePath}' {SearchTerm}";
+
+            var GrepResultCollection = new GrepResultCollection();
+            GrepEngine.RunCommand(Command, GrepResultCollection);
+
+            Assert.IsTrue(GrepResultCollection.Count == 3);
+        }
+        #endregion IgnoreBreaks_StartOfLineToEndOfLine_NoFlag
         #endregion Tests..
     }
 }
