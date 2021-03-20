@@ -42,8 +42,8 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 | Filenames Only            | -k | --filenames-only      |
 | FileSize Minimum          | -z | --filesize-minimum=   |
 | FileSize Maximum          | -Z | --filesize-maximum=   |
-| Replace Text              | -R | --replace=            |
-| Delete Files              | -D | --delete-files        |
+| Replace Text              | -RX | --replace=            |
+| Delete Files              | -DX| --delete-files        |
 | Write Output to File      | -w | --write=              |
 
 
