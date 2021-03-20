@@ -13,6 +13,6 @@
 -k	--filenames-only		: Match against file names rather than file content
 -z	--filesize-minimum=		: Filter matched files <= n kilobytes
 -Z	--filesize-maximum=		: Filter matched files >= n kilobytes
--R	--replace=			: Replace text in matched files (surround with ' or ")
--D	--delete-files			: Delete files returned in search
+-RX	--replace=			: Replace text in matched files (surround with ' or ")
+-DX	--delete-files			: Delete files returned in search
 -w	--write=			: Write output to specified filepath (surround with ' or ")
