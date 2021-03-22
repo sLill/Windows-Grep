@@ -3,7 +3,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-budgetgrep/badge)](https://www.codefactor.io/repository/github/slill/windows-budgetgrep)
 ![.NET Core](https://github.com/sLill/Windows-BudgetGrep/workflows/.NET%20Core/badge.svg)
 
-A file search utility. Performs as well or better than paid applications like FileLocator Pro without any additional UI overhead</br>
+A command line file search utility. Performs as well or better than paid applications like FileLocator Pro without any additional UI overhead</br>
 
 -Supports-</br>
 - Filename and file content searches</br>
