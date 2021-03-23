@@ -80,7 +80,7 @@
         // Replace instances of the search term with the replace parameter
         [ExpectsParameter(true)]
         [FilterCharacterCollection('\'', '"')]
-        [DescriptionCollection("-RX", "--replace")]
+        [DescriptionCollection("-RX", "--replace=")]
         Replace,
 
         // Delete files returned in search
