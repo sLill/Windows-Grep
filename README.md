@@ -59,4 +59,4 @@ Order of flags and search terms is flexible. The only requirement is that flags 
 
 <h2>== EXAMPLES ==</h2>
 
-<img src="https://i.imgur.com/0Fojtoh.png" width="750" height="1177">
+<img src="https://i.imgur.com/jefKbt3.png" width="750" height="1677">
