@@ -55,8 +55,8 @@ Order of flags and search terms is flexible. The only requirement is that flags 
 
 <h2>== USAGE ==</h2>
 
-<img src="https://i.imgur.com/N4bmJOu.png" width="833" height="1157"></br>
+<img src="https://i.imgur.com/N4bmJOu.png" width="733" height="1020"></br>
 
 <h2>== EXAMPLES ==</h2>
 
-<img src="https://i.imgur.com/0Fojtoh.png" width="900" height="1397">
+<img src="https://i.imgur.com/0Fojtoh.png" width="750" height="1177">
