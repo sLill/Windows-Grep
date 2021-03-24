@@ -118,7 +118,7 @@ namespace WindowsGrep.Engine
                 FileSizeString = $"{FileSizeReduced} {fileSizeType}(s){separator}";
             }
 
-            Result = Scope == ResultScope.FileName ? SourceFile : $"{SourceFile}{separator}{FileSizeString}{LineNumberString}{separator}{LeadingContextString}";
+            Result = Scope == ResultScope.FileName ? SourceFile : $"{SourceFile}{separator}{FileSizeString}{LineNumberString}{separator}{LeadingContextString}{MatchedString}{TrailingContextString}";
             return Result;
         }
         #endregion Methods..
