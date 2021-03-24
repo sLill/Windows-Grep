@@ -16,7 +16,7 @@ A command line file search utility. Performs as well or better than paid applica
 - Ease of use: Runnable from Cmd, Powershell and Windows Explorer</br>
 
 
-<i>*Be cautious when using command flags that modify files like Replace (-R) and Delete (-D). There is no confirmation on these actions.</i>
+<i>*Be cautious when using command flags that modify files like Replace (-RX) and Delete (-DX). There is no confirmation on these actions.</i>
 
 <h2>== INSTALLATION ==</h2>
 
