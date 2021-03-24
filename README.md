@@ -3,7 +3,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-budgetgrep/badge)](https://www.codefactor.io/repository/github/slill/windows-budgetgrep)
 ![.NET Core](https://github.com/sLill/Windows-BudgetGrep/workflows/.NET%20Core/badge.svg)
 
-A file search utility. Performs as well or better than paid applications like FileLocator Pro without any additional UI overhead</br>
+A command line file search utility. Performs as well or better than paid applications like FileLocator Pro without any additional UI overhead</br>
 
 -Supports-</br>
 - Filename and file content searches</br>
@@ -25,7 +25,7 @@ A file search utility. Performs as well or better than paid applications like Fi
 
 This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
-<h2>== USAGE ==</h2>
+<h2>== REFERENCE ==</h2>
 
 |                           |    |                       |
 | ------------------------- | -- | :-------------------: |
@@ -53,44 +53,10 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 Order of flags and search terms is flexible. The only requirement is that flags and their parameters be grouped together
 <br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
 
+<h2>== USAGE ==</h2>
+
+<img src="https://i.imgur.com/N4bmJOu.png" width="733" height="1020"></br>
+
 <h2>== EXAMPLES ==</h2>
 
-#### 1. Searching for the grep.exe executable</br>
-(-r) Recursive to include all sub-directories</br>
-(-k) Filename to target filenames rather than file content</br></br>
-<img src="https://i.imgur.com/scPmoNa.png" height="180" width="455"></br>
-<ul>
-  <li><b>WindowsGrep - 11.94 seconds</b></li>
-<li>FileLocator Pro - 16.8 seconds</li>
-<li>Windows Explorer - 1 minute 39 seconds</li>
-</ul>
-
-The same query with additional filtering (-t) for .exe files to further improve performance</br></br>
-<img src="https://i.imgur.com/PeC2mma.png" height="180" width="455">
-
-----------------------------------------------------------------------------------------------------------
-
-#### 2. Searching for a phrase</br>
-(-r) Recursive to include all sub-directories</br>
-(-t) Filter by the .txt filetype</br>
-(-i) Ignore-case</br></br>
-<img src="https://i.imgur.com/4QqWzb3.png"></br>
-<ul>
-  <li><b>WindowsGrep - 0.93 seconds</b></li>
-<li>FileLocator Pro - 1.87 seconds</li>
-<li>Windows Explorer - N/A</li>
-</ul>
-
-----------------------------------------------------------------------------------------------------------
-
-#### 3. Searching for a phrase using Regular Expressions</br>
-(-r) Recursive to include all sub-directories</br>
-(-t) Filter by the .txt filetype</br>
-(-i) Ignore-case</br></br>
-<img src="https://i.imgur.com/ukKoflJ.png"></br>
-<ul>
-  <li><b>WindowsGrep - 0.68 seconds</b></li>
-<li>FileLocator Pro - 2.27 seconds</li>
-<li>Windows Explorer - N/A</li>
-</ul>
-
+<img src="https://i.imgur.com/jefKbt3.png" width="750" height="1677">
