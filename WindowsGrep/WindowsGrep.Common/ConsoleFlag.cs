@@ -19,6 +19,11 @@
         [DescriptionCollection("-c", "--context=")]
         Context,
 
+        // Returns the first n results
+        [ExpectsParameter(true)]
+        [DescriptionCollection("-n", "--results=")]
+        NResults,
+
         // Interprets patterns as fixed strings, not regular expressions
         [DescriptionCollection("-F", "--fixed-strings")]
         FixedStrings,

@@ -81,6 +81,7 @@ namespace WindowsGrep.Engine
             bool IgnoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
             bool IgnoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
             bool ContextFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Context);
+            bool NResultsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.NResults);
 
             // Build file context search pattern
             string SearchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
@@ -118,7 +119,13 @@ namespace WindowsGrep.Engine
                 int LineNumber = fileRaw.Substring(0, match.Groups["MatchedString"].Index).Split('\n').Length;
                 GrepResult.LineNumber = LineNumber;
 
-                grepResultCollection.AddItem(GrepResult);
+                lock (grepResultCollection)
+                {
+                    if (!NResultsFlag || grepResultCollection.Count < Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.NResults]))
+                    {
+                        grepResultCollection.AddItem(GrepResult);
+                    }
+                }
             });
         }
         #endregion BuildSearchResultsFileContent
@@ -318,6 +325,7 @@ namespace WindowsGrep.Engine
             bool FileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
             bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
             bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
+            bool NResultsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.NResults);
 
             int FileReadFailedCount = 0;
             int FileWriteFailedCount = 0;
@@ -339,43 +347,46 @@ namespace WindowsGrep.Engine
 
                 files.ToList().ForEach(file =>
                 {
-                    // Don't want to waste any time on files that have already been added 
-                    bool FileAdded = Matches.Any(x => x.SourceFile == file);
-                    if (!FileAdded)
+                    if (!NResultsFlag || Matches.Count < Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.NResults]))
                     {
-                        // Parse filename from path
-                        var FileNameMatch = FileNameRegex.Match(file)?.Groups["FileName"];
-                        if (FileNameMatch != null)
+                        // Don't want to waste any time on files that have already been added 
+                        bool FileAdded = Matches.Any(x => x.SourceFile == file);
+                        if (!FileAdded)
                         {
-                            // Query against filename
-                            var SearchMatch = SearchRegex.Match(FileNameMatch.Value);
-                            if (SearchMatch != Match.Empty)
+                            // Parse filename from path
+                            var FileNameMatch = FileNameRegex.Match(file)?.Groups["FileName"];
+                            if (FileNameMatch != null)
                             {
-                                // Write operations
-                                bool isWriteOperation = ReplaceFlag || DeleteFlag;
-                                if (isWriteOperation)
+                                // Query against filename
+                                var SearchMatch = SearchRegex.Match(FileNameMatch.Value);
+                                if (SearchMatch != Match.Empty)
                                 {
-                                    ProcessWriteOperations(consoleCommand, file, SearchPattern, Matches.Count, ref file, ref TotalFilesMatchedCount, ref DeleteSuccessCount, ref ReplacedSuccessCount, ref FileWriteFailedCount);
-                                }
-                                else
-                                {
-                                    int TrailingContextStringStartIndex = FileNameMatch.Index + SearchMatch.Index + SearchMatch.Length;
-
-                                    // Validate any filesize parameters
-                                    var FileSize = FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
-                                    bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize, FileSizeMin, FileSizeMax);
-
-                                    if (FileSizevalidateSuccess)
+                                    // Write operations
+                                    bool isWriteOperation = ReplaceFlag || DeleteFlag;
+                                    if (isWriteOperation)
                                     {
-                                        GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
-                                        {
-                                            FileSize = FileSize,
-                                            LeadingContextString = file.Substring(0, FileNameMatch.Index + SearchMatch.Index),
-                                            MatchedString = SearchMatch.Value,
-                                            TrailingContextString = file.Substring(TrailingContextStringStartIndex, file.Length - TrailingContextStringStartIndex)
-                                        };
+                                        ProcessWriteOperations(consoleCommand, file, SearchPattern, Matches.Count, ref file, ref TotalFilesMatchedCount, ref DeleteSuccessCount, ref ReplacedSuccessCount, ref FileWriteFailedCount);
+                                    }
+                                    else
+                                    {
+                                        int TrailingContextStringStartIndex = FileNameMatch.Index + SearchMatch.Index + SearchMatch.Length;
 
-                                        Matches.Add(GrepResult);
+                                        // Validate any filesize parameters
+                                        var FileSize = FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
+                                        bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize, FileSizeMin, FileSizeMax);
+
+                                        if (FileSizevalidateSuccess)
+                                        {
+                                            GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
+                                            {
+                                                FileSize = FileSize,
+                                                LeadingContextString = file.Substring(0, FileNameMatch.Index + SearchMatch.Index),
+                                                MatchedString = SearchMatch.Value,
+                                                TrailingContextString = file.Substring(TrailingContextStringStartIndex, file.Length - TrailingContextStringStartIndex)
+                                            };
+
+                                            Matches.Add(GrepResult);
+                                        }
                                     }
                                 }
                             }
@@ -397,34 +408,37 @@ namespace WindowsGrep.Engine
                 {
                     try
                     {
-                        List<Match> Matches = new List<Match>();
-
-                        // Validate any filesize parameters
-                        var FileSize = FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
-                        bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize, FileSizeMin, FileSizeMax);
-
-                        if (FileSizevalidateSuccess)
+                        if (!NResultsFlag || grepResultCollection.Count < Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.NResults]))
                         {
-                            string FileRaw = File.ReadAllText(file);
+                            List<Match> Matches = new List<Match>();
 
-                            Matches = SearchRegex.Matches(FileRaw).ToList();
-                            if (Matches.Any())
+                            // Validate any filesize parameters
+                            var FileSize = FileSizeMaximumFlag || FileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(file) : -1;
+                            bool FileSizevalidateSuccess = ValidateFileSize(consoleCommand, FileSize, FileSizeMin, FileSizeMax);
+
+                            if (FileSizevalidateSuccess)
                             {
-                                // Write operations
-                                bool isWriteOperation = ReplaceFlag || DeleteFlag;
-                                if (isWriteOperation)
-                                {
-                                    ProcessWriteOperations(consoleCommand, file, SearchPattern, Matches.Count, ref FileRaw, ref TotalFilesMatchedCount, ref DeleteSuccessCount, ref ReplacedSuccessCount, ref FileWriteFailedCount);
-                                }
+                                string FileRaw = File.ReadAllText(file);
 
-                                // Read operations
-                                else
+                                Matches = SearchRegex.Matches(FileRaw).ToList();
+                                if (Matches.Any())
                                 {
-                                    BuildSearchResultsFileContent(consoleCommand, grepResultCollection, Matches, file, FileSize, FileRaw);
-
-                                    lock (_SearchLock)
+                                    // Write operations
+                                    bool isWriteOperation = ReplaceFlag || DeleteFlag;
+                                    if (isWriteOperation)
                                     {
-                                        TotalFilesMatchedCount++;
+                                        ProcessWriteOperations(consoleCommand, file, SearchPattern, Matches.Count, ref FileRaw, ref TotalFilesMatchedCount, ref DeleteSuccessCount, ref ReplacedSuccessCount, ref FileWriteFailedCount);
+                                    }
+
+                                    // Read operations
+                                    else
+                                    {
+                                        BuildSearchResultsFileContent(consoleCommand, grepResultCollection, Matches, file, FileSize, FileRaw);
+
+                                        lock (_SearchLock)
+                                        {
+                                            TotalFilesMatchedCount++;
+                                        }
                                     }
                                 }
                             }
@@ -475,7 +489,7 @@ namespace WindowsGrep.Engine
                 }
                 else if (ReplaceFlag)
                 {
-                    // Replace all occurrences in file
+                    // Replace all occurrences within the file
                     FileRaw = Regex.Replace(FileRaw, searchPattern, consoleCommand.CommandArgs[ConsoleFlag.Replace]);
                     File.WriteAllText(fileName, FileRaw);
 
