@@ -53,9 +53,13 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 Order of flags and search terms is flexible. The only requirement is that flags and their parameters be grouped together
 <br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
 
+<br/>
+
 <h2>== USAGE ==</h2>
 
-<img src="https://i.imgur.com/N4bmJOu.png" width="733" height="1020"></br>
+<img src="https://i.imgur.com/N4bmJOu.png" width="633" height="890"></br>
+
+<br/>
 
 <h2>== EXAMPLES ==</h2>
 
