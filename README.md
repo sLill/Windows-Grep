@@ -3,20 +3,19 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-budgetgrep/badge)](https://www.codefactor.io/repository/github/slill/windows-budgetgrep)
 ![.NET Core](https://github.com/sLill/Windows-BudgetGrep/workflows/.NET%20Core/badge.svg)
 
-A command line file search utility. Performs as well or better than paid applications like FileLocator Pro without any additional UI overhead</br>
+A command line file search utility. Performs better than paid applications like FileLocator Pro without any of the unnecessary UI overhead</br>
 
 -Supports-</br>
 - Filename and file content searches</br>
 - Regular Expressions</br>
 - Chained commands</br>
-- Filetype filterering</br>
-- Filesize filtering</br>
-- Written output to external files</br>
+- Filetype/Filepath/Filesize filtering</br>
+- Output to external files</br>
 - Mass replace and delete actions on queried files</br>
-- Ease of use: Runnable from Cmd, Powershell and Windows Explorer</br>
+- Ease of use: Runnable from Cmd, Powershell, Windows Explorer or headless</br>
 
 
-<i>*Be cautious when using command flags that modify files like Replace (-RX) and Delete (-DX). There is no confirmation on these actions.</i>
+<i>*Be cautious when using command flags that modify files or their contents like Replace (-RX) and Delete (-DX). There is no confirmation or undo on these actions.</i>
 
 <h2>== INSTALLATION ==</h2>
 
@@ -38,8 +37,10 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 | Target File               | -f | --file=               |
 | Plain Text Search         | -F | --fixed-strings       |
 | Regular Expression Search | -G | --basic-regexp        |
-| Filter on FileType(s)     | -t | --filetype-inclusion= |
-| Filter out FileType(s)    | -T | --filetype-exclusion= |
+| Filter Files by Type(s) [Inclusive]    | -t | --filetype-filter=    |
+| Filter Files by Type(s) [Exclusive]    | -T | --filetype-exclude-filter= |
+| Filter Filepath(s) by Expression(s) [Inclusive]    | -p | --path-filter=    |
+| Filter Filepath(s) by Expression(s) [Exclusive]    | -P | --path-exclude-filter= |
 | Filenames Only            | -k | --filenames-only      |
 | FileSize Minimum          | -z | --filesize-minimum=   |
 | FileSize Maximum          | -Z | --filesize-maximum=   |
@@ -51,7 +52,7 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 <i>* See <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
 
 <b>Command Order</b></br>
-Order of flags and search terms is flexible. The only requirement is that flags and their parameters be grouped together
+Order of flags and search terms is completely flexible. The only requirement is that parameters be given to flag types that expect them.
 <br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
 
 <br/>
