@@ -11,8 +11,8 @@
 -G	--basic-regexp			: Interpret patterns as basic regular expressions (default)
 -t	--filetype-filter=		: Filter files by type [Inclusive] (comma or semicolon delimited)
 -T	--filetype-exclude-filter=	: Filter files by type [Exclusive] (comma or semicolon delimited)
--p	--path-filter			: Filter filepaths [Inclusive] (comma or semicolon delimited)
--P	--path-exclude-filter		: Filter filepaths [Exclusive] (comma or semicolon delimited)
+-p	--path-filter=			: Filter filepaths [Inclusive] (comma or semicolon delimited)
+-P	--path-exclude-filter=		: Filter filepaths [Exclusive] (comma or semicolon delimited)
 -k	--filenames-only		: Match against file names rather than file content
 -z	--filesize-minimum=		: Filter matched files <= n kilobytes
 -Z	--filesize-maximum=		: Filter matched files >= n kilobytes
