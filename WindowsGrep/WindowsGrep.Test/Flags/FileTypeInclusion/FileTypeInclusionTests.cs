@@ -24,7 +24,7 @@ namespace WindowsGrep.Test.Flags.FileTypeInclusion
         {
             TestDataDirectory = Path.Combine(TestConfigurationManager.ProjectDirectory, _TestDataRelativePath);
 
-            List<string> DescriptionCollection = ConsoleFlag.FileTypeInclusions.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
+            List<string> DescriptionCollection = ConsoleFlag.FileTypeFilter.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
             _FlagDescriptorShort = DescriptionCollection[0];
             _FlagDescriptorLong = DescriptionCollection[1];
         }

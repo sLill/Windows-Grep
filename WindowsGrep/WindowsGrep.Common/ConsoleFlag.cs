@@ -53,14 +53,26 @@
         // Restricts search to files with the specified extensions. Comma delimited
         [ExpectsParameter(true)]
         [FilterCharacterCollection('\'', '"', '.', '\\')]
-        [DescriptionCollection("-t", "--filetype-include=")]
-        FileTypeInclusions,
+        [DescriptionCollection("-t", "--filetype-filter=")]
+        FileTypeFilter,
 
         // Excludes all files with the specified extensions. Comma delimited
         [ExpectsParameter(true)]
         [FilterCharacterCollection('\'', '"', '.', '\\')]
-        [DescriptionCollection("-T", "--filetype-exclude=")]
-        FileTypeExclusions,
+        [DescriptionCollection("-T", "--filetype-exclude-filter=")]
+        FileTypeExcludeFilter,
+
+        // Restricts search to filepaths matching the specified expressions. Comma delimited 
+        [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"')]
+        [DescriptionCollection("-p", "--path-filter=")]
+        PathFilter,
+
+        // Restricts search to filepaths that do not match any of the specified expressions. Comma delimited 
+        [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"')]
+        [DescriptionCollection("-P", "--path-exclude-filter=")]
+        PathExcludeFilter,
 
         // Match against file names rather than file content
         [DescriptionCollection("-k", "--filenames-only")]

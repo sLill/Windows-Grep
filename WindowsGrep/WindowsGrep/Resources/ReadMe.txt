@@ -7,10 +7,12 @@
 -b	--ignore-breaks			: Ignore line breaks
 -i	--ignore-case			: Ignore case
 -f	--file=				: Target file (surround with ' or ")
--F	--fixed-strings			: Interprets patterns as fixed strings
--G	--basic-regexp			: Interprets patterns as basic regular expressions (default)
--t	--filetype-inclusion=		: Filters all files of non-specified type (comma or semicolon delimited)
--T	--filetype-exclusion=		: Filters all files of specified type (comma or semicolon delimited)
+-F	--fixed-strings			: Interpret patterns as fixed strings
+-G	--basic-regexp			: Interpret patterns as basic regular expressions (default)
+-t	--filetype-filter=		: Filter files by type [Inclusive] (comma or semicolon delimited)
+-T	--filetype-exclude-filter=	: Filter files by type [Exclusive] (comma or semicolon delimited)
+-p	--path-filter			: Filter filepaths [Inclusive] (comma or semicolon delimited)
+-P	--path-exclude-filter		: Filter filepaths [Exclusive] (comma or semicolon delimited)
 -k	--filenames-only		: Match against file names rather than file content
 -z	--filesize-minimum=		: Filter matched files <= n kilobytes
 -Z	--filesize-maximum=		: Filter matched files >= n kilobytes

@@ -263,14 +263,23 @@ namespace WindowsGrep.Engine
         /// <returns>Returns files filtered by Inclusion/Exclusion type parameters</returns>
         private static List<string> GetFilteredFiles(ConsoleCommand consoleCommand, List<string> files)
         {
-            bool FileTypeInclusionFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeInclusions);
-            bool FileTypeExclusionFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeExclusions);
+            bool FileTypeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeFilter);
+            bool FileTypeExcludeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeExcludeFilter);
 
-            var FileTypeInclusions = FileTypeInclusionFlag ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeInclusions].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')) : null;
-            var FileTypeExclusions = FileTypeExclusionFlag ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeExclusions].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')) : null;
+            var FileTypeFilters = FileTypeFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')) : null;
+            var FileTypeExcludeFilters = FileTypeExcludeFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeExcludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')) : null;
 
-            files = FileTypeInclusions == null ? files : files.Where(file => FileTypeInclusions.Contains(Path.GetExtension(file).Trim('.'))).ToList();
-            files = FileTypeExclusions == null ? files : files.Where(file => !FileTypeExclusions.Contains(Path.GetExtension(file).Trim('.'))).ToList();
+            bool PathFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.PathFilter);
+            bool PathExcludeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.PathExcludeFilter);
+
+            var PathFilters = PathFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.PathFilter].Split(new char[] { ',', ';' }) : null;
+            var PathExcludeFilters = PathExcludeFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.PathExcludeFilter].Split(new char[] { ',', ';' }) : null;
+
+            files = FileTypeFilters == null ? files : files.Where(file => FileTypeFilters.Contains(Path.GetExtension(file).Trim('.'))).ToList();
+            files = FileTypeExcludeFilters == null ? files : files.Where(file => !FileTypeExcludeFilters.Contains(Path.GetExtension(file).Trim('.'))).ToList();
+
+            files = PathFilters == null ? files : files.Where(file => PathFilters.Any(x => Regex.IsMatch(file, x))).ToList();
+            files = PathExcludeFilters == null ? files : files.Where(file => !PathExcludeFilters.Any(x => Regex.IsMatch(file, x))).ToList();
 
             return files;
         }
