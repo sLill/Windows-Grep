@@ -4,6 +4,7 @@
 -d	--directory=			: Target directory (surround with ' or ")
 -c	--context=			: Return n leading/trailing characters surrounding the matched term
 -n	--results=			: Return first n results
+-s	--suppress			: Suppress console output
 -b	--ignore-breaks			: Ignore line breaks
 -i	--ignore-case			: Ignore case
 -f	--file=				: Target file (surround with ' or ")

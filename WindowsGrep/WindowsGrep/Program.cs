@@ -45,7 +45,13 @@ namespace WindowsGrep
         private static void OnResultsAdded(object sender, EventArgs e)
         {
             var GrepResults = sender as List<GrepResult>;
-            GrepResults.ForEach(result => ConsoleUtils.WriteConsoleItemCollection(result.ToConsoleItemCollection()));
+            GrepResults.ForEach(result =>
+            {
+                if (!result.Suppressed)
+                {
+                    ConsoleUtils.WriteConsoleItemCollection(result.ToConsoleItemCollection());
+                }
+            });
         }
         #endregion OnResultsAdded
         #endregion Event Handlers..

@@ -24,6 +24,10 @@
         [DescriptionCollection("-n", "--results=")]
         NResults,
 
+        // Suppresses console output
+        [DescriptionCollection("-s", "--suppress")]
+        Suppress,
+
         // Interprets patterns as fixed strings, not regular expressions
         [DescriptionCollection("-F", "--fixed-strings")]
         FixedStrings,

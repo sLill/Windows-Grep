@@ -82,6 +82,7 @@ namespace WindowsGrep.Engine
             bool IgnoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
             bool ContextFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Context);
             bool NResultsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.NResults);
+            bool SuppressFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Suppress);
 
             // Build file context search pattern
             string SearchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
@@ -109,6 +110,7 @@ namespace WindowsGrep.Engine
 
                 GrepResult GrepResult = new GrepResult(filename, ResultScope.FileContent)
                 {
+                    Suppressed = SuppressFlag,
                     FileSize = fileSize,
                     LeadingContextString = LeadingContext,
                     TrailingContextString = TrailingContext,
@@ -335,6 +337,7 @@ namespace WindowsGrep.Engine
             bool FileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
             bool FileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
             bool NResultsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.NResults);
+            bool SuppressFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Suppress);
 
             int FileReadFailedCount = 0;
             int FileWriteFailedCount = 0;
@@ -388,6 +391,7 @@ namespace WindowsGrep.Engine
                                         {
                                             GrepResult GrepResult = new GrepResult(file, ResultScope.FileName)
                                             {
+                                                Suppressed = SuppressFlag,
                                                 FileSize = FileSize,
                                                 LeadingContextString = file.Substring(0, FileNameMatch.Index + SearchMatch.Index),
                                                 MatchedString = SearchMatch.Value,

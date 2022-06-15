@@ -7,6 +7,10 @@ namespace WindowsGrep.Engine
     public class GrepResult
     {
         #region Properties..
+        #region Suppressed
+        public bool Suppressed { get; set; }
+        #endregion Suppressed
+
         #region FileSize
         public long FileSize { get; set; }
         #endregion FileSize
