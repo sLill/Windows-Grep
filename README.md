@@ -32,6 +32,7 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 | Target Directory          | -d | --directory=          |
 | Context Characters        | -c | --context=            |
 | Limit n Results           | -n | --results=            |
+| Suppress output           | -s | --suppress            |
 | Ignore Line Breaks        | -b | --ignore-breaks       |
 | Ignore Case               | -i | --ignore-case         |
 | Target File               | -f | --file=               |
