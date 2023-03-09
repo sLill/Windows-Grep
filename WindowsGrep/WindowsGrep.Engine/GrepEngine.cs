@@ -395,15 +395,10 @@ namespace WindowsGrep.Engine
         /// <returns>Returns files filtered by Inclusion/Exclusion type parameters</returns>
         private static List<string> GetFilteredFiles(ConsoleCommand consoleCommand, List<string> files)
         {
-            bool fileTypeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeFilter);
-            bool fileTypeExcludeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeExcludeFilter);
-            bool pathFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.PathFilter);
-            bool pathExcludeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.PathExcludeFilter);
-
-            var fileTypeFilters = fileTypeFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')) : null;
-            var fileTypeExcludeFilters = fileTypeExcludeFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeExcludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')) : null;
-            var pathFilters = pathFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.PathFilter].Split(new char[] { ',', ';' }) : null;
-            var pathExcludeFilters = pathExcludeFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.PathExcludeFilter].Split(new char[] { ',', ';' }) : null;
+            var fileTypeFilters = GetFileTypeFilters(consoleCommand);
+            var fileTypeExcludeFilters = GetFileTypeExcludeFilters(consoleCommand);
+            var pathFilters = GetPathFilters(consoleCommand);
+            var pathExcludeFilters = GetPathExcludeFilters(consoleCommand);
 
             // Filter files by type
             files = fileTypeFilters == null ? files : files.Where(file => fileTypeFilters.Contains(Path.GetExtension(file).Trim('.'))).ToList();
@@ -416,6 +411,46 @@ namespace WindowsGrep.Engine
             return files;
         }
         #endregion GetFilteredFiles
+
+        #region GetFileTypeFilters
+        private static IEnumerable<string> GetFileTypeFilters(ConsoleCommand consoleCommand)
+        {
+            bool fileTypeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeFilter);
+            var fileTypeFilters = fileTypeFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')) : null;
+
+            return fileTypeFilters;
+        }
+        #endregion GetFileTypeFilters
+
+        #region GetFileTypeExcludeFilters
+        private static IEnumerable<string> GetFileTypeExcludeFilters(ConsoleCommand consoleCommand)
+        {
+            bool fileTypeExcludeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeExcludeFilter);
+            var fileTypeExcludeFilters = fileTypeExcludeFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.FileTypeExcludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')) : null;
+
+            return fileTypeExcludeFilters;
+        }
+        #endregion GetFileTypeFilters
+
+        #region GetPathFilters
+        private static IEnumerable<string> GetPathFilters(ConsoleCommand consoleCommand)
+        {
+            bool pathFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.PathFilter);
+            var pathFilters = pathFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.PathFilter].Split(new char[] { ',', ';' }) : null;
+
+            return pathFilters;
+        }
+        #endregion GetPathFilters
+
+        #region GetPathExcludeFilters
+        private static IEnumerable<string> GetPathExcludeFilters(ConsoleCommand consoleCommand)
+        {
+            bool pathExcludeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.PathExcludeFilter);
+            var pathExcludeFilters = pathExcludeFilterFlag ? consoleCommand.CommandArgs[ConsoleFlag.PathExcludeFilter].Split(new char[] { ',', ';' }) : null;
+
+            return pathExcludeFilters;
+        }
+        #endregion GetPathExcludeFilters
 
         #region GetPath
         private static string GetPath(ConsoleCommand consoleCommand)
