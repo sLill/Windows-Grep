@@ -4,29 +4,25 @@ namespace WindowsGrep.Common
 {
     public class ThreadSafeCollection<T> : List<T>
     {
-        #region Member Variables..
-        private object _LockObject = new object();
-        #endregion Member Variables..
+        #region Fields..
+        private object _lockObject = new object();
+        #endregion Fields..
 
         #region Properties..
         #endregion Properties..
 
         #region Constructors..
-        #region ThreadSafeCollection
         public ThreadSafeCollection() { }
-        #endregion ThreadSafeCollection
 
-        #region ThreadSafeCollection
         public ThreadSafeCollection(IEnumerable<T> collection)
            : base(collection) { }
-        #endregion ThreadSafeCollection
         #endregion Constructors..
 
         #region Methods..
         #region AddItem
         public virtual void AddItem(T item)
         {
-            lock (_LockObject)
+            lock (_lockObject)
             {
                 this.Add(item);
             }
@@ -36,7 +32,7 @@ namespace WindowsGrep.Common
         #region AddItemRange
         public virtual void AddItemRange(IEnumerable<T> item)
         {
-            lock (_LockObject)
+            lock (_lockObject)
             {
                 this.AddRange(item);
             }

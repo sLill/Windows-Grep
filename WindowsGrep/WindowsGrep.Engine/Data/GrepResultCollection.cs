@@ -8,18 +8,9 @@ namespace WindowsGrep.Engine
 {
     public class GrepResultCollection : ThreadSafeCollection<GrepResult>
     {
-        #region Member Variables..
-        #endregion Member Variables..
-
-        #region Properties..
-        #endregion Properties..
-
         #region Events..
         public event EventHandler ItemsAdded;
         #endregion Events..
-
-        #region Constructors..
-        #endregion Constructors..
 
         #region Methods..
         #region AddItem
@@ -45,8 +36,8 @@ namespace WindowsGrep.Engine
             {
                 var fileFormat = FileFormat.PlainText;
 
-                string Extension = Path.GetExtension(fileName);
-                switch (Extension.ToUpper())
+                string extension = Path.GetExtension(fileName);
+                switch (extension.ToUpper())
                 {
                     case ".CSV":
                     case ".XLSX":
@@ -58,14 +49,14 @@ namespace WindowsGrep.Engine
                         break;
                 }
 
-                char SeparatorCharacter = fileFormat == FileFormat.CommaSeparatedValues ? ',' : ' ';
-                string fileContent = string.Join(Environment.NewLine, this.OrderBy(x => x.SourceFile).Select(x => x.ToString(SeparatorCharacter)));
+                char separatorCharacter = fileFormat == FileFormat.CommaSeparatedValues ? ',' : ' ';
+                string fileContent = string.Join(Environment.NewLine, this.OrderBy(x => x.SourceFile).Select(x => x.ToString(separatorCharacter)));
                 File.WriteAllText(fileName, fileContent);
             }
             catch (Exception ex)
             {
-                string WriteException = $"[Error writing to file: {ex.Message}]";
-                ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = WriteException });
+                string writeException = $"[Error writing to file: {ex.Message}]";
+                ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = writeException });
             }
         }
         #endregion Write

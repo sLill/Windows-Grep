@@ -8,45 +8,42 @@ namespace WindowsGrep.Common
 {
     public static class ConsoleUtils
     {
-        #region Member Variables..
-        #endregion Member Variables..
-
         #region Methods..
         #region DiscoverCommandArgs
         public static IDictionary<ConsoleFlag, string> DiscoverCommandArgs(string commandRaw)
         {
-            ConcurrentDictionary<ConsoleFlag, string> CommandArgs = new ConcurrentDictionary<ConsoleFlag, string>();
+            ConcurrentDictionary<ConsoleFlag, string> commandArgs = new ConcurrentDictionary<ConsoleFlag, string>();
 
-            List<ConsoleFlag> ConsoleFlagValues = EnumUtils.GetValues<ConsoleFlag>().ToList();
-            ConsoleFlagValues.ForEach(flag =>
+            List<ConsoleFlag> consoleFlagValues = EnumUtils.GetValues<ConsoleFlag>().ToList();
+            consoleFlagValues.ForEach(flag =>
             {
-                bool ExpectsParameter = flag.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
-                List<string> DescriptionCollection = flag.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.ToList();
+                bool expectsParameter = flag.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
+                List<string> descriptionCollection = flag.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.ToList();
 
-                DescriptionCollection?.ForEach(description =>
+                descriptionCollection?.ForEach(description =>
                 {
-                    string FlagPattern = $"(\\s|^)(?<FlagDescriptor>{description})(\\s+|$)";
-                    FlagPattern = ExpectsParameter ? FlagPattern + "(?<Argument>((['\"][^'\"]+.)|([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+))\\s*" : FlagPattern;
+                    string flagPattern = $"(\\s|^)(?<FlagDescriptor>{description})(\\s+|$)";
+                    flagPattern = expectsParameter ? flagPattern + "(?<Argument>((['\"][^'\"]+.)|([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+))\\s*" : flagPattern;
 
-                    var Matches = Regex.Matches(commandRaw, FlagPattern);
-                    if (ExpectsParameter && Matches.Count > 1)
+                    var matches = Regex.Matches(commandRaw, flagPattern);
+                    if (expectsParameter && matches.Count > 1)
                     {
                         throw new Exception("Error: Arguments of parameter type cannot be specified more than once");
                     }
-                    else if (Matches.Count > 0)
+                    else if (matches.Count > 0)
                     {
-                        string Argument = Matches.Select(match => match.Groups["Argument"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
+                        string argument = matches.Select(match => match.Groups["Argument"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
 
                         // Filter invalid strings from beginning/end of argument
-                        List<char> FilterCharacterCollection = flag.GetCustomAttribute<FilterCharacterCollectionAttribute>()?.Value.ToList();
-                        while (true && FilterCharacterCollection != null)
+                        List<char> filterCharacterCollection = flag.GetCustomAttribute<FilterCharacterCollectionAttribute>()?.Value.ToList();
+                        while (true && filterCharacterCollection != null)
                         {
                             bool argumentModified = false;
-                            FilterCharacterCollection.ForEach(character =>
+                            filterCharacterCollection.ForEach(character =>
                             {
-                                if (Argument.StartsWith(character) || Argument.EndsWith(character))
+                                if (argument.StartsWith(character) || argument.EndsWith(character))
                                 {
-                                    Argument = Argument.Trim(character);
+                                    argument = argument.Trim(character);
                                     argumentModified = true;
                                 }
                             });
@@ -57,16 +54,16 @@ namespace WindowsGrep.Common
                             }
                         }
 
-                        CommandArgs[flag] = Argument;
-                        commandRaw = Regex.Replace(commandRaw, FlagPattern, " ");
+                        commandArgs[flag] = argument;
+                        commandRaw = Regex.Replace(commandRaw, flagPattern, " ");
                     }
                 });
             });
 
             // Search term
-            CommandArgs[ConsoleFlag.SearchTerm] = commandRaw.Trim();
+            commandArgs[ConsoleFlag.SearchTerm] = commandRaw.Trim();
 
-            return CommandArgs;
+            return commandArgs;
         }
         #endregion DiscoverCommandArgs
 

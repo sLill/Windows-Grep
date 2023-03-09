@@ -7,9 +7,9 @@ namespace WindowsGrep.Test.RegularExpressions
 {
     public class RegularExpressionsTests : TestBase
     {
-        #region Member Variables..
+        #region Fields..
         private string _TestDataRelativePath = @"RegularExpressions\TestData";
-        #endregion Member Variables..
+        #endregion Fields..
 
         #region Properties..
         #endregion Properties..

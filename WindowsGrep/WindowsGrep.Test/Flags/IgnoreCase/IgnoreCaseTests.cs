@@ -9,11 +9,11 @@ namespace WindowsGrep.Test.Flags.IgnoreCase
 {
     public class IgnoreCaseTests : TestBase
     {
-        #region Member Variables..
+        #region Fields..
         private string _FlagDescriptorShort;
         private string _FlagDescriptorLong;
         private string _TestDataRelativePath = @"Flags\IgnoreCase\TestData";
-        #endregion Member Variables..
+        #endregion Fields..
 
         #region Properties..
         #endregion Properties..

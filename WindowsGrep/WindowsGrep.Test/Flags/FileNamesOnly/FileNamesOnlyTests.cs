@@ -9,11 +9,11 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
 {
     public class FileNamesOnlyTests : TestBase
     {
-        #region Member Variables..
+        #region Fields..
         private string _FlagDescriptorShort;
         private string _FlagDescriptorLong;
         private string _TestDataRelativePath = @"Flags\FileNamesOnly\TestData";
-        #endregion Member Variables..
+        #endregion Fields..
 
         #region Properties..
         #endregion Properties..

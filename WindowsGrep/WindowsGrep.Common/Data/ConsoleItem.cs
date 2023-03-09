@@ -17,11 +17,5 @@ namespace WindowsGrep.Common
         public string Value { get; set; }
         #endregion Value
         #endregion Properties..
-
-        #region Constructors..
-        #endregion Constructors..
-
-        #region Methods..
-        #endregion Methods..    
     }
 }

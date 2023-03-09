@@ -9,14 +9,14 @@ namespace WindowsGrep.Test.Flags.Replace
 {
     public class ReplaceTests : TestBase
     {
-        #region Member Variables..
+        #region Fields..
         private const string _TestFileTemplateText = "The quick brown fox jumps over the lazy dog";
         private const string _TestFileExpectedResultText = "The slow green turtle jumps over the lazy dog";
 
         private string _FlagDescriptorShort;
         private string _FlagDescriptorLong;
         private string _TestDataRelativePath = @"Flags\Replace\TestData";
-        #endregion Member Variables..
+        #endregion Fields..
 
         #region Properties..
         #endregion Properties..

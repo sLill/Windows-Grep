@@ -6,9 +6,9 @@ namespace WindowsGrep.Test.ChainCommands
 {
     public class ChainCommandTests : TestBase
     {
-        #region Member Variables..
+        #region Fields..
         private string _TestDataRelativePath = @"ChainCommands\TestData";
-        #endregion Member Variables..
+        #endregion Fields..
 
         #region Properties..
         #endregion Properties..

@@ -9,12 +9,12 @@ namespace WindowsGrep.Test.Flags.Write
 {
     public class WriteTests : TestBase
     {
-        #region Member Variables..
+        #region Fields..
         private string _FlagDescriptorShort;
         private string _FlagDescriptorLong;
         private string _TestDataRelativePath = @"Flags\Write\TestData";
         private string _testOutputFilePath;
-        #endregion Member Variables..
+        #endregion Fields..
 
         #region Properties..
         #endregion Properties..

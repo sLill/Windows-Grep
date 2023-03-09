@@ -13,21 +13,21 @@ namespace WindowsGrep
             // ReadMe
             if (args.Length == 0)
             {
-                string ReadMe = Properties.Resources.ReadMe;
-                Console.WriteLine(ReadMe + Environment.NewLine);
+                string readMe = Properties.Resources.ReadMe;
+                Console.WriteLine(readMe + Environment.NewLine);
             }
 
             do
             {
-                string Command = args.Length == 0 ? Console.ReadLine() : string.Join(" ", args);
-                if (Command.Length > 0)
+                string command = args.Length == 0 ? Console.ReadLine() : string.Join(" ", args);
+                if (command.Length > 0)
                 {
                     try
                     {
-                        GrepResultCollection grepResultCollection = new GrepResultCollection();
+                        var grepResultCollection = new GrepResultCollection();
                         grepResultCollection.ItemsAdded += OnResultsAdded;
 
-                        GrepEngine.RunCommand(Command, grepResultCollection);
+                        GrepEngine.RunCommand(command, grepResultCollection);
                     }
                     catch (Exception ex)
                     {
@@ -44,8 +44,8 @@ namespace WindowsGrep
         #region OnResultsAdded
         private static void OnResultsAdded(object sender, EventArgs e)
         {
-            var GrepResults = sender as List<GrepResult>;
-            GrepResults.ForEach(result =>
+            var grepResults = sender as List<GrepResult>;
+            grepResults.ForEach(result =>
             {
                 if (!result.Suppressed)
                 {

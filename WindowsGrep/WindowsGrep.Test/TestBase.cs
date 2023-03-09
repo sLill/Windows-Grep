@@ -2,8 +2,8 @@
 {
     public class TestBase
     {
-        #region Member Variables..
-        #endregion Member Variables..
+        #region Fields..
+        #endregion Fields..
 
         #region Properties..
         public string TestDataDirectory { get; protected set; }

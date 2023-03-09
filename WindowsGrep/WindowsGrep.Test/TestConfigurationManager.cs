@@ -4,8 +4,8 @@ namespace WindowsGrep.Test
 {
     public static class TestConfigurationManager
     {
-        #region Member Variables..
-        #endregion Member Variables..
+        #region Fields..
+        #endregion Fields..
 
         #region Properties..
         public static string WorkingDirectory => Environment.CurrentDirectory;

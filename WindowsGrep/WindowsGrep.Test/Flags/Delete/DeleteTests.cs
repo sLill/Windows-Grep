@@ -9,12 +9,12 @@ namespace WindowsGrep.Test.Flags.Delete
 {
     public class DeleteTests : TestBase
     {
-        #region Member Variables..
+        #region Fields..
         private string _FlagDescriptorShort;
         private string _FlagDescriptorLong;
         private string _TestDataRelativePath = @"Flags\Delete\TestData";
         private string _TestFilePath;
-        #endregion Member Variables..
+        #endregion Fields..
 
         #region Properties..
         #endregion Properties..
