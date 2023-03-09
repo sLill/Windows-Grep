@@ -257,7 +257,7 @@ namespace WindowsGrep.Engine
             bool fileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);         
             bool nResultsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.NResults);
 
-            int nResults = Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.NResults]);
+            int nResults = nResultsFlag ? Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.NResults]) : int.MaxValue;
 
             files.ToList().ForEach(file =>
             {
