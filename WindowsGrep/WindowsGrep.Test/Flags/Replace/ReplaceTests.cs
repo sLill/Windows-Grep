@@ -51,7 +51,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"{_FlagDescriptorShort} '{ReplaceText}' -d '{TestDataDirectory}' {SearchTerm}";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -80,7 +80,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"{_FlagDescriptorShort} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -109,7 +109,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"{_FlagDescriptorLong} '{ReplaceText}' -d '{TestDataDirectory}' {SearchTerm}";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -138,7 +138,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"{_FlagDescriptorLong} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -169,7 +169,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} '{ReplaceText}' {SearchTerm}";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -198,7 +198,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} \"{ReplaceText}\" {SearchTerm}";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -227,7 +227,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} '{ReplaceText}' {SearchTerm}";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -256,7 +256,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} \"{ReplaceText}\" {SearchTerm}";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -287,7 +287,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} '{ReplaceText}'";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -316,7 +316,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} \"{ReplaceText}\"";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -345,7 +345,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} '{ReplaceText}'";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -374,7 +374,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} \"{ReplaceText}\"";
 
                 var GrepResultCollection = new GrepResultCollection();
-                GrepEngine.RunCommand(Command, GrepResultCollection);
+                GrepEngine.RunCommandAsync(Command, GrepResultCollection);
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());

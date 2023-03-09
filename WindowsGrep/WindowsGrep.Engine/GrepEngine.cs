@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using WindowsGrep.Common;
 
 namespace WindowsGrep.Engine
@@ -27,7 +30,7 @@ namespace WindowsGrep.Engine
 
         #region Methods..
         #region BeginProcessCommand
-        private static void BeginProcessCommand(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection)
+        private static async Task BeginProcessCommandAsync(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, CancellationToken cancellationToken)
         {
             bool writeFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
             Stopwatch commandTimer = Stopwatch.StartNew();
@@ -42,7 +45,7 @@ namespace WindowsGrep.Engine
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[Searching {files.Count} file(s)]{Environment.NewLine}" });
 
             RegexOptions optionsFlags = GetRegexOptions(consoleCommand);
-            ProcessCommand(grepResultCollection, files, consoleCommand, optionsFlags);
+            await ProcessCommandAsync(grepResultCollection, files, consoleCommand, optionsFlags, cancellationToken);
 
             if (writeFlag)
             {
@@ -176,8 +179,8 @@ namespace WindowsGrep.Engine
         #endregion GetFiles
 
         #region GetFileContentMatches
-        private static void GetFileContentMatches(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, string searchPattern,
-            Regex searchRegex, SearchMetrics searchMetrics, long fileSizeMin, long fileSizeMax)
+        private static async Task GetFileContentMatchesAsync(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, string searchPattern,
+            Regex searchRegex, SearchMetrics searchMetrics, long fileSizeMin, long fileSizeMax, CancellationToken cancellationToken)
         {
             bool fixedStringsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
             bool deleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
@@ -193,6 +196,9 @@ namespace WindowsGrep.Engine
             {
                 try
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                        return;
+
                     if (!nResultsFlag || grepResultCollection.Count < Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.NResults]))
                     {
                         List<Match> matches = new List<Match>();
@@ -239,8 +245,8 @@ namespace WindowsGrep.Engine
         #endregion GetFileContentMatches
 
         #region GetFileNameMatches
-        private static void GetFileNameMatches(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, string searchPattern, Regex searchRegex, SearchMetrics searchMetrics,
-             long fileSizeMin, long fileSizeMax)
+        private static async Task GetFileNameMatchesAsync(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, string searchPattern, Regex searchRegex, SearchMetrics searchMetrics,
+             long fileSizeMin, long fileSizeMax, CancellationToken cancellationToken)
         {
             var matches = new List<GrepResult>();
 
@@ -256,6 +262,9 @@ namespace WindowsGrep.Engine
 
             files.ToList().ForEach(file =>
             {
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
                 if (!nResultsFlag || matches.Count < Convert.ToInt32(consoleCommand.CommandArgs[ConsoleFlag.NResults]))
                 {
                     // Don't want to waste any time on files that have already been added 
@@ -485,7 +494,7 @@ namespace WindowsGrep.Engine
         #endregion GetRegexOptions
 
         #region ProcessCommand
-        private static void ProcessCommand(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags)
+        private static async Task ProcessCommandAsync(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags, CancellationToken cancellationToken)
         {
             bool fileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
 
@@ -498,13 +507,13 @@ namespace WindowsGrep.Engine
             Regex searchRegex = new Regex(searchPattern, optionsFlags);
 
             if (fileNamesOnlyFlag)
-                GetFileNameMatches(grepResultCollection, files, consoleCommand, searchPattern, searchRegex, searchMetrics, fileSizeMin, fileSizeMax);
+                await GetFileNameMatchesAsync(grepResultCollection, files, consoleCommand, searchPattern, searchRegex, searchMetrics, fileSizeMin, fileSizeMax, cancellationToken);
             else
             {
                 if (consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
                     throw new Exception("Error: Search term not supplied");
 
-                GetFileContentMatches(grepResultCollection, files, consoleCommand, searchPattern, searchRegex, searchMetrics, fileSizeMin, fileSizeMax);
+                await GetFileContentMatchesAsync(grepResultCollection, files, consoleCommand, searchPattern, searchRegex, searchMetrics, fileSizeMin, fileSizeMax, cancellationToken);
             }
 
             // Notify the user of any files that could not be read from or written to
@@ -635,7 +644,7 @@ namespace WindowsGrep.Engine
         #endregion PublishFileAccessSummary
 
         #region RunCommand
-        public static void RunCommand(string commandRaw, GrepResultCollection grepResultCollection)
+        public static async Task RunCommandAsync(string commandRaw, GrepResultCollection grepResultCollection, CancellationToken cancellationToken)
         {
             string splitPattern = @"\|(?![^{]*}|[^\(]*\)|[^\[]*\])";
             string[] commandCollection = Regex.Split(commandRaw, splitPattern);
@@ -645,7 +654,7 @@ namespace WindowsGrep.Engine
                 var commandArgs = ConsoleUtils.DiscoverCommandArgs(command);
                 ConsoleCommand consoleCommand = new ConsoleCommand() { CommandArgs = commandArgs };
 
-                BeginProcessCommand(consoleCommand, grepResultCollection);
+                await BeginProcessCommandAsync(consoleCommand, grepResultCollection, cancellationToken);
             }
         }
         #endregion RunCommand
