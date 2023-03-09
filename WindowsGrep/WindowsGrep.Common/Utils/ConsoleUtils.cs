@@ -18,43 +18,21 @@ namespace WindowsGrep.Common
             consoleFlagValues.ForEach(flag =>
             {
                 bool expectsParameter = flag.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
-                List<string> descriptionCollection = flag.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.ToList();
+                List<string> flagDescriptionCollection = flag.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.ToList();
 
-                descriptionCollection?.ForEach(description =>
+                flagDescriptionCollection?.ForEach(flagDescription =>
                 {
-                    string flagPattern = $"(\\s|^)(?<FlagDescriptor>{description})(\\s+|$)";
-                    flagPattern = expectsParameter ? flagPattern + "(?<Argument>((['\"][^'\"]+.)|([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+))\\s*" : flagPattern;
-
+                    string flagPattern = GetFlagPattern(flagDescription, expectsParameter);
                     var matches = Regex.Matches(commandRaw, flagPattern);
+                    
                     if (expectsParameter && matches.Count > 1)
-                    {
                         throw new Exception("Error: Arguments of parameter type cannot be specified more than once");
-                    }
                     else if (matches.Count > 0)
                     {
-                        string argument = matches.Select(match => match.Groups["Argument"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
+                        string flagArgument = matches.Select(match => match.Groups["Argument"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
+                        flagArgument = GetSanitizedFlagArgument(flag, flagArgument);
 
-                        // Filter invalid strings from beginning/end of argument
-                        List<char> filterCharacterCollection = flag.GetCustomAttribute<FilterCharacterCollectionAttribute>()?.Value.ToList();
-                        while (true && filterCharacterCollection != null)
-                        {
-                            bool argumentModified = false;
-                            filterCharacterCollection.ForEach(character =>
-                            {
-                                if (argument.StartsWith(character) || argument.EndsWith(character))
-                                {
-                                    argument = argument.Trim(character);
-                                    argumentModified = true;
-                                }
-                            });
-
-                            if (!argumentModified)
-                            {
-                                break;
-                            }
-                        }
-
-                        commandArgs[flag] = argument;
+                        commandArgs[flag] = flagArgument;
                         commandRaw = Regex.Replace(commandRaw, flagPattern, " ");
                     }
                 });
@@ -66,6 +44,41 @@ namespace WindowsGrep.Common
             return commandArgs;
         }
         #endregion DiscoverCommandArgs
+
+        #region GetFlagPattern
+        private static string GetFlagPattern(string flagDescription, bool expectsParameter)
+        {
+            string flagPattern = $"(\\s|^)(?<FlagDescriptor>{flagDescription})(\\s+|$)";
+            flagPattern = expectsParameter ? flagPattern + "(?<Argument>((['\"][^'\"]+.)|([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+))\\s*" : flagPattern;
+
+            return flagPattern;
+        }
+        #endregion GetFlagPattern
+
+        #region GetSanitizedFlagArgument
+        private static string GetSanitizedFlagArgument(ConsoleFlag flag, string flagArgument)
+        {
+            // Filter invalid strings from beginning/end of argument
+            List<char> filterCharacterCollection = flag.GetCustomAttribute<FilterCharacterCollectionAttribute>()?.Value.ToList();
+            while (true && filterCharacterCollection != null)
+            {
+                bool flagArgumentModified = false;
+                filterCharacterCollection.ForEach(character =>
+                {
+                    if (flagArgument.StartsWith(character) || flagArgument.EndsWith(character))
+                    {
+                        flagArgument = flagArgument.Trim(character);
+                        flagArgumentModified = true;
+                    }
+                });
+
+                if (!flagArgumentModified)
+                    break;
+            }
+
+            return flagArgument;
+        }
+        #endregion GetSanitizedFlagArgument
 
         #region WriteConsoleItem
         public static void WriteConsoleItem(ConsoleItem consoleItem)
