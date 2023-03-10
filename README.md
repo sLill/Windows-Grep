@@ -24,6 +24,13 @@ A command line file search utility. Performs better than paid applications like 
 
 This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
+<h2>== USAGE ==</h2>
+Right-click in File Explorer > Windows Grep
+<br/><br/>
+OR
+<br/><br/>
+Open cmd > "grep [command]"<br/>
+
 <h2>== REFERENCE ==</h2>
 
 |                           |    |                       |
@@ -55,18 +62,6 @@ This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PA
 <b>Command Order</b></br>
 Order of flags and search terms is completely flexible. The only requirement is that parameters be given to flag types that expect them.
 <br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
-
-<br/>
-
-<h2>== USAGE ==</h2>
-
-<br/>
-
-Right-click in File Explorer > Windows Grep
-<br/><br/>
-OR
-<br/><br/>
-Open cmd > "grep \<command\>"
 
 <br/>
 
