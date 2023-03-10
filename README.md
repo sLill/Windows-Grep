@@ -84,7 +84,7 @@ Open cmd > "grep \<command\>"
 -r Dug -t .txt;.cs -P bin;obj
 <br/><br/>
 
-<i>Recursively search files for "Dug" and show 100 characters of text around the match for context</i><br/>
+<i>Recursively search all files for "Dug" and show 100 characters of text around the match for context</i><br/>
 -r Dug -c 100
 <br/><br/>
 
@@ -101,4 +101,4 @@ Open cmd > "grep \<command\>"
 <br/><br/>
 
 
-For even more examples and detailed descriptions of each flag, visit the <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">wiki</a>
+<b>For even more examples and detailed descriptions of each flag, visit the</b> <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">wiki</a>
