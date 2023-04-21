@@ -24,6 +24,13 @@ A command line file search utility. Performs better than paid applications like 
 
 This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
+<h2>== USAGE ==</h2>
+Right-click in File Explorer > Windows Grep
+<br/><br/>
+OR
+<br/><br/>
+Open cmd > "grep [command]"<br/>
+
 <h2>== REFERENCE ==</h2>
 
 |                           |    |                       |
@@ -58,12 +65,35 @@ Order of flags and search terms is completely flexible. The only requirement is 
 
 <br/>
 
-<h2>== USAGE ==</h2>
+<h2>== EXAMPLE COMMANDS ==</h2>
 
-<img src="https://i.imgur.com/N4bmJOu.png" width="633" height="890"></br>
+<i>Recursively search all files for "Dug"</i><br/>
+-r Dug
+<br/><br/>
 
-<br/>
+<i>Recursively search all files for "Dug" or "Dig". Ignore-case</i><br/>
+-r -i D[ui]g
+<br/><br/>
 
-<h2>== EXAMPLES ==</h2>
+<i>Recursively search all text and csharp files for "Dug". Filter out matches that appear in the bin or obj subdirectory</i><br/>
+-r Dug -t .txt;.cs -P bin;obj
+<br/><br/>
 
-<img src="https://i.imgur.com/jefKbt3.png" width="750" height="1677">
+<i>Recursively search all files for "Dug" and show 100 characters of text around the match for context</i><br/>
+-r Dug -c 100
+<br/><br/>
+
+<i>Search for all filenames in the current directory containing "Dug", and then search that subset of files for "Mike"</i><br/>
+-r Dug -k | Mike
+<br/><br/>
+
+<i>Search all files in the current directory for text that matches a phone number expression/pattern</i><br/>
+[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}
+<br/><br/>
+
+<i>Recursively search all files for US zip codes. Filter out .dll matches. Limit the results 10. Write the output to a .csv</i><br/>
+-r \d{5}(-\d{4})? -T .dll -n 10 -w 'C:\output.csv'
+<br/><br/>
+
+
+<b>For even more examples and detailed descriptions of each flag, visit the</b> <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">wiki</a>
