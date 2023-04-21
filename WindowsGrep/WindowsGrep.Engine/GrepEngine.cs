@@ -386,22 +386,23 @@ namespace WindowsGrep.Engine
         #endregion PerformReadOperations
 
         #region PerformWriteOperations
-        private static List<ConsoleItem> PerformWriteOperations(ConsoleCommand consoleCommand, string fileName, string searchPattern, int fileMatchesCount,
+        private static List<ConsoleItem> PerformWriteOperations(ConsoleCommand consoleCommand, string filePath, string searchPattern, int fileMatchesCount,
              ref string fileRaw, SearchMetrics searchMetrics)
         {
             var consoleItemCollection = new List<ConsoleItem>();
             bool deleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
             bool replaceFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
+            bool fileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
 
             // FileName
-            consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{fileName} " });
+            consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{filePath} " });
 
             try
             {
                 if (deleteFlag)
                 {
                     // Delete file
-                    File.Delete(fileName);
+                    File.Delete(filePath);
 
                     consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
 
@@ -412,12 +413,24 @@ namespace WindowsGrep.Engine
                 }
                 else if (replaceFlag)
                 {
-                    // Replace all occurrences within the file
-                    fileRaw = Regex.Replace(fileRaw, searchPattern, consoleCommand.CommandArgs[ConsoleFlag.Replace]);
-                    File.WriteAllText(fileName, fileRaw);
+                    if (fileNamesOnlyFlag)
+                    {
+                        // Rename file
+                        string directory = Path.GetDirectoryName(filePath);
+                        string fileName = Path.GetFileNameWithoutExtension(filePath);
 
-                    string matchesText = fileMatchesCount == 1 ? "match" : "matches";
-                    consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{fileMatchesCount} {matchesText}" });
+                        File.Move(filePath, Path.Combine(directory, Regex.Replace(fileName, searchPattern, consoleCommand.CommandArgs[ConsoleFlag.Replace])));
+                        consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Renamed" });
+                    }
+                    else
+                    {
+                        // Replace all occurrences within the file
+                        fileRaw = Regex.Replace(fileRaw, searchPattern, consoleCommand.CommandArgs[ConsoleFlag.Replace]);
+                        File.WriteAllText(filePath, fileRaw);
+
+                        string matchesText = fileMatchesCount == 1 ? "match" : "matches";
+                        consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{fileMatchesCount} {matchesText}" });
+                    }
 
                     lock (_searchLock)
                     {
