@@ -56,9 +56,7 @@ namespace WindowsGrep
             grepResults.ForEach(result =>
             {
                 if (!result.Suppressed)
-                {
                     ConsoleUtils.WriteConsoleItemCollection(result.ToConsoleItemCollection());
-                }
             });
         }
         #endregion OnResultsAdded
