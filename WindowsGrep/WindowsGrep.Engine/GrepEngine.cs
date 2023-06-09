@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using WindowsGrep.Common;
+using WindowsGrep.Core;
 
 namespace WindowsGrep.Engine
 {
@@ -22,6 +23,19 @@ namespace WindowsGrep.Engine
 
         #region Methods..
         private static async Task BeginProcessCommandAsync(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, CancellationToken cancellationToken)
+        {
+            switch (consoleCommand.CommandType)
+            {
+                case CommandType.ClearConsole:
+                    ClearConsole();
+                    break;
+                case CommandType.Query:
+                    await QueryAsync(consoleCommand, grepResultCollection, cancellationToken);
+                    break;
+            }
+        }
+
+        private static async Task QueryAsync(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, CancellationToken cancellationToken)
         {
             bool writeFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
             Stopwatch commandTimer = Stopwatch.StartNew();
@@ -46,6 +60,12 @@ namespace WindowsGrep.Engine
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((commandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
+        }
+
+        private static void ClearConsole()
+        {
+            Console.Clear();
+            ConsoleUtils.PublishReadMe();
         }
 
         private static string BuildSearchPattern(ConsoleCommand consoleCommand)
@@ -497,8 +517,14 @@ namespace WindowsGrep.Engine
 
             foreach (string command in commandCollection)
             {
-                var commandArgs = ConsoleUtils.DiscoverCommandArgs(command);
-                ConsoleCommand consoleCommand = new ConsoleCommand() { CommandArgs = commandArgs };
+                ConsoleCommand consoleCommand = default;
+                if (command.ToLower() == "clear")
+                    consoleCommand = new ConsoleCommand(CommandType.ClearConsole);
+                else
+                {
+                    var commandArgs = ConsoleUtils.DiscoverCommandArgs(command);
+                    consoleCommand = new ConsoleCommand(CommandType.Query) { CommandArgs = commandArgs };
+                }
 
                 await BeginProcessCommandAsync(consoleCommand, grepResultCollection, cancellationToken);
             }

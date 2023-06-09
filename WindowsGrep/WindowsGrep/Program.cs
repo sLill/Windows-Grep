@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using WindowsGrep.Common;
+using WindowsGrep.Core;
 using WindowsGrep.Engine;
 
 namespace WindowsGrep
@@ -64,12 +65,9 @@ namespace WindowsGrep
         {
             _cancellationTokenSource = new CancellationTokenSource();
 
-            // Display ReadMe
+            // Publish ReadMe
             if (args.Length == 0)
-            {
-                string readMe = Properties.Resources.ReadMe;
-                Console.WriteLine(readMe + Environment.NewLine);
-            }
+                ConsoleUtils.PublishReadMe();
 
             // Override the default behavior for the Ctrl+C shortcut if the application was not ran from the command line
             if (Environment.UserInteractive)

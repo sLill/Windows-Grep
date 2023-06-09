@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
+using WindowsGrep.Common;
 
-namespace WindowsGrep.Common
+namespace WindowsGrep.Core
 {
     public static class ConsoleUtils
     {
@@ -72,6 +70,12 @@ namespace WindowsGrep.Common
             }
 
             return flagArgument;
+        }
+
+        public static void PublishReadMe()
+        {
+            string readMe = Properties.Resources.ReadMe;
+            Console.WriteLine(readMe + Environment.NewLine);
         }
 
         public static void WriteConsoleItem(ConsoleItem consoleItem)

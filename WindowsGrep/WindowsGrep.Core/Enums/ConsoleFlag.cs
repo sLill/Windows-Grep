@@ -1,4 +1,6 @@
-﻿namespace WindowsGrep.Common
+﻿using WindowsGrep.Common;
+
+namespace WindowsGrep.Core
 {
     public enum ConsoleFlag
     {

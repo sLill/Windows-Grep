@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using WindowsGrep.Common;
+using WindowsGrep.Core;
 using WindowsGrep.Engine;
 
 namespace WindowsGrep.Test.Flags.TargetFile

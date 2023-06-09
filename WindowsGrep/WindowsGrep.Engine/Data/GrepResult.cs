@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WindowsGrep.Common;
+using WindowsGrep.Core;
 
 namespace WindowsGrep.Engine
 {
