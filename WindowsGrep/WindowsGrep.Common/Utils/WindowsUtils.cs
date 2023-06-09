@@ -12,7 +12,6 @@ namespace WindowsGrep.Common
         #endregion Fields..
 
         #region Methods..
-        #region GetFileSizeOnDisk
         public static long GetFileSizeOnDisk(string file)
         {
             long fileSize = -1;
@@ -45,9 +44,7 @@ namespace WindowsGrep.Common
 
             return fileSize;
         }
-        #endregion GetFileSizeOnDisk
 
-        #region GetReducedSize
         /// <summary>
         /// Reduce a filesize (in kb) to the maximum target number of leading signifigant digits
         /// </summary>
@@ -61,7 +58,6 @@ namespace WindowsGrep.Common
             long fileSizeTypeModifier = fileSizeType.GetCustomAttribute<ValueAttribute>().Value;
             return Math.Round(size / (double)fileSizeTypeModifier, 2);
         }
-        #endregion GetReducedSize
         #endregion Methods..
     }
 }

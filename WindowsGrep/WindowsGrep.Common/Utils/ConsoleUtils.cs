@@ -9,7 +9,6 @@ namespace WindowsGrep.Common
     public static class ConsoleUtils
     {
         #region Methods..
-        #region DiscoverCommandArgs
         public static IDictionary<ConsoleFlag, string> DiscoverCommandArgs(string commandRaw)
         {
             ConcurrentDictionary<ConsoleFlag, string> commandArgs = new ConcurrentDictionary<ConsoleFlag, string>();
@@ -43,9 +42,7 @@ namespace WindowsGrep.Common
 
             return commandArgs;
         }
-        #endregion DiscoverCommandArgs
 
-        #region GetFlagPattern
         private static string GetFlagPattern(string flagDescription, bool expectsParameter)
         {
             string flagPattern = $"(\\s|^)(?<FlagDescriptor>{flagDescription})(\\s+|$)";
@@ -53,9 +50,7 @@ namespace WindowsGrep.Common
 
             return flagPattern;
         }
-        #endregion GetFlagPattern
 
-        #region GetSanitizedFlagArgument
         private static string GetSanitizedFlagArgument(ConsoleFlag flag, string flagArgument)
         {
             // Filter invalid strings from beginning/end of argument
@@ -78,9 +73,7 @@ namespace WindowsGrep.Common
 
             return flagArgument;
         }
-        #endregion GetSanitizedFlagArgument
 
-        #region WriteConsoleItem
         public static void WriteConsoleItem(ConsoleItem consoleItem)
         {
             Console.BackgroundColor = consoleItem.BackgroundColor;
@@ -90,9 +83,7 @@ namespace WindowsGrep.Common
 
             Console.ResetColor();
         }
-        #endregion WriteConsoleItem
 
-        #region WriteConsoleItemCollection
         public static void WriteConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
         {
             lock (Console.Out)
@@ -106,7 +97,6 @@ namespace WindowsGrep.Common
                 });
             }
         }
-        #endregion WriteConsoleItemCollection
         #endregion Methods..
     }
 }

@@ -13,23 +13,18 @@ namespace WindowsGrep.Engine
         #endregion Events..
 
         #region Methods..
-        #region AddItem
         public override void AddItem(GrepResult item)
         {
             base.AddItem(item);
             ItemsAdded?.Invoke(new List<GrepResult>() { item }, EventArgs.Empty);
         }
-        #endregion AddItem
 
-        #region AddItemRange
         public override void AddItemRange(IEnumerable<GrepResult> itemCollection)
         {
             base.AddItemRange(itemCollection);
             ItemsAdded?.Invoke(itemCollection, EventArgs.Empty);
         }
-        #endregion AddItemRange
 
-        #region Write
         public void Write(string fileName)
         {
             try
@@ -59,7 +54,6 @@ namespace WindowsGrep.Engine
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = writeException });
             }
         }
-        #endregion Write
         #endregion Methods..
     }
 }

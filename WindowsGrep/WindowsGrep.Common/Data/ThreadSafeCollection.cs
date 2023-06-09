@@ -8,9 +8,6 @@ namespace WindowsGrep.Common
         private object _lockObject = new object();
         #endregion Fields..
 
-        #region Properties..
-        #endregion Properties..
-
         #region Constructors..
         public ThreadSafeCollection() { }
 
@@ -19,7 +16,6 @@ namespace WindowsGrep.Common
         #endregion Constructors..
 
         #region Methods..
-        #region AddItem
         public virtual void AddItem(T item)
         {
             lock (_lockObject)
@@ -27,9 +23,7 @@ namespace WindowsGrep.Common
                 this.Add(item);
             }
         }
-        #endregion AddItem
 
-        #region AddItemRange
         public virtual void AddItemRange(IEnumerable<T> item)
         {
             lock (_lockObject)
@@ -37,7 +31,6 @@ namespace WindowsGrep.Common
                 this.AddRange(item);
             }
         }
-        #endregion AddItemRange
         #endregion Methods..    
     }
 }

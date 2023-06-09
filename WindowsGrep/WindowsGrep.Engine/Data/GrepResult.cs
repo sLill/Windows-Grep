@@ -7,37 +7,21 @@ namespace WindowsGrep.Engine
     public class GrepResult
     {
         #region Properties..
-        #region Suppressed
         public bool Suppressed { get; set; }
-        #endregion Suppressed
 
-        #region FileSize
         public long FileSize { get; set; }
-        #endregion FileSize
 
-        #region LeadingContextString
         public string LeadingContextString { get; set; }
-        #endregion LeadingContextString
 
-        #region LineNumber
         public int LineNumber { get; set; } = -1;
-        #endregion LineNumber
 
-        #region MatchedString
         public string MatchedString { get; set; }
-        #endregion MatchedString
 
-        #region Scope
         public ResultScope Scope { get; set; }
-        #endregion Scope
 
-        #region SourceFile
         public string SourceFile { get; set; }
-        #endregion SourceFile
 
-        #region TrailingContextString
         public string TrailingContextString { get; set; }
-        #endregion TrailingContextString
         #endregion Properties..
 
         #region Constructors..
@@ -49,7 +33,6 @@ namespace WindowsGrep.Engine
         #endregion Constructors..
 
         #region Methods..
-        #region ToConsoleItemCollection
         public List<ConsoleItem> ToConsoleItemCollection()
         {
             List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
@@ -105,9 +88,7 @@ namespace WindowsGrep.Engine
 
             return consoleItemCollection;
         }
-        #endregion ToConsoleItemCollection
 
-        #region ToString
         public string ToString(char separator)
         {
             string result = string.Empty;
@@ -124,7 +105,6 @@ namespace WindowsGrep.Engine
             result = Scope == ResultScope.FileName ? SourceFile : $"{SourceFile}{separator}{fileSizeString}{lineNumberString}{separator}{LeadingContextString}{MatchedString}{TrailingContextString}";
             return result;
         } 
-        #endregion ToString
         #endregion Methods..
     }
 }

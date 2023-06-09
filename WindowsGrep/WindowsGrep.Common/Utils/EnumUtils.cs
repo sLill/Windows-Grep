@@ -7,7 +7,6 @@ namespace WindowsGrep.Common
     public class EnumUtils
     {
         #region Methods..
-        #region GetValues
         /// <summary>
         /// Return all enum values of type T
         /// </summary>
@@ -17,7 +16,6 @@ namespace WindowsGrep.Common
         {
             return Enum.GetValues(typeof(T)).Cast<T>();
         } 
-        #endregion GetValues
         #endregion Methods..
     }
 }

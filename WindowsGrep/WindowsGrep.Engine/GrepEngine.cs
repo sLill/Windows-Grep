@@ -20,14 +20,7 @@ namespace WindowsGrep.Engine
         private static object _searchLock = new object();
         #endregion Fields..
 
-        #region Properties..
-        #endregion Properties..
-
-        #region Constructors..
-        #endregion Constructors..
-
         #region Methods..
-        #region BeginProcessCommand
         private static async Task BeginProcessCommandAsync(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, CancellationToken cancellationToken)
         {
             bool writeFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
@@ -54,9 +47,7 @@ namespace WindowsGrep.Engine
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((commandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
         }
-        #endregion BeginProcessCommand
 
-        #region BuildSearchPattern
         private static string BuildSearchPattern(ConsoleCommand consoleCommand)
         {
             bool fixedStringsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
@@ -74,9 +65,7 @@ namespace WindowsGrep.Engine
 
             return searchPattern;
         }
-        #endregion BuildSearchPattern
 
-        #region BuildSearchResultsFileContent
         private static async Task BuildSearchResultsFileContentAsync(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, List<Match> matches, 
             string filename, long fileSize, string fileRaw, CancellationToken cancellationToken)
         {
@@ -133,9 +122,7 @@ namespace WindowsGrep.Engine
                 }
             });
         }
-        #endregion BuildSearchResultsFileContent
 
-        #region GetFiles
         private static List<string> GetFiles(ConsoleCommand consoleCommand, IList<GrepResult> grepResultCollection, string filepath)
         {
             bool recursiveFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Recursive);
@@ -174,9 +161,7 @@ namespace WindowsGrep.Engine
 
             return files;
         }
-        #endregion GetFiles
 
-        #region GetFileContentMatches
         private static async Task GetFileContentMatchesAsync(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, string searchPattern,
             Regex searchRegex, SearchMetrics searchMetrics, long fileSizeMin, long fileSizeMax, CancellationToken cancellationToken)
         {
@@ -240,9 +225,7 @@ namespace WindowsGrep.Engine
                 }
             });
         }
-        #endregion GetFileContentMatches
 
-        #region GetFileNameMatches
         private static void GetFileNameMatchesAsync(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, 
             string searchPattern, Regex searchRegex, SearchMetrics searchMetrics, long fileSizeMin, long fileSizeMax, CancellationToken cancellationToken)
         {
@@ -291,9 +274,7 @@ namespace WindowsGrep.Engine
             searchMetrics.TotalFilesMatchedCount = matches.Count();
             grepResultCollection.AddItemRange(matches);
         }
-        #endregion GetFileNameMatches
 
-        #region GetPath
         private static string GetPath(ConsoleCommand consoleCommand)
         {
             bool directoryFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Directory);
@@ -305,9 +286,7 @@ namespace WindowsGrep.Engine
 
             return filepath;
         }
-        #endregion GetPath
 
-        #region GetRegexOptions
         private static RegexOptions GetRegexOptions(ConsoleCommand consoleCommand)
         {
             RegexOptions optionsFlags = 0;
@@ -323,9 +302,7 @@ namespace WindowsGrep.Engine
 
             return optionsFlags;
         }
-        #endregion GetRegexOptions
 
-        #region ProcessCommand
         private static async Task ProcessCommandAsync(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags, CancellationToken cancellationToken)
         {
             bool fileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
@@ -354,9 +331,7 @@ namespace WindowsGrep.Engine
             // Publish command summary to console
             PublishCommandSummary(consoleCommand, grepResultCollection, searchMetrics);
         }
-        #endregion ProcessCommand
 
-        #region PerformReadOperations
         private static void PerformReadOperations(List<GrepResult> matches, ConsoleCommand consoleCommand, string fileName, Group fileNameMatch, Match searchMatch, long fileSizeMin, long fileSizeMax)
         {
             bool suppressFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Suppress);
@@ -383,9 +358,7 @@ namespace WindowsGrep.Engine
                 matches.Add(grepResult);
             }
         }
-        #endregion PerformReadOperations
 
-        #region PerformWriteOperations
         private static List<ConsoleItem> PerformWriteOperations(ConsoleCommand consoleCommand, string filePath, string searchPattern, int fileMatchesCount,
              ref string fileRaw, SearchMetrics searchMetrics)
         {
@@ -467,9 +440,7 @@ namespace WindowsGrep.Engine
 
             return consoleItemCollection;
         }
-        #endregion PerformWriteOperations
 
-        #region PublishCommandSummary
         private static void PublishCommandSummary(ConsoleCommand consoleCommand, IList<GrepResult> grepResultCollection, SearchMetrics searchMetrics)
         {
             bool deleteFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
@@ -498,9 +469,7 @@ namespace WindowsGrep.Engine
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = summary });
             }
         }
-        #endregion PublishCommandSummary
 
-        #region PublishFileAccessSummary
         private static void PublishFileAccessSummary(SearchMetrics searchMetrics)
         {
             if (searchMetrics.FileReadFailedCount > 0 || searchMetrics.FileWriteFailedCount > 0)
@@ -520,9 +489,7 @@ namespace WindowsGrep.Engine
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine });
             }
         }
-        #endregion PublishFileAccessSummary
 
-        #region RunCommand
         public static async Task RunCommandAsync(string commandRaw, GrepResultCollection grepResultCollection, CancellationToken cancellationToken)
         {
             string splitPattern = @"\|(?![^{]*}|[^\(]*\)|[^\[]*\])";
@@ -536,9 +503,7 @@ namespace WindowsGrep.Engine
                 await BeginProcessCommandAsync(consoleCommand, grepResultCollection, cancellationToken);
             }
         }
-        #endregion RunCommand
 
-        #region ValidateFileSize
         /// <summary>
         /// Check that a given filesize is within any filesize parameters
         /// </summary>
@@ -555,7 +520,6 @@ namespace WindowsGrep.Engine
 
             return isValid;
         }
-        #endregion ValidateFileSize
         #endregion Methods..
     }
 }

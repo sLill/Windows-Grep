@@ -49,7 +49,6 @@ namespace WindowsGrep
             _cancellationTokenSource?.Cancel();
         }
 
-        #region OnResultsAdded
         private static void OnResultsAdded(object sender, EventArgs e)
         {
             var grepResults = sender as List<GrepResult>;
@@ -59,7 +58,6 @@ namespace WindowsGrep
                     ConsoleUtils.WriteConsoleItemCollection(result.ToConsoleItemCollection());
             });
         }
-        #endregion OnResultsAdded
         #endregion Event Handlers..
 
         private static void Initialize(string[] args)

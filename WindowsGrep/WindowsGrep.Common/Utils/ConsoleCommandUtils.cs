@@ -15,7 +15,6 @@ namespace WindowsGrep.Common
         #endregion Fields..
 
         #region Methods..
-        #region GetFileSizeMaximum
         public static long GetFileSizeMaximum(ConsoleCommand consoleCommand)
         {
             long fileSizeMaximum = -1;
@@ -51,9 +50,7 @@ namespace WindowsGrep.Common
 
             return fileSizeMaximum;
         }
-        #endregion GetFileSizeMaximum
 
-        #region GetFileSizeMinimum
         public static long GetFileSizeMinimum(ConsoleCommand consoleCommand)
         {
             long fileSizeMinimum = -1;
@@ -93,9 +90,7 @@ namespace WindowsGrep.Common
 
             return fileSizeMinimum;
         }
-        #endregion GetFileSizeMinimum    
 
-        #region GetFilteredFiles
         /// <summary>
         /// </summary>
         /// <param name="consoleCommand"></param>
@@ -118,9 +113,7 @@ namespace WindowsGrep.Common
 
             return files;
         }
-        #endregion GetFilteredFiles
 
-        #region GetFileTypeFilters
         public static IEnumerable<string> GetFileTypeFilters(ConsoleCommand consoleCommand)
         {
             bool fileTypeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeFilter);
@@ -128,9 +121,7 @@ namespace WindowsGrep.Common
 
             return fileTypeFilters;
         }
-        #endregion GetFileTypeFilters
 
-        #region GetFileTypeExcludeFilters
         public static IEnumerable<string> GetFileTypeExcludeFilters(ConsoleCommand consoleCommand)
         {
             bool fileTypeExcludeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeExcludeFilter);
@@ -138,9 +129,7 @@ namespace WindowsGrep.Common
 
             return fileTypeExcludeFilters;
         }
-        #endregion GetFileTypeFilters
 
-        #region GetPathFilters
         public static IEnumerable<string> GetPathFilters(ConsoleCommand consoleCommand)
         {
             bool pathFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.PathFilter);
@@ -148,9 +137,7 @@ namespace WindowsGrep.Common
 
             return pathFilters;
         }
-        #endregion GetPathFilters
 
-        #region GetPathExcludeFilters
         public static IEnumerable<string> GetPathExcludeFilters(ConsoleCommand consoleCommand)
         {
             bool pathExcludeFilterFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.PathExcludeFilter);
@@ -158,7 +145,6 @@ namespace WindowsGrep.Common
 
             return pathExcludeFilters;
         }
-        #endregion GetPathExcludeFilters
         #endregion Methods..
     }
 }
