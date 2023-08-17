@@ -3,7 +3,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-grep/badge)](https://www.codefactor.io/repository/github/slill/windows-grep)
 ![.NET Core](https://github.com/sLill/Windows-Grep/workflows/.NET%20Core/badge.svg)
 
-A command line file search utility. Performs better than paid applications like FileLocator Pro without any UI overhead</br>
+Command line grep-like file search utility for Windows</br>
 
 -Supports-</br>
 - Filename and file content searches</br>
@@ -13,9 +13,6 @@ A command line file search utility. Performs better than paid applications like 
 - Output to external files</br>
 - Mass replace and delete actions on queried files</br>
 - Ease of use: Runnable from Cmd, Powershell, Windows Explorer or headless</br>
-
-
-<i>*Be cautious when using command flags that modify files or their contents like Replace (-RX) and Delete (-DX). There is no confirmation or undo on these actions.</i>
 
 <h2>== INSTALLATION ==</h2>
 
