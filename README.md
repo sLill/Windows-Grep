@@ -49,9 +49,10 @@ Open cmd > "grep [command]"<br/>
 | Filenames Only            | -k | --filenames-only      |
 | FileSize Minimum          | -z | --filesize-minimum=   |
 | FileSize Maximum          | -Z | --filesize-maximum=   |
+| Write Output to File      | -w | --write=              |
 | Replace Text              | -RX| --replace=            |
 | Delete Files              | -DX| --delete-files        |
-| Write Output to File      | -w | --write=              |
+| File Hashes               |    | --filehashes=  (0=SHA256, 1=MD5)     |
 
 
 <i>* See <a href="https://github.com/sLill/Windows-Grep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
