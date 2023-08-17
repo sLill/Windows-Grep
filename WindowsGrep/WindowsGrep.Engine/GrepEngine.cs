@@ -391,10 +391,8 @@ namespace WindowsGrep.Engine
 
                 GetFileHashMatchesAsync(grepResultCollection, files, consoleCommand, searchTerm, searchMetrics, hashType, fileSizeMin, fileSizeMax, cancellationToken);
             }
-
             else if (fileNamesOnlyFlag)
                 GetFileNameMatchesAsync(grepResultCollection, files, consoleCommand, searchPattern, searchRegex, searchMetrics, fileSizeMin, fileSizeMax, cancellationToken);
-            
             else
             {
                 if (consoleCommand.CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
@@ -417,7 +415,6 @@ namespace WindowsGrep.Engine
             bool fileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
             bool fileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
 
-
             // Validate any filesize parameters
             var fileSize = fileSizeMaximumFlag || fileSizeMinimumFlag ? WindowsUtils.GetFileSizeOnDisk(fileName) : -1;
             bool fileSizevalidateSuccess = ValidateFileSize(consoleCommand, fileSize, fileSizeMin, fileSizeMax);
@@ -433,7 +430,6 @@ namespace WindowsGrep.Engine
                 string trailingContextString = string.Empty;
                 int trailingContextStringStartIndex = 0;
                 int trailingContextStringEndIndex = 0;
-
 
                 switch (resultScope)
                 {
