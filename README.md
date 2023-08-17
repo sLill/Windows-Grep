@@ -1,7 +1,7 @@
 <h1>Windows Grep</h1> 
 
-[![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-budgetgrep/badge)](https://www.codefactor.io/repository/github/slill/windows-budgetgrep)
-![.NET Core](https://github.com/sLill/Windows-BudgetGrep/workflows/.NET%20Core/badge.svg)
+[![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-grep/badge)](https://www.codefactor.io/repository/github/slill/windows-grep)
+![.NET Core](https://github.com/sLill/Windows-Grep/workflows/.NET%20Core/badge.svg)
 
 A command line file search utility. Performs better than paid applications like FileLocator Pro without any UI overhead</br>
 
@@ -19,10 +19,10 @@ A command line file search utility. Performs better than paid applications like 
 
 <h2>== INSTALLATION ==</h2>
 
-1. Visit the release tab (https://github.com/sLill/Windows-BudgetGrep/releases)
+1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
 2. Download and run WindowsGrepSetup.msi (This is the only file you need)
 
-This will install WindowsGrep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
+This will install Windows Grep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
 <h2>== USAGE ==</h2>
 Right-click in File Explorer > Windows Grep
@@ -57,7 +57,7 @@ Open cmd > "grep [command]"<br/>
 | Write Output to File      | -w | --write=              |
 
 
-<i>* See <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
+<i>* See <a href="https://github.com/sLill/Windows-Grep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
 
 <b>Command Order</b></br>
 Order of flags and search terms is completely flexible. The only requirement is that parameters be given to flag types that expect them.
@@ -96,4 +96,4 @@ Order of flags and search terms is completely flexible. The only requirement is 
 <br/><br/>
 
 
-<b>For even more examples and detailed descriptions of each flag, visit the</b> <a href="https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags">wiki</a>
+<b>For even more examples and detailed descriptions of each flag, visit the</b> <a href="https://github.com/sLill/Windows-Grep/wiki/WindowsGrep.CommandFlags">wiki</a>
