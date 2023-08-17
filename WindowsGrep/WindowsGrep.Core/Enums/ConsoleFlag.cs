@@ -80,7 +80,7 @@ namespace WindowsGrep.Core
         [DescriptionCollection("-P", "--path-exclude-filter=")]
         PathExcludeFilter,
 
-        // Match against file names rather than file content
+        // Match against file names
         [DescriptionCollection("-k", "--filenames-only")]
         FileNamesOnly,
 
@@ -100,6 +100,12 @@ namespace WindowsGrep.Core
         [DescriptionCollection("-Z", "--filesize-maximum=")]
         FileSizeMaximum,
 
+        // Write outputs to specified file
+        [ExpectsParameter(true)]
+        [FilterCharacterCollection('\'', '"', '\\')]
+        [DescriptionCollection("-w", "--write=")]
+        Write,
+
         // Replace instances of the search term with the replace parameter
         [ExpectsParameter(true)]
         [FilterCharacterCollection('\'', '"')]
@@ -110,10 +116,9 @@ namespace WindowsGrep.Core
         [DescriptionCollection("-DX", "--delete-files")]
         Delete,
 
-        // Write outputs to specified file
+        // Match againt file hashes (0=SHA256, 1=MD5)
         [ExpectsParameter(true)]
-        [FilterCharacterCollection('\'', '"', '\\')]
-        [DescriptionCollection("-w", "--write=")]
-        Write
+        [DescriptionCollection("--filehashes=")]
+        FileHashes,
     }
 }

@@ -15,8 +15,8 @@ namespace WindowsGrep.Core
         public static long GetFileSizeMaximum(ConsoleCommand consoleCommand)
         {
             long fileSizeMaximum = -1;
+          
             bool fileSizeMaximumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
-
             if (fileSizeMaximumFlag)
             {
                 try
@@ -51,8 +51,8 @@ namespace WindowsGrep.Core
         public static long GetFileSizeMinimum(ConsoleCommand consoleCommand)
         {
             long fileSizeMinimum = -1;
+           
             bool fileSizeMinimumFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
-
             if (fileSizeMinimumFlag)
             {
                 try
@@ -86,6 +86,29 @@ namespace WindowsGrep.Core
             }
 
             return fileSizeMinimum;
+        }
+
+        public static HashType GetHashType(ConsoleCommand consoleCommand)
+        {
+            HashType hashType = default;
+           
+            bool fileHashesFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileHashes);
+            if (fileHashesFlag)
+            {
+                try
+                {
+                    string hashTypeParameter = consoleCommand.CommandArgs[ConsoleFlag.FileHashes];
+                    hashType = (HashType)Convert.ToInt32(hashTypeParameter);
+                }
+                catch
+                {
+                    throw new Exception($"Error: could not parse hash type" +
+                        $"{Environment.NewLine}Expected format, -H [INT]" +
+                        $"{Environment.NewLine}For more information, visit https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags");
+                }
+            }
+
+            return hashType;
         }
 
         /// <summary>

@@ -3,6 +3,7 @@
     public enum ResultScope
     {
         FileName,
-        FileContent
+        FileContent,
+        FileHash
     }
 }

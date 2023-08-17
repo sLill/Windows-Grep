@@ -43,7 +43,7 @@ namespace WindowsGrep.Core
 
         private static string GetFlagPattern(string flagDescription, bool expectsParameter)
         {
-            string flagPattern = $"(\\s|^)(?<FlagDescriptor>{flagDescription})(\\s+|$)";
+            string flagPattern = $"(\\s|^)(?<FlagDescriptor>{flagDescription})(\\s+|$)?";
             flagPattern = expectsParameter ? flagPattern + "(?<Argument>((['\"][^'\"]+.)|([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+))\\s*" : flagPattern;
 
             return flagPattern;
@@ -84,7 +84,6 @@ namespace WindowsGrep.Core
             Console.ForegroundColor = consoleItem.ForegroundColor;
 
             Console.Write(consoleItem.Value);
-
             Console.ResetColor();
         }
 
@@ -96,8 +95,8 @@ namespace WindowsGrep.Core
                 {
                     WriteConsoleItem(consoleItem);
 
-                    // This seems to help give the console enough time to finalize changes made to background/foreground color properties
-                    System.Threading.Thread.Sleep(5);
+                    // This seems to help give the native console enough time to finalize changes made to background/foreground color properties
+                    Thread.Sleep(5);
                 });
             }
         }

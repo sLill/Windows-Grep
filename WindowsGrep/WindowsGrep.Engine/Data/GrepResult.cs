@@ -65,7 +65,7 @@ namespace WindowsGrep.Engine
                 // Context end
                 consoleItemCollection.Add(new ConsoleItem() { Value = TrailingContextString });
             }
-            else
+            else if (Scope == ResultScope.FileName) 
             {
                 // Context start
                 consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = LeadingContextString });
@@ -83,10 +83,24 @@ namespace WindowsGrep.Engine
                     consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $" {fileSizeReduced} {fileSizeType}(s)" });
                 }
             }
+            else if (Scope == ResultScope.FileHash)
+            {
+                // FileName
+                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
+              
+                // FileSize
+                if (FileSize > -1)
+                {
+                    var fileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
+                    consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $"{fileSizeReduced} {fileSizeType}(s) " });
+                }
+
+                // Context matched
+                consoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
+            }
 
             // Empty buffer
             consoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
-
             return consoleItemCollection;
         }
 
@@ -103,7 +117,13 @@ namespace WindowsGrep.Engine
                 fileSizeString = $"{fileSizeReduced} {fileSizeType}(s){separator}";
             }
 
-            result = Scope == ResultScope.FileName ? SourceFile : $"{SourceFile}{separator}{fileSizeString}{lineNumberString}{separator}{LeadingContextString}{MatchedString}{TrailingContextString}";
+            result = (Scope) switch
+            {
+                ResultScope.FileContent => $"{SourceFile}{separator}{fileSizeString}{lineNumberString}{separator}{LeadingContextString}{MatchedString}{TrailingContextString}",
+                ResultScope.FileName => SourceFile,
+                ResultScope.FileHash => $"{SourceFile}{separator}{MatchedString}"
+            };
+
             return result;
         } 
         #endregion Methods..

@@ -14,9 +14,12 @@
 -T	--filetype-exclude-filter=	: Filter files by type [Exclusive] (, or ; delimited)
 -p	--path-filter=			: Filter filepaths by expression [Inclusive] (, or ; delimited)
 -P	--path-exclude-filter=		: Filter filepaths by expression [Exclusive] (, or ; delimited)
--k	--filenames-only		: Match against file names rather than file content
+-k	--filenames-only		: Match against file names
 -z	--filesize-minimum=		: Filter matched files <= n kilobytes
 -Z	--filesize-maximum=		: Filter matched files >= n kilobytes
+-w	--write=			: Write output to specified filepath (surround with ' or ")
+
 -RX	--replace=			: Replace text in matched files (surround with ' or ")
 -DX	--delete-files			: Delete files returned in search
--w	--write=			: Write output to specified filepath (surround with ' or ")
+
+--filehashes=				: Match against file hashes (0=SHA256, 1=MD5)
