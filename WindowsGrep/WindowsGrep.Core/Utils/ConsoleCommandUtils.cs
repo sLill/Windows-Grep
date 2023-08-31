@@ -165,6 +165,50 @@ namespace WindowsGrep.Core
 
             return pathExcludeFilters;
         }
+
+        public static RegexOptions GetRegexOptions(ConsoleCommand consoleCommand)
+        {
+            RegexOptions optionsFlags = 0;
+            bool ignoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
+            bool ignoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
+
+            if (ignoreCaseFlag)
+                optionsFlags |= RegexOptions.IgnoreCase;
+            if (ignoreBreaksFlag)
+                optionsFlags |= RegexOptions.Singleline;
+            else
+                optionsFlags |= RegexOptions.Multiline;
+
+            return optionsFlags;
+        }
+
+        public static string GetPath(ConsoleCommand consoleCommand)
+        {
+            bool directoryFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Directory);
+            bool targetFileFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.TargetFile);
+
+            // User specified file should overrule specified directory
+            string filepath = directoryFlag ? consoleCommand.CommandArgs[ConsoleFlag.Directory] : Environment.CurrentDirectory;
+            filepath = targetFileFlag ? consoleCommand.CommandArgs[ConsoleFlag.TargetFile] : filepath;
+
+            return filepath;
+        }
+
+        public static string BuildSearchPattern(ConsoleCommand consoleCommand)
+        {
+            bool fixedStringsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
+            bool iIgnoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
+
+            string searchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
+            string ignoreCaseModifier = iIgnoreCaseFlag ? @"(?i)" : string.Empty;
+
+            // Ignore carriage-return and newline characters when using endline regex to match expected behavior from other regex engines
+            searchTerm = searchTerm.Replace("$", "[\r\n]*$");
+            searchTerm = fixedStringsFlag ? Regex.Escape(searchTerm) : searchTerm;
+            
+            string searchPattern = @"(?<MatchedString>" + ignoreCaseModifier + searchTerm + @")";
+            return searchPattern;
+        }
         #endregion Methods..
     }
 }

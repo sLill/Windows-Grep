@@ -44,7 +44,7 @@ namespace WindowsGrep.Engine
             bool writeFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
             Stopwatch commandTimer = Stopwatch.StartNew();
 
-            string filepath = GetPath(consoleCommand);
+            string filepath = ConsoleCommandUtils.GetPath(consoleCommand);
             List<string> files = GetFiles(consoleCommand, grepResultCollection, filepath);
             files = ConsoleCommandUtils.GetFilteredFiles(consoleCommand, files);
 
@@ -53,7 +53,7 @@ namespace WindowsGrep.Engine
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[Searching {files.Count} file(s)]{Environment.NewLine}" });
 
-            RegexOptions optionsFlags = GetRegexOptions(consoleCommand);
+            RegexOptions optionsFlags = ConsoleCommandUtils.GetRegexOptions(consoleCommand);
             await ProcessCommandAsync(grepResultCollection, files, consoleCommand, optionsFlags, cancellationToken);
 
             if (writeFlag)
@@ -64,24 +64,6 @@ namespace WindowsGrep.Engine
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((commandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
-        }
-
-        private static string BuildSearchPattern(ConsoleCommand consoleCommand)
-        {
-            bool fixedStringsFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
-            bool iIgnoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
-
-            string searchPattern = string.Empty;
-            string searchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
-            string ignoreCaseModifier = iIgnoreCaseFlag ? @"(?i)" : string.Empty;
-
-            // Ignore carriage-return and newline characters when using endline regex to match expected behavior from other regex engines
-            searchTerm = searchTerm.Replace("$", "[\r\n]*$");
-
-            searchTerm = fixedStringsFlag ? Regex.Escape(searchTerm) : searchTerm;
-            searchPattern = @"(?<MatchedString>" + ignoreCaseModifier + searchTerm + @")";
-
-            return searchPattern;
         }
 
         private static async Task BuildFileContentSearchResultsAsync(ConsoleCommand consoleCommand, GrepResultCollection grepResultCollection, List<Match> matches, 
@@ -338,34 +320,6 @@ namespace WindowsGrep.Engine
             grepResultCollection.AddItemRange(matches);
         }
 
-        private static string GetPath(ConsoleCommand consoleCommand)
-        {
-            bool directoryFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.Directory);
-            bool targetFileFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.TargetFile);
-
-            // User specified file should overrule specified directory
-            string filepath = directoryFlag ? consoleCommand.CommandArgs[ConsoleFlag.Directory] : Environment.CurrentDirectory;
-            filepath = targetFileFlag ? consoleCommand.CommandArgs[ConsoleFlag.TargetFile] : filepath;
-
-            return filepath;
-        }
-
-        private static RegexOptions GetRegexOptions(ConsoleCommand consoleCommand)
-        {
-            RegexOptions optionsFlags = 0;
-            bool ignoreCaseFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
-            bool ignoreBreaksFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
-
-            if (ignoreCaseFlag)
-                optionsFlags |= RegexOptions.IgnoreCase;
-            if (ignoreBreaksFlag)
-                optionsFlags |= RegexOptions.Singleline;
-            else
-                optionsFlags |= RegexOptions.Multiline;
-
-            return optionsFlags;
-        }
-
         private static async Task ProcessCommandAsync(GrepResultCollection grepResultCollection, IEnumerable<string> files, ConsoleCommand consoleCommand, RegexOptions optionsFlags, CancellationToken cancellationToken)
         {
             bool fileNamesOnlyFlag = consoleCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
@@ -379,7 +333,7 @@ namespace WindowsGrep.Engine
 
             // Build content search pattern
             string searchTerm = consoleCommand.CommandArgs[ConsoleFlag.SearchTerm];
-            string searchPattern = BuildSearchPattern(consoleCommand);
+            string searchPattern = ConsoleCommandUtils.BuildSearchPattern(consoleCommand);
             Regex searchRegex = new Regex(searchPattern, optionsFlags);
 
             if (fileHashesOnlyFlag)
