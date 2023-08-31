@@ -4,11 +4,14 @@ namespace WindowsGrep.Core
 {
     public enum NativeCommandType
     {
-        [DescriptionCollection("clear")]
-        ClearConsole,
+        [DescriptionCollection("ls")]
+        List,
 
         [ExpectsParameter(true)]
         [DescriptionCollection("cd")]
-        ChangeDirectory
+        ChangeDirectory,
+
+        [DescriptionCollection("clear")]
+        ClearConsole,
     }
 }

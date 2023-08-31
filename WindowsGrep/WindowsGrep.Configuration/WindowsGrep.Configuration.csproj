@@ -2,12 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WindowsGrep.Common\WindowsGrep.Common.csproj" />
-    <ProjectReference Include="..\WindowsGrep.Configuration\WindowsGrep.Configuration.csproj" />
-    <ProjectReference Include="..\WindowsGrep.Core\WindowsGrep.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using WindowsGrep.Configuration;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
 
@@ -75,6 +76,9 @@ namespace WindowsGrep
         private static void Initialize(string[] args)
         {
             _cancellationTokenSource = new CancellationTokenSource();
+
+            // Load config
+            ConfigurationManager.Instance.Initialize();
 
             // Publish ReadMe
             if (args.Length == 0)

@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using WindowsGrep.Common;
+using WindowsGrep.Configuration;
 using WindowsGrep.Core;
 
 namespace WindowsGrep.Engine
@@ -139,7 +140,14 @@ namespace WindowsGrep.Engine
                     files = new List<string>() { filepath };
                 else
                 {
-                    var EnumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = FileAttributes.System };
+                    bool includeSystemProtectedFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeSystemProtectedFiles];
+                    bool includeHiddenFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeHiddenFiles];
+
+                    FileAttributes fileAttributesToSkip = default;
+                    fileAttributesToSkip |= (includeSystemProtectedFiles ? 0 : FileAttributes.System);
+                    fileAttributesToSkip |= (includeHiddenFiles ? 0 : FileAttributes.Hidden);
+
+                    var EnumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = fileAttributesToSkip };
                     if (recursiveFlag)
                         EnumerationOptions.RecurseSubdirectories = true;
 

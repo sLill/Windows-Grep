@@ -5,22 +5,36 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep", "WindowsGrep\WindowsGrep.csproj", "{7A91084C-811A-41DC-B32C-5B813780FC6E}"
 	ProjectSection(ProjectDependencies) = postProject
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE} = {63B9119E-C98F-4514-8DB4-4EC41320ECBE}
 		{73291BEC-A1C4-446F-BB99-1340927759CB} = {73291BEC-A1C4-446F-BB99-1340927759CB}
 		{D04E73B5-B449-4BFC-BDF9-C4EBD2BA31B0} = {D04E73B5-B449-4BFC-BDF9-C4EBD2BA31B0}
 	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WindowsGrep.Setup", "WindowsGrep.Setup\WindowsGrep.Setup.wixproj", "{A48323C9-046D-40F4-97B5-20C9A249E1E3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE} = {63B9119E-C98F-4514-8DB4-4EC41320ECBE}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep.Engine", "WindowsGrep.Engine\WindowsGrep.Engine.csproj", "{D04E73B5-B449-4BFC-BDF9-C4EBD2BA31B0}"
 	ProjectSection(ProjectDependencies) = postProject
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE} = {63B9119E-C98F-4514-8DB4-4EC41320ECBE}
 		{73291BEC-A1C4-446F-BB99-1340927759CB} = {73291BEC-A1C4-446F-BB99-1340927759CB}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep.Common", "WindowsGrep.Common\WindowsGrep.Common.csproj", "{73291BEC-A1C4-446F-BB99-1340927759CB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep.Test", "WindowsGrep.Test\WindowsGrep.Test.csproj", "{FB63970D-0F99-4231-B15B-CFE33D64DD52}"
+	ProjectSection(ProjectDependencies) = postProject
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE} = {63B9119E-C98F-4514-8DB4-4EC41320ECBE}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGrep.Core", "WindowsGrep.Core\WindowsGrep.Core.csproj", "{9BB4A7A2-3C94-4127-B3B0-A3450CAB28B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsGrep.Core", "WindowsGrep.Core\WindowsGrep.Core.csproj", "{9BB4A7A2-3C94-4127-B3B0-A3450CAB28B0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE} = {63B9119E-C98F-4514-8DB4-4EC41320ECBE}
+		{73291BEC-A1C4-446F-BB99-1340927759CB} = {73291BEC-A1C4-446F-BB99-1340927759CB}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGrep.Configuration", "WindowsGrep.Configuration\WindowsGrep.Configuration.csproj", "{63B9119E-C98F-4514-8DB4-4EC41320ECBE}"
 	ProjectSection(ProjectDependencies) = postProject
 		{73291BEC-A1C4-446F-BB99-1340927759CB} = {73291BEC-A1C4-446F-BB99-1340927759CB}
 	EndProjectSection
@@ -79,6 +93,14 @@ Global
 		{9BB4A7A2-3C94-4127-B3B0-A3450CAB28B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9BB4A7A2-3C94-4127-B3B0-A3450CAB28B0}.Release|x86.ActiveCfg = Release|Any CPU
 		{9BB4A7A2-3C94-4127-B3B0-A3450CAB28B0}.Release|x86.Build.0 = Release|Any CPU
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE}.Debug|x86.Build.0 = Debug|Any CPU
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE}.Release|x86.ActiveCfg = Release|Any CPU
+		{63B9119E-C98F-4514-8DB4-4EC41320ECBE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
