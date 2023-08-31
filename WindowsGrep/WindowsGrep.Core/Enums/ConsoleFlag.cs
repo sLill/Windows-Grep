@@ -123,6 +123,6 @@ namespace WindowsGrep.Core
 
         // Show all commands
         [DescriptionCollection("-h", "--help")]
-        Help
+        Help,
     }
 }

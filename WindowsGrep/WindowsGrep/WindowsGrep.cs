@@ -1,0 +1,48 @@
+﻿using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using WindowsGrep.Core;
+using WindowsGrep.Engine;
+
+namespace WindowsGrep
+{
+    public static class WindowsGrep
+    {
+        #region Methods..
+        public static async Task RunCommandAsync(string commandRaw, GrepResultCollection grepResultCollection, CancellationToken cancellationToken)
+        {
+            string splitPattern = @"\|(?![^{]*}|[^\(]*\)|[^\[]*\])";
+            string[] commandCollection = Regex.Split(commandRaw, splitPattern);
+
+            foreach (string command in commandCollection)
+            {
+                // Native commands
+                var nativeCommandArgs = ConsoleUtils.ParseNativeCommandArgs(command);
+                if (nativeCommandArgs != default)
+                {
+                    var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter};
+                    NativeEngine.BeginProcessNativeCommand(nativeCommand);
+                }
+
+                // Grep commands
+                else
+                {
+                    var grepCommandArgs = ConsoleUtils.ParseGrepCommandArgs(command);
+
+                    GrepCommand grepCommand = default;
+
+                    // Help
+                    if (grepCommandArgs.ContainsKey(ConsoleFlag.Help))
+                        grepCommand = new GrepCommand(GrepCommandType.Help);
+
+                    // Query
+                    else
+                        grepCommand = new GrepCommand(GrepCommandType.Query) { CommandArgs = grepCommandArgs };
+
+                    await GrepEngine.BeginProcessGrepCommandAsync(grepCommand, grepResultCollection, cancellationToken);
+                }
+            }
+        }
+        #endregion Methods..
+    }
+}

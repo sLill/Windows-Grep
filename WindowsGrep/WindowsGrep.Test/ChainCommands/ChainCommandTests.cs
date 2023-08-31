@@ -30,7 +30,7 @@ namespace WindowsGrep.Test.ChainCommands
             string Command = $"-d '{TestDataDirectory}' -k ChainCommands | -r -i {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
 
             Assert.IsTrue(GrepResultCollection.Count == 3);
         }
@@ -44,7 +44,7 @@ namespace WindowsGrep.Test.ChainCommands
             string Command = $"-d '{TestDataDirectory}' -k ChainCommands | -r -i {SearchTerm} | -k Two";
 
             var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
 
             Assert.IsTrue(GrepResultCollection.Count == 1);
         }

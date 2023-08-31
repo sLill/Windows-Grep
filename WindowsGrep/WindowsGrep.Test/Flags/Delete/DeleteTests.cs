@@ -48,7 +48,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"{_FlagDescriptorShort} -f '{_TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
@@ -64,7 +64,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"{_FlagDescriptorLong} -f '{_TestFilePath}' {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
@@ -82,7 +82,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"-f '{_TestFilePath}' {_FlagDescriptorShort} {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
@@ -98,7 +98,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"-f '{_TestFilePath}' {_FlagDescriptorLong} {SearchTerm}";
 
             var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
@@ -116,7 +116,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"-f '{_TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
@@ -132,7 +132,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"-f '{_TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var GrepResultCollection = new GrepResultCollection();
-            GrepEngine.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }

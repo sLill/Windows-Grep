@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Data;
 using System.Text.RegularExpressions;
 using WindowsGrep.Common;
 
@@ -10,46 +11,20 @@ namespace WindowsGrep.Core
         public static void ClearConsole()
             => Console.Clear();
 
-        public static IDictionary<ConsoleFlag, string> DiscoverCommandArgs(string commandRaw)
+        private static string GetCommandPattern(string commandDescriptor, bool expectsParameter)
         {
-            ConcurrentDictionary<ConsoleFlag, string> commandArgs = new ConcurrentDictionary<ConsoleFlag, string>();
+            string pattern = $"^{commandDescriptor}";
+            pattern = expectsParameter ? $"{pattern}\\s.*?(?<Parameter>.*?)$" : $"{pattern}[^\\S]*?$";
 
-            List<ConsoleFlag> consoleFlagValues = EnumUtils.GetValues<ConsoleFlag>().ToList();
-            consoleFlagValues.ForEach(flag =>
-            {
-                bool expectsParameter = flag.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
-                List<string> flagDescriptionCollection = flag.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.ToList();
-
-                flagDescriptionCollection?.ForEach(flagDescription =>
-                {
-                    string flagPattern = GetFlagPattern(flagDescription, expectsParameter);
-                    var matches = Regex.Matches(commandRaw, flagPattern);
-                    
-                    if (expectsParameter && matches.Count > 1)
-                        throw new Exception("Error: Arguments of parameter type cannot be specified more than once");
-                    else if (matches.Count > 0)
-                    {
-                        string flagArgument = matches.Select(match => match.Groups["Argument"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
-                        flagArgument = GetSanitizedFlagArgument(flag, flagArgument);
-
-                        commandArgs[flag] = flagArgument;
-                        commandRaw = Regex.Replace(commandRaw, flagPattern, " ");
-                    }
-                });
-            });
-
-            // Search term
-            commandArgs[ConsoleFlag.SearchTerm] = commandRaw.Trim();
-
-            return commandArgs;
+            return pattern;
         }
 
-        private static string GetFlagPattern(string flagDescription, bool expectsParameter)
+        private static string GetFlagPattern(string flagDescriptor, bool expectsParameter)
         {
-            string flagPattern = $"(\\s|^)(?<FlagDescriptor>{flagDescription})(\\s+|$)?";
-            flagPattern = expectsParameter ? flagPattern + "(?<Argument>((['\"][^'\"]+.)|([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+))\\s*" : flagPattern;
+            string pattern = $"(\\s|^)(?<Descriptor>{flagDescriptor})(\\s+|$)?";
+            pattern = expectsParameter ? pattern + "(?<Parameter>((['\"][^'\"]+.)|([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+))\\s*" : pattern;
 
-            return flagPattern;
+            return pattern;
         }
 
         private static string GetSanitizedFlagArgument(ConsoleFlag flag, string flagArgument)
@@ -73,6 +48,63 @@ namespace WindowsGrep.Core
             }
 
             return flagArgument;
+        }
+
+        public static IDictionary<ConsoleFlag, string> ParseGrepCommandArgs(string commandRaw)
+        {
+            ConcurrentDictionary<ConsoleFlag, string> commandArgs = new ConcurrentDictionary<ConsoleFlag, string>();
+
+            List<ConsoleFlag> consoleFlagCollection = EnumUtils.GetValues<ConsoleFlag>().ToList();
+            consoleFlagCollection.ForEach(flag =>
+            {
+                bool expectsParameter = flag.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
+                List<string> flagDescriptionCollection = flag.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.ToList();
+
+                flagDescriptionCollection?.ForEach(flagDescription =>
+                {
+                    string flagPattern = GetFlagPattern(flagDescription, expectsParameter);
+                    var matches = Regex.Matches(commandRaw, flagPattern);
+
+                    if (expectsParameter && matches.Count > 1)
+                        throw new Exception("Error: Arguments of parameter type cannot be specified more than once");
+                    else if (matches.Count > 0)
+                    {
+                        string flagArgument = matches.Select(match => match.Groups["Parameter"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
+                        flagArgument = GetSanitizedFlagArgument(flag, flagArgument);
+
+                        commandArgs[flag] = flagArgument;
+                        commandRaw = Regex.Replace(commandRaw, flagPattern, " ");
+                    }
+                });
+            });
+
+            // Search term
+            commandArgs[ConsoleFlag.SearchTerm] = commandRaw.Trim();
+            return commandArgs;
+        }
+
+        public static (NativeCommandType? CommandType, string CommandParameter) ParseNativeCommandArgs(string commandRaw)
+        {
+            List<NativeCommandType> nativeCommandCollection = EnumUtils.GetValues<NativeCommandType>().ToList();
+            foreach (var commandType in nativeCommandCollection)
+            {
+                List<string> commandDescriptionCollection = commandType.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.ToList();
+
+                foreach (var commandDescription in commandDescriptionCollection)
+                {
+                    bool expectsParameter = commandType.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
+                    string commandPattern = GetCommandPattern(commandDescription, expectsParameter);
+
+                    var matches = Regex.Matches(commandRaw, commandPattern);
+                    if (matches.Any())
+                    {
+                        string commandParameter = matches.Select(match => match.Groups["Parameter"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
+                        return (commandType, commandParameter);
+                    }
+                }
+            };
+
+            return default;
         }
 
         public static void PublishReadMe()

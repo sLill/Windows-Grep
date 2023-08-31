@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using WindowsGrep.Common;
@@ -42,7 +44,7 @@ namespace WindowsGrep
                         grepResultCollection.ItemsAdded += OnResultsAdded;
 
                         _cancellationTokenSource = new CancellationTokenSource();
-                        await Task.Run(() => GrepEngine.RunCommandAsync(command, grepResultCollection, _cancellationTokenSource.Token));
+                        await Task.Run(() => WindowsGrep.RunCommandAsync(command, grepResultCollection, _cancellationTokenSource.Token));
                     }
                     catch (Exception ex)
                     {
@@ -84,7 +86,7 @@ namespace WindowsGrep
             // Override the default behavior for the Ctrl+C shortcut if the application was not ran from the command line
             if (Environment.UserInteractive)
                 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_OnCancelKeyPress);
-        }
+        }    
         #endregion Methods..
     }
 }

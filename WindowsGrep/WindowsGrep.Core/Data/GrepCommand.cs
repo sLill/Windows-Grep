@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
-
-namespace WindowsGrep.Core
+﻿namespace WindowsGrep.Core
 {
-    public class ConsoleCommand
+    public class GrepCommand
     {
         #region Properties..
-        public CommandType CommandType { get; private set; }
+        public GrepCommandType CommandType { get; private set; }
 
         public IDictionary<ConsoleFlag, string> CommandArgs { get; set; } = new Dictionary<ConsoleFlag, string>();
         #endregion Properties..
 
         #region Constructors..
-        public ConsoleCommand(CommandType commandType)
+        public GrepCommand(GrepCommandType commandType)
         {
             CommandType = commandType;
         }
