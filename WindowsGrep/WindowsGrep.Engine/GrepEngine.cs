@@ -34,7 +34,7 @@ namespace WindowsGrep.Engine
                     break;
 
                 case CommandType.ClearConsole:
-                    ClearConsole();
+                    ConsoleUtils.ClearConsole();
                     break;
             }
         }
@@ -64,12 +64,6 @@ namespace WindowsGrep.Engine
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((commandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
-        }
-
-        private static void ClearConsole()
-        {
-            Console.Clear();
-            ConsoleUtils.PublishReadMe();
         }
 
         private static string BuildSearchPattern(ConsoleCommand consoleCommand)

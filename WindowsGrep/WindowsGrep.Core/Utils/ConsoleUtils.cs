@@ -7,6 +7,9 @@ namespace WindowsGrep.Core
     public static class ConsoleUtils
     {
         #region Methods..
+        public static void ClearConsole()
+            => Console.Clear();
+
         public static IDictionary<ConsoleFlag, string> DiscoverCommandArgs(string commandRaw)
         {
             ConcurrentDictionary<ConsoleFlag, string> commandArgs = new ConcurrentDictionary<ConsoleFlag, string>();
