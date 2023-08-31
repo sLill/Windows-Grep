@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using WindowsGrep.Common;
@@ -21,7 +22,18 @@ namespace WindowsGrep
 
             do
             {
-                string command = args.Length == 0 ? Console.ReadLine() : string.Join(" ", args);
+                string command = string.Empty;
+                if (args.Length == 0)
+                {
+                    // Prompt
+                    string currentDirectory = Directory.GetCurrentDirectory();
+                    Console.Write($"{currentDirectory}> ");
+
+                    command = Console.ReadLine();
+                }
+                else
+                    command = string.Join(" ", args);
+
                 if (command.Length > 0)
                 {
                     try
