@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
 
@@ -86,7 +83,7 @@ namespace WindowsGrep
             // Override the default behavior for the Ctrl+C shortcut if the application was not ran from the command line
             if (Environment.UserInteractive)
                 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_OnCancelKeyPress);
-        }    
+        }
         #endregion Methods..
     }
 }

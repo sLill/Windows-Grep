@@ -20,7 +20,7 @@ namespace WindowsGrep
                 var nativeCommandArgs = ConsoleUtils.ParseNativeCommandArgs(command);
                 if (nativeCommandArgs != default)
                 {
-                    var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter};
+                    var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter };
                     NativeEngine.BeginProcessNativeCommand(nativeCommand);
                 }
 

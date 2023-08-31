@@ -65,7 +65,7 @@ namespace WindowsGrep.Engine
                 // Context end
                 consoleItemCollection.Add(new ConsoleItem() { Value = TrailingContextString });
             }
-            else if (Scope == ResultScope.FileName) 
+            else if (Scope == ResultScope.FileName)
             {
                 // Context start
                 consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = LeadingContextString });
@@ -87,7 +87,7 @@ namespace WindowsGrep.Engine
             {
                 // FileName
                 consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
-              
+
                 // FileSize
                 if (FileSize > -1)
                 {
@@ -125,7 +125,7 @@ namespace WindowsGrep.Engine
             };
 
             return result;
-        } 
+        }
         #endregion Methods..
     }
 }

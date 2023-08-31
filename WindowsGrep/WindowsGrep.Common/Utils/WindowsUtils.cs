@@ -30,7 +30,7 @@ namespace WindowsGrep.Common
             {
                 var hashBytes = hashAlgorithm.ComputeHash(fileStream);
                 hashAlgorithm.Dispose();
-                
+
                 return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
             }
         }

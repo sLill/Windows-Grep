@@ -28,7 +28,7 @@ namespace WindowsGrep.Engine
                 case GrepCommandType.Help:
                     ConsoleUtils.PublishReadMe();
                     break;
-             
+
                 case GrepCommandType.Query:
                     await QueryAsync(grepCommand, grepResultCollection, cancellationToken);
                     break;
@@ -62,7 +62,7 @@ namespace WindowsGrep.Engine
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
         }
 
-        private static async Task BuildFileContentSearchResultsAsync(GrepCommand grepCommand, GrepResultCollection grepResultCollection, List<Match> matches, 
+        private static async Task BuildFileContentSearchResultsAsync(GrepCommand grepCommand, GrepResultCollection grepResultCollection, List<Match> matches,
             string filename, long fileSize, string fileRaw, CancellationToken cancellationToken)
         {
             bool ignoreBreaksFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
@@ -77,7 +77,7 @@ namespace WindowsGrep.Engine
 
             matches.ToList().ForEach(match =>
             {
-                if (cancellationToken.IsCancellationRequested) 
+                if (cancellationToken.IsCancellationRequested)
                     return;
 
                 string leadingContext = string.Empty;
@@ -268,7 +268,7 @@ namespace WindowsGrep.Engine
             grepResultCollection.AddItemRange(matches);
         }
 
-        private static void GetFileNameMatchesAsync(GrepResultCollection grepResultCollection, IEnumerable<string> files, GrepCommand grepCommand, 
+        private static void GetFileNameMatchesAsync(GrepResultCollection grepResultCollection, IEnumerable<string> files, GrepCommand grepCommand,
             string searchPattern, Regex searchRegex, SearchMetrics searchMetrics, long fileSizeMin, long fileSizeMax, CancellationToken cancellationToken)
         {
             var matches = new List<GrepResult>();

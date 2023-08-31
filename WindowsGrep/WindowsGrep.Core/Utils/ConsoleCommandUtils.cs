@@ -15,7 +15,7 @@ namespace WindowsGrep.Core
         public static long GetFileSizeMaximum(GrepCommand grepCommand)
         {
             long fileSizeMaximum = -1;
-          
+
             bool fileSizeMaximumFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
             if (fileSizeMaximumFlag)
             {
@@ -51,7 +51,7 @@ namespace WindowsGrep.Core
         public static long GetFileSizeMinimum(GrepCommand grepCommand)
         {
             long fileSizeMinimum = -1;
-           
+
             bool fileSizeMinimumFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
             if (fileSizeMinimumFlag)
             {
@@ -91,7 +91,7 @@ namespace WindowsGrep.Core
         public static HashType GetHashType(GrepCommand grepCommand)
         {
             HashType hashType = default;
-           
+
             bool fileHashesFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileHashes);
             if (fileHashesFlag)
             {
@@ -205,7 +205,7 @@ namespace WindowsGrep.Core
             // Ignore carriage-return and newline characters when using endline regex to match expected behavior from other regex engines
             searchTerm = searchTerm.Replace("$", "[\r\n]*$");
             searchTerm = fixedStringsFlag ? Regex.Escape(searchTerm) : searchTerm;
-            
+
             string searchPattern = @"(?<MatchedString>" + ignoreCaseModifier + searchTerm + @")";
             return searchPattern;
         }

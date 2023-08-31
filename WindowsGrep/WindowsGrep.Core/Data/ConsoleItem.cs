@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WindowsGrep.Core
+﻿namespace WindowsGrep.Core
 {
     public class ConsoleItem
     {
