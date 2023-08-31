@@ -2,6 +2,7 @@
 {
     public enum CommandType
     {
+        Help,
         Query,
         ClearConsole
     }

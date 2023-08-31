@@ -1,5 +1,7 @@
+
 ================= Windows Grep =================
 
+-h	--help				: Show all commands
 -r	--recursive			: Recursive search
 -d	--directory=			: Target directory (surround with ' or ")
 -c	--context=			: Return n leading/trailing characters surrounding the matched term

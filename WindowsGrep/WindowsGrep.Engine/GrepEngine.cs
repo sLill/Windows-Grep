@@ -25,11 +25,16 @@ namespace WindowsGrep.Engine
         {
             switch (consoleCommand.CommandType)
             {
-                case CommandType.ClearConsole:
-                    ClearConsole();
+                case CommandType.Help:
+                    ConsoleUtils.PublishReadMe();
                     break;
+             
                 case CommandType.Query:
                     await QueryAsync(consoleCommand, grepResultCollection, cancellationToken);
+                    break;
+
+                case CommandType.ClearConsole:
+                    ClearConsole();
                     break;
             }
         }
@@ -590,12 +595,21 @@ namespace WindowsGrep.Engine
             foreach (string command in commandCollection)
             {
                 ConsoleCommand consoleCommand = default;
+
+                // Clear console
                 if (command.ToLower() == "clear")
                     consoleCommand = new ConsoleCommand(CommandType.ClearConsole);
                 else
                 {
                     var commandArgs = ConsoleUtils.DiscoverCommandArgs(command);
-                    consoleCommand = new ConsoleCommand(CommandType.Query) { CommandArgs = commandArgs };
+
+                    // Help
+                    if (commandArgs.ContainsKey(ConsoleFlag.Help))
+                        consoleCommand = new ConsoleCommand(CommandType.Help);
+
+                    // Query
+                    else
+                        consoleCommand = new ConsoleCommand(CommandType.Query) { CommandArgs = commandArgs };
                 }
 
                 await BeginProcessCommandAsync(consoleCommand, grepResultCollection, cancellationToken);

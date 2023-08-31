@@ -120,5 +120,9 @@ namespace WindowsGrep.Core
         [ExpectsParameter(true)]
         [DescriptionCollection("--filehashes=")]
         FileHashes,
+
+        // Show all commands
+        [DescriptionCollection("-h", "--help")]
+        Help
     }
 }
