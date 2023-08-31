@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 
@@ -38,69 +39,110 @@ namespace WindowsGrep.Engine
         {
             List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
 
-            if (Scope == ResultScope.FileContent)
+            switch(Scope)
             {
-                // FileName
-                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
+                case ResultScope.FileContent:
+                    BuildFileContentConsoleItemCollection(consoleItemCollection);
+                    break;
 
-                // FileSize
-                if (FileSize > -1)
-                {
-                    var fileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
-                    consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $"{fileSizeReduced} {fileSizeType}(s) " });
-                }
+                case ResultScope.FileName:
+                    BuildFileNameConsoleItemCollection(consoleItemCollection);
+                    break;
 
-                // Line number
-                if (LineNumber > -1)
-                {
-                    consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
-                }
-
-                // Context start
-                consoleItemCollection.Add(new ConsoleItem() { Value = LeadingContextString });
-
-                // Context matched
-                consoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
-
-                // Context end
-                consoleItemCollection.Add(new ConsoleItem() { Value = TrailingContextString });
-            }
-            else if (Scope == ResultScope.FileName)
-            {
-                // Context start
-                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = LeadingContextString });
-
-                // Context matched
-                consoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
-
-                // Context end
-                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = TrailingContextString });
-
-                // FileSize
-                if (FileSize > -1)
-                {
-                    var fileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
-                    consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $" {fileSizeReduced} {fileSizeType}(s)" });
-                }
-            }
-            else if (Scope == ResultScope.FileHash)
-            {
-                // FileName
-                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
-
-                // FileSize
-                if (FileSize > -1)
-                {
-                    var fileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
-                    consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $"{fileSizeReduced} {fileSizeType}(s) " });
-                }
-
-                // Context matched
-                consoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
+                case ResultScope.FileHash:
+                    BuildFileHashConsoleItemCollection(consoleItemCollection);
+                    break;
             }
 
             // Empty buffer
             consoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
+            return consoleItemCollection;
+        }
+
+        private void BuildFileContentConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
+        {
+            // FileName
+            consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
+
+            // FileSize
+            if (FileSize > -1)
+            {
+                var fileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
+                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $"{fileSizeReduced} {fileSizeType}(s) " });
+            }
+
+            // Line number
+            if (LineNumber > -1)
+            {
+                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
+            }
+
+            // Context start
+            consoleItemCollection.Add(new ConsoleItem() { Value = LeadingContextString });
+
+            // Context matched
+            consoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
+
+            // Context end
+            consoleItemCollection.Add(new ConsoleItem() { Value = TrailingContextString });
+        }
+
+        private void BuildFileNameConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
+        {
+            // Context start
+            consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = LeadingContextString });
+
+            // Context matched
+            consoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
+
+            // Context end
+            consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = TrailingContextString });
+
+            // File attributes
+            consoleItemCollection.AddRange(GetFileAttributeConsoleItems());
+
+            // FileSize
+            consoleItemCollection.AddRange(GetFileSizeConsoleItems());
+        }
+
+        private void BuildFileHashConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
+        {
+            // FileName
+            consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
+
+            // File attributes
+            consoleItemCollection.AddRange(GetFileAttributeConsoleItems());
+
+            // FileSize
+            consoleItemCollection.AddRange(GetFileSizeConsoleItems());
+
+            // Context matched
+            consoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
+        }
+
+        private List<ConsoleItem> GetFileAttributeConsoleItems()
+        {
+            List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
+
+            var fileAttributes = File.GetAttributes(SourceFile);
+            if ((fileAttributes & FileAttributes.System) == FileAttributes.System)
+                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $" [System]" });
+            if ((fileAttributes & FileAttributes.Hidden) == FileAttributes.Hidden)
+                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.White, Value = $" [Hidden]" });
+
+            return consoleItemCollection;
+        }
+
+        private List<ConsoleItem> GetFileSizeConsoleItems()
+        {
+            List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
+
+            if (FileSize > -1)
+            {
+                var fileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
+                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $"{fileSizeReduced} {fileSizeType}(s) " });
+            }
+
             return consoleItemCollection;
         }
 
