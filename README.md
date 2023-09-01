@@ -19,6 +19,7 @@ Command line grep-like file search utility for Windows</br>
 - Ease of use: Runs from cmd, Powershell, Windows Explorer or headless</br>
 
 <h1>INSTALLATION</h1>
+
 1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
 2. Download and run WindowsGrepSetup.msi (This is the only file you need)
 
