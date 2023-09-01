@@ -9,30 +9,29 @@
 
 Command line grep-like file search utility for Windows</br>
 
--Supports-</br>
-- Filename and file content searches</br>
+<h2>Supports</h2>
+- Basic and advanced file searches</br>
 - Regular Expressions</br>
 - Chained commands</br>
 - Filetype/Filepath/Filesize filtering</br>
-- Output to external files</br>
-- Mass replace and delete actions on queried files</br>
-- Ease of use: Runnable from Cmd, Powershell, Windows Explorer or headless</br>
+- Exports</br>
+- Mass replace and delete</br>
+- Ease of use: Runs from cmd, Powershell, Windows Explorer or headless</br>
 
-<h2>== INSTALLATION ==</h2>
-
+<h1>INSTALLATION</h1>
 1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
 2. Download and run WindowsGrepSetup.msi (This is the only file you need)
 
 This will install Windows Grep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
-<h2>== USAGE ==</h2>
+<h1>USAGE</h1>
 Right-click in File Explorer > Windows Grep
 <br/><br/>
 OR
 <br/><br/>
 Open cmd > "grep [command]"<br/>
 
-<h2>== REFERENCE ==</h2>
+<h1>REFERENCE</h1>
 
 |                           |    |                       |
 | ------------------------- | -- | :-------------------: |
@@ -67,7 +66,7 @@ Order of flags and search terms is completely flexible. The only requirement is 
 
 <br/>
 
-<h2>== EXAMPLE COMMANDS ==</h2>
+<h1>EXAMPLE COMMANDS</h1>
 
 <i>Recursively search all files for "Dug"</i><br/>
 -r Dug
