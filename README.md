@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://getbootstrap.com/">
+    <img src="https://i.imgur.com/ciH80xa.png" alt="Bootstrap logo" width="200" height="200">
+  </a>
+</p>
+
 <h1>Windows Grep</h1> 
 
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-grep/badge)](https://www.codefactor.io/repository/github/slill/windows-grep)
