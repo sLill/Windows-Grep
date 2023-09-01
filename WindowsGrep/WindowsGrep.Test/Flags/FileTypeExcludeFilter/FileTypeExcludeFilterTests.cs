@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -41,10 +42,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".cpp";
             string Command = $"{_FlagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 6);
+            Assert.IsTrue(commandResultCollection.Count == 6);
         }
         #endregion FileTypeExcludeFilter_FlagFirst_FlagShort_SingleType 
 
@@ -56,10 +57,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".cpp,.txt,.php";
             string Command = $"{_FlagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 3);
+            Assert.IsTrue(commandResultCollection.Count == 3);
         }
         #endregion FileTypeExcludeFilter_FlagFirst_FlagShort_MultiType_CommaDelimited 
 
@@ -71,10 +72,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".cpp;.txt";
             string Command = $"{_FlagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 5);
+            Assert.IsTrue(commandResultCollection.Count == 5);
         }
         #endregion FileTypeExcludeFilter_FlagFirst_FlagShort_MultiType_SemiColonDelimited 
 
@@ -86,10 +87,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".txt";
             string Command = $"{_FlagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 6);
+            Assert.IsTrue(commandResultCollection.Count == 6);
         }
         #endregion FileTypeExcludeFilter_FlagFirst_FlagLong_SingleType 
 
@@ -101,10 +102,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".txt,.php";
             string Command = $"{_FlagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 4);
+            Assert.IsTrue(commandResultCollection.Count == 4);
         }
         #endregion FileTypeExcludeFilter_FlagFirst_FlagLong_MultiType_CommaDelimited 
 
@@ -116,10 +117,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".txt;.php";
             string Command = $"{_FlagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 4);
+            Assert.IsTrue(commandResultCollection.Count == 4);
         }
         #endregion FileTypeExcludeFilter_FlagFirst_FlagLong_MultiType_SemiColonDelimited 
         #endregion FlagFirst..
@@ -133,10 +134,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".html";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {FlagParameter} {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 6);
+            Assert.IsTrue(commandResultCollection.Count == 6);
         }
         #endregion FileTypeExcludeFilter_FlagMiddle_FlagShort_SingleType 
 
@@ -148,10 +149,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".html,.txt";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {FlagParameter} {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 5);
+            Assert.IsTrue(commandResultCollection.Count == 5);
         }
         #endregion FileTypeExcludeFilter_FlagMiddle_FlagShort_MultiType_CommaDelimited 
 
@@ -163,10 +164,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".html;.txt";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {FlagParameter} {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 5);
+            Assert.IsTrue(commandResultCollection.Count == 5);
         }
         #endregion FileTypeExcludeFilter_FlagMiddle_FlagShort_MultiType_SemiColonDelimited 
 
@@ -178,10 +179,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".php";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {FlagParameter} {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 5);
+            Assert.IsTrue(commandResultCollection.Count == 5);
         }
         #endregion FileTypeExcludeFilter_FlagMiddle_FlagLong_SingleType 
 
@@ -193,10 +194,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".php,.wg";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {FlagParameter} {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 4);
+            Assert.IsTrue(commandResultCollection.Count == 4);
         }
         #endregion FileTypeExcludeFilter_FlagMiddle_FlagLong_MultiType_CommaDelimited 
 
@@ -208,10 +209,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".php;.wg";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {FlagParameter} {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 4);
+            Assert.IsTrue(commandResultCollection.Count == 4);
         }
         #endregion FileTypeExcludeFilter_FlagMiddle_FlagLong_MultiType_SemiColonDelimited 
         #endregion FlagMiddle..
@@ -225,10 +226,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".cpp";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} {FlagParameter}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 6);
+            Assert.IsTrue(commandResultCollection.Count == 6);
         }
         #endregion FileTypeExcludeFilter_FlagLast_FlagShort_SingleType 
 
@@ -240,10 +241,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".cpp,.html";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} {FlagParameter}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 5);
+            Assert.IsTrue(commandResultCollection.Count == 5);
         }
         #endregion FileTypeExcludeFilter_FlagLast_FlagShort_MultiType_CommaDelimited 
 
@@ -255,10 +256,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".cpp;.html";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} {FlagParameter}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 5);
+            Assert.IsTrue(commandResultCollection.Count == 5);
         }
         #endregion FileTypeExcludeFilter_FlagLast_FlagShort_MultiType_SemiColonDelimited 
 
@@ -270,10 +271,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".txt";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 6);
+            Assert.IsTrue(commandResultCollection.Count == 6);
         }
         #endregion FileTypeExcludeFilter_FlagLast_FlagLong_SingleType 
 
@@ -285,10 +286,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".txt,.wg";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 5);
+            Assert.IsTrue(commandResultCollection.Count == 5);
         }
         #endregion FileTypeExcludeFilter_FlagLast_FlagLong_MultiType_CommaDelimited 
 
@@ -300,10 +301,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".txt;.wg";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 5);
+            Assert.IsTrue(commandResultCollection.Count == 5);
         }
         #endregion FileTypeExcludeFilter_FlagLast_FlagLong_MultiType_SemiColonDelimited 
         #endregion FlagLast..
@@ -316,10 +317,10 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string FlagParameter = ".tig";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 7);
+            Assert.IsTrue(commandResultCollection.Count == 7);
         }
         #endregion FileTypeExcludeFilter_FileTypeNotExists 
         #endregion Tests..

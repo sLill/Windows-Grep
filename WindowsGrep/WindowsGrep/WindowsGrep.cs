@@ -9,7 +9,7 @@ namespace WindowsGrep
     public static class WindowsGrep
     {
         #region Methods..
-        public static async Task RunCommandAsync(string commandRaw, GrepResultCollection grepResultCollection, CancellationToken cancellationToken)
+        public static async Task RunCommandAsync(string commandRaw, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
         {
             string splitPattern = @"\|(?![^{]*}|[^\(]*\)|[^\[]*\])";
             string[] commandCollection = Regex.Split(commandRaw, splitPattern);
@@ -21,7 +21,7 @@ namespace WindowsGrep
                 if (nativeCommandArgs != default)
                 {
                     var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter };
-                    NativeEngine.BeginProcessNativeCommand(nativeCommand);
+                    NativeEngine.BeginProcessNativeCommand(nativeCommand, commandResultCollection);
                 }
 
                 // Grep commands
@@ -39,7 +39,7 @@ namespace WindowsGrep
                     else
                         grepCommand = new GrepCommand(GrepCommandType.Query) { CommandArgs = grepCommandArgs };
 
-                    await GrepEngine.BeginProcessGrepCommandAsync(grepCommand, grepResultCollection, cancellationToken);
+                    await GrepEngine.BeginProcessGrepCommandAsync(grepCommand, commandResultCollection, cancellationToken);
                 }
             }
         }

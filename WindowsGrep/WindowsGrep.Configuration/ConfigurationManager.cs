@@ -37,6 +37,14 @@ namespace WindowsGrep.Configuration
             LoadConfiguration();
         }
 
+        public void LoadDefaultConfiguration()
+        {
+            ConfigItemCollection = new Dictionary<ConfigItem, object>();
+
+            var configItemCollection = EnumUtils.GetValues<ConfigItem>().ToList();
+            configItemCollection.ForEach(configItem => ConfigItemCollection[configItem] = configItem.GetCustomAttribute<DefaultValueAttribute>()?.Value);
+        }
+
         private void LoadConfiguration()
         {
             try
@@ -53,15 +61,11 @@ namespace WindowsGrep.Configuration
                 // Load and save defaults
                 else
                 {
-                    ConfigItemCollection = new Dictionary<ConfigItem, object>();
-
-                    var configItemCollection = EnumUtils.GetValues<ConfigItem>().ToList();
-                    configItemCollection.ForEach(configItem => ConfigItemCollection[configItem] = configItem.GetCustomAttribute<DefaultValueAttribute>()?.Value);
-
+                    LoadDefaultConfiguration();
                     SaveConfiguration();
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine($"Could not load configuration - {ex.Message}");
             }
@@ -76,7 +80,7 @@ namespace WindowsGrep.Configuration
 
                 File.WriteAllText(configFilepath, jsonRaw);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine($"Could not save configuration - {ex.Message}");
             }

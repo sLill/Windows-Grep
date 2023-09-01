@@ -1,45 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 
 namespace WindowsGrep.Engine
 {
-    public class GrepResult
+    public class GrepCommandResult : CommandResultBase
     {
+        #region Fields..
+        private ResultScope _scope;
+        #endregion Fields..
+
         #region Properties..
-        public bool Suppressed { get; set; }
-
-        public long FileSize { get; set; }
-
         public string LeadingContextString { get; set; }
 
         public int LineNumber { get; set; } = -1;
 
         public string MatchedString { get; set; }
 
-        public ResultScope Scope { get; set; }
-
-        public string SourceFile { get; set; }
-
         public string TrailingContextString { get; set; }
         #endregion Properties..
 
         #region Constructors..
-        public GrepResult(string sourceFile, ResultScope resultScope)
+        public GrepCommandResult(string sourceFile, ResultScope resultScope)
+            : base(sourceFile)
         {
-            Scope = resultScope;
-            SourceFile = sourceFile;
+            _scope = resultScope;
         }
         #endregion Constructors..
 
         #region Methods..
-        public List<ConsoleItem> ToConsoleItemCollection()
+        public override List<ConsoleItem> ToConsoleItemCollection()
         {
             List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
 
-            switch(Scope)
+            switch (_scope)
             {
                 case ResultScope.FileContent:
                     BuildFileContentConsoleItemCollection(consoleItemCollection);
@@ -110,43 +105,17 @@ namespace WindowsGrep.Engine
             // FileName
             consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
 
+            // Context matched
+            consoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
+
             // File attributes
             consoleItemCollection.AddRange(GetFileAttributeConsoleItems());
 
             // FileSize
             consoleItemCollection.AddRange(GetFileSizeConsoleItems());
-
-            // Context matched
-            consoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
         }
 
-        private List<ConsoleItem> GetFileAttributeConsoleItems()
-        {
-            List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
-
-            var fileAttributes = File.GetAttributes(SourceFile);
-            if ((fileAttributes & FileAttributes.System) == FileAttributes.System)
-                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $" [System]" });
-            if ((fileAttributes & FileAttributes.Hidden) == FileAttributes.Hidden)
-                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.White, Value = $" [Hidden]" });
-
-            return consoleItemCollection;
-        }
-
-        private List<ConsoleItem> GetFileSizeConsoleItems()
-        {
-            List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
-
-            if (FileSize > -1)
-            {
-                var fileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
-                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $"{fileSizeReduced} {fileSizeType}(s) " });
-            }
-
-            return consoleItemCollection;
-        }
-
-        public string ToString(char separator)
+        public override string ToString(char separator)
         {
             string result = string.Empty;
 
@@ -159,7 +128,7 @@ namespace WindowsGrep.Engine
                 fileSizeString = $"{fileSizeReduced} {fileSizeType}(s){separator}";
             }
 
-            result = (Scope) switch
+            result = (_scope) switch
             {
                 ResultScope.FileContent => $"{SourceFile}{separator}{fileSizeString}{lineNumberString}{separator}{LeadingContextString}{MatchedString}{TrailingContextString}",
                 ResultScope.FileName => SourceFile,

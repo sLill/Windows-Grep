@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using WindowsGrep.Engine;
 
 namespace WindowsGrep.Test.RegularExpressions
@@ -34,10 +35,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"\d\d\d\d";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Characters_Digit
 
@@ -51,10 +52,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"not a story the Jed\w would tell you";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Characters_WordCharacter 
 
@@ -68,10 +69,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"not\sa\sstory\sthe\sJedi\swould\stell\syou";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Characters_SpaceCharacter 
 
@@ -85,10 +86,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"Palpat\Dne 2005";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Characters_NonDigit 
 
@@ -102,10 +103,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"became so powerful.\W\W the only";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Characters_NonWordCharacter 
 
@@ -119,10 +120,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"so po\Ser\Sul and so wi\Se";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Characters_NonSpaceCharacter 
 
@@ -136,10 +137,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"power, which eventually. of co.rse, h..did";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Characters_AnyCharacter 
 
@@ -153,10 +154,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"\t'Did you ever";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Characters_Tab 
 
@@ -170,10 +171,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"story the Jedi would tell you\.[\r\n\s]*It's a Sith";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Characters_NewLine 
         #endregion Characters..
@@ -189,10 +190,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"so powerful[\s\w\W]*wise";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_CharacterClasses_Characters
 
@@ -207,17 +208,17 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"the only [a-z\s]* afraid";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            Assert.IsTrue(commandResultCollection.Count == 1);
 
             // 2
             SearchTerm = @"so powerful[a-z\s]* he was afraid";
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
-            Assert.IsTrue(GrepResultCollection.Count == 0);
+            commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            Assert.IsTrue(commandResultCollection.Count == 0);
         }
         #endregion RegularExpressions_CharacterClasses_CharacterRange
 
@@ -231,10 +232,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"so powerful[^\d]*wise";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_CharacterClasses_Characters_Negative
 
@@ -248,10 +249,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"Palpatine [^a-z]*";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_CharacterClasses_CharacterRange_Negative
         #endregion Character Classes..
@@ -267,10 +268,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"He became so powerful[\.]+ the only thing";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Quantifiers_OneOrMore 
 
@@ -285,17 +286,17 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"He became so powerful[\.]+? the only thing";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            Assert.IsTrue(commandResultCollection.Count == 1);
 
             // 2
             SearchTerm = @"He became so powerful[\.]+?";
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString == @"He became so powerful.") == 1);
+            commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == @"He became so powerful.") == 1);
         }
         #endregion RegularExpressions_Quantifiers_OneOrMoreLazy 
 
@@ -309,10 +310,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"He became so powerful[\.]{3} the only thing";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Quantifiers_nTimes 
 
@@ -326,10 +327,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"He became so powerful[\.]{1,3} the only thing";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Quantifiers_Range 
 
@@ -343,10 +344,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"He became so powerful[\.]{2,} the only thing";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Quantifiers_nOrMore 
 
@@ -360,10 +361,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"He became so powerful\.\.\.[Z]* the only thing";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Quantifiers_ZeroOrMore 
 
@@ -378,17 +379,17 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"He became so powerful[\.]*? the only thing";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            Assert.IsTrue(commandResultCollection.Count == 1);
 
             // 2
             SearchTerm = @"He became so powerful[\.]*?";
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString == @"He became so powerful") == 1);
+            commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == @"He became so powerful") == 1);
         }
         #endregion RegularExpressions_Quantifiers_ZeroOrMoreLazy
 
@@ -403,17 +404,17 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"He became so power[f]?ul\.\.\. the only thing";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            Assert.IsTrue(commandResultCollection.Count == 1);
 
             // Negative test
             SearchTerm = @"He became so powerful[\.]? the only thing";
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
-            Assert.IsTrue(GrepResultCollection.Count == 0);
+            commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            Assert.IsTrue(commandResultCollection.Count == 0);
         }
         #endregion RegularExpressions_Quantifiers_OnceOrNone
         #endregion Quantifiers..
@@ -429,10 +430,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"I(t's| thought) not";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 2);
+            Assert.IsTrue(commandResultCollection.Count == 2);
         }
         #endregion RegularExpressions_Logic_OR
 
@@ -454,10 +455,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"I thought not([\.]).*\1";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Logic_BackReferenceByIndex
 
@@ -471,10 +472,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"I thought not(?<Cap>\.).*\k<Cap>";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Logic_BackReferenceByName
         #endregion Logic..
@@ -490,10 +491,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"^.*Tragedy of";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Boundaries_StartOfString
 
@@ -507,10 +508,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"\blosing\b";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_Boundaries_Word
 
@@ -524,10 +525,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"power\B";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 2);
+            Assert.IsTrue(commandResultCollection.Count == 2);
         }
         #endregion RegularExpressions_Boundaries_Word_Negative
         #endregion Boundaries..
@@ -543,10 +544,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"\d+(?= dollars)";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_LookArounds_PositiveLookAhead_AfterMatch
 
@@ -560,10 +561,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"(?=\d+ dollars)\d+";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_LookArounds_PositiveLookAhead_BeforeMatch
 
@@ -577,10 +578,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"\d{3}(?<=USD\d{3})";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_LookArounds_PositiveLookBehind_AfterMatch
 
@@ -594,10 +595,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"(?<=USD)\d{3}";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion RegularExpressions_LookArounds_PositiveLookBehind_BeforeMatch
 
@@ -611,10 +612,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"\d+(?!\d| dollars)";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Any());
+            Assert.IsTrue(commandResultCollection.Any());
         }
         #endregion RegularExpressions_LookArounds_NegativeLookAhead_AfterMatch
 
@@ -628,10 +629,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"(?!\d+ dollars)\d+";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Any());
+            Assert.IsTrue(commandResultCollection.Any());
         }
         #endregion RegularExpressions_LookArounds_NegativeLookAhead_BeforeMatch
 
@@ -645,10 +646,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"\d{3}(?<!USD\d{3})";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Any());
+            Assert.IsTrue(commandResultCollection.Any());
         }
         #endregion RegularExpressions_LookArounds_NegativeLookBehind_AfterMatch
 
@@ -662,10 +663,10 @@ namespace WindowsGrep.Test.RegularExpressions
             string SearchTerm = @"(?<!USD)\d{3}";
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Any());
+            Assert.IsTrue(commandResultCollection.Any());
         }
         #endregion RegularExpressions_LookArounds_NegativeLookBehind_BeforeMatch
         #endregion LookArounds..

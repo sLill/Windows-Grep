@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -51,11 +52,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"{_FlagDescriptorShort} '{ReplaceText}' -d '{TestDataDirectory}' {SearchTerm}";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -80,11 +81,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"{_FlagDescriptorShort} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -109,11 +110,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"{_FlagDescriptorLong} '{ReplaceText}' -d '{TestDataDirectory}' {SearchTerm}";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -138,11 +139,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"{_FlagDescriptorLong} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -169,11 +170,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} '{ReplaceText}' {SearchTerm}";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -198,11 +199,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} \"{ReplaceText}\" {SearchTerm}";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -227,11 +228,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} '{ReplaceText}' {SearchTerm}";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -256,11 +257,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} \"{ReplaceText}\" {SearchTerm}";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -287,11 +288,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} '{ReplaceText}'";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -316,11 +317,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} \"{ReplaceText}\"";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -345,11 +346,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} '{ReplaceText}'";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -374,11 +375,11 @@ namespace WindowsGrep.Test.Flags.Replace
                 string ReplaceText = "slow green turtle";
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} \"{ReplaceText}\"";
 
-                var GrepResultCollection = new GrepResultCollection();
-                WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+                var commandResultCollection = new CommandResultCollection();
+                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(GrepResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
             }
             catch
             {

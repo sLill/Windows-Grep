@@ -38,11 +38,11 @@ namespace WindowsGrep
                 {
                     try
                     {
-                        var grepResultCollection = new GrepResultCollection();
-                        grepResultCollection.ItemsAdded += OnResultsAdded;
+                        var commandResultCollection = new CommandResultCollection();
+                        commandResultCollection.ItemsAdded += OnResultsAdded;
 
                         _cancellationTokenSource = new CancellationTokenSource();
-                        await Task.Run(() => WindowsGrep.RunCommandAsync(command, grepResultCollection, _cancellationTokenSource.Token));
+                        await Task.Run(() => WindowsGrep.RunCommandAsync(command, commandResultCollection, _cancellationTokenSource.Token));
                     }
                     catch (Exception ex)
                     {
@@ -64,8 +64,8 @@ namespace WindowsGrep
 
         private static void OnResultsAdded(object sender, EventArgs e)
         {
-            var grepResults = sender as List<GrepResult>;
-            grepResults.ForEach(result =>
+            var commandResultCollection = sender as List<CommandResultBase>;
+            commandResultCollection.ForEach(result =>
             {
                 if (!result.Suppressed)
                     ConsoleUtils.WriteConsoleItemCollection(result.ToConsoleItemCollection());

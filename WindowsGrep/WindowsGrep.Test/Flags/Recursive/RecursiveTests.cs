@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -40,10 +41,10 @@ namespace WindowsGrep.Test.Flags.Recursive
             string SearchTerm = "quick brown fox";
             string Command = $"{_FlagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
+            Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
         #endregion Recursive_FlagFirst_FlagShort 
 
@@ -54,10 +55,10 @@ namespace WindowsGrep.Test.Flags.Recursive
             string SearchTerm = "quick brown fox";
             string Command = $"{_FlagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
+            Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
         #endregion Recursive_FlagFirst_FlagLong 
         #endregion FlagFirst..
@@ -70,10 +71,10 @@ namespace WindowsGrep.Test.Flags.Recursive
             string SearchTerm = "quick brown fox";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
+            Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
         #endregion Recursive_FlagMiddle_FlagShort 
 
@@ -84,10 +85,10 @@ namespace WindowsGrep.Test.Flags.Recursive
             string SearchTerm = "quick brown fox";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
+            Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
         #endregion Recursive_FlagMiddle_FlagLong 
         #endregion FlagMiddle..
@@ -100,10 +101,10 @@ namespace WindowsGrep.Test.Flags.Recursive
             string SearchTerm = "quick brown fox";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
+            Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
         #endregion Recursive_FlagLast_FlagShort 
 
@@ -114,10 +115,10 @@ namespace WindowsGrep.Test.Flags.Recursive
             string SearchTerm = "quick brown fox";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
+            Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
         #endregion Recursive_FlagLast_FlagLong 
         #endregion FlagLast..
@@ -129,10 +130,10 @@ namespace WindowsGrep.Test.Flags.Recursive
             string SearchTerm = "quick brown fox";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count(x => x.MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
+            Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
         #endregion Recursive_NoFlag 
         #endregion Tests..

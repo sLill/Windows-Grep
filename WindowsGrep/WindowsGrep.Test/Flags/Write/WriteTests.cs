@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -45,8 +46,8 @@ namespace WindowsGrep.Test.Flags.Write
             string SearchTerm = "quick brown";
             string Command = $"{_FlagDescriptorShort} '{_testOutputFilePath}' -f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));
@@ -65,8 +66,8 @@ namespace WindowsGrep.Test.Flags.Write
             string SearchTerm = "quick brown";
             string Command = $"{_FlagDescriptorLong} '{_testOutputFilePath}' -f '{TestFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));
@@ -87,8 +88,8 @@ namespace WindowsGrep.Test.Flags.Write
             string SearchTerm = "quick brown";
             string Command = $"-f '{TestFilePath}' {_FlagDescriptorShort} '{_testOutputFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));
@@ -107,8 +108,8 @@ namespace WindowsGrep.Test.Flags.Write
             string SearchTerm = "quick brown";
             string Command = $"-f '{TestFilePath}' {_FlagDescriptorLong} '{_testOutputFilePath}' {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));
@@ -129,8 +130,8 @@ namespace WindowsGrep.Test.Flags.Write
             string SearchTerm = "quick brown";
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort} '{_testOutputFilePath}'";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));
@@ -149,8 +150,8 @@ namespace WindowsGrep.Test.Flags.Write
             string SearchTerm = "quick brown";
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong} '{_testOutputFilePath}'";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));

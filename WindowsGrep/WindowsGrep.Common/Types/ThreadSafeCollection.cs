@@ -24,7 +24,7 @@ namespace WindowsGrep.Common
             }
         }
 
-        public virtual void AddItemRange(IEnumerable<T> item)
+        public virtual void AddItemRange(List<T> item)
         {
             lock (_lockObject)
             {

@@ -7,20 +7,20 @@ using WindowsGrep.Core;
 
 namespace WindowsGrep.Engine
 {
-    public class GrepResultCollection : ThreadSafeCollection<GrepResult>
+    public class CommandResultCollection : ThreadSafeCollection<CommandResultBase>
     {
         #region Events..
         public event EventHandler ItemsAdded;
         #endregion Events..
 
         #region Methods..
-        public override void AddItem(GrepResult item)
+        public override void AddItem(CommandResultBase item)
         {
             base.AddItem(item);
-            ItemsAdded?.Invoke(new List<GrepResult>() { item }, EventArgs.Empty);
+            ItemsAdded?.Invoke(new List<CommandResultBase>() { item }, EventArgs.Empty);
         }
 
-        public override void AddItemRange(IEnumerable<GrepResult> itemCollection)
+        public override void AddItemRange(List<CommandResultBase> itemCollection)
         {
             base.AddItemRange(itemCollection);
             ItemsAdded?.Invoke(itemCollection, EventArgs.Empty);

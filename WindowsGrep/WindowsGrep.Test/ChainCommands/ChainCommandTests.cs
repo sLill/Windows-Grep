@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.IO;
+using System.Threading;
 using WindowsGrep.Engine;
 
 namespace WindowsGrep.Test.ChainCommands
@@ -29,10 +30,10 @@ namespace WindowsGrep.Test.ChainCommands
             string SearchTerm = "fox jumps over";
             string Command = $"-d '{TestDataDirectory}' -k ChainCommands | -r -i {SearchTerm}";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 3);
+            Assert.IsTrue(commandResultCollection.Count == 3);
         }
         #endregion ChainCommands_One 
 
@@ -43,10 +44,10 @@ namespace WindowsGrep.Test.ChainCommands
             string SearchTerm = "fox jumps over";
             string Command = $"-d '{TestDataDirectory}' -k ChainCommands | -r -i {SearchTerm} | -k Two";
 
-            var GrepResultCollection = new GrepResultCollection();
-            WindowsGrep.RunCommandAsync(Command, GrepResultCollection, new System.Threading.CancellationToken());
+            var commandResultCollection = new CommandResultCollection();
+            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
-            Assert.IsTrue(GrepResultCollection.Count == 1);
+            Assert.IsTrue(commandResultCollection.Count == 1);
         }
         #endregion ChainCommands_Two 
         #endregion Tests..

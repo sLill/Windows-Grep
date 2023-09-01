@@ -1,4 +1,6 @@
-﻿namespace WindowsGrep.Test
+﻿using WindowsGrep.Configuration;
+
+namespace WindowsGrep.Test
 {
     public class TestBase
     {
@@ -10,6 +12,10 @@
         #endregion Properties..
 
         #region Constructors..
+        public TestBase()
+        {
+            ConfigurationManager.Instance.LoadDefaultConfiguration();
+        }
         #endregion Constructors..
 
         #region Methods..

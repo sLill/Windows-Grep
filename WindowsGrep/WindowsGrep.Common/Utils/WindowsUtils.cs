@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -18,6 +18,17 @@ namespace WindowsGrep.Common
         #endregion Fields..
 
         #region Methods..
+        public static List<string> GetFiles(string path, bool recursive, FileAttributes fileAttributesToSkip = default)
+        {
+            var EnumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = fileAttributesToSkip };
+
+            if (recursive)
+                EnumerationOptions.RecurseSubdirectories = true;
+
+            List<string> files = Directory.GetFiles(Path.TrimEndingDirectorySeparator(path.TrimEnd()), "*", EnumerationOptions).ToList();
+            return files;
+        }
+
         public static string GetFileHash(string filePath, HashType hashType)
         {
             HashAlgorithm hashAlgorithm = (hashType) switch
