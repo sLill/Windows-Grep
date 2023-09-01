@@ -52,7 +52,7 @@ Open cmd > "grep [command]"<br/>
 | Write Output to File      | -w | --write=              |
 | Replace Text              | -RX| --replace=            |
 | Delete Files              | -DX| --delete-files        |
-| File Hashes               |    | --filehashes=  (0=SHA256, 1=MD5)     |
+| File Hashes               |    | --hash=  (0=SHA256, 1=MD5)     |
 
 
 <i>* See <a href="https://github.com/sLill/Windows-Grep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
