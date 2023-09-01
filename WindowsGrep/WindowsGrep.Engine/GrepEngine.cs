@@ -445,7 +445,7 @@ namespace WindowsGrep.Engine
                     {
                         // Rename file
                         string directory = Path.GetDirectoryName(filePath);
-                        string fileName = Path.GetFileNameWithoutExtension(filePath);
+                        string fileName = Path.GetFileName(filePath);
 
                         File.Move(filePath, Path.Combine(directory, Regex.Replace(fileName, searchPattern, grepCommand.CommandArgs[ConsoleFlag.Replace])));
 
