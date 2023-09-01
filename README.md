@@ -1,7 +1,5 @@
 <p align="center">
-  <a href="https://getbootstrap.com/">
-    <img src="https://i.imgur.com/ciH80xa.png" alt="Bootstrap logo" width="200" height="200">
-  </a>
+    <img src="https://i.imgur.com/f3dzYx1.png" alt="Windows Grep logo" width="200" height="200">
 </p>
 
 <h1>Windows Grep</h1> 
