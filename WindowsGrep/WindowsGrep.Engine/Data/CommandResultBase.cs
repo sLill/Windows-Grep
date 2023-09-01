@@ -15,7 +15,7 @@ namespace WindowsGrep.Engine
         #region Properties..
         public bool Suppressed { get; set; }
 
-        public long FileSize { get; set; }
+        public long FileSize { get; set; } = -1;
 
         public string SourceFile { get; set; }
         #endregion Properties..

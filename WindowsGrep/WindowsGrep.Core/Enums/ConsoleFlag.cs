@@ -118,7 +118,7 @@ namespace WindowsGrep.Core
 
         // Match againt file hashes (0=SHA256, 1=MD5)
         [ExpectsParameter(true)]
-        [DescriptionCollection("--filehashes=")]
+        [DescriptionCollection("--hash=")]
         FileHashes,
 
         // Show all commands
