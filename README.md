@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="https://i.imgur.com/15SNWH7.png" alt="Windows Grep logo" width="200" height="200">
+</p>
+
 <h1>Windows Grep</h1> 
 
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-grep/badge)](https://www.codefactor.io/repository/github/slill/windows-grep)
