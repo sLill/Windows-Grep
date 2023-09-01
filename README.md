@@ -68,31 +68,31 @@ Order of flags and search terms is completely flexible. The only requirement is 
 
 <h1>EXAMPLE COMMANDS</h1>
 
-<i>Recursively search all files for "Dug"</i><br/>
+<i>Recursive search.</i><br/>
 -r Dug
 <br/><br/>
 
-<i>Recursively search all files for "Dug" or "Dig". Ignore-case</i><br/>
+<i>Recursive search. ignore-case.</i><br/>
 -r -i D[ui]g
 <br/><br/>
 
-<i>Recursively search all text and csharp files for "Dug". Filter out matches that appear in the bin or obj subdirectory</i><br/>
+<i>Recursive search. txt and cs files only. Filter out bin and obj matches</i><br/>
 -r Dug -t .txt;.cs -P bin;obj
 <br/><br/>
 
-<i>Recursively search all files for "Dug" and show 100 characters of text around the match for context</i><br/>
+<i>Recursive search. show 100 characters around the match.</i><br/>
 -r Dug -c 100
 <br/><br/>
 
-<i>Search for all filenames in the current directory containing "Dug", and then search that subset of files for "Mike"</i><br/>
+<i>Recursive search. Filenames only. Additional search on results from first command for "Mike"</i><br/>
 -r Dug -k | Mike
 <br/><br/>
 
-<i>Search all files in the current directory for text that matches a phone number expression/pattern</i><br/>
+<i>Matche phone number</i><br/>
 [\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}
 <br/><br/>
 
-<i>Recursively search all files for US zip codes. Filter out .dll matches. Limit the results 10. Write the output to a .csv</i><br/>
+<i>Recursive search. US zipcode expression. Filter out .dll matches. Limit results 10. Write output to .csv</i><br/>
 -r \d{5}(-\d{4})? -T .dll -n 10 -w 'C:\output.csv'
 <br/><br/>
 
