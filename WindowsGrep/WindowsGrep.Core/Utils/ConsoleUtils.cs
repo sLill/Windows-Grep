@@ -102,7 +102,7 @@ namespace WindowsGrep.Core
                         return (commandType, commandParameter);
                     }
                 }
-            };
+            }
 
             return default;
         }
