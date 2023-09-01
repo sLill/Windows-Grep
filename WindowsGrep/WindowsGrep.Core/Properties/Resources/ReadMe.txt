@@ -24,4 +24,4 @@
 -RX	--replace=			: Replace text in matched files or filenames (surround with ' or ")
 -DX	--delete-files			: Delete matched files
 
---hash=				: Match against file hashes (0=SHA256, 1=MD5)
+--hash=					: Match against file hashes (0=SHA256, 1=MD5)
