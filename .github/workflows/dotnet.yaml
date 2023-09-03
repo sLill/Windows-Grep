@@ -18,13 +18,13 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '7.0.x'  # Change to the specific version you're using
+          dotnet-version: '7.0'
 
       - name: Restore Dependencies
-        run: dotnet restore
+        run: dotnet restore ./WindowsGrep/
 
       - name: Build Application
         run: dotnet build --configuration Release
 
       - name: Run Tests
-        run: dotnet test --configuration Release --no-restore
+        run: dotnet test --configuration Release --no-restore ./WindowsGrep/
