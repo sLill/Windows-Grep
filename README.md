@@ -5,7 +5,7 @@
 <h1>Windows Grep</h1> 
 
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-grep/badge)](https://www.codefactor.io/repository/github/slill/windows-grep)
-![.NET Core](https://github.com/sLill/Windows-Grep/workflows/.NET%20Core/badge.svg)
+![.NET Core](https://github.com/sLill/Windows-Grep/workflows/.NET/badge.svg)
 
 Command line grep-like file search utility for Windows</br>
 
