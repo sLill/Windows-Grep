@@ -26,5 +26,5 @@ jobs:
       - name: Build Application
         run: dotnet build --configuration Release ./WindowsGrep/
 
-      # name: Run Tests
-      #  run: dotnet test --configuration Release --no-restore ./WindowsGrep/
+      - name: Run Tests
+        run: dotnet test --no-restore ./WindowsGrep/
