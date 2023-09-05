@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -36,13 +37,13 @@ namespace WindowsGrep.Test.Flags.Recursive
         #region FlagFirst..
         #region Recursive_FlagFirst_FlagShort
         [Test]
-        public void Recursive_FlagFirst_FlagShort()
+        public async Task Recursive_FlagFirst_FlagShort()
         {
             string SearchTerm = "quick brown fox";
             string Command = $"{_FlagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -50,13 +51,13 @@ namespace WindowsGrep.Test.Flags.Recursive
 
         #region Recursive_FlagFirst_FlagLong
         [Test]
-        public void IgnoreCase_FlagFirst_FlagLong()
+        public async Task IgnoreCase_FlagFirst_FlagLong()
         {
             string SearchTerm = "quick brown fox";
             string Command = $"{_FlagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -66,13 +67,13 @@ namespace WindowsGrep.Test.Flags.Recursive
         #region FlagMiddle..
         #region Recursive_FlagMiddle_FlagShort
         [Test]
-        public void Recursive_FlagMiddle_FlagShort()
+        public async Task Recursive_FlagMiddle_FlagShort()
         {
             string SearchTerm = "quick brown fox";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -80,13 +81,13 @@ namespace WindowsGrep.Test.Flags.Recursive
 
         #region Recursive_FlagMiddle_FlagLong
         [Test]
-        public void IgnoreCase_FlagMiddle_FlagLong()
+        public async Task IgnoreCase_FlagMiddle_FlagLong()
         {
             string SearchTerm = "quick brown fox";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -96,13 +97,13 @@ namespace WindowsGrep.Test.Flags.Recursive
         #region FlagLast..
         #region Recursive_FlagLast_FlagShort
         [Test]
-        public void Recursive_FlagLast_FlagShort()
+        public async Task Recursive_FlagLast_FlagShort()
         {
             string SearchTerm = "quick brown fox";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -110,13 +111,13 @@ namespace WindowsGrep.Test.Flags.Recursive
 
         #region Recursive_FlagLast_FlagLong
         [Test]
-        public void IgnoreCase_FlagLast_FlagLong()
+        public async Task IgnoreCase_FlagLast_FlagLong()
         {
             string SearchTerm = "quick brown fox";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -125,13 +126,13 @@ namespace WindowsGrep.Test.Flags.Recursive
 
         #region Recursive_NoFlag
         [Test]
-        public void Recursive_NoFlag()
+        public async Task Recursive_NoFlag()
         {
             string SearchTerm = "quick brown fox";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }

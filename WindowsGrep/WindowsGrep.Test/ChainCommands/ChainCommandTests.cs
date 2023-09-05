@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using WindowsGrep.Engine;
 
 namespace WindowsGrep.Test.ChainCommands
@@ -25,13 +26,13 @@ namespace WindowsGrep.Test.ChainCommands
         #region Tests..
         #region ChainCommands_One
         [Test]
-        public void ChainCommands_One()
+        public async Task ChainCommands_One()
         {
             string SearchTerm = "fox jumps over";
             string Command = $"-d '{TestDataDirectory}' -k ChainCommands | -r -i {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 3);
         }
@@ -39,13 +40,13 @@ namespace WindowsGrep.Test.ChainCommands
 
         #region ChainCommands_Two
         [Test]
-        public void ChainCommands_Two()
+        public async Task ChainCommands_Two()
         {
             string SearchTerm = "fox jumps over";
             string Command = $"-d '{TestDataDirectory}' -k ChainCommands | -r -i {SearchTerm} | -k Two";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }

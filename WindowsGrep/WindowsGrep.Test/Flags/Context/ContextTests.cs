@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace WindowsGrep.Test.Flags.Context
 {
@@ -13,7 +14,7 @@ namespace WindowsGrep.Test.Flags.Context
 
         #region Tests..
         [Test]
-        public void Test1()
+        public async Task Test1()
         {
             Assert.Pass();
         }

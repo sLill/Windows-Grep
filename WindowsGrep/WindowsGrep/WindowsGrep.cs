@@ -21,7 +21,7 @@ namespace WindowsGrep
                 if (nativeCommandArgs != default)
                 {
                     var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter };
-                    NativeEngine.BeginProcessNativeCommand(nativeCommand, commandResultCollection);
+                    await NativeEngine.BeginProcessNativeCommandAsync(nativeCommand, commandResultCollection, cancellationToken);
                 }
 
                 // Grep commands

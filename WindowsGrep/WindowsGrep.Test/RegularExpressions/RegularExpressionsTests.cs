@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WindowsGrep.Engine;
 
 namespace WindowsGrep.Test.RegularExpressions
@@ -27,7 +28,7 @@ namespace WindowsGrep.Test.RegularExpressions
         #region Characters..
         #region RegularExpressions_Characters_Digit
         [Test]
-        public void RegularExpressions_Characters_Digit()
+        public async Task RegularExpressions_Characters_Digit()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -36,7 +37,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -44,7 +45,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Characters_WordCharacter
         [Test]
-        public void RegularExpressions_Characters_WordCharacter()
+        public async Task RegularExpressions_Characters_WordCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -53,7 +54,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -61,7 +62,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Characters_SpaceCharacter
         [Test]
-        public void RegularExpressions_Characters_SpaceCharacter()
+        public async Task RegularExpressions_Characters_SpaceCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -70,7 +71,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -78,7 +79,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Characters_NonDigit
         [Test]
-        public void RegularExpressions_Characters_NonDigit()
+        public async Task RegularExpressions_Characters_NonDigit()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -87,7 +88,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -95,7 +96,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Characters_NonWordCharacter
         [Test]
-        public void RegularExpressions_Characters_NonWordCharacter()
+        public async Task RegularExpressions_Characters_NonWordCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -104,7 +105,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -112,7 +113,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Characters_NonSpaceCharacter
         [Test]
-        public void RegularExpressions_Characters_NonSpaceCharacter()
+        public async Task RegularExpressions_Characters_NonSpaceCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -121,7 +122,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -129,7 +130,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Characters_AnyCharacter
         [Test]
-        public void RegularExpressions_Characters_AnyCharacter()
+        public async Task RegularExpressions_Characters_AnyCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -138,7 +139,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -146,7 +147,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Characters_Tab
         [Test]
-        public void RegularExpressions_Characters_Tab()
+        public async Task RegularExpressions_Characters_Tab()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -155,7 +156,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -163,7 +164,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Characters_NewLine
         [Test]
-        public void RegularExpressions_Characters_NewLine()
+        public async Task RegularExpressions_Characters_NewLine()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -172,7 +173,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -182,7 +183,7 @@ namespace WindowsGrep.Test.RegularExpressions
         #region Character Classes..
         #region RegularExpressions_CharacterClasses_Characters
         [Test]
-        public void RegularExpressions_CharacterClasses_Characters()
+        public async Task RegularExpressions_CharacterClasses_Characters()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -191,7 +192,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -199,7 +200,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_CharacterClasses_CharacterRange
         [Test]
-        public void RegularExpressions_CharacterClasses_CharacterRange()
+        public async Task RegularExpressions_CharacterClasses_CharacterRange()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -209,7 +210,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 1);
 
             // 2
@@ -217,14 +218,14 @@ namespace WindowsGrep.Test.RegularExpressions
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 0);
         }
         #endregion RegularExpressions_CharacterClasses_CharacterRange
 
         #region RegularExpressions_CharacterClasses_Characters_Negative
         [Test]
-        public void RegularExpressions_CharacterClasses_Characters_Negative()
+        public async Task RegularExpressions_CharacterClasses_Characters_Negative()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -233,7 +234,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -241,7 +242,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_CharacterClasses_CharacterRange_Negative
         [Test]
-        public void RegularExpressions_CharacterClasses_CharacterRange_Negative()
+        public async Task RegularExpressions_CharacterClasses_CharacterRange_Negative()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -250,7 +251,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -260,7 +261,7 @@ namespace WindowsGrep.Test.RegularExpressions
         #region Quantifiers..
         #region RegularExpressions_Quantifiers_OneOrMore
         [Test]
-        public void RegularExpressions_Quantifiers_OneOrMore()
+        public async Task RegularExpressions_Quantifiers_OneOrMore()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -269,7 +270,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -277,7 +278,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Quantifiers_OneOrMoreLazy
         [Test]
-        public void RegularExpressions_Quantifiers_OneOrMoreLazy()
+        public async Task RegularExpressions_Quantifiers_OneOrMoreLazy()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -287,7 +288,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 1);
 
             // 2
@@ -295,14 +296,14 @@ namespace WindowsGrep.Test.RegularExpressions
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == @"He became so powerful.") == 1);
         }
         #endregion RegularExpressions_Quantifiers_OneOrMoreLazy 
 
         #region RegularExpressions_Quantifiers_nTimes
         [Test]
-        public void RegularExpressions_Quantifiers_nTimes()
+        public async Task RegularExpressions_Quantifiers_nTimes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -311,7 +312,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -319,7 +320,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Quantifiers_Range
         [Test]
-        public void RegularExpressions_Quantifiers_Range()
+        public async Task RegularExpressions_Quantifiers_Range()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -328,7 +329,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -336,7 +337,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Quantifiers_nOrMore
         [Test]
-        public void RegularExpressions_Quantifiers_nOrMore()
+        public async Task RegularExpressions_Quantifiers_nOrMore()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -345,7 +346,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -353,7 +354,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Quantifiers_ZeroOrMore
         [Test]
-        public void RegularExpressions_Quantifiers_ZeroOrMore()
+        public async Task RegularExpressions_Quantifiers_ZeroOrMore()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -362,7 +363,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -370,7 +371,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Quantifiers_ZeroOrMore Lazy
         [Test]
-        public void RegularExpressions_Quantifiers_ZeroOrMoreLazy()
+        public async Task RegularExpressions_Quantifiers_ZeroOrMoreLazy()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -380,7 +381,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 1);
 
             // 2
@@ -388,14 +389,14 @@ namespace WindowsGrep.Test.RegularExpressions
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == @"He became so powerful") == 1);
         }
         #endregion RegularExpressions_Quantifiers_ZeroOrMoreLazy
 
         #region RegularExpressions_Quantifiers_OnceOrNone
         [Test]
-        public void RegularExpressions_Quantifiers_OnceOrNone()
+        public async Task RegularExpressions_Quantifiers_OnceOrNone()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -405,7 +406,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 1);
 
             // Negative test
@@ -413,7 +414,7 @@ namespace WindowsGrep.Test.RegularExpressions
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 0);
         }
         #endregion RegularExpressions_Quantifiers_OnceOrNone
@@ -422,7 +423,7 @@ namespace WindowsGrep.Test.RegularExpressions
         #region Logic..
         #region RegularExpressions_Logic_OR
         [Test]
-        public void RegularExpressions_Logic_OR()
+        public async Task RegularExpressions_Logic_OR()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -431,7 +432,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -439,7 +440,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Logic_NonCapturingGroup
         [Test]
-        public void RegularExpressions_Logic_NonCapturingGroup()
+        public async Task RegularExpressions_Logic_NonCapturingGroup()
         {
             Assert.True(true);
         }
@@ -447,7 +448,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Logic_BackReferenceByIndex
         [Test]
-        public void RegularExpressions_Logic_BackReferenceByIndex()
+        public async Task RegularExpressions_Logic_BackReferenceByIndex()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -456,7 +457,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -464,7 +465,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Logic_BackReferenceByName
         [Test]
-        public void RegularExpressions_Logic_BackReferenceByName()
+        public async Task RegularExpressions_Logic_BackReferenceByName()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -473,7 +474,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -483,7 +484,7 @@ namespace WindowsGrep.Test.RegularExpressions
         #region Boundaries..
         #region RegularExpressions_Boundaries_StartOfString
         [Test]
-        public void RegularExpressions_Boundaries_StartOfString()
+        public async Task RegularExpressions_Boundaries_StartOfString()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -492,7 +493,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -500,7 +501,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Boundaries_Word
         [Test]
-        public void RegularExpressions_Boundaries_Word()
+        public async Task RegularExpressions_Boundaries_Word()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -509,7 +510,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -517,7 +518,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_Boundaries_Word_Negative
         [Test]
-        public void RegularExpressions_Boundaries_Word_Negative()
+        public async Task RegularExpressions_Boundaries_Word_Negative()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsOne.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -526,7 +527,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -536,7 +537,7 @@ namespace WindowsGrep.Test.RegularExpressions
         #region LookArounds..
         #region RegularExpressions_LookArounds_PositiveLookAhead_AfterMatch
         [Test]
-        public void RegularExpressions_LookArounds_PositiveLookAhead_AfterMatch()
+        public async Task RegularExpressions_LookArounds_PositiveLookAhead_AfterMatch()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsTwo.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -545,7 +546,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -553,7 +554,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_LookArounds_PositiveLookAhead_BeforeMatch
         [Test]
-        public void RegularExpressions_LookArounds_PositiveLookAhead_BeforeMatch()
+        public async Task RegularExpressions_LookArounds_PositiveLookAhead_BeforeMatch()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsTwo.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -562,7 +563,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -570,7 +571,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_LookArounds_PositiveLookBehind_AfterMatch
         [Test]
-        public void RegularExpressions_LookArounds_PositiveLookBehind_AfterMatch()
+        public async Task RegularExpressions_LookArounds_PositiveLookBehind_AfterMatch()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsTwo.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -579,7 +580,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -587,7 +588,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_LookArounds_PositiveLookBehind_BeforeMatch
         [Test]
-        public void RegularExpressions_LookArounds_PositiveLookBehind_BeforeMatch()
+        public async Task RegularExpressions_LookArounds_PositiveLookBehind_BeforeMatch()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsTwo.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -596,7 +597,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -604,7 +605,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_LookArounds_NegativeLookAhead_AfterMatch
         [Test]
-        public void RegularExpressions_LookArounds_NegativeLookAhead_AfterMatch()
+        public async Task RegularExpressions_LookArounds_NegativeLookAhead_AfterMatch()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsTwo.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -613,7 +614,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }
@@ -621,7 +622,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_LookArounds_NegativeLookAhead_BeforeMatch
         [Test]
-        public void RegularExpressions_LookArounds_NegativeLookAhead_BeforeMatch()
+        public async Task RegularExpressions_LookArounds_NegativeLookAhead_BeforeMatch()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsTwo.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -630,7 +631,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }
@@ -638,7 +639,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_LookArounds_NegativeLookBehind_AfterMatch
         [Test]
-        public void RegularExpressions_LookArounds_NegativeLookBehind_AfterMatch()
+        public async Task RegularExpressions_LookArounds_NegativeLookBehind_AfterMatch()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsTwo.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -647,7 +648,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }
@@ -655,7 +656,7 @@ namespace WindowsGrep.Test.RegularExpressions
 
         #region RegularExpressions_LookArounds_NegativeLookBehind_BeforeMatch
         [Test]
-        public void RegularExpressions_LookArounds_NegativeLookBehind_BeforeMatch()
+        public async Task RegularExpressions_LookArounds_NegativeLookBehind_BeforeMatch()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "RegularExpressionsTwo.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -664,7 +665,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }

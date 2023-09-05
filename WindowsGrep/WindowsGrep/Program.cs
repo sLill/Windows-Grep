@@ -62,13 +62,16 @@ namespace WindowsGrep
             _cancellationTokenSource?.Cancel();
         }
 
-        private static void OnResultsAdded(object sender, EventArgs e)
+        private static async void OnResultsAdded(object sender, EventArgs e)
         {
             var commandResultCollection = sender as List<CommandResultBase>;
             commandResultCollection.ForEach(result =>
             {
+                if (_cancellationTokenSource.IsCancellationRequested)
+                    return;
+
                 if (!result.Suppressed)
-                    ConsoleUtils.WriteConsoleItemCollection(result.ToConsoleItemCollection());
+                    ConsoleUtils.WriteConsoleItemCollectionAsync(result.ToConsoleItemCollection(), _cancellationTokenSource.Token);
             });
         }
         #endregion Event Handlers..

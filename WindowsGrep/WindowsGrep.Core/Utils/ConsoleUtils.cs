@@ -122,12 +122,15 @@ namespace WindowsGrep.Core
             Console.ResetColor();
         }
 
-        public static void WriteConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
+        public static async Task WriteConsoleItemCollectionAsync(List<ConsoleItem> consoleItemCollection, CancellationToken cancellationToken)
         {
             lock (Console.Out)
             {
                 consoleItemCollection.ForEach(consoleItem =>
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                        return;
+
                     WriteConsoleItem(consoleItem);
 
                     // This seems to help give the native console enough time to finalize changes made to background/foreground color properties

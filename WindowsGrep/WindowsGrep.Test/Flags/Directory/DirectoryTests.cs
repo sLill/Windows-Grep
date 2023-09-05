@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -36,13 +37,13 @@ namespace WindowsGrep.Test.Flags.Directory
         #region FlagFirst..
         #region Directory_FlagFirst_FlagShort_SingleQuotes
         [Test]
-        public void Directory_FlagFirst_FlagShort_SingleQuotes()
+        public async Task Directory_FlagFirst_FlagShort_SingleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"{_FlagDescriptorShort} '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -50,13 +51,13 @@ namespace WindowsGrep.Test.Flags.Directory
 
         #region Directory_FlagFirst_FlagShort_DoubleQuotes
         [Test]
-        public void Directory_FlagFirst_FlagShort_DoubleQuotes()
+        public async Task Directory_FlagFirst_FlagShort_DoubleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"{_FlagDescriptorShort} \"{TestDataDirectory}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -64,13 +65,13 @@ namespace WindowsGrep.Test.Flags.Directory
 
         #region Directory_FlagFirst_FlagLong_SingleQuotes
         [Test]
-        public void Directory_FlagFirst_FlagLong_SingleQuotes()
+        public async Task Directory_FlagFirst_FlagLong_SingleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"{_FlagDescriptorLong} '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -78,13 +79,13 @@ namespace WindowsGrep.Test.Flags.Directory
 
         #region Directory_FlagFirst_FlagLong_DoubleQuotes
         [Test]
-        public void Directory_FlagFirst_FlagLong_DoubleQuotes()
+        public async Task Directory_FlagFirst_FlagLong_DoubleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"{_FlagDescriptorLong} \"{TestDataDirectory}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -94,13 +95,13 @@ namespace WindowsGrep.Test.Flags.Directory
         #region FlagMiddle..
         #region Directory_FlagMiddle_FlagShort_SingleQuotes
         [Test]
-        public void Directory_FlagMiddle_FlagShort_SingleQuotes()
+        public async Task Directory_FlagMiddle_FlagShort_SingleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"-i {_FlagDescriptorShort} '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -108,13 +109,13 @@ namespace WindowsGrep.Test.Flags.Directory
 
         #region Directory_FlagMiddle_FlagShort_DoubleQuotes
         [Test]
-        public void Directory_FlagMiddle_FlagShort_DoubleQuotes()
+        public async Task Directory_FlagMiddle_FlagShort_DoubleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"-i {_FlagDescriptorShort} \"{TestDataDirectory}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -122,13 +123,13 @@ namespace WindowsGrep.Test.Flags.Directory
 
         #region Directory_FlagMiddle_FlagLong_SingleQuotes
         [Test]
-        public void Directory_FlagMiddle_FlagLong_SingleQuotes()
+        public async Task Directory_FlagMiddle_FlagLong_SingleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"-i {_FlagDescriptorLong} '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -136,13 +137,13 @@ namespace WindowsGrep.Test.Flags.Directory
 
         #region Directory_FlagMiddle_FlagLong_DoubleQuotes
         [Test]
-        public void Directory_FlagMiddle_FlagLong_DoubleQuotes()
+        public async Task Directory_FlagMiddle_FlagLong_DoubleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"-i {_FlagDescriptorLong} \"{TestDataDirectory}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -152,13 +153,13 @@ namespace WindowsGrep.Test.Flags.Directory
         #region FlagLast..
         #region Directory_FlagLast_FlagShort_SingleQuotes
         [Test]
-        public void Directory_FlagLast_FlagShort_SingleQuotes()
+        public async Task Directory_FlagLast_FlagShort_SingleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"{SearchTerm} {_FlagDescriptorShort} '{TestDataDirectory}'";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -166,13 +167,13 @@ namespace WindowsGrep.Test.Flags.Directory
 
         #region Directory_FlagLast_FlagShort_DoubleQuotes
         [Test]
-        public void Directory_FlagLast_FlagShort_DoubleQuotes()
+        public async Task Directory_FlagLast_FlagShort_DoubleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"{SearchTerm} {_FlagDescriptorShort} \"{TestDataDirectory}\"";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -180,13 +181,13 @@ namespace WindowsGrep.Test.Flags.Directory
 
         #region Directory_FlagLast_FlagLong_SingleQuotes
         [Test]
-        public void Directory_FlagLast_FlagLong_SingleQuotes()
+        public async Task Directory_FlagLast_FlagLong_SingleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"{SearchTerm} {_FlagDescriptorLong} '{TestDataDirectory}'";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }
@@ -194,13 +195,13 @@ namespace WindowsGrep.Test.Flags.Directory
 
         #region Directory_FlagLast_FlagLong_DoubleQuotes
         [Test]
-        public void Directory_FlagLast_FlagLong_DoubleQuotes()
+        public async Task Directory_FlagLast_FlagLong_DoubleQuotes()
         {
             string SearchTerm = "fox";
             string Command = $"{SearchTerm} {_FlagDescriptorLong} \"{TestDataDirectory}\"";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 2);
         }

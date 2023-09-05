@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -36,7 +37,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
         #region FlagFirst..
         #region IgnoreBreaks_FlagFirst_FlagShort
         [Test]
-        public void IgnoreBreaks_FlagFirst_FlagShort()
+        public async Task IgnoreBreaks_FlagFirst_FlagShort()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -45,7 +46,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -53,7 +54,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region IgnoreBreaks_FlagFirst_FlagLong
         [Test]
-        public void IgnoreBreaks_FlagFirst_FlagLong()
+        public async Task IgnoreBreaks_FlagFirst_FlagLong()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -62,7 +63,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -72,7 +73,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
         #region FlagMiddle..
         #region IgnoreBreaks_FlagMiddle_FlagShort
         [Test]
-        public void IgnoreBreaks_FlagMiddle_FlagShort()
+        public async Task IgnoreBreaks_FlagMiddle_FlagShort()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -81,7 +82,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {_FlagDescriptorShort} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -89,7 +90,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region IgnoreBreaks_FlagMiddle_FlagLong
         [Test]
-        public void IgnoreBreaks_FlagMiddle_FlagLong()
+        public async Task IgnoreBreaks_FlagMiddle_FlagLong()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -98,7 +99,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {_FlagDescriptorLong} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -108,7 +109,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
         #region FlagLast..
         #region IgnoreBreaks_FlagLast_FlagShort
         [Test]
-        public void IgnoreBreaks_FlagLast_FlagShort()
+        public async Task IgnoreBreaks_FlagLast_FlagShort()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -117,7 +118,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -125,7 +126,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region IgnoreBreaks_FlagLast_FlagLong
         [Test]
-        public void IgnoreBreaks_FlagLast_FlagLong()
+        public async Task IgnoreBreaks_FlagLast_FlagLong()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -134,7 +135,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -143,7 +144,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region IgnoreBreaks_NoFlag
         [Test]
-        public void IgnoreBreaks_NoFlag()
+        public async Task IgnoreBreaks_NoFlag()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -152,7 +153,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 0);
         }
@@ -160,7 +161,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region IgnoreBreaks_StartOfLine
         [Test]
-        public void IgnoreBreaks_StartOfLine()
+        public async Task IgnoreBreaks_StartOfLine()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -169,7 +170,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {SearchTerm} -b";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -177,7 +178,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region IgnoreBreaks_StartOfLine_NoFlag
         [Test]
-        public void IgnoreBreaks_StartOfLine_NoFlag()
+        public async Task IgnoreBreaks_StartOfLine_NoFlag()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -186,7 +187,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 3);
         }
@@ -194,7 +195,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region IgnoreBreaks_EndOfLine
         [Test]
-        public void IgnoreBreaks_EndOfLine()
+        public async Task IgnoreBreaks_EndOfLine()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -203,7 +204,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {SearchTerm} -b";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -211,7 +212,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region IgnoreBreaks_EndOfLine_NoFlag
         [Test]
-        public void IgnoreBreaks_EndOfLine_NoFlag()
+        public async Task IgnoreBreaks_EndOfLine_NoFlag()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -220,7 +221,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 3);
         }
@@ -228,7 +229,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region IgnoreBreaks_StartOfLineToEndOfLine
         [Test]
-        public void IgnoreBreaks_StartOfLineToEndOfLine()
+        public async Task IgnoreBreaks_StartOfLineToEndOfLine()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -237,7 +238,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {SearchTerm} -b";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -245,7 +246,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
 
         #region IgnoreBreaks_StartOfLineToEndOfLine_NoFlag
         [Test]
-        public void IgnoreBreaks_StartOfLineToEndOfLine_NoFlag()
+        public async Task IgnoreBreaks_StartOfLineToEndOfLine_NoFlag()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "IgnoreBreaks.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -254,7 +255,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 3);
         }

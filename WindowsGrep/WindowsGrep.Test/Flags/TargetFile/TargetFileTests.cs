@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -36,7 +37,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
         #region FlagFirst..
         #region TargetFile_FlagFirst_FlagShort_SingleQuotes
         [Test]
-        public void TargetFile_FlagFirst_FlagShort_SingleQuotes()
+        public async Task TargetFile_FlagFirst_FlagShort_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -45,7 +46,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"{_FlagDescriptorShort} '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -53,7 +54,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
         #region TargetFile_FlagFirst_FlagShort_DoubleQuotes
         [Test]
-        public void TargetFile_FlagFirst_FlagShort_DoubleQuotes()
+        public async Task TargetFile_FlagFirst_FlagShort_DoubleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -62,7 +63,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"{_FlagDescriptorShort} \"{TestFilePath}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -70,7 +71,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
         #region TargetFile_FlagFirst_FlagLong_SingleQuotes
         [Test]
-        public void TargetFile_FlagFirst_FlagLong_SingleQuotes()
+        public async Task TargetFile_FlagFirst_FlagLong_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -79,7 +80,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"{_FlagDescriptorLong} '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -87,7 +88,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
         #region TargetFile_FlagFirst_FlagLong_DoubleQuotes
         [Test]
-        public void TargetFile_FlagFirst_FlagLong_DoubleQuotes()
+        public async Task TargetFile_FlagFirst_FlagLong_DoubleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -96,7 +97,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"{_FlagDescriptorLong} \"{TestFilePath}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -106,7 +107,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
         #region FlagMiddle..
         #region TargetFile_FlagMiddle_FlagShort_SingleQuotes
         [Test]
-        public void TargetFile_FlagMiddle_FlagShort_SingleQuotes()
+        public async Task TargetFile_FlagMiddle_FlagShort_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -115,7 +116,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"-i {_FlagDescriptorShort} '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -123,7 +124,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
         #region TargetFile_FlagMiddle_FlagShort_DoubleQuotes
         [Test]
-        public void TargetFile_FlagMiddle_FlagShort_DoubleQuotes()
+        public async Task TargetFile_FlagMiddle_FlagShort_DoubleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -132,7 +133,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"-i {_FlagDescriptorShort} \"{TestFilePath}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -140,7 +141,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
         #region TargetFile_FlagMiddle_FlagLong_SingleQuotes
         [Test]
-        public void TargetFile_FlagMiddle_FlagLong_SingleQuotes()
+        public async Task TargetFile_FlagMiddle_FlagLong_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -149,7 +150,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"-i {_FlagDescriptorLong} '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -157,7 +158,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
         #region TargetFile_FlagMiddle_FlagLong_DoubleQuotes
         [Test]
-        public void TargetFile_FlagMiddle_FlagLong_DoubleQuotes()
+        public async Task TargetFile_FlagMiddle_FlagLong_DoubleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -166,7 +167,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"-i {_FlagDescriptorLong} \"{TestFilePath}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -176,7 +177,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
         #region FlagLast..
         #region TargetFile_FlagLast_FlagShort_SingleQuotes
         [Test]
-        public void TargetFile_FlagLast_FlagShort_SingleQuotes()
+        public async Task TargetFile_FlagLast_FlagShort_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -185,7 +186,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"{SearchTerm} {_FlagDescriptorShort} '{TestFilePath}'";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -193,7 +194,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
         #region TargetFile_FlagLast_FlagShort_DoubleQuotes
         [Test]
-        public void TargetFile_FlagLast_FlagShort_DoubleQuotes()
+        public async Task TargetFile_FlagLast_FlagShort_DoubleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -202,7 +203,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"{SearchTerm} {_FlagDescriptorShort} \"{TestFilePath}\"";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -210,7 +211,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
         #region TargetFile_FlagLast_FlagLong_SingleQuotes
         [Test]
-        public void TargetFile_FlagLast_FlagLong_SingleQuotes()
+        public async Task TargetFile_FlagLast_FlagLong_SingleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -219,7 +220,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"{SearchTerm} {_FlagDescriptorLong} '{TestFilePath}'";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }
@@ -227,7 +228,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
 
         #region TargetFile_FlagLast_FlagLong_DoubleQuotes
         [Test]
-        public void TargetFile_FlagLast_FlagLong_DoubleQuotes()
+        public async Task TargetFile_FlagLast_FlagLong_DoubleQuotes()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "TargetFile.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -236,7 +237,7 @@ namespace WindowsGrep.Test.Flags.TargetFile
             string Command = $"{SearchTerm} {_FlagDescriptorLong} \"{TestFilePath}\"";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString.EqualsIgnoreCase(SearchTerm)) == 1);
         }

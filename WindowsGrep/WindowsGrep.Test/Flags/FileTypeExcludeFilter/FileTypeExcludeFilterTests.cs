@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -36,14 +37,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         #region FlagFirst..
         #region FileTypeExcludeFilter_FlagFirst_FlagShort_SingleType
         [Test]
-        public void FileTypeExcludeFilter_FlagFirst_FlagShort_SingleType()
+        public async Task FileTypeExcludeFilter_FlagFirst_FlagShort_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp";
             string Command = $"{_FlagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 6);
         }
@@ -51,14 +52,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagFirst_FlagShort_MultiType_CommaDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagFirst_FlagShort_MultiType_CommaDelimited()
+        public async Task FileTypeExcludeFilter_FlagFirst_FlagShort_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp,.txt,.php";
             string Command = $"{_FlagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 3);
         }
@@ -66,14 +67,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagFirst_FlagShort_MultiType_SemiColonDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagFirst_FlagShort_MultiType_SemiColonDelimited()
+        public async Task FileTypeExcludeFilter_FlagFirst_FlagShort_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp;.txt";
             string Command = $"{_FlagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -81,14 +82,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagFirst_FlagLong_SingleType
         [Test]
-        public void FileTypeExcludeFilter_FlagFirst_FlagLong_SingleType()
+        public async Task FileTypeExcludeFilter_FlagFirst_FlagLong_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt";
             string Command = $"{_FlagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 6);
         }
@@ -96,14 +97,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagFirst_FlagLong_MultiType_CommaDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagFirst_FlagLong_MultiType_CommaDelimited()
+        public async Task FileTypeExcludeFilter_FlagFirst_FlagLong_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt,.php";
             string Command = $"{_FlagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 4);
         }
@@ -111,14 +112,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagFirst_FlagLong_MultiType_SemiColonDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagFirst_FlagLong_MultiType_SemiColonDelimited()
+        public async Task FileTypeExcludeFilter_FlagFirst_FlagLong_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt;.php";
             string Command = $"{_FlagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 4);
         }
@@ -128,14 +129,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         #region FlagMiddle..
         #region FileTypeExcludeFilter_FlagMiddle_FlagShort_SingleType
         [Test]
-        public void FileTypeExcludeFilter_FlagMiddle_FlagShort_SingleType()
+        public async Task FileTypeExcludeFilter_FlagMiddle_FlagShort_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".html";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 6);
         }
@@ -143,14 +144,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagMiddle_FlagShort_MultiType_CommaDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagMiddle_FlagShort_MultiType_CommaDelimited()
+        public async Task FileTypeExcludeFilter_FlagMiddle_FlagShort_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".html,.txt";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -158,14 +159,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagMiddle_FlagShort_MultiType_SemiColonDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagMiddle_FlagShort_MultiType_SemiColonDelimited()
+        public async Task FileTypeExcludeFilter_FlagMiddle_FlagShort_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".html;.txt";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -173,14 +174,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagMiddle_FlagLong_SingleType
         [Test]
-        public void FileTypeExcludeFilter_FlagMiddle_FlagLong_SingleType()
+        public async Task FileTypeExcludeFilter_FlagMiddle_FlagLong_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".php";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -188,14 +189,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagMiddle_FlagLong_MultiType_CommaDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagMiddle_FlagLong_MultiType_CommaDelimited()
+        public async Task FileTypeExcludeFilter_FlagMiddle_FlagLong_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".php,.wg";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 4);
         }
@@ -203,14 +204,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagMiddle_FlagLong_MultiType_SemiColonDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagMiddle_FlagLong_MultiType_SemiColonDelimited()
+        public async Task FileTypeExcludeFilter_FlagMiddle_FlagLong_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".php;.wg";
             string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 4);
         }
@@ -220,14 +221,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         #region FlagLast..
         #region FileTypeExcludeFilter_FlagLast_FlagShort_SingleType
         [Test]
-        public void FileTypeExcludeFilter_FlagLast_FlagShort_SingleType()
+        public async Task FileTypeExcludeFilter_FlagLast_FlagShort_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 6);
         }
@@ -235,14 +236,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagLast_FlagShort_MultiType_CommaDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagLast_FlagShort_MultiType_CommaDelimited()
+        public async Task FileTypeExcludeFilter_FlagLast_FlagShort_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp,.html";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -250,14 +251,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagLast_FlagShort_MultiType_SemiColonDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagLast_FlagShort_MultiType_SemiColonDelimited()
+        public async Task FileTypeExcludeFilter_FlagLast_FlagShort_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp;.html";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -265,14 +266,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagLast_FlagLong_SingleType
         [Test]
-        public void FileTypeExcludeFilter_FlagLast_FlagLong_SingleType()
+        public async Task FileTypeExcludeFilter_FlagLast_FlagLong_SingleType()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 6);
         }
@@ -280,14 +281,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagLast_FlagLong_MultiType_CommaDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagLast_FlagLong_MultiType_CommaDelimited()
+        public async Task FileTypeExcludeFilter_FlagLast_FlagLong_MultiType_CommaDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt,.wg";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -295,14 +296,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FlagLast_FlagLong_MultiType_SemiColonDelimited
         [Test]
-        public void FileTypeExcludeFilter_FlagLast_FlagLong_MultiType_SemiColonDelimited()
+        public async Task FileTypeExcludeFilter_FlagLast_FlagLong_MultiType_SemiColonDelimited()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt;.wg";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -311,14 +312,14 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
 
         #region FileTypeExcludeFilter_FileTypeNotExists
         [Test]
-        public void FileTypeExcludeFilter_FileTypeNotExists()
+        public async Task FileTypeExcludeFilter_FileTypeNotExists()
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".tig";
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 7);
         }

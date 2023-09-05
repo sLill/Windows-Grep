@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -36,7 +37,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         #region FlagFirst..
         #region FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -45,7 +46,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -53,7 +54,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -62,7 +63,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -70,7 +71,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -79,7 +80,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -87,7 +88,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagFirst_FlagShort_SingleLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -96,7 +97,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -104,7 +105,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -113,7 +114,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -121,7 +122,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -130,7 +131,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -138,7 +139,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -147,7 +148,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -155,7 +156,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagFirst_FlagShort_SingleLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -164,7 +165,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -172,7 +173,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -181,7 +182,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -189,7 +190,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -198,7 +199,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -206,7 +207,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -215,7 +216,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -223,7 +224,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagFirst_FlagShort_MultiLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -232,7 +233,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -240,7 +241,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -249,7 +250,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -257,7 +258,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -266,7 +267,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -274,7 +275,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -283,7 +284,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -291,7 +292,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagFirst_FlagShort_MultiLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -300,7 +301,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -308,7 +309,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -317,7 +318,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -325,7 +326,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -334,7 +335,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -342,7 +343,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -351,7 +352,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -359,7 +360,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagFirst_FlagLong_SingleLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -368,7 +369,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -376,7 +377,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -385,7 +386,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -393,7 +394,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -402,7 +403,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -410,7 +411,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -419,7 +420,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -427,7 +428,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagFirst_FlagLong_SingleLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -436,7 +437,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -444,7 +445,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -453,7 +454,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -461,7 +462,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -470,7 +471,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -478,7 +479,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -487,7 +488,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -495,7 +496,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagFirst_FlagLong_MultiLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -504,7 +505,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -512,7 +513,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -521,7 +522,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -529,7 +530,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -538,7 +539,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -546,7 +547,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -555,7 +556,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -563,7 +564,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagFirst_FlagLong_MultiLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -572,7 +573,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -582,7 +583,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         #region FlagMiddle..
         #region FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -591,7 +592,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -599,7 +600,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -608,7 +609,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -616,7 +617,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -625,7 +626,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -633,7 +634,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagMiddle_FlagShort_SingleLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -642,7 +643,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -650,7 +651,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -659,7 +660,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -667,7 +668,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -676,7 +677,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -684,7 +685,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -693,7 +694,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -701,7 +702,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagMiddle_FlagShort_SingleLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -710,7 +711,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -718,7 +719,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -727,7 +728,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -735,7 +736,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -744,7 +745,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -752,7 +753,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -761,7 +762,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -769,7 +770,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagMiddle_FlagShort_MultiLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -778,7 +779,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -786,7 +787,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -795,7 +796,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -803,7 +804,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -812,7 +813,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -820,7 +821,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -829,7 +830,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -837,7 +838,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagMiddle_FlagShort_MultiLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -846,7 +847,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -854,7 +855,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -863,7 +864,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -871,7 +872,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -880,7 +881,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -888,7 +889,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -897,7 +898,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -905,7 +906,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagMiddle_FlagLong_SingleLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -914,7 +915,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -922,7 +923,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -931,7 +932,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -939,7 +940,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -948,7 +949,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -956,7 +957,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -965,7 +966,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -973,7 +974,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagMiddle_FlagLong_SingleLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -982,7 +983,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -990,7 +991,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -999,7 +1000,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1007,7 +1008,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1016,7 +1017,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1024,7 +1025,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1033,7 +1034,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1041,7 +1042,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagMiddle_FlagLong_MultiLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1050,7 +1051,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1058,7 +1059,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1067,7 +1068,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -1075,7 +1076,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1084,7 +1085,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -1092,7 +1093,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1101,7 +1102,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -1109,7 +1110,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagMiddle_FlagLong_MultiLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1118,7 +1119,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1128,7 +1129,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         #region FlagLast..  
         #region FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1137,7 +1138,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1145,7 +1146,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1154,7 +1155,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1162,7 +1163,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1171,7 +1172,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1179,7 +1180,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagLast_FlagShort_SingleLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1188,7 +1189,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1196,7 +1197,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1205,7 +1206,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -1213,7 +1214,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1222,7 +1223,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1230,7 +1231,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1239,7 +1240,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1247,7 +1248,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagLast_FlagShort_SingleLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1256,7 +1257,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1264,7 +1265,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1273,7 +1274,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1281,7 +1282,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1290,7 +1291,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1298,7 +1299,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1307,7 +1308,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1315,7 +1316,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagLast_FlagShort_MultiLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1324,7 +1325,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1332,7 +1333,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1341,7 +1342,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -1349,7 +1350,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1358,7 +1359,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -1366,7 +1367,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1375,7 +1376,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -1383,7 +1384,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagLast_FlagShort_MultiLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1392,7 +1393,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1400,7 +1401,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1409,7 +1410,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1417,7 +1418,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1426,7 +1427,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1434,7 +1435,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1443,7 +1444,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1451,7 +1452,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagLast_FlagLong_SingleLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1460,7 +1461,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1468,7 +1469,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1477,7 +1478,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -1485,7 +1486,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1494,7 +1495,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1502,7 +1503,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1511,7 +1512,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1519,7 +1520,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagLast_FlagLong_SingleLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsSingleLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1528,7 +1529,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1536,7 +1537,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Alpha
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Alpha()
+        public async Task FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1545,7 +1546,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1553,7 +1554,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Numeric
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Numeric()
+        public async Task FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1562,7 +1563,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1570,7 +1571,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Alphanumeric()
+        public async Task FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1579,7 +1580,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1587,7 +1588,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_SpecialCharacter()
+        public async Task FixedStrings_FlagLast_FlagLong_MultiLine_SingleResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1596,7 +1597,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1604,7 +1605,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Alpha
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Alpha()
+        public async Task FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Alpha()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1613,7 +1614,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -1621,7 +1622,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Numeric
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Numeric()
+        public async Task FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Numeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1630,7 +1631,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -1638,7 +1639,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Alphanumeric
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Alphanumeric()
+        public async Task FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_Alphanumeric()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1647,7 +1648,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -1655,7 +1656,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
 
         #region FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_SpecialCharacter
         [Test]
-        public void FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_SpecialCharacter()
+        public async Task FixedStrings_FlagLast_FlagLong_MultiLine_MultiResult_SpecialCharacter()
         {
             string TestFilePath = Path.Combine(TestDataDirectory, "FixedStringsMultiLine.txt");
             Assert.IsTrue(File.Exists(TestFilePath));
@@ -1664,7 +1665,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }

@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WindowsGrep.Common
 {
@@ -18,14 +20,27 @@ namespace WindowsGrep.Common
         #endregion Fields..
 
         #region Methods..
-        public static List<string> GetFiles(string path, bool recursive, FileAttributes fileAttributesToSkip = default)
+        public static async Task<List<string>> GetFilesAsync(string path, bool recursive, CancellationToken cancellationToken, FileAttributes fileAttributesToSkip = default)
         {
-            var EnumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = fileAttributesToSkip };
+            var enumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = fileAttributesToSkip };
 
             if (recursive)
-                EnumerationOptions.RecurseSubdirectories = true;
+                enumerationOptions.RecurseSubdirectories = true;
 
-            List<string> files = Directory.GetFiles(Path.TrimEndingDirectorySeparator(path.TrimEnd()), "*", EnumerationOptions).ToList();
+            List<string> files = new List<string>();
+
+            await Task.Run(() =>
+            {
+
+                foreach (var file in Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(path.TrimEnd()), "*", enumerationOptions))
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                        break;
+
+                    files.Add(file);
+                }
+            }, cancellationToken);
+
             return files;
         }
 

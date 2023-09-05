@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using WindowsGrep.Common;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
@@ -42,7 +43,7 @@ namespace WindowsGrep.Test.Flags.Replace
         #region FlagFirst..
         #region Replace_FlagFirst_FlagShort_SingleQuotes
         [Test]
-        public void Replace_FlagFirst_FlagShort_SingleQuotes()
+        public async Task Replace_FlagFirst_FlagShort_SingleQuotes()
         {
             try
             {
@@ -53,7 +54,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"{_FlagDescriptorShort} '{ReplaceText}' -d '{TestDataDirectory}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -71,7 +72,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
         #region Replace_FlagFirst_FlagShort_DoubleQuotes
         [Test]
-        public void Replace_FlagFirst_FlagShort_DoubleQuotes()
+        public async Task Replace_FlagFirst_FlagShort_DoubleQuotes()
         {
             try
             {
@@ -82,7 +83,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"{_FlagDescriptorShort} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -100,7 +101,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
         #region Replace_FlagFirst_FlagLong_SingleQuotes
         [Test]
-        public void Replace_FlagFirst_FlagLong_SingleQuotes()
+        public async Task Replace_FlagFirst_FlagLong_SingleQuotes()
         {
             try
             {
@@ -111,7 +112,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"{_FlagDescriptorLong} '{ReplaceText}' -d '{TestDataDirectory}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -129,7 +130,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
         #region Replace_FlagFirst_FlagLong_DoubleQuotes
         [Test]
-        public void Replace_FlagFirst_FlagLong_DoubleQuotes()
+        public async Task Replace_FlagFirst_FlagLong_DoubleQuotes()
         {
             try
             {
@@ -140,7 +141,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"{_FlagDescriptorLong} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -160,7 +161,7 @@ namespace WindowsGrep.Test.Flags.Replace
         #region FlagMiddle..
         #region Replace_FlagMiddle_FlagShort_SingleQuotes
         [Test]
-        public void Replace_FlagMiddle_FlagShort_SingleQuotes()
+        public async Task Replace_FlagMiddle_FlagShort_SingleQuotes()
         {
             try
             {
@@ -171,7 +172,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} '{ReplaceText}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -189,7 +190,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
         #region Replace_FlagMiddle_FlagShort_DoubleQuotes
         [Test]
-        public void Replace_FlagMiddle_FlagShort_DoubleQuotes()
+        public async Task Replace_FlagMiddle_FlagShort_DoubleQuotes()
         {
             try
             {
@@ -200,7 +201,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} \"{ReplaceText}\" {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -218,7 +219,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
         #region Replace_FlagMiddle_FlagLong_SingleQuotes
         [Test]
-        public void Replace_FlagMiddle_FlagLong_SingleQuotes()
+        public async Task Replace_FlagMiddle_FlagLong_SingleQuotes()
         {
             try
             {
@@ -229,7 +230,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} '{ReplaceText}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -247,7 +248,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
         #region Replace_FlagMiddle_FlagLong_DoubleQuotes
         [Test]
-        public void Replace_FlagMiddle_FlagLong_DoubleQuotes()
+        public async Task Replace_FlagMiddle_FlagLong_DoubleQuotes()
         {
             try
             {
@@ -258,7 +259,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} \"{ReplaceText}\" {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -278,7 +279,7 @@ namespace WindowsGrep.Test.Flags.Replace
         #region FlagLast..
         #region Replace_FlagLast_FlagShort_SingleQuotes
         [Test]
-        public void Replace_FlagLast_FlagShort_SingleQuotes()
+        public async Task Replace_FlagLast_FlagShort_SingleQuotes()
         {
             try
             {
@@ -289,7 +290,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} '{ReplaceText}'";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -307,7 +308,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
         #region Replace_FlagLast_FlagShort_DoubleQuotes
         [Test]
-        public void Replace_FlagLast_FlagShort_DoubleQuotes()
+        public async Task Replace_FlagLast_FlagShort_DoubleQuotes()
         {
             try
             {
@@ -318,7 +319,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} \"{ReplaceText}\"";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -336,7 +337,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
         #region Replace_FlagLast_FlagLong_SingleQuotes
         [Test]
-        public void Replace_FlagLast_FlagLong_SingleQuotes()
+        public async Task Replace_FlagLast_FlagLong_SingleQuotes()
         {
             try
             {
@@ -347,7 +348,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} '{ReplaceText}'";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -365,7 +366,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
         #region Replace_FlagLast_FlagLong_DoubleQuotes
         [Test]
-        public void Replace_FlagLast_FlagLong_DoubleQuotes()
+        public async Task Replace_FlagLast_FlagLong_DoubleQuotes()
         {
             try
             {
@@ -376,7 +377,7 @@ namespace WindowsGrep.Test.Flags.Replace
                 string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} \"{ReplaceText}\"";
 
                 var commandResultCollection = new CommandResultCollection();
-                WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+                await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
                 Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
@@ -400,7 +401,7 @@ namespace WindowsGrep.Test.Flags.Replace
         /// <summary>
         /// Create a copy of each file in TestData
         /// </summary>
-        private void CreateTestFiles()
+        private async Task CreateTestFiles()
         {
             // File one
             string FilePathOne = Path.Combine(TestDataDirectory, "ReplaceOne.txt");
@@ -415,7 +416,7 @@ namespace WindowsGrep.Test.Flags.Replace
         #endregion CreateTestFiles
 
         #region DeleteTestFiles
-        private void DeleteTestFiles()
+        private async Task DeleteTestFiles()
         {
             // Delete all files in TestData
             var DirectoryInfo = new DirectoryInfo(TestDataDirectory);
