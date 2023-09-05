@@ -26,7 +26,7 @@ namespace WindowsGrep.Test.Flags.Write
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.ProjectDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
             _testOutputFilePath = Path.Combine(TestDataDirectory, "WriteOutput.txt");
 
             List<string> DescriptionCollection = ConsoleFlag.Write.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();

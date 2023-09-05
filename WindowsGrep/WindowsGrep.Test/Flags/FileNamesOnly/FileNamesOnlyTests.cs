@@ -25,7 +25,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.ProjectDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
 
             List<string> DescriptionCollection = ConsoleFlag.FileNamesOnly.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
             _FlagDescriptorShort = DescriptionCollection[0];

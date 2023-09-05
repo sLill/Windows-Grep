@@ -28,7 +28,7 @@ namespace WindowsGrep.Test.Flags.Replace
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.ProjectDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
 
             List<string> DescriptionCollection = ConsoleFlag.Replace.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
             _FlagDescriptorShort = DescriptionCollection[0];

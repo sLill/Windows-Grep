@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace WindowsGrep.Test
 {
@@ -8,9 +9,8 @@ namespace WindowsGrep.Test
         #endregion Fields..
 
         #region Properties..
-        public static string WorkingDirectory => Environment.CurrentDirectory;
-
-        public static string ProjectDirectory => System.IO.Directory.GetParent(WorkingDirectory).Parent.Parent.FullName;
+        public static string WorkingDirectory 
+            => AppDomain.CurrentDomain.BaseDirectory;
         #endregion Properties..
 
         #region Constructors..

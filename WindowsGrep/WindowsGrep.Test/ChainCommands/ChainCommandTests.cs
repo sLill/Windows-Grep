@@ -19,7 +19,7 @@ namespace WindowsGrep.Test.ChainCommands
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.ProjectDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
         }
         #endregion Setup
 
