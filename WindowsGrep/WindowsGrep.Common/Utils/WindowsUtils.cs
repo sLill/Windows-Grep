@@ -105,7 +105,7 @@ namespace WindowsGrep.Common
             fileSizeType = fileSizeTypes.Any() ? fileSizeTypes.Max() : FileSizeType.Kb;
 
             long fileSizeTypeModifier = fileSizeType.GetCustomAttribute<ValueAttribute>().Value;
-            return Math.Round(size / (double)fileSizeTypeModifier, 2);
+            return Math.Round(size / (double)fileSizeTypeModifier, targetNumberOfDigits);
         }
 
         public static bool IsValidFileHash(string value, HashType hashType)
