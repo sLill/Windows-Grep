@@ -31,7 +31,6 @@ namespace WindowsGrep.Common
 
             await Task.Run(() =>
             {
-
                 foreach (var file in Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(path.TrimEnd()), "*", enumerationOptions))
                 {
                     if (cancellationToken.IsCancellationRequested)
