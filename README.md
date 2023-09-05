@@ -5,34 +5,34 @@
 <h1>Windows Grep</h1> 
 
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-grep/badge)](https://www.codefactor.io/repository/github/slill/windows-grep)
-![.NET Core](https://github.com/sLill/Windows-Grep/workflows/.NET%20Core/badge.svg)
+![.NET Core](https://github.com/sLill/Windows-Grep/workflows/.NET/badge.svg)
 
 Command line grep-like file search utility for Windows</br>
 
--Supports-</br>
-- Filename and file content searches</br>
+<h2>Supports</h2>
+- Basic and advanced file searches</br>
 - Regular Expressions</br>
 - Chained commands</br>
 - Filetype/Filepath/Filesize filtering</br>
-- Output to external files</br>
-- Mass replace and delete actions on queried files</br>
-- Ease of use: Runnable from Cmd, Powershell, Windows Explorer or headless</br>
+- Exports</br>
+- Mass replace and delete</br>
+- Ease of use: Runs from cmd, Powershell, Windows Explorer or headless</br>
 
-<h2>== INSTALLATION ==</h2>
+<h1>INSTALLATION</h1>
 
 1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
 2. Download and run WindowsGrepSetup.msi (This is the only file you need)
 
 This will install Windows Grep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
-<h2>== USAGE ==</h2>
+<h1>USAGE</h1>
 Right-click in File Explorer > Windows Grep
 <br/><br/>
 OR
 <br/><br/>
 Open cmd > "grep [command]"<br/>
 
-<h2>== REFERENCE ==</h2>
+<h1>REFERENCE</h1>
 
 |                           |    |                       |
 | ------------------------- | -- | :-------------------: |
@@ -67,33 +67,33 @@ Order of flags and search terms is completely flexible. The only requirement is 
 
 <br/>
 
-<h2>== EXAMPLE COMMANDS ==</h2>
+<h1>EXAMPLE COMMANDS</h1>
 
-<i>Recursively search all files for "Dug"</i><br/>
+<i>Recursive search.</i><br/>
 -r Dug
 <br/><br/>
 
-<i>Recursively search all files for "Dug" or "Dig". Ignore-case</i><br/>
+<i>Recursive search. ignore-case.</i><br/>
 -r -i D[ui]g
 <br/><br/>
 
-<i>Recursively search all text and csharp files for "Dug". Filter out matches that appear in the bin or obj subdirectory</i><br/>
+<i>Recursive search. txt and cs files only. Filter out bin and obj matches</i><br/>
 -r Dug -t .txt;.cs -P bin;obj
 <br/><br/>
 
-<i>Recursively search all files for "Dug" and show 100 characters of text around the match for context</i><br/>
+<i>Recursive search. show 100 characters around the match.</i><br/>
 -r Dug -c 100
 <br/><br/>
 
-<i>Search for all filenames in the current directory containing "Dug", and then search that subset of files for "Mike"</i><br/>
+<i>Recursive search. Filenames only. Additional search on results from first command for "Mike"</i><br/>
 -r Dug -k | Mike
 <br/><br/>
 
-<i>Search all files in the current directory for text that matches a phone number expression/pattern</i><br/>
+<i>Matche phone number</i><br/>
 [\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}
 <br/><br/>
 
-<i>Recursively search all files for US zip codes. Filter out .dll matches. Limit the results 10. Write the output to a .csv</i><br/>
+<i>Recursive search. US zipcode expression. Filter out .dll matches. Limit results 10. Write output to .csv</i><br/>
 -r \d{5}(-\d{4})? -T .dll -n 10 -w 'C:\output.csv'
 <br/><br/>
 

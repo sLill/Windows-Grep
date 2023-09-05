@@ -1,0 +1,30 @@
+name: .NET
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '7.0'
+
+      - name: Restore Dependencies
+        run: dotnet restore ./WindowsGrep/
+
+      - name: Build Application
+        run: dotnet build --configuration Release ./WindowsGrep/
+
+      # name: Run Tests
+      #  run: dotnet test --configuration Release --no-restore ./WindowsGrep/
