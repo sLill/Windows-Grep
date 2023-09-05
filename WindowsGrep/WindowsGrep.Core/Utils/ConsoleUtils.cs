@@ -13,7 +13,7 @@ namespace WindowsGrep.Core
 
         private static string GetCommandPattern(string commandDescriptor, bool expectsParameter)
         {
-            string pattern = $"^{commandDescriptor}";
+            string pattern = $"(\\s|^){commandDescriptor}";
             pattern = expectsParameter ? $"{pattern}\\s.*?(?<Parameter>.*?)$" : $"{pattern}[^\\S]*?$";
 
             return pattern;
