@@ -164,7 +164,6 @@
     <Folder Include="Flags\PathExcludeFilter\TestData\" />
     <Folder Include="Flags\PathFilter\TestData\" />
     <Folder Include="Flags\Replace\TestData\" />
-    <Folder Include="NativeCommands\List\TestData\" />
   </ItemGroup>
 
   <ItemGroup>

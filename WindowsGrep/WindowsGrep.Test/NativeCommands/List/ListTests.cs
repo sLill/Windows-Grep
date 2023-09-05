@@ -32,18 +32,21 @@ namespace WindowsGrep.Test.NativeCommands.List
         #endregion Setup
 
         #region Tests..
-        //#region List_Multi
-        //[Test]
-        //public async Task List_Multi()
-        //{
-        //    string command = $"cd {TestDataDirectory} | {_flagDescriptor}";
+        #region List_Empty
+        [Test]
+        public async Task List_Empty()
+        {
+            string emptyDirectory = Path.Combine(TestDataDirectory, "Empty");
+            Directory.CreateDirectory(emptyDirectory);
 
-        //    var commandResultCollection = new CommandResultCollection();
-        //    await WindowsGrep.RunCommandAsync(command, commandResultCollection, new CancellationToken());
+            string command = $"cd {emptyDirectory} | {_flagDescriptor}";
 
-        //    Assert.IsTrue(commandResultCollection.Count == 1);
-        //}
-        //#endregion List_Multi
+            var commandResultCollection = new CommandResultCollection();
+            await WindowsGrep.RunCommandAsync(command, commandResultCollection, new CancellationToken());
+
+            Assert.IsTrue(!commandResultCollection.Any());
+        }
+        #endregion List_Empty
         #endregion Tests..
     }
 }
