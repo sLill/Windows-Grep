@@ -47,6 +47,19 @@ namespace WindowsGrep.Test.NativeCommands.List
             Assert.IsTrue(!commandResultCollection.Any());
         }
         #endregion List_Empty
+
+        #region List_NotEmpty
+        [Test]
+        public async Task List_NotEmpty()
+        {
+            string command = $"cd {TestDataDirectory} | {_flagDescriptor}";
+
+            var commandResultCollection = new CommandResultCollection();
+            await WindowsGrep.RunCommandAsync(command, commandResultCollection, new CancellationToken());
+
+            Assert.IsTrue(commandResultCollection.Any());
+        }
+        #endregion List_NotEmpty
         #endregion Tests..
     }
 }

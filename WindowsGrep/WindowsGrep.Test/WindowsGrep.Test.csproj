@@ -40,6 +40,7 @@
     <None Remove="Flags\Recursive\TestData\TestDataSubFolder\RecursiveTwo.txt" />
     <None Remove="Flags\TargetFile\TestData\TargetFile.txt" />
     <None Remove="Flags\Write\TestData\Write.txt" />
+    <None Remove="NativeCommands\List\TestData\ListOne.txt" />
     <None Remove="RegularExpressions\TestData\RegularExpressionsOne.txt" />
     <None Remove="RegularExpressions\TestData\RegularExpressionsTwo.txt" />
   </ItemGroup>
@@ -142,6 +143,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Flags\Write\TestData\Write.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NativeCommands\List\TestData\ListOne.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="RegularExpressions\TestData\RegularExpressionsOne.txt">
