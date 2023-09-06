@@ -13,9 +13,9 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
     public class IgnoreBreaksTests : TestBase
     {
         #region Fields..
-        private string _FlagDescriptorShort;
-        private string _FlagDescriptorLong;
-        private string _TestDataRelativePath = @"Flags\IgnoreBreaks\TestData";
+        private string _flagDescriptorShort;
+        private string _flagDescriptorLong;
+        private string _testDataRelativePath = @"Flags\IgnoreBreaks\TestData";
         #endregion Fields..
 
         #region Properties..
@@ -25,11 +25,11 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
 
             List<string> DescriptionCollection = ConsoleFlag.IgnoreBreaks.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
-            _FlagDescriptorShort = DescriptionCollection[0];
-            _FlagDescriptorLong = DescriptionCollection[1];
+            _flagDescriptorShort = DescriptionCollection[0];
+            _flagDescriptorLong = DescriptionCollection[1];
         }
         #endregion Setup
 
@@ -43,7 +43,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "quick.*brown";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -60,7 +60,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "quick.*brown";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -79,7 +79,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "quick.*brown";
-            string Command = $"-f '{TestFilePath}' {_FlagDescriptorShort} {SearchTerm}";
+            string Command = $"-f '{TestFilePath}' {_flagDescriptorShort} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -96,7 +96,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "quick.*brown";
-            string Command = $"-f '{TestFilePath}' {_FlagDescriptorLong} {SearchTerm}";
+            string Command = $"-f '{TestFilePath}' {_flagDescriptorLong} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -115,7 +115,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "quick.*brown";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -132,7 +132,7 @@ namespace WindowsGrep.Test.Flags.IgnoreBreaks
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "quick.*brown";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());

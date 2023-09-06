@@ -10,7 +10,7 @@ namespace WindowsGrep.Test.RegularExpressions
     public class RegularExpressionsTests : TestBase
     {
         #region Fields..
-        private string _TestDataRelativePath = @"RegularExpressions\TestData";
+        private string _testDataRelativePath = @"RegularExpressions\TestData";
         #endregion Fields..
 
         #region Properties..
@@ -20,7 +20,7 @@ namespace WindowsGrep.Test.RegularExpressions
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
         }
         #endregion Setup
 

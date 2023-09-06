@@ -13,9 +13,9 @@ namespace WindowsGrep.Test.Flags.Directory
     public class DirectoryTests : TestBase
     {
         #region Fields..
-        private string _FlagDescriptorShort;
-        private string _FlagDescriptorLong;
-        private string _TestDataRelativePath = @"Flags\Directory\TestData";
+        private string _flagDescriptorShort;
+        private string _flagDescriptorLong;
+        private string _testDataRelativePath = @"Flags\Directory\TestData";
         #endregion Fields..
 
         #region Properties..
@@ -25,11 +25,11 @@ namespace WindowsGrep.Test.Flags.Directory
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
 
             List<string> DescriptionCollection = ConsoleFlag.Directory.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
-            _FlagDescriptorShort = DescriptionCollection[0];
-            _FlagDescriptorLong = DescriptionCollection[1];
+            _flagDescriptorShort = DescriptionCollection[0];
+            _flagDescriptorLong = DescriptionCollection[1];
         }
         #endregion Setup
 
@@ -40,7 +40,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagFirst_FlagShort_SingleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"{_FlagDescriptorShort} '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -54,7 +54,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagFirst_FlagShort_DoubleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"{_FlagDescriptorShort} \"{TestDataDirectory}\" {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} \"{TestDataDirectory}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -68,7 +68,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagFirst_FlagLong_SingleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"{_FlagDescriptorLong} '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -82,7 +82,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagFirst_FlagLong_DoubleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"{_FlagDescriptorLong} \"{TestDataDirectory}\" {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} \"{TestDataDirectory}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -98,7 +98,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagMiddle_FlagShort_SingleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"-i {_FlagDescriptorShort} '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -112,7 +112,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagMiddle_FlagShort_DoubleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"-i {_FlagDescriptorShort} \"{TestDataDirectory}\" {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} \"{TestDataDirectory}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -126,7 +126,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagMiddle_FlagLong_SingleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"-i {_FlagDescriptorLong} '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -140,7 +140,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagMiddle_FlagLong_DoubleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"-i {_FlagDescriptorLong} \"{TestDataDirectory}\" {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} \"{TestDataDirectory}\" {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -156,7 +156,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagLast_FlagShort_SingleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"{SearchTerm} {_FlagDescriptorShort} '{TestDataDirectory}'";
+            string Command = $"{SearchTerm} {_flagDescriptorShort} '{TestDataDirectory}'";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -170,7 +170,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagLast_FlagShort_DoubleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"{SearchTerm} {_FlagDescriptorShort} \"{TestDataDirectory}\"";
+            string Command = $"{SearchTerm} {_flagDescriptorShort} \"{TestDataDirectory}\"";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -184,7 +184,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagLast_FlagLong_SingleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"{SearchTerm} {_FlagDescriptorLong} '{TestDataDirectory}'";
+            string Command = $"{SearchTerm} {_flagDescriptorLong} '{TestDataDirectory}'";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -198,7 +198,7 @@ namespace WindowsGrep.Test.Flags.Directory
         public async Task Directory_FlagLast_FlagLong_DoubleQuotes()
         {
             string SearchTerm = "fox";
-            string Command = $"{SearchTerm} {_FlagDescriptorLong} \"{TestDataDirectory}\"";
+            string Command = $"{SearchTerm} {_flagDescriptorLong} \"{TestDataDirectory}\"";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());

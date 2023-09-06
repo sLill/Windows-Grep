@@ -16,9 +16,9 @@ namespace WindowsGrep.Test.Flags.Replace
         private const string _TestFileTemplateText = "The quick brown fox jumps over the lazy dog";
         private const string _TestFileExpectedResultText = "The slow green turtle jumps over the lazy dog";
 
-        private string _FlagDescriptorShort;
-        private string _FlagDescriptorLong;
-        private string _TestDataRelativePath = @"Flags\Replace\TestData";
+        private string _flagDescriptorShort;
+        private string _flagDescriptorLong;
+        private string _testDataRelativePath = @"Flags\Replace\TestData";
         #endregion Fields..
 
         #region Properties..
@@ -28,11 +28,11 @@ namespace WindowsGrep.Test.Flags.Replace
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
 
             List<string> DescriptionCollection = ConsoleFlag.Replace.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
-            _FlagDescriptorShort = DescriptionCollection[0];
-            _FlagDescriptorLong = DescriptionCollection[1];
+            _flagDescriptorShort = DescriptionCollection[0];
+            _flagDescriptorLong = DescriptionCollection[1];
 
             // Build TestData directory if it doesn't exist yet
             System.IO.Directory.CreateDirectory(TestDataDirectory);
@@ -51,7 +51,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"{_FlagDescriptorShort} '{ReplaceText}' -d '{TestDataDirectory}' {SearchTerm}";
+                string Command = $"{_flagDescriptorShort} '{ReplaceText}' -d '{TestDataDirectory}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -80,7 +80,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"{_FlagDescriptorShort} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
+                string Command = $"{_flagDescriptorShort} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -109,7 +109,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"{_FlagDescriptorLong} '{ReplaceText}' -d '{TestDataDirectory}' {SearchTerm}";
+                string Command = $"{_flagDescriptorLong} '{ReplaceText}' -d '{TestDataDirectory}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -138,7 +138,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"{_FlagDescriptorLong} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
+                string Command = $"{_flagDescriptorLong} \"{ReplaceText}\" -d '{TestDataDirectory}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -169,7 +169,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} '{ReplaceText}' {SearchTerm}";
+                string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} '{ReplaceText}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -198,7 +198,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} \"{ReplaceText}\" {SearchTerm}";
+                string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} \"{ReplaceText}\" {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -227,7 +227,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} '{ReplaceText}' {SearchTerm}";
+                string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} '{ReplaceText}' {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -256,7 +256,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} \"{ReplaceText}\" {SearchTerm}";
+                string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} \"{ReplaceText}\" {SearchTerm}";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -287,7 +287,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} '{ReplaceText}'";
+                string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} '{ReplaceText}'";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -316,7 +316,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} \"{ReplaceText}\"";
+                string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} \"{ReplaceText}\"";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -345,7 +345,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} '{ReplaceText}'";
+                string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} '{ReplaceText}'";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -374,7 +374,7 @@ namespace WindowsGrep.Test.Flags.Replace
 
                 string SearchTerm = "quick brown fox";
                 string ReplaceText = "slow green turtle";
-                string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} \"{ReplaceText}\"";
+                string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} \"{ReplaceText}\"";
 
                 var commandResultCollection = new CommandResultCollection();
                 await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());

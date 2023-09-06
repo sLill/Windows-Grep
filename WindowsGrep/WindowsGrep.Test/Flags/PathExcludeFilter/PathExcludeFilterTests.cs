@@ -9,9 +9,9 @@ using WindowsGrep.Test;
 public class PathExcludeFilterTests : TestBase
 {
     #region Fields..
-    private string _FlagDescriptorShort;
-    private string _FlagDescriptorLong;
-    private string _TestDataRelativePath = @"Flags\PathExcludeFilter\TestData";
+    private string _flagDescriptorShort;
+    private string _flagDescriptorLong;
+    private string _testDataRelativePath = @"Flags\PathExcludeFilter\TestData";
     #endregion Fields..
 
     #region Properties..
@@ -21,11 +21,11 @@ public class PathExcludeFilterTests : TestBase
     [SetUp]
     public void Setup()
     {
-        TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+        TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
 
         List<string> DescriptionCollection = ConsoleFlag.FileTypeFilter.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
-        _FlagDescriptorShort = DescriptionCollection[0];
-        _FlagDescriptorLong = DescriptionCollection[1];
+        _flagDescriptorShort = DescriptionCollection[0];
+        _flagDescriptorLong = DescriptionCollection[1];
     }
     #endregion Setup
 

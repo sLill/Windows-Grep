@@ -13,9 +13,9 @@ namespace WindowsGrep.Test.Flags.Delete
     public class DeleteTests : TestBase
     {
         #region Fields..
-        private string _FlagDescriptorShort;
-        private string _FlagDescriptorLong;
-        private string _TestDataRelativePath = @"Flags\Delete\TestData";
+        private string _flagDescriptorShort;
+        private string _flagDescriptorLong;
+        private string _testDataRelativePath = @"Flags\Delete\TestData";
         private string _TestFilePath;
         #endregion Fields..
 
@@ -26,12 +26,12 @@ namespace WindowsGrep.Test.Flags.Delete
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
             _TestFilePath = Path.Combine(TestDataDirectory, "DeleteOutput.txt");
 
             List<string> DescriptionCollection = ConsoleFlag.Delete.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
-            _FlagDescriptorShort = DescriptionCollection[0];
-            _FlagDescriptorLong = DescriptionCollection[1];
+            _flagDescriptorShort = DescriptionCollection[0];
+            _flagDescriptorLong = DescriptionCollection[1];
 
             // Build TestData directory if it doesn't exist yet
             System.IO.Directory.CreateDirectory(TestDataDirectory);
@@ -47,7 +47,7 @@ namespace WindowsGrep.Test.Flags.Delete
             File.WriteAllText(_TestFilePath, "Delete flag test");
 
             string SearchTerm = "Delete flag test";
-            string Command = $"{_FlagDescriptorShort} -f '{_TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{_TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -63,7 +63,7 @@ namespace WindowsGrep.Test.Flags.Delete
             File.WriteAllText(_TestFilePath, "Delete flag test");
 
             string SearchTerm = "Delete flag test";
-            string Command = $"{_FlagDescriptorLong} -f '{_TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{_TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -81,7 +81,7 @@ namespace WindowsGrep.Test.Flags.Delete
             File.WriteAllText(_TestFilePath, "Delete flag test");
 
             string SearchTerm = "Delete flag test";
-            string Command = $"-f '{_TestFilePath}' {_FlagDescriptorShort} {SearchTerm}";
+            string Command = $"-f '{_TestFilePath}' {_flagDescriptorShort} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -97,7 +97,7 @@ namespace WindowsGrep.Test.Flags.Delete
             File.WriteAllText(_TestFilePath, "Delete flag test");
 
             string SearchTerm = "Delete flag test";
-            string Command = $"-f '{_TestFilePath}' {_FlagDescriptorLong} {SearchTerm}";
+            string Command = $"-f '{_TestFilePath}' {_flagDescriptorLong} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -115,7 +115,7 @@ namespace WindowsGrep.Test.Flags.Delete
             File.WriteAllText(_TestFilePath, "Delete flag test");
 
             string SearchTerm = "Delete flag test";
-            string Command = $"-f '{_TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{_TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -131,7 +131,7 @@ namespace WindowsGrep.Test.Flags.Delete
             File.WriteAllText(_TestFilePath, "Delete flag test");
 
             string SearchTerm = "Delete flag test";
-            string Command = $"-f '{_TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{_TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());

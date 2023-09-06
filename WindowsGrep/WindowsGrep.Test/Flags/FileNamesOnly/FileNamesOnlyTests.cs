@@ -13,9 +13,9 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
     public class FileNamesOnlyTests : TestBase
     {
         #region Fields..
-        private string _FlagDescriptorShort;
-        private string _FlagDescriptorLong;
-        private string _TestDataRelativePath = @"Flags\FileNamesOnly\TestData";
+        private string _flagDescriptorShort;
+        private string _flagDescriptorLong;
+        private string _testDataRelativePath = @"Flags\FileNamesOnly\TestData";
         #endregion Fields..
 
         #region Properties..
@@ -25,11 +25,11 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
 
             List<string> DescriptionCollection = ConsoleFlag.FileNamesOnly.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
-            _FlagDescriptorShort = DescriptionCollection[0];
-            _FlagDescriptorLong = DescriptionCollection[1];
+            _flagDescriptorShort = DescriptionCollection[0];
+            _flagDescriptorLong = DescriptionCollection[1];
         }
         #endregion Setup
 
@@ -40,7 +40,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagFirst_FlagShort_SingleResult()
         {
             string SearchTerm = "One";
-            string Command = $"{_FlagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -54,7 +54,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagFirst_FlagShort_MultiResult()
         {
             string SearchTerm = "FileNamesOnly";
-            string Command = $"{_FlagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -68,7 +68,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagFirst_FlagLong_SingleResult()
         {
             string SearchTerm = "One";
-            string Command = $"{_FlagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -82,7 +82,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagFirst_FlagLong_MultiResult()
         {
             string SearchTerm = "FileNamesOnly";
-            string Command = $"{_FlagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -98,7 +98,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagMiddle_FlagShort_SingleResult()
         {
             string SearchTerm = "One";
-            string Command = $"-i {_FlagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -112,7 +112,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagMiddle_FlagShort_MultiResult()
         {
             string SearchTerm = "FileNamesOnly";
-            string Command = $"-i {_FlagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -126,7 +126,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagMiddle_FlagLong_SingleResult()
         {
             string SearchTerm = "One";
-            string Command = $"-i {_FlagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -140,7 +140,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagMiddle_FlagLong_MultiResult()
         {
             string SearchTerm = "FileNamesOnly";
-            string Command = $"-i {_FlagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -156,7 +156,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagLast_FlagShort_SingleResult()
         {
             string SearchTerm = "One";
-            string Command = $"{SearchTerm} {_FlagDescriptorShort} -d '{TestDataDirectory}'";
+            string Command = $"{SearchTerm} {_flagDescriptorShort} -d '{TestDataDirectory}'";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -170,7 +170,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagLast_FlagShort_MultiResult()
         {
             string SearchTerm = "FileNamesOnly";
-            string Command = $"{SearchTerm} {_FlagDescriptorShort} -d '{TestDataDirectory}'";
+            string Command = $"{SearchTerm} {_flagDescriptorShort} -d '{TestDataDirectory}'";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -184,7 +184,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagLast_FlagLong_SingleResult()
         {
             string SearchTerm = "One";
-            string Command = $"{SearchTerm} {_FlagDescriptorLong} -d '{TestDataDirectory}'";
+            string Command = $"{SearchTerm} {_flagDescriptorLong} -d '{TestDataDirectory}'";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -198,7 +198,7 @@ namespace WindowsGrep.Test.Flags.FileNamesOnly
         public async Task FileNamesOnly_FlagLast_FlagLong_MultiResult()
         {
             string SearchTerm = "FileNamesOnly";
-            string Command = $"{SearchTerm} {_FlagDescriptorLong} -d '{TestDataDirectory}'";
+            string Command = $"{SearchTerm} {_flagDescriptorLong} -d '{TestDataDirectory}'";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());

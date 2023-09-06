@@ -36,6 +36,10 @@
     <None Remove="Flags\Hash\TestData\Normal.txt" />
     <None Remove="Flags\IgnoreBreaks\TestData\IgnoreBreaks.txt" />
     <None Remove="Flags\IgnoreCase\TestData\IgnoreCase.txt" />
+    <None Remove="Flags\PathExcludeFilter\TestData\PathFilterOne.txt" />
+    <None Remove="Flags\PathExcludeFilter\TestData\SubFolderOne\SubFolderTwo\PathFilterTwo.txt" />
+    <None Remove="Flags\PathFilter\TestData\PathFilterOne.txt" />
+    <None Remove="Flags\PathFilter\TestData\SubFolderOne\SubFolderTwo\PathFilterTwo.txt" />
     <None Remove="Flags\Recursive\TestData\RecursiveOne.txt" />
     <None Remove="Flags\Recursive\TestData\TestDataSubFolder\RecursiveTwo.txt" />
     <None Remove="Flags\TargetFile\TestData\TargetFile.txt" />
@@ -133,6 +137,18 @@
     <Content Include="Flags\IgnoreCase\TestData\IgnoreCase.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Flags\PathExcludeFilter\TestData\PathFilterOne.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Flags\PathExcludeFilter\TestData\SubFolderOne\SubFolderTwo\PathFilterTwo.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Flags\PathFilter\TestData\PathFilterOne.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Flags\PathFilter\TestData\SubFolderOne\SubFolderTwo\PathFilterTwo.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Flags\Recursive\TestData\RecursiveOne.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -165,8 +181,6 @@
   <ItemGroup>
     <Folder Include="Flags\Context\TestData\" />
     <Folder Include="Flags\Delete\TestData\" />
-    <Folder Include="Flags\PathExcludeFilter\TestData\" />
-    <Folder Include="Flags\PathFilter\TestData\" />
     <Folder Include="Flags\Replace\TestData\" />
   </ItemGroup>
 

@@ -13,9 +13,9 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
     public class FileTypeExcludeFilterTests : TestBase
     {
         #region Fields..
-        private string _FlagDescriptorShort;
-        private string _FlagDescriptorLong;
-        private string _TestDataRelativePath = @"Flags\FileTypeExcludeFilter\TestData";
+        private string _flagDescriptorShort;
+        private string _flagDescriptorLong;
+        private string _testDataRelativePath = @"Flags\FileTypeExcludeFilter\TestData";
         #endregion Fields..
 
         #region Properties..
@@ -25,11 +25,11 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
 
             List<string> DescriptionCollection = ConsoleFlag.FileTypeExcludeFilter.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
-            _FlagDescriptorShort = DescriptionCollection[0];
-            _FlagDescriptorLong = DescriptionCollection[1];
+            _flagDescriptorShort = DescriptionCollection[0];
+            _flagDescriptorLong = DescriptionCollection[1];
         }
         #endregion Setup
 
@@ -41,7 +41,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp";
-            string Command = $"{_FlagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -56,7 +56,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp,.txt,.php";
-            string Command = $"{_FlagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -71,7 +71,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp;.txt";
-            string Command = $"{_FlagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -86,7 +86,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt";
-            string Command = $"{_FlagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -101,7 +101,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt,.php";
-            string Command = $"{_FlagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -116,7 +116,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt;.php";
-            string Command = $"{_FlagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -133,7 +133,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".html";
-            string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {FlagParameter} {SearchTerm}";
+            string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -148,7 +148,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".html,.txt";
-            string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {FlagParameter} {SearchTerm}";
+            string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -163,7 +163,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".html;.txt";
-            string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {FlagParameter} {SearchTerm}";
+            string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -178,7 +178,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".php";
-            string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {FlagParameter} {SearchTerm}";
+            string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -193,7 +193,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".php,.wg";
-            string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {FlagParameter} {SearchTerm}";
+            string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -208,7 +208,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".php;.wg";
-            string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {FlagParameter} {SearchTerm}";
+            string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -225,7 +225,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp";
-            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} {FlagParameter}";
+            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -240,7 +240,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp,.html";
-            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} {FlagParameter}";
+            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -255,7 +255,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".cpp;.html";
-            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort} {FlagParameter}";
+            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -270,7 +270,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt";
-            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
+            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -285,7 +285,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt,.wg";
-            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
+            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -300,7 +300,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".txt;.wg";
-            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
+            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -316,7 +316,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
         {
             string SearchTerm = "quick brown fox";
             string FlagParameter = ".tig";
-            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong} {FlagParameter}";
+            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());

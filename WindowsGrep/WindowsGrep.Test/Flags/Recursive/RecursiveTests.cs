@@ -13,9 +13,9 @@ namespace WindowsGrep.Test.Flags.Recursive
     public class ContextTests : TestBase
     {
         #region Fields..
-        private string _FlagDescriptorShort;
-        private string _FlagDescriptorLong;
-        private string _TestDataRelativePath = @"Flags\Recursive\TestData";
+        private string _flagDescriptorShort;
+        private string _flagDescriptorLong;
+        private string _testDataRelativePath = @"Flags\Recursive\TestData";
         #endregion Fields..
 
         #region Properties..
@@ -25,11 +25,11 @@ namespace WindowsGrep.Test.Flags.Recursive
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
 
             List<string> DescriptionCollection = ConsoleFlag.Recursive.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
-            _FlagDescriptorShort = DescriptionCollection[0];
-            _FlagDescriptorLong = DescriptionCollection[1];
+            _flagDescriptorShort = DescriptionCollection[0];
+            _flagDescriptorLong = DescriptionCollection[1];
         }
         #endregion Setup
 
@@ -40,7 +40,7 @@ namespace WindowsGrep.Test.Flags.Recursive
         public async Task Recursive_FlagFirst_FlagShort()
         {
             string SearchTerm = "quick brown fox";
-            string Command = $"{_FlagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -54,7 +54,7 @@ namespace WindowsGrep.Test.Flags.Recursive
         public async Task IgnoreCase_FlagFirst_FlagLong()
         {
             string SearchTerm = "quick brown fox";
-            string Command = $"{_FlagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -70,7 +70,7 @@ namespace WindowsGrep.Test.Flags.Recursive
         public async Task Recursive_FlagMiddle_FlagShort()
         {
             string SearchTerm = "quick brown fox";
-            string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorShort} {SearchTerm}";
+            string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -84,7 +84,7 @@ namespace WindowsGrep.Test.Flags.Recursive
         public async Task IgnoreCase_FlagMiddle_FlagLong()
         {
             string SearchTerm = "quick brown fox";
-            string Command = $"-d '{TestDataDirectory}' {_FlagDescriptorLong} {SearchTerm}";
+            string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -100,7 +100,7 @@ namespace WindowsGrep.Test.Flags.Recursive
         public async Task Recursive_FlagLast_FlagShort()
         {
             string SearchTerm = "quick brown fox";
-            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -114,7 +114,7 @@ namespace WindowsGrep.Test.Flags.Recursive
         public async Task IgnoreCase_FlagLast_FlagLong()
         {
             string SearchTerm = "quick brown fox";
-            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());

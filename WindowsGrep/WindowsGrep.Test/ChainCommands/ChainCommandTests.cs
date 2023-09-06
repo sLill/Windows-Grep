@@ -9,7 +9,7 @@ namespace WindowsGrep.Test.ChainCommands
     public class ChainCommandTests : TestBase
     {
         #region Fields..
-        private string _TestDataRelativePath = @"ChainCommands\TestData";
+        private string _testDataRelativePath = @"ChainCommands\TestData";
         #endregion Fields..
 
         #region Properties..
@@ -19,7 +19,7 @@ namespace WindowsGrep.Test.ChainCommands
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
         }
         #endregion Setup
 

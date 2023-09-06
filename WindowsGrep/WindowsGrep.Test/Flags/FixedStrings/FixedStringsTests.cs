@@ -13,9 +13,9 @@ namespace WindowsGrep.Test.Flags.FixedStrings
     public class FixedStringsTests : TestBase
     {
         #region Fields..
-        private string _FlagDescriptorShort;
-        private string _FlagDescriptorLong;
-        private string _TestDataRelativePath = @"Flags\FixedStrings\TestData";
+        private string _flagDescriptorShort;
+        private string _flagDescriptorLong;
+        private string _testDataRelativePath = @"Flags\FixedStrings\TestData";
         #endregion Fields..
 
         #region Properties..
@@ -25,11 +25,11 @@ namespace WindowsGrep.Test.Flags.FixedStrings
         [SetUp]
         public void Setup()
         {
-            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _TestDataRelativePath);
+            TestDataDirectory = Path.Combine(TestConfigurationManager.WorkingDirectory, _testDataRelativePath);
 
             List<string> DescriptionCollection = ConsoleFlag.FixedStrings.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.OrderBy(x => x.Length).ToList();
-            _FlagDescriptorShort = DescriptionCollection[0];
-            _FlagDescriptorLong = DescriptionCollection[1];
+            _flagDescriptorShort = DescriptionCollection[0];
+            _flagDescriptorLong = DescriptionCollection[1];
         }
         #endregion Setup
 
@@ -43,7 +43,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -60,7 +60,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -77,7 +77,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -94,7 +94,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -111,7 +111,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -128,7 +128,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -145,7 +145,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -162,7 +162,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -179,7 +179,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -196,7 +196,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -213,7 +213,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -230,7 +230,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -247,7 +247,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -264,7 +264,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -281,7 +281,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -298,7 +298,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"{_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -315,7 +315,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -332,7 +332,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -349,7 +349,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -366,7 +366,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -383,7 +383,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -400,7 +400,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -417,7 +417,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -434,7 +434,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -451,7 +451,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -468,7 +468,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -485,7 +485,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -502,7 +502,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -519,7 +519,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -536,7 +536,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -553,7 +553,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -570,7 +570,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"{_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -589,7 +589,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -606,7 +606,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -623,7 +623,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -640,7 +640,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -657,7 +657,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -674,7 +674,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -691,7 +691,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -708,7 +708,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -725,7 +725,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -742,7 +742,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -759,7 +759,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -776,7 +776,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -793,7 +793,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -810,7 +810,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -827,7 +827,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -844,7 +844,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-i {_FlagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -861,7 +861,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -878,7 +878,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -895,7 +895,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -912,7 +912,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -929,7 +929,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -946,7 +946,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -963,7 +963,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -980,7 +980,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -997,7 +997,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1014,7 +1014,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1031,7 +1031,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1048,7 +1048,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1065,7 +1065,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1082,7 +1082,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1099,7 +1099,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1116,7 +1116,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-i {_FlagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
+            string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1135,7 +1135,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1152,7 +1152,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1169,7 +1169,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1186,7 +1186,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1203,7 +1203,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1220,7 +1220,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1237,7 +1237,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1254,7 +1254,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1271,7 +1271,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1288,7 +1288,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1305,7 +1305,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1322,7 +1322,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1339,7 +1339,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1356,7 +1356,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1373,7 +1373,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1390,7 +1390,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorShort}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1407,7 +1407,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1424,7 +1424,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1441,7 +1441,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "the 4 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1458,7 +1458,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1475,7 +1475,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1492,7 +1492,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1509,7 +1509,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1526,7 +1526,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".*";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1543,7 +1543,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "brown fox";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1560,7 +1560,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "4";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1577,7 +1577,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "fox hops";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1594,7 +1594,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = ".?";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1611,7 +1611,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1628,7 +1628,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1645,7 +1645,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = "10 lazy";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
@@ -1662,7 +1662,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             Assert.IsTrue(File.Exists(TestFilePath));
 
             string SearchTerm = @"\s";
-            string Command = $"-f '{TestFilePath}' {SearchTerm} {_FlagDescriptorLong}";
+            string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
             await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
