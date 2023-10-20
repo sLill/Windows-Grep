@@ -98,7 +98,7 @@ namespace WindowsGrep
         private static string GetCompressedPath(string fullPath)
         {
             var directories = fullPath.Split(Path.DirectorySeparatorChar);
-            return directories.Length > 2 ? @"..\" + directories[directories.Length - 2] + @"\" + directories[directories.Length - 1] : fullPath;
+            return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
         }
         #endregion Methods..
     }
