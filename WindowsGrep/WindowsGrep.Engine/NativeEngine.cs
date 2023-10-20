@@ -27,6 +27,10 @@ namespace WindowsGrep.Engine
                 case NativeCommandType.ClearConsole:
                     ConsoleUtils.ClearConsole();
                     break;
+
+                case NativeCommandType.PrintWorkingDirectory:
+                    ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Directory.GetCurrentDirectory() + '\n' });
+                    break;
             }
         }
 

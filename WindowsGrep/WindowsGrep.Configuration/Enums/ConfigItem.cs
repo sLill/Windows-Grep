@@ -8,6 +8,9 @@ namespace WindowsGrep.Configuration
         IncludeSystemProtectedFiles,
 
         [DefaultValue(true)]
-        IncludeHiddenFiles
+        IncludeHiddenFiles,
+
+        [DefaultValue(true)]
+        CompressPath
     }
 }

@@ -13,5 +13,8 @@ namespace WindowsGrep.Core
 
         [DescriptionCollection("clear")]
         ClearConsole,
+
+        [DescriptionCollection("pwd")]
+        PrintWorkingDirectory
     }
 }

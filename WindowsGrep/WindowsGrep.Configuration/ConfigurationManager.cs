@@ -56,14 +56,20 @@ namespace WindowsGrep.Configuration
                 {
                     string jsonRaw = File.ReadAllText(configFilepath);
                     ConfigItemCollection = JsonConvert.DeserializeObject<Dictionary<ConfigItem, object>>(jsonRaw);
+
+                    // Backfill defaults for new/missing settings
+                    EnumUtils.GetValues<ConfigItem>()?.ToList().ForEach(x =>
+                    {
+                        if (!ConfigItemCollection.ContainsKey(x))
+                            ConfigItemCollection[x] = x.GetCustomAttribute<DefaultValueAttribute>().Value;
+                    });
                 }
 
                 // Load and save defaults
                 else
-                {
                     LoadDefaultConfiguration();
-                    SaveConfiguration();
-                }
+
+                SaveConfiguration();
             }
             catch (Exception ex)
             {
