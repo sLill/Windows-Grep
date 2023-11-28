@@ -68,7 +68,6 @@ namespace WindowsGrep.Configuration
                 // Load and save defaults
                 else
                     LoadDefaultConfiguration();
-
             }
             catch (Exception ex)
             {

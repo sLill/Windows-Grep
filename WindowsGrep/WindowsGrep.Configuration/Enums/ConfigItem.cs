@@ -11,6 +11,6 @@ namespace WindowsGrep.Configuration
         IncludeHiddenFiles,
 
         [DefaultValue(false)]
-        DisplayWorkingDirectoryInPrompt,
+        DisplayWorkingDirectoryInPrompt
     }
 }
