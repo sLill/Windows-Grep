@@ -10,7 +10,7 @@ namespace WindowsGrep.Configuration
         [DefaultValue(true)]
         IncludeHiddenFiles,
 
-        [DefaultValue(true)]
-        CompressPath
+        [DefaultValue(false)]
+        DisplayWorkingDirectoryInPrompt,
     }
 }

@@ -69,12 +69,14 @@ namespace WindowsGrep.Configuration
                 else
                     LoadDefaultConfiguration();
 
-                SaveConfiguration();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Could not load configuration - {ex.Message}");
+                LoadDefaultConfiguration();
             }
+
+            SaveConfiguration();
         }
 
         public void SaveConfiguration()

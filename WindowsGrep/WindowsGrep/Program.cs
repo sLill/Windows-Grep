@@ -25,13 +25,7 @@ namespace WindowsGrep
                 string command = string.Empty;
                 if (args.Length == 0)
                 {
-                    // Prompt
-                    bool compressPath = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.CompressPath];
-                    string currentDirectory = Directory.GetCurrentDirectory();
-                    currentDirectory = compressPath ? GetCompressedPath(currentDirectory) : currentDirectory;
-
-                    Console.Write($"{currentDirectory}> ");
-
+                    ConsoleUtils.PublishPrompt();
                     command = Console.ReadLine();
                 }
                 else
@@ -93,13 +87,7 @@ namespace WindowsGrep
             // Override the default behavior for the Ctrl+C shortcut if the application was not ran from the command line
             if (Environment.UserInteractive)
                 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_OnCancelKeyPress);
-        }
-
-        private static string GetCompressedPath(string fullPath)
-        {
-            var directories = fullPath.Split(Path.DirectorySeparatorChar);
-            return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
-        }
+        }     
         #endregion Methods..
     }
 }

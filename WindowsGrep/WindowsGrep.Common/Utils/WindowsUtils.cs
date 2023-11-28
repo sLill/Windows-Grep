@@ -20,6 +20,12 @@ namespace WindowsGrep.Common
         #endregion Fields..
 
         #region Methods..
+        public static string GetCompressedPath(string fullPath)
+        {
+            var directories = fullPath.Split(Path.DirectorySeparatorChar);
+            return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
+        }
+
         public static async Task<List<string>> GetFilesAsync(string path, bool recursive, CancellationToken cancellationToken, FileAttributes fileAttributesToSkip = default)
         {
             var enumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = fileAttributesToSkip };

@@ -2,6 +2,7 @@
 using System.Data;
 using System.Text.RegularExpressions;
 using WindowsGrep.Common;
+using WindowsGrep.Configuration;
 
 namespace WindowsGrep.Core
 {
@@ -111,6 +112,23 @@ namespace WindowsGrep.Core
         {
             string readMe = Properties.Resources.ReadMe;
             Console.WriteLine(readMe + Environment.NewLine);
+        }
+
+        public static void PublishPrompt()
+        {
+            string prompt = string.Empty;
+
+            bool displayWorkingDirectoryInPrompt = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.DisplayWorkingDirectoryInPrompt];
+            if (displayWorkingDirectoryInPrompt)
+            {
+                string currentDirectory = Directory.GetCurrentDirectory();
+                currentDirectory = WindowsUtils.GetCompressedPath(currentDirectory);
+                prompt = $"{currentDirectory}> ";
+            }
+            else
+                prompt = "$ ";
+
+            Console.Write(prompt);
         }
 
         public static void WriteConsoleItem(ConsoleItem consoleItem)
