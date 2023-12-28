@@ -62,8 +62,7 @@ Open cmd > "grep [command]"<br/>
 <i>* See <a href="https://github.com/sLill/Windows-Grep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
 
 <b>Command Order</b></br>
-Order of flags and search terms is completely flexible. The only requirement is that parameters be given to flag types that expect them.
-<br/><i>ex. &nbsp;&nbsp; -f 'MyFile.txt' &nbsp; or &nbsp; --file='MyFile.txt'</i>
+Order of flags and the search term is completely flexible
 
 <br/>
 
