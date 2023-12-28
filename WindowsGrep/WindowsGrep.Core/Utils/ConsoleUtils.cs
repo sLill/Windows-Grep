@@ -150,9 +150,6 @@ namespace WindowsGrep.Core
                         return;
 
                     WriteConsoleItem(consoleItem);
-
-                    // This seems to help give the native console enough time to finalize changes made to background/foreground color properties
-                    Thread.Sleep(5);
                 });
             }
         }
