@@ -88,7 +88,7 @@ Order of flags and the search term is completely flexible
 -r Dug -k | Mike
 <br/><br/>
 
-<i>Matche phone number</i><br/>
+<i>Match phone number</i><br/>
 [\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}
 <br/><br/>
 
