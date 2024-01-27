@@ -10,13 +10,13 @@
 Command line grep-like file search utility for Windows</br>
 
 <h2>Supports</h2>
-- Basic and advanced file searches</br>
+- Basic and advanced file searching</br>
 - Regular Expressions</br>
 - Chained commands</br>
 - Filetype/Filepath/Filesize filtering</br>
 - Exports</br>
 - Mass replace and delete</br>
-- Ease of use: Runs from cmd, Powershell, Windows Explorer or headless</br>
+- Ease of use: Runs from Command Line, Powershell, Windows Explorer or headless</br>
 
 <h1>INSTALLATION</h1>
 
