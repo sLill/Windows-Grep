@@ -1,4 +1,6 @@
-﻿namespace WindowsGrep.Engine
+﻿using System.Collections.Generic;
+
+namespace WindowsGrep.Engine
 {
     public class SearchMetrics
     {
@@ -9,9 +11,9 @@
 
         public int ReplacedSuccessCount { get; set; }
 
-        public int FileReadFailedCount { get; set; }
+        public List<string> FailedReadFiles { get; set; } = new List<string>();
 
-        public int FileWriteFailedCount { get; set; }
+        public List<string> FailedWriteFiles { get; set; } = new List<string>();
         #endregion Properties..
     }
 }

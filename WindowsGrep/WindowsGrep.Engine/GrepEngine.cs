@@ -210,7 +210,7 @@ namespace WindowsGrep.Engine
                 catch
                 {
                     lock (_metricsLock)
-                        searchMetrics.FileReadFailedCount++;
+                        searchMetrics.FailedReadFiles.Add(file);
                 }
             });
         }
@@ -265,7 +265,7 @@ namespace WindowsGrep.Engine
                 catch
                 {
                     lock (_metricsLock)
-                        searchMetrics.FileReadFailedCount++;
+                        searchMetrics.FailedReadFiles.Add(file);
                 }
             });
 
@@ -471,7 +471,7 @@ namespace WindowsGrep.Engine
                 consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Gray, BackgroundColor = ConsoleColor.DarkRed, Value = $"Access Denied" });
 
                 lock (_metricsLock)
-                    searchMetrics.FileWriteFailedCount++;
+                    searchMetrics.FailedWriteFiles.Add(filePath);
             }
             finally
             {
@@ -518,18 +518,22 @@ namespace WindowsGrep.Engine
 
         private static void PublishFileAccessSummary(SearchMetrics searchMetrics)
         {
-            if (searchMetrics.FileReadFailedCount > 0 || searchMetrics.FileWriteFailedCount > 0)
+            if (searchMetrics.FailedReadFiles.Any() || searchMetrics.FailedWriteFiles.Any())
             {
-                if (searchMetrics.FileReadFailedCount > 0)
+                if (searchMetrics.FailedReadFiles.Any())
                 {
-                    string unreachableFiles = $"[{searchMetrics.FileReadFailedCount} file(s) unreadable/inaccessible]";
+                    string unreachableFiles = $"[{searchMetrics.FailedReadFiles} file(s) unreadable/inaccessible]{Environment.NewLine}";
                     ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = unreachableFiles });
+
+                    searchMetrics.FailedReadFiles.ForEach(x => ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{x}{Environment.NewLine}" }));
                 }
 
-                if (searchMetrics.FileWriteFailedCount > 0)
+                if (searchMetrics.FailedWriteFiles.Any())
                 {
-                    string unwriteableFiles = $"[{searchMetrics.FileWriteFailedCount} file(s) could not be modified]";
+                    string unwriteableFiles = $"[{searchMetrics.FailedWriteFiles} file(s) could not be modified]{Environment.NewLine}";
                     ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = unwriteableFiles });
+
+                    searchMetrics.FailedWriteFiles.ForEach(x => ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{x}{Environment.NewLine}" }));
                 }
 
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine });
