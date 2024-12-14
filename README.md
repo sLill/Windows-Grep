@@ -31,8 +31,8 @@ This will install Windows Grep in ProgramFilesx86, add "grep" to your system's P
 
 <h3>Manual Compilation</h2>
 
-1. Clone repo and build the WindowsGrep project as Release
-2. Publish WindowsGrep
+1. Clone repo and build the `WindowsGrep` project as Release
+2. Publish `WindowsGrep`
 3. Download ![Wix Toolset](https://wixtoolset.org/)
 4. Build the `WindowsGrep.Setup` project to generate a msi installer in the `WindowsGrep.Setup` bin
 
