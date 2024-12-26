@@ -1,4 +1,6 @@
-﻿public enum FileSizeType
+﻿namespace WindowsGrep.Common;
+
+public enum FileSizeType
 {
     // Value attributes represented in bytes
     [ValueAttribute(1000)]

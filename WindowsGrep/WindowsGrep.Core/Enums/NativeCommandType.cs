@@ -1,18 +1,17 @@
-﻿namespace WindowsGrep.Core
+﻿namespace WindowsGrep.Core;
+
+public enum NativeCommandType
 {
-    public enum NativeCommandType
-    {
-        [DescriptionCollection("ls")]
-        List,
+    [DescriptionCollection("ls")]
+    List,
 
-        [ExpectsParameter(true)]
-        [DescriptionCollection("cd")]
-        ChangeDirectory,
+    [ExpectsParameter(true)]
+    [DescriptionCollection("cd")]
+    ChangeDirectory,
 
-        [DescriptionCollection("clear")]
-        ClearConsole,
+    [DescriptionCollection("clear")]
+    ClearConsole,
 
-        [DescriptionCollection("pwd")]
-        PrintWorkingDirectory
-    }
+    [DescriptionCollection("pwd")]
+    PrintWorkingDirectory
 }

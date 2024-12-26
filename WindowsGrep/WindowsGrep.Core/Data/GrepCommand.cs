@@ -1,18 +1,17 @@
-﻿namespace WindowsGrep.Core
+﻿namespace WindowsGrep.Core;
+
+public class GrepCommand
 {
-    public class GrepCommand
+    #region Properties..
+    public GrepCommandType CommandType { get; private set; }
+
+    public IDictionary<ConsoleFlag, string> CommandArgs { get; set; } = new Dictionary<ConsoleFlag, string>();
+    #endregion Properties..
+
+    #region Constructors..
+    public GrepCommand(GrepCommandType commandType)
     {
-        #region Properties..
-        public GrepCommandType CommandType { get; private set; }
-
-        public IDictionary<ConsoleFlag, string> CommandArgs { get; set; } = new Dictionary<ConsoleFlag, string>();
-        #endregion Properties..
-
-        #region Constructors..
-        public GrepCommand(GrepCommandType commandType)
-        {
-            CommandType = commandType;
-        }
-        #endregion Constructors..
+        CommandType = commandType;
     }
+    #endregion Constructors..
 }

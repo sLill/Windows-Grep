@@ -1,13 +1,12 @@
-﻿namespace WindowsGrep.Core
+﻿namespace WindowsGrep.Core;
+
+public class ConsoleItem
 {
-    public class ConsoleItem
-    {
-        #region Properties..
-        public ConsoleColor BackgroundColor { get; set; } = Console.BackgroundColor;
+    #region Properties..
+    public ConsoleColor BackgroundColor { get; set; } = Console.BackgroundColor;
 
-        public ConsoleColor ForegroundColor { get; set; } = Console.ForegroundColor;
+    public ConsoleColor ForegroundColor { get; set; } = Console.ForegroundColor;
 
-        public string Value { get; set; }
-        #endregion Properties..
-    }
+    public string Value { get; set; }
+    #endregion Properties..
 }

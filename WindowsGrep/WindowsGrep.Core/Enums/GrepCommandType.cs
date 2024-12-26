@@ -1,8 +1,7 @@
-﻿namespace WindowsGrep.Core
+﻿namespace WindowsGrep.Core;
+
+public enum GrepCommandType
 {
-    public enum GrepCommandType
-    {
-        Help,
-        Query
-    }
+    Help,
+    Query
 }

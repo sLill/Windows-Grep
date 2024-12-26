@@ -1,9 +1,8 @@
-﻿namespace WindowsGrep.Core
+﻿namespace WindowsGrep.Core;
+
+public enum ResultScope
 {
-    public enum ResultScope
-    {
-        FileName,
-        FileContent,
-        FileHash
-    }
+    FileName,
+    FileContent,
+    FileHash
 }

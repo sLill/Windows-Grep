@@ -1,17 +1,16 @@
-﻿namespace WindowsGrep.Engine
+﻿namespace WindowsGrep.Engine;
+
+public class SearchMetrics
 {
-    public class SearchMetrics
-    {
-        #region Properties..
-        public int TotalFilesMatchedCount { get; set; }
+    #region Properties..
+    public int TotalFilesMatchedCount { get; set; }
 
-        public int DeleteSuccessCount { get; set; }
+    public int DeleteSuccessCount { get; set; }
 
-        public int ReplacedSuccessCount { get; set; }
+    public int ReplacedSuccessCount { get; set; }
 
-        public List<string> FailedReadFiles { get; set; } = new List<string>();
+    public List<string> FailedReadFiles { get; set; } = new List<string>();
 
-        public List<string> FailedWriteFiles { get; set; } = new List<string>();
-        #endregion Properties..
-    }
+    public List<string> FailedWriteFiles { get; set; } = new List<string>();
+    #endregion Properties..
 }

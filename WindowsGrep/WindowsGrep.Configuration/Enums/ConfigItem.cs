@@ -1,14 +1,13 @@
-﻿namespace WindowsGrep.Configuration
+﻿namespace WindowsGrep.Configuration;
+
+public enum ConfigItem
 {
-    public enum ConfigItem
-    {
-        [DefaultValue(true)]
-        IncludeSystemProtectedFiles,
+    [DefaultValue(true)]
+    IncludeSystemProtectedFiles,
 
-        [DefaultValue(true)]
-        IncludeHiddenFiles,
+    [DefaultValue(true)]
+    IncludeHiddenFiles,
 
-        [DefaultValue(false)]
-        DisplayWorkingDirectoryInPrompt
-    }
+    [DefaultValue(false)]
+    DisplayWorkingDirectoryInPrompt
 }

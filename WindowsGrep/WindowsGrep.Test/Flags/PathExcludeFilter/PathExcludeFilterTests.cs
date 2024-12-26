@@ -1,4 +1,6 @@
-﻿public class PathExcludeFilterTests : TestBase
+﻿namespace WindowsGrep.Test;
+
+public class PathExcludeFilterTests : TestBase
 {
     #region Fields..
     private string _flagDescriptorShort;
