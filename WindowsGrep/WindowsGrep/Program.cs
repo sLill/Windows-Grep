@@ -50,7 +50,7 @@
             _cancellationTokenSource?.Cancel();
         }
 
-        private static async void OnResultsAdded(object sender, EventArgs e)
+        private static void OnResultsAdded(object sender, EventArgs e)
         {
             var commandResultCollection = sender as List<CommandResultBase>;
             commandResultCollection.ForEach(result =>
@@ -59,7 +59,7 @@
                     return;
 
                 if (!result.Suppressed)
-                    ConsoleUtils.WriteConsoleItemCollectionAsync(result.ToConsoleItemCollection(), _cancellationTokenSource.Token);
+                    ConsoleUtils.WriteConsoleItemCollection(result.ToConsoleItemCollection(), _cancellationTokenSource.Token);
             });
         }
         #endregion Event Handlers..

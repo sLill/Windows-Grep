@@ -40,7 +40,7 @@ public static class GrepEngine
         ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[Searching {files.Count} file(s)]{Environment.NewLine}" });
 
         RegexOptions optionsFlags = grepCommandUtils.GetRegexOptions(grepCommand);
-        await ProcessCommandAsync(commandResultCollection, files, grepCommand, optionsFlags, cancellationToken);
+        ProcessCommand(commandResultCollection, files, grepCommand, optionsFlags, cancellationToken);
 
         if (writeFlag)
             commandResultCollection.Write(grepCommand.CommandArgs[ConsoleFlag.Write]);
@@ -52,7 +52,7 @@ public static class GrepEngine
         ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
     }
 
-    private static async Task BuildFileContentSearchResultsAsync(GrepCommand grepCommand, CommandResultCollection commandResultCollection, List<Match> matches,
+    private static void BuildFileContentSearchResults(GrepCommand grepCommand, CommandResultCollection commandResultCollection, List<Match> matches,
         string filename, long fileSize, string fileRaw, CancellationToken cancellationToken)
     {
         bool ignoreBreaksFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
@@ -143,7 +143,7 @@ public static class GrepEngine
         return files;
     }
 
-    private static async Task GetFileContentMatchesAsync(CommandResultCollection commandResultCollection, IEnumerable<string> files, GrepCommand grepCommand, string searchPattern,
+    private static void GetFileContentMatches(CommandResultCollection commandResultCollection, IEnumerable<string> files, GrepCommand grepCommand, string searchPattern,
         Regex searchRegex, SearchMetrics searchMetrics, long fileSizeMin, long fileSizeMax, CancellationToken cancellationToken)
     {
         bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
@@ -156,7 +156,7 @@ public static class GrepEngine
         bool nResultsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.NResults);
         bool suppressFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Suppress);
 
-        files.AsParallel().ForAll(async file =>
+        files.AsParallel().ForAll(file =>
         {
             try
             {
@@ -181,12 +181,12 @@ public static class GrepEngine
                             // Write operations
                             bool isWriteOperation = replaceFlag || deleteFlag;
                             if (isWriteOperation)
-                                await PerformWriteOperationsAsync(grepCommand, file, searchPattern, matches.Count, fileRaw, searchMetrics, cancellationToken);
+                                PerformWriteOperations(grepCommand, file, searchPattern, matches.Count, fileRaw, searchMetrics, cancellationToken);
 
                             // Read operations
                             else
                             {
-                                await BuildFileContentSearchResultsAsync(grepCommand, commandResultCollection, matches, file, fileSize, fileRaw, cancellationToken);
+                                BuildFileContentSearchResults(grepCommand, commandResultCollection, matches, file, fileSize, fileRaw, cancellationToken);
 
                                 lock (_metricsLock)
                                     searchMetrics.TotalFilesMatchedCount++;
@@ -203,7 +203,7 @@ public static class GrepEngine
         });
     }
 
-    private static void GetFileHashMatchesAsync(CommandResultCollection commandResultCollection, IEnumerable<string> files, GrepCommand grepCommand,
+    private static void GetFileHashMatches(CommandResultCollection commandResultCollection, IEnumerable<string> files, GrepCommand grepCommand,
         string searchTerm, SearchMetrics searchMetrics, HashType hashType, long fileSizeMin, long fileSizeMax, CancellationToken cancellationToken)
     {
         var matches = new List<CommandResultBase>();
@@ -215,7 +215,7 @@ public static class GrepEngine
         int nResults = nResultsFlag ? Convert.ToInt32(grepCommand.CommandArgs[ConsoleFlag.NResults]) : int.MaxValue;
         Regex _anyRegex = new Regex(@".*");
 
-        files.AsParallel().ForAll(async file =>
+        files.AsParallel().ForAll(file =>
         {
             try
             {
@@ -242,7 +242,7 @@ public static class GrepEngine
                                 // Write operations
                                 bool isWriteOperation = deleteFlag;
                                 if (isWriteOperation)
-                                    await PerformWriteOperationsAsync(grepCommand, file, searchTerm, matches.Count, file, searchMetrics, cancellationToken);
+                                    PerformWriteOperations(grepCommand, file, searchTerm, matches.Count, file, searchMetrics, cancellationToken);
                                 else
                                     PerformReadOperations(matches, grepCommand, file, fileNameMatch, searchMatch, fileSizeMin, fileSizeMax);
                             }
@@ -261,7 +261,7 @@ public static class GrepEngine
         commandResultCollection.AddItemRange(matches);
     }
 
-    private static void GetFileNameMatchesAsync(CommandResultCollection commandResultCollection, IEnumerable<string> files, GrepCommand grepCommand,
+    private static void GetFileNameMatches(CommandResultCollection commandResultCollection, IEnumerable<string> files, GrepCommand grepCommand,
         string searchPattern, Regex searchRegex, SearchMetrics searchMetrics, long fileSizeMin, long fileSizeMax, CancellationToken cancellationToken)
     {
         var matches = new List<CommandResultBase>();
@@ -274,7 +274,7 @@ public static class GrepEngine
 
         int nResults = nResultsFlag ? Convert.ToInt32(grepCommand.CommandArgs[ConsoleFlag.NResults]) : int.MaxValue;
 
-        files.ToList().ForEach(async file =>
+        files.ToList().ForEach(file =>
         {
             if (cancellationToken.IsCancellationRequested)
                 return;
@@ -296,7 +296,7 @@ public static class GrepEngine
                             // Write operations
                             bool isWriteOperation = replaceFlag || deleteFlag;
                             if (isWriteOperation)
-                                await PerformWriteOperationsAsync(grepCommand, file, searchPattern, matches.Count, file, searchMetrics, cancellationToken);
+                                PerformWriteOperations(grepCommand, file, searchPattern, matches.Count, file, searchMetrics, cancellationToken);
                             else
                                 PerformReadOperations(matches, grepCommand, file, fileNameMatch, searchMatch, fileSizeMin, fileSizeMax);
                         }
@@ -309,7 +309,7 @@ public static class GrepEngine
         commandResultCollection.AddItemRange(matches);
     }
 
-    private static async Task ProcessCommandAsync(CommandResultCollection commandResultCollection, IEnumerable<string> files, GrepCommand grepCommand, RegexOptions optionsFlags, CancellationToken cancellationToken)
+    private static void ProcessCommand(CommandResultCollection commandResultCollection, IEnumerable<string> files, GrepCommand grepCommand, RegexOptions optionsFlags, CancellationToken cancellationToken)
     {
         bool fileNamesOnlyFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
         bool fileHashesOnlyFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileHashes);
@@ -331,16 +331,16 @@ public static class GrepEngine
             if (!isValidFileHash)
                 throw new Exception($"Error: Hash does not match {hashType} format");
 
-            GetFileHashMatchesAsync(commandResultCollection, files, grepCommand, searchTerm, searchMetrics, hashType, fileSizeMin, fileSizeMax, cancellationToken);
+            GetFileHashMatches(commandResultCollection, files, grepCommand, searchTerm, searchMetrics, hashType, fileSizeMin, fileSizeMax, cancellationToken);
         }
         else if (fileNamesOnlyFlag)
-            GetFileNameMatchesAsync(commandResultCollection, files, grepCommand, searchPattern, searchRegex, searchMetrics, fileSizeMin, fileSizeMax, cancellationToken);
+            GetFileNameMatches(commandResultCollection, files, grepCommand, searchPattern, searchRegex, searchMetrics, fileSizeMin, fileSizeMax, cancellationToken);
         else
         {
             if (grepCommand.CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
                 throw new Exception("Error: Search term not supplied");
 
-            await GetFileContentMatchesAsync(commandResultCollection, files, grepCommand, searchPattern, searchRegex, searchMetrics, fileSizeMin, fileSizeMax, cancellationToken);
+            GetFileContentMatches(commandResultCollection, files, grepCommand, searchPattern, searchRegex, searchMetrics, fileSizeMin, fileSizeMax, cancellationToken);
         }
 
         // Notify the user of any files that could not be read from or written to
@@ -401,7 +401,7 @@ public static class GrepEngine
         }
     }
 
-    private static async Task<List<ConsoleItem>> PerformWriteOperationsAsync(GrepCommand grepCommand, string filePath, string searchPattern, 
+    private static List<ConsoleItem> PerformWriteOperations(GrepCommand grepCommand, string filePath, string searchPattern, 
         int fileMatchesCount, string fileRaw, SearchMetrics searchMetrics, CancellationToken cancellationToken)
     {
         var consoleItemCollection = new List<ConsoleItem>();
@@ -466,7 +466,7 @@ public static class GrepEngine
             // Empty buffer
             consoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
 
-            await ConsoleUtils.WriteConsoleItemCollectionAsync(consoleItemCollection, cancellationToken);
+            ConsoleUtils.WriteConsoleItemCollection(consoleItemCollection, cancellationToken);
 
             lock (_metricsLock)
                 searchMetrics.TotalFilesMatchedCount++;

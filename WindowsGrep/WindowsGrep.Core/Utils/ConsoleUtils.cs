@@ -140,7 +140,7 @@ public static class ConsoleUtils
         Console.ResetColor();
     }
 
-    public static async Task WriteConsoleItemCollectionAsync(List<ConsoleItem> consoleItemCollection, CancellationToken cancellationToken)
+    public static void WriteConsoleItemCollection(List<ConsoleItem> consoleItemCollection, CancellationToken cancellationToken)
     {
         lock (Console.Out)
         {
