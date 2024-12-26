@@ -71,7 +71,7 @@
             // Load config
             ConfigurationManager.Instance.Initialize();
 
-            // Publish ReadMe
+            // Publish Splash
             if (args.Length == 0)
                 ConsoleUtils.PublishSplash();
 
