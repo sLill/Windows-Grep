@@ -9,16 +9,16 @@
 
 Command line grep-like file search utility for Windows. 
 
-No bloated gui or custom console. Just a fast, simple tool that runs in native cmd and powershell. Actively built and maintained because I actively use this in my day-to-day.</br>
+No bloated gui or custom console. Just a fast, simple tool that runs in native cmd and powershell. </br>
 
 <h2>Supports</h2>
 - Basic and advanced file searches for filenames and file content</br>
 - Regular Expressions</br>
 - Chained commands</br>
-- Filtering by Filetype/Filepath/Filesize</br>
+- Filter by Filetype/Filepath/Filesize</br>
 - Exports</br>
-- Mass editing with replace and delete</br>
-- Ease of use: Runs from Command Line, Powershell, Windows Explorer or headless</br>
+- Editing with replace and delete</br>
+- Ease of use: Run from Command Line, Powershell, Windows Explorer or headless</br>
 
 <h1>INSTALLATION</h1>
 
@@ -41,7 +41,7 @@ Right-click in File Explorer > Windows Grep
 <br/><br/>
 OR
 <br/><br/>
-Open cmd > "grep [command]"<br/>
+Open cmd > "grep [command]" <br/>
 
 <h1>REFERENCE</h1>
 
