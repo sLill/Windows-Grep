@@ -1,6 +1,4 @@
-﻿using WindowsGrep.Configuration;
-
-namespace WindowsGrep.Test
+﻿namespace WindowsGrep.Test
 {
     public class TestBase
     {

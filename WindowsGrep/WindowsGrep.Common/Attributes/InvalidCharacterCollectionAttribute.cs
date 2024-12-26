@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WindowsGrep.Common
+﻿namespace WindowsGrep.Common
 {
     /// <summary>
     /// Members of this collection are used to sanitize user arguments

@@ -1,10 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Data;
-using System.Text.RegularExpressions;
-using WindowsGrep.Common;
-using WindowsGrep.Configuration;
-
-namespace WindowsGrep.Core
+﻿namespace WindowsGrep.Core
 {
     public static class ConsoleUtils
     {

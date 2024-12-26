@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WindowsGrep.Common
+﻿namespace WindowsGrep.Common
 {
     public class ThreadSafeCollection<T> : List<T>
     {

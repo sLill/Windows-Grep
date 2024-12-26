@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace WindowsGrep.Common
+﻿namespace WindowsGrep.Common
 {
     public static class WindowsApi
     {

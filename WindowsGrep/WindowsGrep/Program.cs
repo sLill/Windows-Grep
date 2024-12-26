@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using WindowsGrep.Configuration;
-using WindowsGrep.Core;
-using WindowsGrep.Engine;
-
-namespace WindowsGrep
+﻿namespace WindowsGrep
 {
     public class Program
     {

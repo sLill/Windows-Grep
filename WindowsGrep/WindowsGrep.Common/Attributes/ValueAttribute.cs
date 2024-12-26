@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WindowsGrep.Common
+﻿namespace WindowsGrep.Common
 {
     public class ValueAttribute : Attribute
     {

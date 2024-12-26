@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace WindowsGrep.Common
+﻿namespace WindowsGrep.Common
 {
     public static class EnumExtensions
     {

@@ -1,8 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel;
-using WindowsGrep.Common;
-
-namespace WindowsGrep.Configuration
+﻿namespace WindowsGrep.Configuration
 {
     public class ConfigurationManager
     {

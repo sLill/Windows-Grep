@@ -1,6 +1,3 @@
-using NUnit.Framework;
-using System.Threading.Tasks;
-
 namespace WindowsGrep.Test.Flags.Context
 {
     public class ContextTests

@@ -1,12 +1,4 @@
-﻿using NUnit.Framework;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using WindowsGrep.Common;
-using WindowsGrep.Core;
-using WindowsGrep.Test;
-
-public class PathFilterTests : TestBase
+﻿public class PathFilterTests : TestBase
 {
     #region Fields..
     private string _flagDescriptorShort;

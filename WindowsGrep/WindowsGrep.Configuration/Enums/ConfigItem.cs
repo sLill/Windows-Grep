@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace WindowsGrep.Configuration
+﻿namespace WindowsGrep.Configuration
 {
     public enum ConfigItem
     {

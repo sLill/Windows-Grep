@@ -1,11 +1,4 @@
-﻿using NUnit.Framework;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using WindowsGrep.Engine;
-
-namespace WindowsGrep.Test.RegularExpressions
+﻿namespace WindowsGrep.Test.RegularExpressions
 {
     public class RegularExpressionsTests : TestBase
     {

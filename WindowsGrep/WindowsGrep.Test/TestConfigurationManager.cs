@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace WindowsGrep.Test
+﻿namespace WindowsGrep.Test
 {
     public static class TestConfigurationManager
     {

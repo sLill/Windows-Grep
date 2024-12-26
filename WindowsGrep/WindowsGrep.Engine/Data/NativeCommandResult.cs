@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using WindowsGrep.Core;
-
-namespace WindowsGrep.Engine.Data
+﻿namespace WindowsGrep.Engine.Data
 {
     public class NativeCommandResult : CommandResultBase
     {

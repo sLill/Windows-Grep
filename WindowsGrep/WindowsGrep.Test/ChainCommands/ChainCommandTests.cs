@@ -1,10 +1,4 @@
-﻿using NUnit.Framework;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using WindowsGrep.Engine;
-
-namespace WindowsGrep.Test.ChainCommands
+﻿namespace WindowsGrep.Test.ChainCommands
 {
     public class ChainCommandTests : TestBase
     {

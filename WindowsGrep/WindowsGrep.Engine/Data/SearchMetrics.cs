@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WindowsGrep.Engine
+﻿namespace WindowsGrep.Engine
 {
     public class SearchMetrics
     {

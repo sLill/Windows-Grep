@@ -1,13 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using WindowsGrep.Common;
-using WindowsGrep.Configuration;
-using WindowsGrep.Core;
-using WindowsGrep.Engine.Data;
-
-namespace WindowsGrep.Engine
+﻿namespace WindowsGrep.Engine
 {
     public static class NativeEngine
     {

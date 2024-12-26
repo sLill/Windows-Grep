@@ -1,7 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using WindowsGrep.Common;
-
-namespace WindowsGrep.Core
+﻿namespace WindowsGrep.Core
 {
     public static class grepCommandUtils
     {
