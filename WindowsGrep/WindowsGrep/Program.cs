@@ -73,7 +73,7 @@
 
             // Publish ReadMe
             if (args.Length == 0)
-                ConsoleUtils.PublishReadMe();
+                ConsoleUtils.PublishSplash();
 
             // Override the default behavior for the Ctrl+C shortcut if the application was not ran from the command line
             if (Environment.UserInteractive)

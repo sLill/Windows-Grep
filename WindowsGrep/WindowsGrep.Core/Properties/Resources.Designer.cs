@@ -61,8 +61,8 @@ namespace WindowsGrep.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ================= Windows Grep =================
-        ///
+        ///   Looks up a localized string similar to 
+        ///-h	--help				: Show all commands
         ///-r	--recursive			: Recursive search
         ///-d	--directory=			: Target directory (surround with &apos; or &quot;)
         ///-c	--context=			: Return n leading/trailing characters surrounding the matched term
@@ -71,12 +71,17 @@ namespace WindowsGrep.Core.Properties {
         ///-b	--ignore-breaks			: Ignore line breaks
         ///-i	--ignore-case			: Ignore case
         ///-f	--file=				: Target file (surround with &apos; or &quot;)
-        ///-F	--fixed-strings			: Interpret patterns as fixed strings
-        ///-G	 [rest of string was truncated]&quot;;.
+        ///-F	--fixed-strings			: Inte [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string ReadMe {
+        internal static string Help {
             get {
-                return ResourceManager.GetString("ReadMe", resourceCulture);
+                return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+
+        internal static string Splash {
+            get {
+                return ResourceManager.GetString("Splash", resourceCulture);
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace WindowsGrep.Test;
 
-public class ContextTests : TestBase
+public class RecursiveTests : TestBase
 {
     #region Fields..
     private string _flagDescriptorShort;

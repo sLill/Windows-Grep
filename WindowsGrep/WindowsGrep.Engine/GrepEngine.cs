@@ -15,7 +15,7 @@ public static class GrepEngine
         switch (grepCommand.CommandType)
         {
             case GrepCommandType.Help:
-                ConsoleUtils.PublishReadMe();
+                ConsoleUtils.PublishHelp();
                 break;
 
             case GrepCommandType.Query:

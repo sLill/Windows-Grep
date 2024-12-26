@@ -102,9 +102,15 @@ public static class ConsoleUtils
         return default;
     }
 
-    public static void PublishReadMe()
+    public static void PublishSplash()
     {
-        string readMe = Properties.Resources.ReadMe;
+        string splash = Properties.Resources.Splash;
+        Console.WriteLine(splash);
+    }
+
+    public static void PublishHelp()
+    {
+        string readMe = Properties.Resources.Help;
         Console.WriteLine(readMe + Environment.NewLine);
     }
 
