@@ -1,0 +1,12 @@
+﻿global using WindowsGrep.Configuration;
+global using System;
+global using NUnit.Framework;
+global using System.IO;
+global using System.Threading;
+global using System.Threading.Tasks;
+global using WindowsGrep.Engine;
+global using System.Collections.Generic;
+global using System.Linq;
+global using WindowsGrep.Common;
+global using WindowsGrep.Core;
+global using WindowsGrep.Test;

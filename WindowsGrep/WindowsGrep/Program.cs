@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using WindowsGrep.Configuration;
-using WindowsGrep.Core;
-using WindowsGrep.Engine;
-
-namespace WindowsGrep
+﻿namespace WindowsGrep
 {
     public class Program
     {
@@ -58,7 +50,7 @@ namespace WindowsGrep
             _cancellationTokenSource?.Cancel();
         }
 
-        private static async void OnResultsAdded(object sender, EventArgs e)
+        private static void OnResultsAdded(object sender, EventArgs e)
         {
             var commandResultCollection = sender as List<CommandResultBase>;
             commandResultCollection.ForEach(result =>
@@ -79,9 +71,9 @@ namespace WindowsGrep
             // Load config
             ConfigurationManager.Instance.Initialize();
 
-            // Publish ReadMe
+            // Publish Splash
             if (args.Length == 0)
-                ConsoleUtils.PublishReadMe();
+                ConsoleUtils.PublishSplash();
 
             // Override the default behavior for the Ctrl+C shortcut if the application was not ran from the command line
             if (Environment.UserInteractive)

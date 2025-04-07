@@ -1,23 +1,19 @@
-using NUnit.Framework;
-using System.Threading.Tasks;
+namespace WindowsGrep.Test;
 
-namespace WindowsGrep.Test.Flags.Context
+public class ContextTests
 {
-    public class ContextTests
+    #region Setup..
+    [SetUp]
+    public void Setup()
     {
-        #region Setup..
-        [SetUp]
-        public void Setup()
-        {
-        }
-        #endregion Setup..
-
-        #region Tests..
-        [Test]
-        public async Task Test1()
-        {
-            Assert.Pass();
-        }
-        #endregion Tests..
     }
+    #endregion Setup..
+
+    #region Tests..
+    [Test]
+    public async Task Test1()
+    {
+        Assert.Pass();
+    }
+    #endregion Tests..
 }

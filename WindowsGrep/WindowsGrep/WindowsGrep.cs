@@ -1,9 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using System.Threading;
-using WindowsGrep.Core;
-using WindowsGrep.Engine;
-
-namespace WindowsGrep
+﻿namespace WindowsGrep
 {
     public static class WindowsGrep
     {

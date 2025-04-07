@@ -1,8 +1,7 @@
-﻿namespace WindowsGrep.Common
+﻿namespace WindowsGrep.Common;
+
+public enum HashType
 {
-    public enum HashType
-    {
-        SHA256,
-        MD5
-    }
+    SHA256,
+    MD5
 }

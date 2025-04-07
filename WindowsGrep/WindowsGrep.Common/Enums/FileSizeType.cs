@@ -1,4 +1,4 @@
-﻿using WindowsGrep.Common;
+﻿namespace WindowsGrep.Common;
 
 public enum FileSizeType
 {

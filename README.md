@@ -7,30 +7,41 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-grep/badge)](https://www.codefactor.io/repository/github/slill/windows-grep)
 ![.NET Core](https://github.com/sLill/Windows-Grep/workflows/.NET/badge.svg)
 
-Command line grep-like file search utility for Windows</br>
+Command line grep-like file search utility for Windows. 
+
+No bloated gui or custom console. Just a fast, simple tool that runs in native cmd and powershell. </br>
 
 <h2>Supports</h2>
-- Basic and advanced file searching</br>
+- Basic and advanced file searches for filenames and file content</br>
 - Regular Expressions</br>
 - Chained commands</br>
-- Filetype/Filepath/Filesize filtering</br>
+- Filter by Filetype/Filepath/Filesize</br>
 - Exports</br>
-- Mass replace and delete</br>
-- Ease of use: Runs from Command Line, Powershell, Windows Explorer or headless</br>
+- Editing with replace and delete</br>
+- Ease of use: Run from Command Line, Powershell, Windows Explorer or headless</br>
 
 <h1>INSTALLATION</h1>
+
+<h3>Installer</h2>
 
 1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
 2. Download and run WindowsGrepSetup.msi (This is the only file you need)
 
 This will install Windows Grep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
 
+<h3>Manual Compilation</h2>
+
+1. Clone repo and build the `WindowsGrep` project as Release
+2. Publish `WindowsGrep`
+3. Download [Wix Toolset & Wix VS Extension](https://wixtoolset.org/docs/wix3/)
+4. Build the `WindowsGrep.Setup` project to generate a msi installer in the `WindowsGrep.Setup` bin
+
 <h1>USAGE</h1>
 Right-click in File Explorer > Windows Grep
 <br/><br/>
 OR
 <br/><br/>
-Open cmd > "grep [command]"<br/>
+Open cmd > "grep [command]" <br/>
 
 <h1>REFERENCE</h1>
 
@@ -68,24 +79,28 @@ Order of flags and the search term is completely flexible
 
 <h1>EXAMPLE COMMANDS</h1>
 
-<i>Recursive search.</i><br/>
+<i>Recursive search for file content containing "Dug".</i><br/>
 -r Dug
 <br/><br/>
 
-<i>Recursive search. ignore-case.</i><br/>
--r -i D[ui]g
+<i>Recursive search for file names containing "Dug".</i><br/>
+-r -k Dug
 <br/><br/>
 
-<i>Recursive search. txt and cs files only. Filter out bin and obj matches</i><br/>
--r Dug -t .txt;.cs -P bin;obj
+<i>Search for file content containing "Dug" or "Dig". ignore-case.</i><br/>
+-i D[ui]g
 <br/><br/>
 
-<i>Recursive search. show 100 characters around the match.</i><br/>
--r Dug -c 100
+<i>Filter for .txt and .cs files only. Additionally, filter out files in bin and obj subdirectories</i><br/>
+Dug -t .txt;.cs -P bin;obj
 <br/><br/>
 
-<i>Recursive search. Filenames only. Additional search on results from first command for "Mike"</i><br/>
--r Dug -k | Mike
+<i>Show 100 characters of context around the match.</i><br/>
+Dug -c 100
+<br/><br/>
+
+<i>Search for filenames containing "Dug". Additionally, search the files returned from command one for content containing "mike"</i><br/>
+-r Dug -k | -i mike
 <br/><br/>
 
 <i>Match phone number</i><br/>
