@@ -33,7 +33,7 @@ public abstract class CommandResultBase
         if ((fileAttributes & FileAttributes.Hidden) == FileAttributes.Hidden)
             consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkCyan, Value = $"[Hidden]" });
 
-        if (consoleItemCollection.Any())
+        if (consoleItemCollection.Count > 0)
             consoleItemCollection.Insert(0, new ConsoleItem() { Value = " " });
 
         return consoleItemCollection;

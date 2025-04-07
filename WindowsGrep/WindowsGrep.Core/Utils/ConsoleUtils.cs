@@ -91,7 +91,7 @@ public static class ConsoleUtils
                 string commandPattern = GetCommandPattern(commandDescription, expectsParameter);
 
                 var matches = Regex.Matches(commandRaw, commandPattern);
-                if (matches.Any())
+                if (matches.Count > 0)
                 {
                     string commandParameter = matches.Select(match => match.Groups["Parameter"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
                     return (commandType, commandParameter);
