@@ -50,7 +50,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"{_flagDescriptorShort} -f '{_TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
@@ -66,7 +66,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"{_flagDescriptorLong} -f '{_TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
@@ -84,7 +84,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"-f '{_TestFilePath}' {_flagDescriptorShort} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
@@ -100,7 +100,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"-f '{_TestFilePath}' {_flagDescriptorLong} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
@@ -118,7 +118,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"-f '{_TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }
@@ -134,7 +134,7 @@ namespace WindowsGrep.Test.Flags.Delete
             string Command = $"-f '{_TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsFalse(File.Exists(_TestFilePath));
         }

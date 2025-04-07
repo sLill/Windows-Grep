@@ -46,7 +46,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -63,7 +63,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -80,7 +80,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -97,7 +97,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -114,7 +114,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -131,7 +131,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -148,7 +148,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -165,7 +165,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -182,7 +182,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -199,7 +199,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -216,7 +216,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -233,7 +233,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -250,7 +250,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -267,7 +267,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -284,7 +284,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -301,7 +301,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -318,7 +318,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -335,7 +335,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -352,7 +352,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -369,7 +369,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -386,7 +386,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -403,7 +403,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -420,7 +420,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -437,7 +437,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -454,7 +454,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -471,7 +471,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -488,7 +488,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -505,7 +505,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -522,7 +522,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -539,7 +539,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -556,7 +556,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -573,7 +573,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"{_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -592,7 +592,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -609,7 +609,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -626,7 +626,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -643,7 +643,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -660,7 +660,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -677,7 +677,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -694,7 +694,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -711,7 +711,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -728,7 +728,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -745,7 +745,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -762,7 +762,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -779,7 +779,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -796,7 +796,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -813,7 +813,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -830,7 +830,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -847,7 +847,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorShort} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -864,7 +864,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -881,7 +881,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -898,7 +898,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -915,7 +915,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -932,7 +932,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -949,7 +949,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -966,7 +966,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -983,7 +983,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1000,7 +1000,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1017,7 +1017,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1034,7 +1034,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1051,7 +1051,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1068,7 +1068,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -1085,7 +1085,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -1102,7 +1102,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -1119,7 +1119,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-i {_flagDescriptorLong} -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1138,7 +1138,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1155,7 +1155,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1172,7 +1172,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1189,7 +1189,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1206,7 +1206,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -1223,7 +1223,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1240,7 +1240,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1257,7 +1257,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1274,7 +1274,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1291,7 +1291,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1308,7 +1308,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1325,7 +1325,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1342,7 +1342,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -1359,7 +1359,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -1376,7 +1376,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -1393,7 +1393,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1410,7 +1410,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1427,7 +1427,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1444,7 +1444,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1461,7 +1461,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1478,7 +1478,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 3);
         }
@@ -1495,7 +1495,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1512,7 +1512,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1529,7 +1529,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1546,7 +1546,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1563,7 +1563,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }
@@ -1580,7 +1580,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1597,7 +1597,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 1);
         }
@@ -1614,7 +1614,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 6);
         }
@@ -1631,7 +1631,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 5);
         }
@@ -1648,7 +1648,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 4);
         }
@@ -1665,7 +1665,7 @@ namespace WindowsGrep.Test.Flags.FixedStrings
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == SearchTerm) == 2);
         }

@@ -28,13 +28,20 @@ namespace WindowsGrep.Configuration
         #region Methods..
         public void Initialize()
         {
-            string appDataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            _applicationDataDirectory = Path.Combine(appDataDirectory, AppDomain.CurrentDomain.FriendlyName);
+            try
+            {
+                string appDataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                _applicationDataDirectory = Path.Combine(appDataDirectory, AppDomain.CurrentDomain.FriendlyName);
 
-            if (!Directory.Exists(_applicationDataDirectory))
-                Directory.CreateDirectory(_applicationDataDirectory);
+                if (!Directory.Exists(_applicationDataDirectory))
+                    Directory.CreateDirectory(_applicationDataDirectory);
 
-            LoadConfiguration();
+                LoadConfiguration();
+            }
+            catch 
+            {
+                Console.WriteLine($"Could not load configuration");
+            }
         }
 
         public void LoadDefaultConfiguration()

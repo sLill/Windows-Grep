@@ -43,7 +43,7 @@ namespace WindowsGrep.Test.Flags.Hash
             string command = $"{_flagDescriptor}1 -f '{testFilePath}' {hash}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -60,7 +60,7 @@ namespace WindowsGrep.Test.Flags.Hash
             string command = $"{_flagDescriptor}0 -f '{testFilePath}' {hash}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -77,7 +77,7 @@ namespace WindowsGrep.Test.Flags.Hash
             string command = $"{_flagDescriptor}0 -f '{testFilePath}' {hash}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }
@@ -94,7 +94,7 @@ namespace WindowsGrep.Test.Flags.Hash
             string command = $"-f '{testFilePath}' {_flagDescriptor}0 {hash}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }
@@ -111,7 +111,7 @@ namespace WindowsGrep.Test.Flags.Hash
             string command = $"-f '{testFilePath}' {hash} {_flagDescriptor}0";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }

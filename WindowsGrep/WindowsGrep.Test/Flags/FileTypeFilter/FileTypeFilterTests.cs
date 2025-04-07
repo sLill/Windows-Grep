@@ -44,7 +44,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"{_flagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -59,7 +59,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"{_flagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 4);
         }
@@ -74,7 +74,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"{_flagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -89,7 +89,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"{_flagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -104,7 +104,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"{_flagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 3);
         }
@@ -121,7 +121,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -136,7 +136,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -151,7 +151,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -166,7 +166,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -181,7 +181,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 3);
         }
@@ -196,7 +196,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 3);
         }
@@ -213,7 +213,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -228,7 +228,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -243,7 +243,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -258,7 +258,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -273,7 +273,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -288,7 +288,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -304,7 +304,7 @@ namespace WindowsGrep.Test.Flags.FileTypeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 0);
         }

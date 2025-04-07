@@ -44,7 +44,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"{_flagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 6);
         }
@@ -59,7 +59,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"{_flagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 3);
         }
@@ -74,7 +74,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"{_flagDescriptorShort} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -89,7 +89,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"{_flagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 6);
         }
@@ -104,7 +104,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"{_flagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 4);
         }
@@ -119,7 +119,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"{_flagDescriptorLong} {FlagParameter} -d '{TestDataDirectory}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 4);
         }
@@ -136,7 +136,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 6);
         }
@@ -151,7 +151,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -166,7 +166,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorShort} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -181,7 +181,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -196,7 +196,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 4);
         }
@@ -211,7 +211,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {_flagDescriptorLong} {FlagParameter} {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 4);
         }
@@ -228,7 +228,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 6);
         }
@@ -243,7 +243,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -258,7 +258,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorShort} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -273,7 +273,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 6);
         }
@@ -288,7 +288,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -303,7 +303,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 5);
         }
@@ -319,7 +319,7 @@ namespace WindowsGrep.Test.Flags.FileTypeExcludeFilter
             string Command = $"-d '{TestDataDirectory}' {SearchTerm} {_flagDescriptorLong} {FlagParameter}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 7);
         }

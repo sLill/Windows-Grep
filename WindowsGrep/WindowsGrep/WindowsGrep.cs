@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using WindowsGrep.Core;
 using WindowsGrep.Engine;
 
@@ -9,7 +8,7 @@ namespace WindowsGrep
     public static class WindowsGrep
     {
         #region Methods..
-        public static async Task RunCommandAsync(string commandRaw, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
+        public static void RunCommand(string commandRaw, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
         {
             string splitPattern = @"\|(?![^{]*}|[^\(]*\)|[^\[]*\])";
             string[] commandCollection = Regex.Split(commandRaw, splitPattern);
@@ -21,7 +20,7 @@ namespace WindowsGrep
                 if (nativeCommandArgs != default)
                 {
                     var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter };
-                    await NativeEngine.BeginProcessNativeCommandAsync(nativeCommand, commandResultCollection, cancellationToken);
+                    NativeEngine.BeginProcessNativeCommand(nativeCommand, commandResultCollection, cancellationToken);
                 }
 
                 // Grep commands
@@ -39,7 +38,7 @@ namespace WindowsGrep
                     else
                         grepCommand = new GrepCommand(GrepCommandType.Query) { CommandArgs = grepCommandArgs };
 
-                    await GrepEngine.BeginProcessGrepCommandAsync(grepCommand, commandResultCollection, cancellationToken);
+                    GrepEngine.BeginProcessGrepCommand(grepCommand, commandResultCollection, cancellationToken);
                 }
             }
         }

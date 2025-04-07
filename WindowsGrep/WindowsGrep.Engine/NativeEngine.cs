@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using WindowsGrep.Common;
 using WindowsGrep.Configuration;
 using WindowsGrep.Core;
@@ -12,12 +10,12 @@ namespace WindowsGrep.Engine
     public static class NativeEngine
     {
         #region Methods..
-        public static async Task BeginProcessNativeCommandAsync(NativeCommand nativeCommand, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
+        public static void BeginProcessNativeCommand(NativeCommand nativeCommand, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
         {
             switch (nativeCommand.CommandType)
             {
                 case NativeCommandType.List:
-                    await ListFilesAsync(commandResultCollection, cancellationToken);
+                    ListFiles(commandResultCollection, cancellationToken);
                     break;
 
                 case NativeCommandType.ChangeDirectory:
@@ -34,7 +32,7 @@ namespace WindowsGrep.Engine
             }
         }
 
-        private static async Task ListFilesAsync(CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
+        private static void ListFiles(CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
         {
             bool includeSystemProtectedFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeSystemProtectedFiles];
             bool includeHiddenFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeHiddenFiles];
@@ -44,9 +42,8 @@ namespace WindowsGrep.Engine
             fileAttributesToSkip |= (includeHiddenFiles ? 0 : FileAttributes.Hidden);
 
             string targetDirectory = Directory.GetCurrentDirectory();
-            List<string> files = await WindowsUtils.GetFilesAsync(targetDirectory, false, cancellationToken, fileAttributesToSkip);
-
-            files?.ForEach(x => commandResultCollection.AddItem(new NativeCommandResult(x, NativeCommandType.List)));
+            foreach (var file in WindowsUtils.GetFiles(targetDirectory, false, cancellationToken, fileAttributesToSkip))
+                commandResultCollection.AddItem(new NativeCommandResult(file, NativeCommandType.List));
         }
         #endregion Methods..
     }

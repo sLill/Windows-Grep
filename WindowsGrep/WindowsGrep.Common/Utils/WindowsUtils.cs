@@ -26,27 +26,14 @@ namespace WindowsGrep.Common
             return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
         }
 
-        public static async Task<List<string>> GetFilesAsync(string path, bool recursive, CancellationToken cancellationToken, FileAttributes fileAttributesToSkip = default)
+        public static IEnumerable<string> GetFiles(string path, bool recursive, CancellationToken cancellationToken, FileAttributes fileAttributesToSkip = default)
         {
             var enumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = fileAttributesToSkip };
 
             if (recursive)
                 enumerationOptions.RecurseSubdirectories = true;
 
-            List<string> files = new List<string>();
-
-            await Task.Run(() =>
-            {
-                foreach (var file in Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(path.TrimEnd()), "*", enumerationOptions))
-                {
-                    if (cancellationToken.IsCancellationRequested)
-                        break;
-
-                    files.Add(file);
-                }
-            }, cancellationToken);
-
-            return files;
+            return Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(path.TrimEnd()), "*", enumerationOptions);
         }
 
         public static string GetFileHash(string filePath, HashType hashType)

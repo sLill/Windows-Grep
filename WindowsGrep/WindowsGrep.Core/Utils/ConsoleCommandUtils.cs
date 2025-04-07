@@ -3,7 +3,7 @@ using WindowsGrep.Common;
 
 namespace WindowsGrep.Core
 {
-    public static class grepCommandUtils
+    public static class CommandUtils
     {
         #region Fields..
         private const string FILE_SIZE_PATTERN = @"(?<Size>\d+)(?<SizeType>\S{2})?";
@@ -111,57 +111,34 @@ namespace WindowsGrep.Core
             return hashType;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="grepCommand"></param>
-        /// <param name="files"></param>
-        /// <returns>Returns files filtered by Inclusion/Exclusion type parameters</returns>
-        public static List<string> GetFilteredFiles(GrepCommand grepCommand, List<string> files)
-        {
-            var fileTypeFilters = GetFileTypeFilters(grepCommand);
-            var fileTypeExcludeFilters = GetFileTypeExcludeFilters(grepCommand);
-            var pathFilters = GetPathFilters(grepCommand);
-            var pathExcludeFilters = GetPathExcludeFilters(grepCommand);
-
-            // Filter files by type
-            files = fileTypeFilters == null ? files : files.Where(file => fileTypeFilters.Contains(Path.GetExtension(file).Trim('.'))).ToList();
-            files = fileTypeExcludeFilters == null ? files : files.Where(file => !fileTypeExcludeFilters.Contains(Path.GetExtension(file).Trim('.'))).ToList();
-
-            // Filter files by relative subpaths
-            files = pathFilters == null ? files : files.Where(file => pathFilters.Any(x => Regex.IsMatch(file, x))).ToList();
-            files = pathExcludeFilters == null ? files : files.Where(file => !pathExcludeFilters.Any(x => Regex.IsMatch(file, x))).ToList();
-
-            return files;
-        }
-
-        public static IEnumerable<string> GetFileTypeFilters(GrepCommand grepCommand)
+        public static List<string>? GetFileTypeFilters(GrepCommand grepCommand)
         {
             bool fileTypeFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeFilter);
-            var fileTypeFilters = fileTypeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.FileTypeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')) : null;
+            var fileTypeFilters = fileTypeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.FileTypeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
 
             return fileTypeFilters;
         }
 
-        public static IEnumerable<string> GetFileTypeExcludeFilters(GrepCommand grepCommand)
+        public static List<string>? GetFileTypeExcludeFilters(GrepCommand grepCommand)
         {
             bool fileTypeExcludeFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeExcludeFilter);
-            var fileTypeExcludeFilters = fileTypeExcludeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.FileTypeExcludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')) : null;
+            var fileTypeExcludeFilters = fileTypeExcludeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.FileTypeExcludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
 
             return fileTypeExcludeFilters;
         }
 
-        public static IEnumerable<string> GetPathFilters(GrepCommand grepCommand)
+        public static List<string>? GetPathFilters(GrepCommand grepCommand)
         {
             bool pathFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.PathFilter);
-            var pathFilters = pathFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.PathFilter].Split(new char[] { ',', ';' }) : null;
+            var pathFilters = pathFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.PathFilter].Split(new char[] { ',', ';' }).ToList() : null;
 
             return pathFilters;
         }
 
-        public static IEnumerable<string> GetPathExcludeFilters(GrepCommand grepCommand)
+        public static List<string>? GetPathExcludeFilters(GrepCommand grepCommand)
         {
             bool pathExcludeFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.PathExcludeFilter);
-            var pathExcludeFilters = pathExcludeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.PathExcludeFilter].Split(new char[] { ',', ';' }) : null;
+            var pathExcludeFilters = pathExcludeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.PathExcludeFilter].Split(new char[] { ',', ';' }).ToList() : null;
 
             return pathExcludeFilters;
         }

@@ -48,7 +48,7 @@ namespace WindowsGrep.Test.Flags.Write
             string Command = $"{_flagDescriptorShort} '{_testOutputFilePath}' -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));
@@ -68,7 +68,7 @@ namespace WindowsGrep.Test.Flags.Write
             string Command = $"{_flagDescriptorLong} '{_testOutputFilePath}' -f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));
@@ -90,7 +90,7 @@ namespace WindowsGrep.Test.Flags.Write
             string Command = $"-f '{TestFilePath}' {_flagDescriptorShort} '{_testOutputFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));
@@ -110,7 +110,7 @@ namespace WindowsGrep.Test.Flags.Write
             string Command = $"-f '{TestFilePath}' {_flagDescriptorLong} '{_testOutputFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));
@@ -132,7 +132,7 @@ namespace WindowsGrep.Test.Flags.Write
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorShort} '{_testOutputFilePath}'";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));
@@ -152,7 +152,7 @@ namespace WindowsGrep.Test.Flags.Write
             string Command = $"-f '{TestFilePath}' {SearchTerm} {_flagDescriptorLong} '{_testOutputFilePath}'";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(File.Exists(_testOutputFilePath));
             Assert.IsTrue(FileHasData(_testOutputFilePath));

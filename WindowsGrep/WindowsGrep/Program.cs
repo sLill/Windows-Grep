@@ -38,7 +38,7 @@ namespace WindowsGrep
                         commandResultCollection.ItemsAdded += OnResultsAdded;
 
                         _cancellationTokenSource = new CancellationTokenSource();
-                        await Task.Run(() => WindowsGrep.RunCommandAsync(command, commandResultCollection, _cancellationTokenSource.Token));
+                        await Task.Run(() => WindowsGrep.RunCommand(command, commandResultCollection, _cancellationTokenSource.Token));
                     }
                     catch (Exception ex)
                     {
@@ -67,7 +67,7 @@ namespace WindowsGrep
                     return;
 
                 if (!result.Suppressed)
-                    ConsoleUtils.WriteConsoleItemCollectionAsync(result.ToConsoleItemCollection(), _cancellationTokenSource.Token);
+                    ConsoleUtils.WriteConsoleItemCollection(result.ToConsoleItemCollection(), _cancellationTokenSource.Token);
             });
         }
         #endregion Event Handlers..

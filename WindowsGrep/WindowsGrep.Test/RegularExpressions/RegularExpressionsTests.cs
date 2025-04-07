@@ -37,7 +37,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -54,7 +54,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -71,7 +71,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -88,7 +88,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -105,7 +105,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -122,7 +122,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -139,7 +139,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -156,7 +156,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -173,7 +173,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -192,7 +192,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -210,7 +210,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 1);
 
             // 2
@@ -218,7 +218,7 @@ namespace WindowsGrep.Test.RegularExpressions
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 0);
         }
         #endregion RegularExpressions_CharacterClasses_CharacterRange
@@ -234,7 +234,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -251,7 +251,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -270,7 +270,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -288,7 +288,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 1);
 
             // 2
@@ -296,7 +296,7 @@ namespace WindowsGrep.Test.RegularExpressions
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == @"He became so powerful.") == 1);
         }
         #endregion RegularExpressions_Quantifiers_OneOrMoreLazy 
@@ -312,7 +312,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -329,7 +329,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -346,7 +346,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -363,7 +363,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -381,7 +381,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 1);
 
             // 2
@@ -389,7 +389,7 @@ namespace WindowsGrep.Test.RegularExpressions
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count(x => ((GrepCommandResult)x).MatchedString == @"He became so powerful") == 1);
         }
         #endregion RegularExpressions_Quantifiers_ZeroOrMoreLazy
@@ -406,7 +406,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 1);
 
             // Negative test
@@ -414,7 +414,7 @@ namespace WindowsGrep.Test.RegularExpressions
             Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
             Assert.IsTrue(commandResultCollection.Count == 0);
         }
         #endregion RegularExpressions_Quantifiers_OnceOrNone
@@ -432,7 +432,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -457,7 +457,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -474,7 +474,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -493,7 +493,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -510,7 +510,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -527,7 +527,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 2);
         }
@@ -546,7 +546,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -563,7 +563,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -580,7 +580,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -597,7 +597,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Count == 1);
         }
@@ -614,7 +614,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }
@@ -631,7 +631,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }
@@ -648,7 +648,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }
@@ -665,7 +665,7 @@ namespace WindowsGrep.Test.RegularExpressions
             string Command = $"-f '{TestFilePath}' {SearchTerm}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(Command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }

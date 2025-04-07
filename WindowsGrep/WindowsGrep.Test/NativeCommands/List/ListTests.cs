@@ -42,7 +42,7 @@ namespace WindowsGrep.Test.NativeCommands.List
             string command = $"cd {emptyDirectory} | {_flagDescriptor}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(!commandResultCollection.Any());
         }
@@ -55,7 +55,7 @@ namespace WindowsGrep.Test.NativeCommands.List
             string command = $"cd {TestDataDirectory} | {_flagDescriptor}";
 
             var commandResultCollection = new CommandResultCollection();
-            await WindowsGrep.RunCommandAsync(command, commandResultCollection, new CancellationToken());
+            WindowsGrep.RunCommand(command, commandResultCollection, new CancellationToken());
 
             Assert.IsTrue(commandResultCollection.Any());
         }
