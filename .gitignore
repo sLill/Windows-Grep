@@ -345,3 +345,7 @@ MigrationBackup/
 .ionide/
 /WindowsGrep/WindowsGrep/Resources/grep.psd
 /grep.psd
+/WindowsGrep/WindowsGrep/Properties/PublishProfiles/win-arm.pubxml.user
+/WindowsGrep/WindowsGrep/Properties/PublishProfiles/win-arm64.pubxml.user
+/WindowsGrep/WindowsGrep/Properties/PublishProfiles/win-x64.pubxml.user
+/WindowsGrep/WindowsGrep/Properties/PublishProfiles/win-x86.pubxml.user

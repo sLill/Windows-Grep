@@ -23,3 +23,4 @@
 -DX	--delete-files			: Delete matched files
 
 --hash=					: Match file hashes (0=SHA256, 1=MD5)
+--max-depth=				: Sets the max search depth when recursion (-r) is enabled

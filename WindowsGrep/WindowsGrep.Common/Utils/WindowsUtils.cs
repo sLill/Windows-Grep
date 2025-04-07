@@ -17,12 +17,19 @@ public static class WindowsUtils
         return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
     }
 
-    public static IEnumerable<string> GetFiles(string path, bool recursive, CancellationToken cancellationToken, FileAttributes fileAttributesToSkip = default)
+    public static IEnumerable<string> GetFiles(string path, bool recursive, int maxRecursionDepth, CancellationToken cancellationToken, FileAttributes fileAttributesToSkip = default)
     {
-        var enumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = fileAttributesToSkip };
+        var enumerationOptions = new EnumerationOptions() 
+        { 
+            ReturnSpecialDirectories = true, 
+            MaxRecursionDepth = maxRecursionDepth,
+            AttributesToSkip = fileAttributesToSkip 
+        };
 
         if (recursive)
             enumerationOptions.RecurseSubdirectories = true;
+
+
 
         return Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(path.TrimEnd()), "*", enumerationOptions);
     }

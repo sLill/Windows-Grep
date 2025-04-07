@@ -54,6 +54,12 @@ public enum ConsoleFlag
     [DescriptionCollection("-r", "--recursive")]
     Recursive,
 
+    // Sets the max search depth when recursion (-r) is enabled
+    [ExpectsParameter(true)]
+    [FilterCharacterCollection('\'', '"')]
+    [DescriptionCollection("--max-depth=")]
+    MaxDepth, 
+
     // Restricts search to files with the specified extensions. Comma delimited
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"', '.', '\\')]
