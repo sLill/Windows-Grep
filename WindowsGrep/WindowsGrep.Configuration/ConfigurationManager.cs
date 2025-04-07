@@ -21,24 +21,24 @@ public class ConfigurationManager
     #region Constructors..
     #endregion Constructors..
 
-        #region Methods..
-        public void Initialize()
+    #region Methods..
+    public void Initialize()
+    {
+        try
         {
-            try
-            {
-                string appDataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                _applicationDataDirectory = Path.Combine(appDataDirectory, AppDomain.CurrentDomain.FriendlyName);
+            string appDataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            _applicationDataDirectory = Path.Combine(appDataDirectory, AppDomain.CurrentDomain.FriendlyName);
 
-                if (!Directory.Exists(_applicationDataDirectory))
-                    Directory.CreateDirectory(_applicationDataDirectory);
+            if (!Directory.Exists(_applicationDataDirectory))
+                Directory.CreateDirectory(_applicationDataDirectory);
 
-                LoadConfiguration();
-            }
-            catch 
-            {
-                Console.WriteLine($"Could not load configuration");
-            }
+            LoadConfiguration();
         }
+        catch
+        {
+            Console.WriteLine($"Could not load configuration");
+        }
+    }
 
     public void LoadDefaultConfiguration()
     {

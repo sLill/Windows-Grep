@@ -17,15 +17,15 @@ public static class WindowsUtils
         return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
     }
 
-        public static IEnumerable<string> GetFiles(string path, bool recursive, CancellationToken cancellationToken, FileAttributes fileAttributesToSkip = default)
-        {
-            var enumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = fileAttributesToSkip };
+    public static IEnumerable<string> GetFiles(string path, bool recursive, CancellationToken cancellationToken, FileAttributes fileAttributesToSkip = default)
+    {
+        var enumerationOptions = new EnumerationOptions() { ReturnSpecialDirectories = true, AttributesToSkip = fileAttributesToSkip };
 
         if (recursive)
             enumerationOptions.RecurseSubdirectories = true;
 
-            return Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(path.TrimEnd()), "*", enumerationOptions);
-        }
+        return Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(path.TrimEnd()), "*", enumerationOptions);
+    }
 
     public static string GetFileHash(string filePath, HashType hashType)
     {

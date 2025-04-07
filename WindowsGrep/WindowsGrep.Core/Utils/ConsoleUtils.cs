@@ -140,14 +140,14 @@ public static class ConsoleUtils
         Console.ResetColor();
     }
 
-        public static void WriteConsoleItemCollection(List<ConsoleItem> consoleItemCollection, CancellationToken cancellationToken)
+    public static void WriteConsoleItemCollection(List<ConsoleItem> consoleItemCollection, CancellationToken cancellationToken)
+    {
+        lock (Console.Out)
         {
-            lock (Console.Out)
+            consoleItemCollection.ForEach(consoleItem =>
             {
-                consoleItemCollection.ForEach(consoleItem =>
-                {
-                    if (cancellationToken.IsCancellationRequested)
-                        return;
+                if (cancellationToken.IsCancellationRequested)
+                    return;
 
                 WriteConsoleItem(consoleItem);
             });

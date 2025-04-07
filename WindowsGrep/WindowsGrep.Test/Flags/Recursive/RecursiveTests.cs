@@ -1,14 +1,4 @@
-﻿using NUnit.Framework;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using WindowsGrep.Common;
-using WindowsGrep.Core;
-using WindowsGrep.Engine;
-
-namespace WindowsGrep.Test.Flags.Recursive
+﻿namespace WindowsGrep.Test.Flags.Recursive
 {
     public class ContextTests : TestBase
     {

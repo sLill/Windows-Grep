@@ -3,7 +3,7 @@
 public static class TestConfigurationManager
 {
     #region Properties..
-    public static string WorkingDirectory 
+    public static string WorkingDirectory
         => AppDomain.CurrentDomain.BaseDirectory;
     #endregion Properties..
 }
