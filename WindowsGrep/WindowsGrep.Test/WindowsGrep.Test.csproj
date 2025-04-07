@@ -4,6 +4,10 @@
     <TargetFramework>net9.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <Configurations>Debug;Release;Release_ARM</Configurations>
+
+    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

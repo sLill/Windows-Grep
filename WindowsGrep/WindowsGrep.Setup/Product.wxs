@@ -42,22 +42,6 @@
         <File Id="grep.exe" Name="grep.exe" Source="$(var.WindowsGrep.TargetDir)publish\win-x64\WindowsGrep.exe" Vital="yes" KeyPath="yes" DiskId="1" />
       </Component>
 
-      <!--<Component Id="CLRCompressionDLL" Guid="{A797B6B6-D803-4FC9-AFAF-D73A03E314E7}" Win64="$(var.Win64)">
-        <File Id="clrcompression.dll" Name="clrcompression.dll" Source="$(var.WindowsGrep.TargetDir)publish\clrcompression.dll" Vital="yes" KeyPath="yes" DiskId="1" />
-      </Component>
-
-      <Component Id="CLRJitDLL" Guid="{3AC805F6-D3C1-4443-A6A0-1644C79425D6}" Win64="$(var.Win64)">
-        <File Id="clrjit.dll" Name="clrjit.dll" Source="$(var.WindowsGrep.TargetDir)publish\clrjit.dll" Vital="yes" KeyPath="yes" DiskId="1" />
-      </Component>
-
-      <Component Id="CoreCLRDLL" Guid="{279B9B09-84C1-4286-995A-1A8F051E95E7}" Win64="$(var.Win64)">
-        <File Id="coreclr.dll" Name="coreclr.dll" Source="$(var.WindowsGrep.TargetDir)publish\coreclr.dll" Vital="yes" KeyPath="yes" DiskId="1" />
-      </Component>
-
-      <Component Id="MscordaccoreDLL" Guid="{E4525F9C-4F63-4D66-B22D-4DAF1EBB0B99}" Win64="$(var.Win64)">
-        <File Id="mscordaccore.dll" Name="mscordaccore.dll" Source="$(var.WindowsGrep.TargetDir)publish\mscordaccore.dll" Vital="yes" KeyPath="yes" DiskId="1" />
-      </Component>-->
-
       <!--PATH-->
       <Component Id ="Path" Guid="{90BFF968-E5F2-49A0-A534-66BAA45DF4DF}" KeyPath="yes">
           <Environment Id="PATH" Name="PATH" Value="C:\Program Files (x86)\WindowsGrep" Permanent="yes" Part="last" Action="set" System="no"/>
