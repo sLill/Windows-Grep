@@ -1,4 +1,6 @@
-﻿namespace WindowsGrep.Common;
+﻿using System.IO;
+
+namespace WindowsGrep.Common;
 
 public static class WindowsUtils
 {
@@ -17,22 +19,38 @@ public static class WindowsUtils
         return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
     }
 
-    public static IEnumerable<string> GetFiles(string path, bool recursive, int maxRecursionDepth, CancellationToken cancellationToken, FileAttributes fileAttributesToSkip = default)
+    public static IEnumerable<string> GetFiles(string root, bool recursive, int maxRecursionDepth, CancellationToken cancellationToken, 
+        List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
+        => GetFiles(root, root, recursive, maxRecursionDepth, cancellationToken, excludeDirectories, fileAttributesToSkip);
+
+    private static IEnumerable<string> GetFiles(string root, string currentDirectory, bool recursive, int maxRecursionDepth, CancellationToken cancellationToken, 
+        List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
     {
-        var enumerationOptions = new EnumerationOptions() 
-        { 
-            ReturnSpecialDirectories = true, 
-            MaxRecursionDepth = maxRecursionDepth,
-            AttributesToSkip = fileAttributesToSkip 
-        };
+        var enumerationOptions = new EnumerationOptions() { AttributesToSkip = fileAttributesToSkip };
 
-        if (recursive)
-            enumerationOptions.RecurseSubdirectories = true;
+        // Current directory
+        foreach (var file in Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(currentDirectory.TrimEnd()), "*", enumerationOptions))
+            yield return file;
 
+        string relativePath = Path.GetRelativePath(root, currentDirectory);
+        int depth = relativePath == "." ? 0 : relativePath.Split(Path.DirectorySeparatorChar).Length;
 
+        // Subdirectories
+        if (recursive && depth < maxRecursionDepth)
+        {
+            foreach (var subDirectory in Directory.EnumerateDirectories(currentDirectory, "*", enumerationOptions))
+            {
+                var directoryInfo = new DirectoryInfo(subDirectory);
 
-        return Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(path.TrimEnd()), "*", enumerationOptions);
+                if (excludeDirectories != null && excludeDirectories.Any(x => directoryInfo.Name.Equals(x, StringComparison.OrdinalIgnoreCase)))
+                    continue;
+
+                foreach (var file in GetFiles(root, subDirectory, recursive, maxRecursionDepth, cancellationToken, excludeDirectories, fileAttributesToSkip))
+                    yield return file;
+            }
+        }
     }
+
 
     public static string GetFileHash(string filePath, HashType hashType)
     {

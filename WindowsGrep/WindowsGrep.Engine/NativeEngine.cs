@@ -35,7 +35,7 @@ public static class NativeEngine
         fileAttributesToSkip |= (includeHiddenFiles ? 0 : FileAttributes.Hidden);
 
         string targetDirectory = Directory.GetCurrentDirectory();
-        foreach (var file in WindowsUtils.GetFiles(targetDirectory, false, int.MaxValue, cancellationToken, fileAttributesToSkip))
+        foreach (var file in WindowsUtils.GetFiles(targetDirectory, false, int.MaxValue, cancellationToken, null, fileAttributesToSkip))
             commandResultCollection.AddItem(new NativeCommandResult(file, NativeCommandType.List));
     }
     #endregion Methods..

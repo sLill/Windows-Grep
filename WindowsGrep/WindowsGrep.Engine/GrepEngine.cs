@@ -128,7 +128,8 @@ public static class GrepEngine
                 fileAttributesToSkip |= (includeSystemProtectedFiles ? 0 : FileAttributes.System);
                 fileAttributesToSkip |= (includeHiddenFiles ? 0 : FileAttributes.Hidden);
 
-                files = WindowsUtils.GetFiles(filepath, recursiveFlag, maxDepth, cancellationToken, fileAttributesToSkip);
+                var pathExcludeFilters = CommandUtils.GetPathExcludeFilters(grepCommand);
+                files = WindowsUtils.GetFiles(filepath, recursiveFlag, maxDepth, cancellationToken, pathExcludeFilters, fileAttributesToSkip);
             }
         }
 
@@ -150,7 +151,6 @@ public static class GrepEngine
         var fileTypeFilters = CommandUtils.GetFileTypeFilters(grepCommand);
         var fileTypeExcludeFilters = CommandUtils.GetFileTypeExcludeFilters(grepCommand);
         var pathFilters = CommandUtils.GetPathFilters(grepCommand);
-        var pathExcludeFilters = CommandUtils.GetPathExcludeFilters(grepCommand);
 
         foreach (string file in files)
         {
@@ -159,14 +159,11 @@ public static class GrepEngine
                 if (cancellationToken.IsCancellationRequested)
                     return;
 
-                // Filter files by type
+                // Filters
                 bool isFiltered = false;
                 isFiltered |= (fileTypeFilters != null && !fileTypeFilters.Contains(Path.GetExtension(file).Trim('.')));
                 isFiltered |= (fileTypeExcludeFilters != null && fileTypeExcludeFilters.Contains(Path.GetExtension(file).Trim('.')));
-
-                // Filter files by relative subpaths
                 isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file), x)));
-                isFiltered |= (pathExcludeFilters != null && pathExcludeFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file), x)));
 
                 if (isFiltered)
                     continue;
@@ -217,7 +214,6 @@ public static class GrepEngine
         var fileTypeFilters = CommandUtils.GetFileTypeFilters(grepCommand);
         var fileTypeExcludeFilters = CommandUtils.GetFileTypeExcludeFilters(grepCommand);
         var pathFilters = CommandUtils.GetPathFilters(grepCommand);
-        var pathExcludeFilters = CommandUtils.GetPathExcludeFilters(grepCommand);
 
         int nResults = nResultsFlag ? Convert.ToInt32(grepCommand.CommandArgs[ConsoleFlag.NResults]) : int.MaxValue;
         Regex anyRegex = new Regex(@".*");
@@ -229,14 +225,11 @@ public static class GrepEngine
                 if (cancellationToken.IsCancellationRequested || searchMetrics.TotalFilesMatchedCount > nResults)
                     break;
 
-                // Filter files by type
+                // Filters
                 bool isFiltered = false;
                 isFiltered |= (fileTypeFilters != null && !fileTypeFilters.Contains(Path.GetExtension(file).Trim('.')));
                 isFiltered |= (fileTypeExcludeFilters != null && fileTypeExcludeFilters.Contains(Path.GetExtension(file).Trim('.')));
-
-                // Filter files by relative subpaths
                 isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file), x)));
-                isFiltered |= (pathExcludeFilters != null && pathExcludeFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file), x)));
 
                 if (isFiltered)
                     continue;
@@ -290,7 +283,6 @@ public static class GrepEngine
         var fileTypeFilters = CommandUtils.GetFileTypeFilters(grepCommand);
         var fileTypeExcludeFilters = CommandUtils.GetFileTypeExcludeFilters(grepCommand);
         var pathFilters = CommandUtils.GetPathFilters(grepCommand);
-        var pathExcludeFilters = CommandUtils.GetPathExcludeFilters(grepCommand);
 
         int nResults = nResultsFlag ? Convert.ToInt32(grepCommand.CommandArgs[ConsoleFlag.NResults]) : int.MaxValue;
 
@@ -299,14 +291,11 @@ public static class GrepEngine
             if (cancellationToken.IsCancellationRequested || searchMetrics.TotalFilesMatchedCount > nResults)
                 break;
 
-            // Filter files by type
+            // Filters
             bool isFiltered = false;
             isFiltered |= (fileTypeFilters != null && !fileTypeFilters.Contains(Path.GetExtension(file).Trim('.')));
             isFiltered |= (fileTypeExcludeFilters != null && fileTypeExcludeFilters.Contains(Path.GetExtension(file).Trim('.')));
-
-            // Filter files by relative subpaths
             isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file), x)));
-            isFiltered |= (pathExcludeFilters != null && pathExcludeFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file), x)));
 
             if (isFiltered)
                 continue;
