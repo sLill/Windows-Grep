@@ -40,7 +40,10 @@ Right-click in File Explorer > Windows Grep
 <br/><br/>
 OR
 <br/><br/>
-Open cmd/powershell > "grep [command]" <br/>
+Open cmd/powershell > "grep [command]" <br/> <br/>
+
+![image](https://github.com/user-attachments/assets/47a981a4-1dca-42eb-a263-6929ebcaddb6)
+
 
 <h1>REFERENCE</h1>
 
