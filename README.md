@@ -9,16 +9,15 @@
 
 Command line grep-like file search utility for Windows. 
 
-No bloated gui or custom console. Just a fast, simple tool that runs in native cmd and powershell. </br>
+No bloated gui or custom console. Just a fast, simple tool that runs in native cmd/powershell. </br>
 
 <h2>Supports</h2>
-- Basic and advanced file searches for filenames and file content</br>
 - Regular Expressions</br>
 - Chained commands</br>
 - Filter by Filetype/Filepath/Filesize</br>
 - Exports</br>
-- Editing with replace and delete</br>
-- Ease of use: Run from Command Line, Powershell, Windows Explorer or headless</br>
+- Mass replace/delete</br>
+- Ease of use: Run from cmd, Powershell and Windows Explorer</br>
 
 <h1>INSTALLATION</h1>
 
@@ -27,7 +26,7 @@ No bloated gui or custom console. Just a fast, simple tool that runs in native c
 1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
 2. Download and run WindowsGrepSetup.msi (This is the only file you need)
 
-This will install Windows Grep in ProgramFilesx86, add "grep" to your system's PATH for command line use, and insert registry keys for context menu use within Windows Explorer directories.
+This will install Windows Grep in Program Files (x86), add "grep" to PATH for command line use, and insert a registry key for context menu use within Windows Explorer.
 
 <h3>Manual Compilation</h2>
 
@@ -41,7 +40,7 @@ Right-click in File Explorer > Windows Grep
 <br/><br/>
 OR
 <br/><br/>
-Open cmd > "grep [command]" <br/>
+Open cmd/powershell > "grep [command]" <br/>
 
 <h1>REFERENCE</h1>
 
