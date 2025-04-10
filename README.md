@@ -42,7 +42,7 @@ OR
 <br/><br/>
 Open cmd/powershell > "grep [command]" <br/> <br/>
 
-![image](https://github.com/user-attachments/assets/47a981a4-1dca-42eb-a263-6929ebcaddb6)
+![image](https://github.com/user-attachments/assets/6798a573-43db-4012-a4d0-04ff76e9ae3a)
 
 
 <h1>REFERENCE</h1>
