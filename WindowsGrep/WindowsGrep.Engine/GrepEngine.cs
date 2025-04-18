@@ -115,7 +115,7 @@ public static class GrepEngine
             if (targetFileFlag)
                 files = commandResultCollection.Where(x => x.SourceFile.Name == filepath).Select(result => result.SourceFile).ToList();
             else
-                files = commandResultCollection.Select(result => result.SourceFile).ToList();
+                files = commandResultCollection.Select(result => result.SourceFile).DistinctBy(x => x.Name).ToList();
         }
         else
         {
