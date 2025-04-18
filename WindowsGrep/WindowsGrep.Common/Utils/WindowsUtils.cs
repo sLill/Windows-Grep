@@ -19,12 +19,12 @@ public static class WindowsUtils
         return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
     }
 
-    public static IEnumerable<(string Name, bool IsDirectrory)> GetFiles(string root, bool recursive, int maxRecursionDepth, CancellationToken cancellationToken, 
-        List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
-        => GetFiles(root, root, recursive, maxRecursionDepth, cancellationToken, excludeDirectories, fileAttributesToSkip);
+    public static IEnumerable<(string Name, bool IsDirectrory)> GetFiles(string root, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
+        CancellationToken cancellationToken, List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
+        => GetFiles(root, root, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip);
 
-    private static IEnumerable<(string Name, bool IsDirectory)> GetFiles(string root, string currentDirectory, bool recursive, int maxRecursionDepth, CancellationToken cancellationToken, 
-        List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
+    private static IEnumerable<(string Name, bool IsDirectory)> GetFiles(string root, string currentDirectory, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
+        CancellationToken cancellationToken, List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
     {
         var enumerationOptions = new EnumerationOptions() { AttributesToSkip = fileAttributesToSkip };
 
@@ -35,9 +35,15 @@ public static class WindowsUtils
             yield return (directoryInfo.FullName, true);
         }
 
-        // Current directory
+        // Files in current directory
         foreach (var file in Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(currentDirectory.TrimEnd()), "*", enumerationOptions))
-            yield return (file, false);
+        {
+            var fileSize = WindowsUtils.GetFileSizeOnDisk(file);
+            bool fileSizeValidateSuccess = ValidateFileSize(fileSize, fileSizeMin, fileSizeMax);
+
+            if (fileSizeValidateSuccess)
+                yield return (file, false);
+        }
 
         string relativePath = Path.GetRelativePath(root, currentDirectory);
         int depth = relativePath == "." ? 0 : relativePath.Split(Path.DirectorySeparatorChar).Length;
@@ -52,7 +58,7 @@ public static class WindowsUtils
                 if (excludeDirectories != null && excludeDirectories.Any(x => directoryInfo.Name.Equals(x, StringComparison.OrdinalIgnoreCase)))
                     continue;
 
-                foreach (var result in GetFiles(root, subDirectory, recursive, maxRecursionDepth, cancellationToken, excludeDirectories, fileAttributesToSkip))
+                foreach (var result in GetFiles(root, subDirectory, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip))
                     yield return result;
             }
         }
@@ -136,6 +142,20 @@ public static class WindowsUtils
         bool isValidLength = value.Length == validHashLength;
 
         return isValidPattern && isValidLength;
+    }
+
+    /// <summary>
+    /// Check that a given filesize is within bounds
+    /// </summary>
+    /// <returns></returns>
+    private static bool ValidateFileSize(long fileSize, long fileSizeMinimum, long fileSizeMaximum)
+    {
+        bool isValid = true;
+
+        isValid &= (fileSizeMinimum == -1 || (fileSize >= fileSizeMinimum));
+        isValid &= (fileSizeMaximum == -1 || (fileSize <= fileSizeMaximum));
+
+        return isValid;
     }
     #endregion Methods..
 }

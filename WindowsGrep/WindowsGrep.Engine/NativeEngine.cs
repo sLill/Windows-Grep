@@ -8,7 +8,7 @@ public static class NativeEngine
         switch (nativeCommand.CommandType)
         {
             case NativeCommandType.List:
-                ListFilesAndDirectories(commandResultCollection, cancellationToken);
+                ListFiles(commandResultCollection, cancellationToken);
                 break;
 
             case NativeCommandType.ChangeDirectory:
@@ -25,7 +25,7 @@ public static class NativeEngine
         }
     }
 
-    private static void ListFilesAndDirectories(CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
+    private static void ListFiles(CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
     {
         bool includeSystemProtectedFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeSystemProtectedFiles];
         bool includeHiddenFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeHiddenFiles];
@@ -35,7 +35,7 @@ public static class NativeEngine
         fileAttributesToSkip |= (includeHiddenFiles ? 0 : FileAttributes.Hidden);
 
         string targetDirectory = Directory.GetCurrentDirectory();
-        foreach (var file in WindowsUtils.GetFiles(targetDirectory, false, int.MaxValue, cancellationToken, null, fileAttributesToSkip))
+        foreach (var file in WindowsUtils.GetFiles(targetDirectory, false, int.MaxValue, -1, -1, cancellationToken, null, fileAttributesToSkip))
             commandResultCollection.AddItem(new NativeCommandResult(file, NativeCommandType.List));
     }
     #endregion Methods..
