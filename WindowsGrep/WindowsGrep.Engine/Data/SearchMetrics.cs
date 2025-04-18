@@ -9,8 +9,8 @@ public class SearchMetrics
 
     public int ReplacedSuccessCount { get; set; }
 
-    public List<string> FailedReadFiles { get; set; } = new List<string>();
+    public List<(string Name, bool IsDirectory)> FailedReadFiles { get; set; } = new List<(string Name, bool IsDirectory)>();
 
-    public List<string> FailedWriteFiles { get; set; } = new List<string>();
+    public List<(string Name, bool IsDirectory)> FailedWriteFiles { get; set; } = new List<(string Name, bool IsDirectory)>();
     #endregion Properties..
 }

@@ -8,7 +8,7 @@ public static class NativeEngine
         switch (nativeCommand.CommandType)
         {
             case NativeCommandType.List:
-                ListFiles(commandResultCollection, cancellationToken);
+                ListFilesAndDirectories(commandResultCollection, cancellationToken);
                 break;
 
             case NativeCommandType.ChangeDirectory:
@@ -25,7 +25,7 @@ public static class NativeEngine
         }
     }
 
-    private static void ListFiles(CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
+    private static void ListFilesAndDirectories(CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
     {
         bool includeSystemProtectedFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeSystemProtectedFiles];
         bool includeHiddenFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeHiddenFiles];

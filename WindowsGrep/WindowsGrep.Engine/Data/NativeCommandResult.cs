@@ -10,7 +10,7 @@ public class NativeCommandResult : CommandResultBase
     #endregion Properties..
 
     #region Constructors..
-    public NativeCommandResult(string sourceFile, NativeCommandType nativeCommandType)
+    public NativeCommandResult((string Name, bool IsDirectory) sourceFile, NativeCommandType nativeCommandType)
         : base(sourceFile)
     {
         _commandType = nativeCommandType;
@@ -25,7 +25,7 @@ public class NativeCommandResult : CommandResultBase
         switch (_commandType)
         {
             case NativeCommandType.List:
-                BuildFileNameConsoleItemCollection(consoleItemCollection);
+                BuildFileConsoleItemCollection(consoleItemCollection);
                 break;
 
             case NativeCommandType.ClearConsole:
@@ -38,10 +38,10 @@ public class NativeCommandResult : CommandResultBase
         return consoleItemCollection;
     }
 
-    private void BuildFileNameConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
+    private void BuildFileConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
     {
         // Filename
-        consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = SourceFile });
+        consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = SourceFile.IsDirectory ? ConsoleColor.Cyan : ConsoleColor.DarkYellow, Value = SourceFile.Name });
 
         // File attributes
         consoleItemCollection.AddRange(GetFileAttributeConsoleItems());

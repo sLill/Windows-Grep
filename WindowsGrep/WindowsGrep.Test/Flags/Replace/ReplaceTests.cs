@@ -47,7 +47,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -76,7 +76,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -105,7 +105,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -134,7 +134,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -165,7 +165,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -194,7 +194,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -223,7 +223,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -252,7 +252,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -283,7 +283,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -312,7 +312,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -341,7 +341,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {
@@ -370,7 +370,7 @@
                 WindowsGrep.RunCommand(Command, commandResultCollection, new CancellationToken());
 
                 // Assert there are no files returned in the grep collection whose text doesn't match the expected text
-                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile) != _TestFileExpectedResultText).Any());
+                Assert.IsFalse(commandResultCollection.Where(result => File.ReadAllText(result.SourceFile.Name) != _TestFileExpectedResultText).Any());
             }
             catch
             {

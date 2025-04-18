@@ -10,11 +10,11 @@ public abstract class CommandResultBase
 
     public long FileSize { get; set; } = -1;
 
-    public string SourceFile { get; set; }
+    public (string Name, bool IsDirectory) SourceFile { get; set; }
     #endregion Properties..
 
     #region Constructors..
-    public CommandResultBase(string sourceFile)
+    public CommandResultBase((string Name, bool IsDirectory) sourceFile)
     {
         SourceFile = sourceFile;
     }
@@ -27,7 +27,7 @@ public abstract class CommandResultBase
     {
         List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
 
-        var fileAttributes = File.GetAttributes(SourceFile);
+        var fileAttributes = File.GetAttributes(SourceFile.Name);
         if ((fileAttributes & FileAttributes.System) == FileAttributes.System)
             consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"[System]" });
         if ((fileAttributes & FileAttributes.Hidden) == FileAttributes.Hidden)

@@ -17,7 +17,7 @@ public class GrepCommandResult : CommandResultBase
     #endregion Properties..
 
     #region Constructors..
-    public GrepCommandResult(string sourceFile, ResultScope resultScope)
+    public GrepCommandResult((string Name, bool IsDirectory) sourceFile, ResultScope resultScope)
         : base(sourceFile)
     {
         _scope = resultScope;
@@ -52,7 +52,7 @@ public class GrepCommandResult : CommandResultBase
     private void BuildFileContentConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
     {
         // FileName
-        consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
+        consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile.Name} " });
 
         // FileSize
         if (FileSize > -1)
@@ -98,7 +98,7 @@ public class GrepCommandResult : CommandResultBase
     private void BuildFileHashConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
     {
         // FileName
-        consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile} " });
+        consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile.Name} " });
 
         // Context matched
         consoleItemCollection.Add(new ConsoleItem() { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
@@ -125,9 +125,9 @@ public class GrepCommandResult : CommandResultBase
 
         result = (_scope) switch
         {
-            ResultScope.FileContent => $"{SourceFile}{separator}{fileSizeString}{lineNumberString}{separator}{LeadingContextString}{MatchedString}{TrailingContextString}",
-            ResultScope.FileName => SourceFile,
-            ResultScope.FileHash => $"{SourceFile}{separator}{MatchedString}"
+            ResultScope.FileContent => $"{SourceFile.Name}{separator}{fileSizeString}{lineNumberString}{separator}{LeadingContextString}{MatchedString}{TrailingContextString}",
+            ResultScope.FileName => SourceFile.Name,
+            ResultScope.FileHash => $"{SourceFile.Name}{separator}{MatchedString}"
         };
 
         return result;
