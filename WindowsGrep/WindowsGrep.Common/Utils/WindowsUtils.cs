@@ -1,5 +1,4 @@
 ﻿using System.IO;
-
 namespace WindowsGrep.Common;
 
 public static class WindowsUtils
@@ -19,11 +18,11 @@ public static class WindowsUtils
         return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
     }
 
-    public static IEnumerable<(string Name, bool IsDirectrory)> GetFiles(string root, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
+    public static IEnumerable<FileItem> GetFiles(string root, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
         CancellationToken cancellationToken, List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
         => GetFiles(root, root, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip);
 
-    private static IEnumerable<(string Name, bool IsDirectory)> GetFiles(string root, string currentDirectory, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
+    private static IEnumerable<FileItem> GetFiles(string root, string currentDirectory, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
         CancellationToken cancellationToken, List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
     {
         var enumerationOptions = new EnumerationOptions() { AttributesToSkip = fileAttributesToSkip };
@@ -32,7 +31,7 @@ public static class WindowsUtils
         foreach (var subDirectory in Directory.EnumerateDirectories(currentDirectory, "*", enumerationOptions))
         {
             var directoryInfo = new DirectoryInfo(subDirectory);
-            yield return (directoryInfo.FullName, true);
+            yield return new FileItem(directoryInfo.FullName, true, -1);
         }
 
         // Files in current directory
@@ -42,7 +41,7 @@ public static class WindowsUtils
             bool fileSizeValidateSuccess = ValidateFileSize(fileSize, fileSizeMin, fileSizeMax);
 
             if (fileSizeValidateSuccess)
-                yield return (file, false);
+                yield return new FileItem(file, false, fileSize);
         }
 
         string relativePath = Path.GetRelativePath(root, currentDirectory);

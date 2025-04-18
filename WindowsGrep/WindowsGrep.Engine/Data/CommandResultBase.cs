@@ -8,13 +8,11 @@ public abstract class CommandResultBase
     #region Properties..
     public bool Suppressed { get; set; }
 
-    public long FileSize { get; set; } = -1;
-
-    public (string Name, bool IsDirectory) SourceFile { get; set; }
+    public FileItem SourceFile { get; set; }
     #endregion Properties..
 
     #region Constructors..
-    public CommandResultBase((string Name, bool IsDirectory) sourceFile)
+    public CommandResultBase(FileItem sourceFile)
     {
         SourceFile = sourceFile;
     }
@@ -43,9 +41,9 @@ public abstract class CommandResultBase
     {
         List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
 
-        if (FileSize > -1)
+        if (SourceFile.FileSize > -1)
         {
-            var fileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
+            var fileSizeReduced = WindowsUtils.GetReducedSize(SourceFile.FileSize, 3, out FileSizeType fileSizeType);
             consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $" {fileSizeReduced} {fileSizeType}(s) " });
         }
 

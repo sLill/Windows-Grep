@@ -68,9 +68,7 @@ public static class CommandUtils
 
                 string sizeType = match.Groups["SizeType"].Value.ToUpper();
                 if (!sizeType.IsNullOrEmpty())
-                {
-                    fileSizeModifier = Enum.Parse<FileSizeType>(sizeType).GetCustomAttribute<ValueAttribute>().Value;
-                }
+                    fileSizeModifier = Enum.Parse<FileSizeType>(sizeType, true).GetCustomAttribute<ValueAttribute>().Value;
 
                 fileSizeMinimum = size * fileSizeModifier;
             }

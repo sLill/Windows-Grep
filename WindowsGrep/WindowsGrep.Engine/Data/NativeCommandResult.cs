@@ -10,7 +10,7 @@ public class NativeCommandResult : CommandResultBase
     #endregion Properties..
 
     #region Constructors..
-    public NativeCommandResult((string Name, bool IsDirectory) sourceFile, NativeCommandType nativeCommandType)
+    public NativeCommandResult(FileItem sourceFile, NativeCommandType nativeCommandType)
         : base(sourceFile)
     {
         _commandType = nativeCommandType;

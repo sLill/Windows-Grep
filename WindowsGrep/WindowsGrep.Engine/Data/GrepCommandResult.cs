@@ -17,7 +17,7 @@ public class GrepCommandResult : CommandResultBase
     #endregion Properties..
 
     #region Constructors..
-    public GrepCommandResult((string Name, bool IsDirectory) sourceFile, ResultScope resultScope)
+    public GrepCommandResult(FileItem sourceFile, ResultScope resultScope)
         : base(sourceFile)
     {
         _scope = resultScope;
@@ -55,17 +55,15 @@ public class GrepCommandResult : CommandResultBase
         consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile.Name} " });
 
         // FileSize
-        if (FileSize > -1)
+        if (SourceFile.FileSize > -1)
         {
-            var fileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
+            var fileSizeReduced = WindowsUtils.GetReducedSize(SourceFile.FileSize, 3, out FileSizeType fileSizeType);
             consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $"{fileSizeReduced} {fileSizeType}(s) " });
         }
 
         // Line number
         if (LineNumber > -1)
-        {
             consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
-        }
 
         // Context start
         consoleItemCollection.Add(new ConsoleItem() { Value = LeadingContextString });
@@ -117,9 +115,9 @@ public class GrepCommandResult : CommandResultBase
         string lineNumberString = LineNumber > -1 ? $"Line {LineNumber}" : string.Empty;
 
         string fileSizeString = string.Empty;
-        if (FileSize > -1)
+        if (SourceFile.FileSize > -1)
         {
-            var fileSizeReduced = WindowsUtils.GetReducedSize(FileSize, 3, out FileSizeType fileSizeType);
+            var fileSizeReduced = WindowsUtils.GetReducedSize(SourceFile.FileSize, 3, out FileSizeType fileSizeType);
             fileSizeString = $"{fileSizeReduced} {fileSizeType}(s){separator}";
         }
 

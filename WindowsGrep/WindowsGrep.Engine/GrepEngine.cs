@@ -43,7 +43,7 @@ public static class GrepEngine
     }
 
     private static void BuildFileContentSearchResults(GrepCommand grepCommand, CommandResultCollection commandResultCollection, List<Match> matches,
-        (string Name, bool IsDirectory) file, string fileRaw, CancellationToken cancellationToken)
+        FileItem file, string fileRaw, CancellationToken cancellationToken)
     {
         bool ignoreBreaksFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
         bool ignoreCaseFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
@@ -97,7 +97,7 @@ public static class GrepEngine
         });
     }
 
-    private static IEnumerable<(string Name, bool IsDirectory)> GetFiles(GrepCommand grepCommand, IList<CommandResultBase> commandResultCollection, string filepath, CancellationToken cancellationToken)
+    private static IEnumerable<FileItem> GetFiles(GrepCommand grepCommand, IList<CommandResultBase> commandResultCollection, string filepath, CancellationToken cancellationToken)
     {
         bool recursiveFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Recursive);
         bool targetFileFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.TargetFile);
@@ -108,7 +108,7 @@ public static class GrepEngine
 
         int maxDepth = maxDepthFlag ? Convert.ToInt32(grepCommand.CommandArgs[ConsoleFlag.MaxDepth]) : int.MaxValue;
 
-        IEnumerable<(string Name, bool IsDirectory)> files = null;
+        IEnumerable<FileItem> files = null;
 
         if (commandResultCollection.Any())
         {
@@ -120,7 +120,7 @@ public static class GrepEngine
         else
         {
             if (targetFileFlag)
-                files = new List<(string Name, bool IsDirectory)>() { (filepath, false) };
+                files = new List<FileItem>() { new FileItem(filepath, false, WindowsUtils.GetFileSizeOnDisk(filepath)) };
             else
             {
                 bool includeSystemProtectedFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeSystemProtectedFiles];
@@ -138,7 +138,7 @@ public static class GrepEngine
         return files;
     }
 
-    private static void GetFileContentMatches(CommandResultCollection commandResultCollection, IEnumerable<(string Name, bool IsDirectory)> files, GrepCommand grepCommand, string searchPattern,
+    private static void GetFileContentMatches(CommandResultCollection commandResultCollection, IEnumerable<FileItem> files, GrepCommand grepCommand, string searchPattern,
         Regex searchRegex, SearchMetrics searchMetrics, CancellationToken cancellationToken)
     {
         bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
@@ -193,7 +193,7 @@ public static class GrepEngine
         }
     }
 
-    private static void GetFileHashMatches(CommandResultCollection commandResultCollection, IEnumerable<(string Name, bool IsDirectory)> files, GrepCommand grepCommand,
+    private static void GetFileHashMatches(CommandResultCollection commandResultCollection, IEnumerable<FileItem> files, GrepCommand grepCommand,
         string searchTerm, SearchMetrics searchMetrics, HashType hashType, CancellationToken cancellationToken)
     {
         var matches = new List<CommandResultBase>();
@@ -262,7 +262,7 @@ public static class GrepEngine
         }
     }
 
-    private static void GetFileNameMatches(CommandResultCollection commandResultCollection, IEnumerable<(string Name, bool IsDirectory)> files, GrepCommand grepCommand,
+    private static void GetFileNameMatches(CommandResultCollection commandResultCollection, IEnumerable<FileItem> files, GrepCommand grepCommand,
         string searchPattern, Regex searchRegex, SearchMetrics searchMetrics, CancellationToken cancellationToken)
     {
         bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
@@ -327,7 +327,7 @@ public static class GrepEngine
         string filepath = CommandUtils.GetPath(grepCommand);
         HashType hashType = CommandUtils.GetHashType(grepCommand);
 
-        IEnumerable<(string Name, bool IsDirectory)> files = GetFiles(grepCommand, commandResultCollection, filepath, cancellationToken);
+        IEnumerable<FileItem> files = GetFiles(grepCommand, commandResultCollection, filepath, cancellationToken);
 
         // Clear the result collection between chained commands so that only the results of the final command are returned
         commandResultCollection.Clear();
@@ -364,7 +364,7 @@ public static class GrepEngine
         PublishCommandSummary(grepCommand, commandResultCollection, searchMetrics);
     }
 
-    private static GrepCommandResult PerformReadOperations(GrepCommand grepCommand, (string Name, bool IsDirectory) file, Group fileNameMatch, Match searchMatch)
+    private static GrepCommandResult PerformReadOperations(GrepCommand grepCommand, FileItem file, Group fileNameMatch, Match searchMatch)
     {
         GrepCommandResult result = null;
 
@@ -407,7 +407,7 @@ public static class GrepEngine
         return result;
     }
 
-    private static List<ConsoleItem> PerformWriteOperations(GrepCommand grepCommand, (string Name, bool IsDirectory) file, string searchPattern,
+    private static List<ConsoleItem> PerformWriteOperations(GrepCommand grepCommand, FileItem file, string searchPattern,
         int fileMatchesCount, string fileRaw, SearchMetrics searchMetrics, CancellationToken cancellationToken)
     {
         var consoleItemCollection = new List<ConsoleItem>();
@@ -500,7 +500,7 @@ public static class GrepEngine
 
         if (fileSizeMinimumFlag || fileSizeMaximumFlag)
         {
-            var totalFileSize = commandResultCollection.Sum(x => x.FileSize);
+            var totalFileSize = commandResultCollection.Sum(x => x.SourceFile.FileSize);
             var fileSizeReduced = WindowsUtils.GetReducedSize(totalFileSize, 3, out FileSizeType fileSizeType);
 
             summary = $" [{fileSizeReduced} {fileSizeType}(s)]";
