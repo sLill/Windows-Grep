@@ -9,5 +9,8 @@ public enum ConfigItem
     IncludeHiddenFiles,
 
     [DefaultValue(false)]
-    DisplayWorkingDirectoryInPrompt
+    DisplayWorkingDirectoryInPrompt,
+
+    [DefaultValue(false)]
+    ShowInaccessibleFiles
 }

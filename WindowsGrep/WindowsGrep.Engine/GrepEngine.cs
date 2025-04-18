@@ -511,22 +511,26 @@ public static class GrepEngine
 
     private static void PublishFileAccessSummary(SearchMetrics searchMetrics)
     {
+        bool showInaccessibleFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.ShowInaccessibleFiles];
+
         if (searchMetrics.FailedReadFiles.Any() || searchMetrics.FailedWriteFiles.Any())
         {
             if (searchMetrics.FailedReadFiles.Any())
             {
-                string unreachableFiles = $"[{searchMetrics.FailedReadFiles} file(s) unreadable/inaccessible]{Environment.NewLine}";
+                string unreachableFiles = $"[{searchMetrics.FailedReadFiles.Count} file(s) unreadable/inaccessible]{Environment.NewLine}";
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = unreachableFiles });
 
-                searchMetrics.FailedReadFiles.ForEach(x => ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{x.Name}{Environment.NewLine}" }));
+                if (showInaccessibleFiles)
+                    searchMetrics.FailedReadFiles.ForEach(x => ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{x.Name}{Environment.NewLine}" }));
             }
 
             if (searchMetrics.FailedWriteFiles.Any())
             {
-                string unwriteableFiles = $"[{searchMetrics.FailedWriteFiles} file(s) could not be modified]{Environment.NewLine}";
+                string unwriteableFiles = $"[{searchMetrics.FailedWriteFiles.Count} file(s) could not be modified]{Environment.NewLine}";
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = unwriteableFiles });
 
-                searchMetrics.FailedWriteFiles.ForEach(x => ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{x.Name}{Environment.NewLine}" }));
+                if (showInaccessibleFiles)
+                    searchMetrics.FailedWriteFiles.ForEach(x => ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{x.Name}{Environment.NewLine}" }));
             }
 
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Environment.NewLine });
