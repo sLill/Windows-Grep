@@ -55,11 +55,11 @@ public class GrepCommandResult : CommandResultBase
         consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile.Name} " });
 
         // FileSize
-        if (SourceFile.FileSize > -1)
-        {
-            var fileSizeReduced = WindowsUtils.GetReducedSize(SourceFile.FileSize, 3, out FileSizeType fileSizeType);
-            consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $"{fileSizeReduced} {fileSizeType}(s) " });
-        }
+        //if (SourceFile.FileSize > -1)
+        //{
+        //    var fileSizeReduced = WindowsUtils.GetReducedSize(SourceFile.FileSize, 3, out FileSizeType fileSizeType);
+        //    consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Green, Value = $"{fileSizeReduced} {fileSizeType}(s) " });
+        //}
 
         // Line number
         if (LineNumber > -1)
@@ -90,7 +90,7 @@ public class GrepCommandResult : CommandResultBase
         consoleItemCollection.AddRange(GetFileAttributeConsoleItems());
 
         // FileSize
-        consoleItemCollection.AddRange(GetFileSizeConsoleItems());
+        //consoleItemCollection.AddRange(GetFileSizeConsoleItems());
     }
 
     private void BuildFileHashConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
@@ -105,7 +105,7 @@ public class GrepCommandResult : CommandResultBase
         consoleItemCollection.AddRange(GetFileAttributeConsoleItems());
 
         // FileSize
-        consoleItemCollection.AddRange(GetFileSizeConsoleItems());
+        //consoleItemCollection.AddRange(GetFileSizeConsoleItems());
     }
 
     public override string ToString(char separator)
