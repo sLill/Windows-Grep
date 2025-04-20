@@ -89,7 +89,7 @@ Order of flags and the search term is completely flexible
 -r -k Dug
 <br/><br/>
 
-<i>Search for file content containing "Dug" or "Dig". ignore-case.</i><br/>
+<i>Search for "Dug" or "Dig". Ignore-case.</i><br/>
 -i D[ui]g
 <br/><br/>
 
@@ -105,11 +105,7 @@ Dug -c 100
 -r Dug -k | -i mike
 <br/><br/>
 
-<i>Match phone number</i><br/>
-[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}
-<br/><br/>
-
-<i>Recursive search. US zipcode expression. Filter out .dll matches. Limit results 10. Write output to .csv</i><br/>
+<i>Recursive search for US zipcodes. Filter out .dll's, limit results 10 and write output to a .csv</i><br/>
 -r \d{5}(-\d{4})? -T .dll -n 10 -w 'C:\output.csv'
 <br/><br/>
 
