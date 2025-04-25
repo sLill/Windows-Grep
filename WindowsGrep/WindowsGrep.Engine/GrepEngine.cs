@@ -504,7 +504,6 @@ public static class GrepEngine
             var fileSizeReduced = WindowsUtils.GetReducedSize(totalFileSize, 3, out FileSizeType fileSizeType);
 
             summary = $" [{fileSizeReduced} {fileSizeType}(s)]";
-
             ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = summary });
         }
     }
