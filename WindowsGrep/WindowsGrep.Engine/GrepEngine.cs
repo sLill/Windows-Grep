@@ -102,6 +102,8 @@ public static class GrepEngine
         bool recursiveFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Recursive);
         bool targetFileFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.TargetFile);
         bool maxDepthFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.MaxDepth);
+        bool showHiddenFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.ShowHidden);
+        bool showSystemFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.ShowSystem);
 
         long fileSizeMin = CommandUtils.GetFileSizeMinimum(grepCommand);
         long fileSizeMax = CommandUtils.GetFileSizeMaximum(grepCommand);
@@ -123,12 +125,9 @@ public static class GrepEngine
                 files = new List<FileItem>() { new FileItem(filepath, false, WindowsUtils.GetFileSizeOnDisk(filepath)) };
             else
             {
-                bool includeSystemProtectedFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeSystemProtectedFiles];
-                bool includeHiddenFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeHiddenFiles];
-
                 FileAttributes fileAttributesToSkip = default;
-                fileAttributesToSkip |= (includeSystemProtectedFiles ? 0 : FileAttributes.System);
-                fileAttributesToSkip |= (includeHiddenFiles ? 0 : FileAttributes.Hidden);
+                fileAttributesToSkip |= (showSystemFlag ? 0 : FileAttributes.System);
+                fileAttributesToSkip |= (showHiddenFlag ? 0 : FileAttributes.Hidden);
 
                 var pathExcludeFilters = CommandUtils.GetPathExcludeFilters(grepCommand);
                 files = WindowsUtils.GetFiles(filepath, recursiveFlag, maxDepth, fileSizeMin, fileSizeMax, cancellationToken, pathExcludeFilters, fileAttributesToSkip);

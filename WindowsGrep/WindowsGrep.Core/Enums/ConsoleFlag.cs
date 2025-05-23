@@ -117,7 +117,7 @@ public enum ConsoleFlag
     Replace,
 
     // Delete files returned in search
-    [DescriptionCollection("-DX", "--delete-files")]
+    [DescriptionCollection("-DX", "--delete")]
     Delete,
 
     // Match againt file hashes (0=SHA256, 1=MD5)
@@ -128,4 +128,12 @@ public enum ConsoleFlag
     // Show all commands
     [DescriptionCollection("-h", "--help")]
     Help,
+
+    // Show hidden files
+    [DescriptionCollection("--show-hidden")]
+    ShowHidden,
+
+    // Show system files
+    [DescriptionCollection("--show-system")]
+    ShowSystem,
 }

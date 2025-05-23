@@ -27,12 +27,9 @@ public static class NativeEngine
 
     private static void ListFiles(CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
     {
-        bool includeSystemProtectedFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeSystemProtectedFiles];
-        bool includeHiddenFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.IncludeHiddenFiles];
-
         FileAttributes fileAttributesToSkip = default;
-        fileAttributesToSkip |= (includeSystemProtectedFiles ? 0 : FileAttributes.System);
-        fileAttributesToSkip |= (includeHiddenFiles ? 0 : FileAttributes.Hidden);
+        fileAttributesToSkip |= FileAttributes.System;
+        fileAttributesToSkip |= FileAttributes.Hidden;
 
         string targetDirectory = Directory.GetCurrentDirectory();
         foreach (var file in WindowsUtils.GetFiles(targetDirectory, false, int.MaxValue, -1, -1, cancellationToken, null, fileAttributesToSkip))

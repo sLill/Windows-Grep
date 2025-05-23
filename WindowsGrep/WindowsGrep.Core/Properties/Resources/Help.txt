@@ -20,7 +20,9 @@
 -w	--write=			: Write output to specified filepath (surround with ' or ")
 
 -RX	--replace=			: Replace text in matched files or filenames (surround with ' or ")
--DX	--delete-files			: Delete matched files
+-DX	--delete			: Delete matched files
 
 --hash=					: Match file hashes (0=SHA256, 1=MD5)
 --max-depth=				: Sets the max search depth when recursion (-r) is enabled
+--show-hidden				: Show hidden files
+--show-system				: Show system files
