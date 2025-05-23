@@ -68,8 +68,11 @@ Open cmd/powershell > "grep [command]" <br/> <br/>
 | FileSize Maximum          | -Z | --filesize-maximum=   |
 | Write Output to File      | -w | --write=              |
 | Replace Text              | -RX| --replace=            |
-| Delete Files              | -DX| --delete-files        |
+| Delete Files              | -DX| --delete              |
 | File Hashes               |    | --hash=  (0=SHA256, 1=MD5)     |
+| Max Depth                 |    | --max-depth=          |
+| Show Hidden Files         |    | --show-hidden         |
+| Show System Files         |    | --show-system         |  
 
 
 <i>* See <a href="https://github.com/sLill/Windows-Grep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
