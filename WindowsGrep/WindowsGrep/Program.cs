@@ -10,38 +10,7 @@
         private static async Task Main(string[] args)
         {
             Initialize(args);
-
-            var host = CreateHostBuilder(args).Build();
-            var windowsGrep = host.Services.GetRequiredService<WindowsGrep>();
-
-            do
-            {
-                string command = string.Empty;
-                if (args.Length == 0)
-                {
-                    ConsoleUtils.PublishPrompt();
-                    command = Console.ReadLine();
-                }
-                else
-                    command = string.Join(" ", args);
-
-                if (command.Length > 0)
-                {
-                    try
-                    {
-                        var commandResultCollection = new CommandResultCollection();
-                        commandResultCollection.ItemsAdded += OnResultsAdded;
-
-                        _cancellationTokenSource = new CancellationTokenSource();
-                        await Task.Run(() => windowsGrep.RunCommand(command, commandResultCollection, _cancellationTokenSource.Token));
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message + Environment.NewLine);
-                    }
-                }
-            }
-            while (args.Length == 0);
+            await RunAsync(args);
         }
         #endregion Main
 
@@ -52,44 +21,50 @@
             e.Cancel = true;
             _cancellationTokenSource?.Cancel();
         }
-
-        private static void OnResultsAdded(object sender, EventArgs e)
-        {
-            var commandResultCollection = sender as List<CommandResultBase>;
-            commandResultCollection.ForEach(result =>
-            {
-                if (_cancellationTokenSource.IsCancellationRequested)
-                    return;
-
-                if (!result.Suppressed)
-                    ConsoleUtils.WriteConsoleItemCollection(result.ToConsoleItemCollection(), _cancellationTokenSource.Token);
-            });
-        }
         #endregion Event Handlers..
 
         private static void Initialize(string[] args)
         {
+            _cancellationTokenSource = new CancellationTokenSource();
+
             // Only necessary on older versions of Windows 
             WindowsUtils.TryEnableAnsi();
-
-            if (args.Length == 0)
-                ConsoleUtils.PublishSplash();
 
             // Override the default behavior for the Ctrl+C shortcut if the application was not ran from the command line
             if (Environment.UserInteractive)
                 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_OnCancelKeyPress);
         }
 
+        private static async Task RunAsync(string[] args)
+        {
+            var host = CreateHostBuilder(args).Build();
+            var windowsGrep = host.Services.GetRequiredService<WindowsGrep>();
+            await windowsGrep.RunAsync(args, _cancellationTokenSource);
+        }
+
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host
             .CreateDefaultBuilder(args)
+            .ConfigureLogging(builder =>
+            {
+                builder.SetMinimumLevel(LogLevel.Information)
+                       .AddFilter("Microsoft", LogLevel.Warning)
+                       .AddFilter("System", LogLevel.Warning)
+                       .AddDebug();
+#if DEBUG
+                builder.AddFilter("WindowsGrep", LogLevel.Debug)
+                       .AddConsole();
+#endif
+            })
             .ConfigureServices((hostContext, services) =>
             {
-                services            
-                .AddTransient<WindowsGrep>()
-                .AddTransient<GrepService>()
-                .AddTransient<NativeService>();
+                services.AddSingleton<ConsoleService>()
+                        .AddSingleton<FileService>()
+                        .AddScoped<WindowsGrep>()
+                        .AddScoped<GrepService>()
+                        .AddScoped<NativeService>()
+                        .AddScoped<PublisherService>();
             });
         }
         #endregion Methods..

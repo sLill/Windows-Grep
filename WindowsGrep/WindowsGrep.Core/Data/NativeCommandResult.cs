@@ -6,9 +6,6 @@ public class NativeCommandResult : CommandResultBase
     private NativeCommandType _commandType;
     #endregion Fields..
 
-    #region Properties..
-    #endregion Properties..
-
     #region Constructors..
     public NativeCommandResult(FileItem sourceFile, NativeCommandType nativeCommandType)
         : base(sourceFile)
@@ -18,36 +15,25 @@ public class NativeCommandResult : CommandResultBase
     #endregion Constructors..
 
     #region Methods..
-    public override List<ConsoleItem> ToConsoleItemCollection()
+    public List<ConsoleItem> ToConsoleItemCollection()
     {
-        List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
+        var consoleItems = new List<ConsoleItem>();
 
-        switch (_commandType)
-        {
-            case NativeCommandType.List:
-                BuildFileConsoleItemCollection(consoleItemCollection);
-                break;
-
-            case NativeCommandType.ClearConsole:
-            case NativeCommandType.ChangeDirectory:
-                break;
-        }
-
-        // Empty buffer
-        consoleItemCollection.Add(new ConsoleItem() { Value = Environment.NewLine });
-        return consoleItemCollection;
-    }
-
-    private void BuildFileConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
-    {
         // Filename
-        consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = SourceFile.IsDirectory ? ConsoleColor.Cyan : ConsoleColor.DarkYellow, Value = SourceFile.Name });
+        consoleItems.Add(new ConsoleItem()
+        {
+            ForegroundColor = SourceFile.IsDirectory ? ConsoleColor.Cyan : ConsoleColor.DarkYellow,
+            Value = SourceFile.Name
+        });
 
         // File attributes
-        consoleItemCollection.AddRange(GetFileAttributeConsoleItems());
+        consoleItems.AddRange(GetFileAttributeConsoleItems());
 
         // FileSize
-        consoleItemCollection.AddRange(GetFileSizeConsoleItems());
+        consoleItems.AddRange(GetFileSizeConsoleItems());
+        consoleItems.Add(new ConsoleItem() { Value = Environment.NewLine });
+
+        return consoleItems;
     }
     #endregion Methods..
 }

@@ -1,6 +1,6 @@
 ﻿namespace WindowsGrep.Core;
 
-public static class CommandUtils
+public static class ConsoleCommandUtils
 {
     #region Fields..
     private const string FILE_SIZE_PATTERN = @"(?<Size>\d+)(?<SizeType>\S{2})?";

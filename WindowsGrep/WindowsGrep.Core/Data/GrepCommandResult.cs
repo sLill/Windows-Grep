@@ -25,7 +25,7 @@ public class GrepCommandResult : CommandResultBase
     #endregion Constructors..
 
     #region Methods..
-    public override List<ConsoleItem> ToConsoleItemCollection()
+    public List<ConsoleItem> ToConsoleItemCollection()
     {
         List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();
 

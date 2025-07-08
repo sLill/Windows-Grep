@@ -2,12 +2,7 @@
 
 public abstract class CommandResultBase
 {
-    #region Fields..
-    #endregion Fields..
-
     #region Properties..
-    public bool Suppressed { get; set; }
-
     public FileItem SourceFile { get; set; }
     #endregion Properties..
 
@@ -19,8 +14,6 @@ public abstract class CommandResultBase
     #endregion Constructors..
 
     #region Methods..
-    public abstract List<ConsoleItem> ToConsoleItemCollection();
-
     protected List<ConsoleItem> GetFileAttributeConsoleItems()
     {
         List<ConsoleItem> consoleItemCollection = new List<ConsoleItem>();

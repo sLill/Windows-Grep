@@ -7,3 +7,6 @@ global using WindowsGrep.Common;
 global using WindowsGrep.Core;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Logging;
+global using System.Linq;
+global using System.Collections.Concurrent;

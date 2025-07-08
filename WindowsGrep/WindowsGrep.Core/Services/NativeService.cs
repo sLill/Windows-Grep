@@ -2,13 +2,28 @@
 
 public class NativeService
 {
-    #region Methods..
-    public void BeginProcessNativeCommand(NativeCommand nativeCommand, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
+    #region Fields..
+    private readonly PublisherService _publisherService;
+    private readonly ConsoleService _consoleService;
+    #endregion Fields..
+
+    #region Constructors..
+    public NativeService(PublisherService publisherService, ConsoleService consoleService)
     {
+        _publisherService = publisherService;
+        _consoleService = consoleService;
+    }
+    #endregion Constructors..
+
+    #region Methods..
+    public void RunCommand(NativeCommand nativeCommand, List<CommandResultBase> commandResults, CancellationToken cancellationToken)
+    {
+        _publisherService.Subscribe<ConsoleItem>(_consoleService.Write);
+
         switch (nativeCommand.CommandType)
         {
             case NativeCommandType.List:
-                ListFiles(commandResultCollection, cancellationToken);
+                ListFiles(commandResults, cancellationToken);
                 break;
 
             case NativeCommandType.ChangeDirectory:
@@ -20,12 +35,12 @@ public class NativeService
                 break;
 
             case NativeCommandType.PrintWorkingDirectory:
-                ConsoleUtils.WriteConsoleItem(new ConsoleItem() { Value = Directory.GetCurrentDirectory() + '\n' });
+                _publisherService.Publish(new ConsoleItem() { Value = Directory.GetCurrentDirectory() + '\n' });
                 break;
         }
     }
 
-    private void ListFiles(CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
+    private void ListFiles(List<CommandResultBase> commandResults, CancellationToken cancellationToken)
     {
         FileAttributes fileAttributesToSkip = default;
         fileAttributesToSkip |= FileAttributes.System;
@@ -33,7 +48,10 @@ public class NativeService
 
         string targetDirectory = Directory.GetCurrentDirectory();
         foreach (var file in WindowsUtils.GetFiles(targetDirectory, false, int.MaxValue, -1, -1, cancellationToken, null, fileAttributesToSkip))
-            commandResultCollection.AddItem(new NativeCommandResult(file, NativeCommandType.List));
+        {
+            var commandResult = new NativeCommandResult(file, NativeCommandType.List);
+            commandResult.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(y));
+        }
     }
     #endregion Methods..
 }
