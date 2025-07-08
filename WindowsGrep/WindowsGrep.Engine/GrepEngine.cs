@@ -18,6 +18,10 @@ public static class GrepEngine
                 ConsoleUtils.PublishHelp(false);
                 break;
 
+            case GrepCommandType.Help_Full:
+                ConsoleUtils.PublishHelp(true);
+                break;
+
             case GrepCommandType.Query:
                 Query(grepCommand, commandResultCollection, cancellationToken);
                 break;
@@ -26,14 +30,14 @@ public static class GrepEngine
 
     private static void Query(GrepCommand grepCommand, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
     {
-        bool writeFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
+        bool writeFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.OutFile);
         Stopwatch commandTimer = Stopwatch.StartNew();
 
         RegexOptions optionsFlags = CommandUtils.GetRegexOptions(grepCommand);
         ProcessCommand(commandResultCollection, grepCommand, optionsFlags, cancellationToken);
 
         if (writeFlag)
-            commandResultCollection.Write(grepCommand.CommandArgs[ConsoleFlag.Write]);
+            commandResultCollection.Write(grepCommand.CommandArgs[ConsoleFlag.OutFile]);
 
         // Publish command run time
         commandTimer.Stop();
@@ -48,10 +52,6 @@ public static class GrepEngine
         bool ignoreBreaksFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
         bool ignoreCaseFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
         bool contextFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Context);
-        bool nResultsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.NResults);
-        bool suppressFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Suppress);
-
-        int nResults = nResultsFlag ? Convert.ToInt32(grepCommand.CommandArgs[ConsoleFlag.NResults]) : int.MaxValue;
 
         // Build file context search pattern
         string searchTerm = grepCommand.CommandArgs[ConsoleFlag.SearchTerm];
@@ -59,7 +59,7 @@ public static class GrepEngine
 
         matches.ForEach(match =>
         {
-            if (cancellationToken.IsCancellationRequested || commandResultCollection.Count > nResults)
+            if (cancellationToken.IsCancellationRequested)
                 return;
 
             string leadingContext = string.Empty;
@@ -82,7 +82,6 @@ public static class GrepEngine
 
             GrepCommandResult grepResult = new GrepCommandResult(file, ResultScope.FileContent)
             {
-                Suppressed = suppressFlag,
                 LeadingContextString = leadingContext,
                 TrailingContextString = trailingContext,
                 MatchedString = matchedString
@@ -100,7 +99,6 @@ public static class GrepEngine
     private static IEnumerable<FileItem> GetFiles(GrepCommand grepCommand, IList<CommandResultBase> commandResultCollection, string filepath, CancellationToken cancellationToken)
     {
         bool recursiveFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Recursive);
-        bool targetFileFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.TargetFile);
         bool maxDepthFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.MaxDepth);
         bool showHiddenFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.ShowHidden);
         bool showSystemFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.ShowSystem);
@@ -113,25 +111,15 @@ public static class GrepEngine
         IEnumerable<FileItem> files = null;
 
         if (commandResultCollection.Any())
-        {
-            if (targetFileFlag)
-                files = commandResultCollection.Where(x => x.SourceFile.Name == filepath).Select(result => result.SourceFile).ToList();
-            else
-                files = commandResultCollection.Select(result => result.SourceFile).DistinctBy(x => x.Name).ToList();
-        }
+            files = commandResultCollection.Select(result => result.SourceFile).DistinctBy(x => x.Name).ToList();
         else
         {
-            if (targetFileFlag)
-                files = new List<FileItem>() { new FileItem(filepath, false, WindowsUtils.GetFileSizeOnDisk(filepath)) };
-            else
-            {
-                FileAttributes fileAttributesToSkip = default;
-                fileAttributesToSkip |= (showSystemFlag ? 0 : FileAttributes.System);
-                fileAttributesToSkip |= (showHiddenFlag ? 0 : FileAttributes.Hidden);
+            FileAttributes fileAttributesToSkip = default;
+            fileAttributesToSkip |= (showSystemFlag ? 0 : FileAttributes.System);
+            fileAttributesToSkip |= (showHiddenFlag ? 0 : FileAttributes.Hidden);
 
-                var pathExcludeFilters = CommandUtils.GetPathExcludeFilters(grepCommand);
-                files = WindowsUtils.GetFiles(filepath, recursiveFlag, maxDepth, fileSizeMin, fileSizeMax, cancellationToken, pathExcludeFilters, fileAttributesToSkip);
-            }
+            var pathExcludeFilters = CommandUtils.GetPathExcludeFilters(grepCommand);
+            files = WindowsUtils.GetFiles(filepath, recursiveFlag, maxDepth, fileSizeMin, fileSizeMax, cancellationToken, pathExcludeFilters, fileAttributesToSkip);
         }
 
         return files;
@@ -140,12 +128,11 @@ public static class GrepEngine
     private static void GetFileContentMatches(CommandResultCollection commandResultCollection, IEnumerable<FileItem> files, GrepCommand grepCommand, string searchPattern,
         Regex searchRegex, SearchMetrics searchMetrics, CancellationToken cancellationToken)
     {
-        bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
+        bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedString);
         bool deleteFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
         bool replaceFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
-        bool writeFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
+        bool writeFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.OutFile);
         bool fileNamesOnlyFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
-        bool suppressFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Suppress);
 
         var fileTypeFilters = CommandUtils.GetFileTypeFilters(grepCommand);
         var fileTypeExcludeFilters = CommandUtils.GetFileTypeExcludeFilters(grepCommand);
@@ -198,21 +185,19 @@ public static class GrepEngine
         var matches = new List<CommandResultBase>();
 
         bool deleteFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
-        bool writeFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
-        bool nResultsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.NResults);
+        bool writeFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.OutFile);
 
         var fileTypeFilters = CommandUtils.GetFileTypeFilters(grepCommand);
         var fileTypeExcludeFilters = CommandUtils.GetFileTypeExcludeFilters(grepCommand);
         var pathFilters = CommandUtils.GetPathFilters(grepCommand);
 
-        int nResults = nResultsFlag ? Convert.ToInt32(grepCommand.CommandArgs[ConsoleFlag.NResults]) : int.MaxValue;
         Regex anyRegex = new Regex(@".*");
 
         foreach (var file in files)
         {
             try
             {
-                if (cancellationToken.IsCancellationRequested || searchMetrics.TotalFilesMatchedCount > nResults)
+                if (cancellationToken.IsCancellationRequested)
                     break;
 
                 // Filters
@@ -264,21 +249,18 @@ public static class GrepEngine
     private static void GetFileNameMatches(CommandResultCollection commandResultCollection, IEnumerable<FileItem> files, GrepCommand grepCommand,
         string searchPattern, Regex searchRegex, SearchMetrics searchMetrics, CancellationToken cancellationToken)
     {
-        bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
+        bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedString);
         bool deleteFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
         bool replaceFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
-        bool writeFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Write);
-        bool nResultsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.NResults);
+        bool writeFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.OutFile);
 
         var fileTypeFilters = CommandUtils.GetFileTypeFilters(grepCommand);
         var fileTypeExcludeFilters = CommandUtils.GetFileTypeExcludeFilters(grepCommand);
         var pathFilters = CommandUtils.GetPathFilters(grepCommand);
 
-        int nResults = nResultsFlag ? Convert.ToInt32(grepCommand.CommandArgs[ConsoleFlag.NResults]) : int.MaxValue;
-
         foreach (var file in files)
         {
-            if (cancellationToken.IsCancellationRequested || searchMetrics.TotalFilesMatchedCount > nResults)
+            if (cancellationToken.IsCancellationRequested)
                 break;
 
             // Filters
@@ -357,7 +339,7 @@ public static class GrepEngine
         }
 
         // Notify user of files that could not be read from or written to
-        PublishFileAccessSummary(searchMetrics);
+        PublishFileAccessSummary(grepCommand, searchMetrics);
 
         // Publish command summary to console
         PublishCommandSummary(grepCommand, commandResultCollection, searchMetrics);
@@ -367,7 +349,6 @@ public static class GrepEngine
     {
         GrepCommandResult result = null;
 
-        bool suppressFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Suppress);
         bool fileHashesFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileHashes);
 
         var resultScope = fileHashesFlag ? ResultScope.FileHash : ResultScope.FileName;
@@ -397,7 +378,6 @@ public static class GrepEngine
 
         result = new GrepCommandResult(file, resultScope)
         {
-            Suppressed = suppressFlag,
             LeadingContextString = leadingContextString,
             MatchedString = searchMatch.Value,
             TrailingContextString = trailingContextString
@@ -411,7 +391,6 @@ public static class GrepEngine
     {
         var consoleItemCollection = new List<ConsoleItem>();
 
-        bool suppressFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Suppress);
         bool deleteFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
         bool replaceFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
         bool fileNamesOnlyFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
@@ -423,11 +402,9 @@ public static class GrepEngine
         {
             if (deleteFlag)
             {
-                // Delete file
                 File.Delete(file.Name);
 
-                if (!suppressFlag)
-                    consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
+                consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
 
                 lock (_metricsLock)
                     searchMetrics.DeleteSuccessCount++;
@@ -436,18 +413,15 @@ public static class GrepEngine
             {
                 if (fileNamesOnlyFlag)
                 {
-                    // Rename file
                     string directory = Path.GetDirectoryName(file.Name);
                     string fileName = Path.GetFileName(file.Name);
 
                     File.Move(file.Name, Path.Combine(directory, Regex.Replace(fileName, searchPattern, grepCommand.CommandArgs[ConsoleFlag.Replace])));
-
-                    if (!suppressFlag)
-                        consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Renamed" });
+                    consoleItemCollection.Add(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Renamed" });
                 }
                 else
                 {
-                    // Replace all occurrences within the file
+                    // Replace all matches in file
                     fileRaw = Regex.Replace(fileRaw, searchPattern, grepCommand.CommandArgs[ConsoleFlag.Replace]);
                     File.WriteAllText(file.Name, fileRaw);
 
@@ -507,9 +481,9 @@ public static class GrepEngine
         }
     }
 
-    private static void PublishFileAccessSummary(SearchMetrics searchMetrics)
+    private static void PublishFileAccessSummary(GrepCommand grepCommand, SearchMetrics searchMetrics)
     {
-        bool showInaccessibleFiles = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.ShowInaccessibleFiles];
+        bool verbose = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Verbose);
 
         if (searchMetrics.FailedReadFiles.Any() || searchMetrics.FailedWriteFiles.Any())
         {
@@ -518,7 +492,7 @@ public static class GrepEngine
                 string unreachableFiles = $"[{searchMetrics.FailedReadFiles.Count} file(s) unreadable/inaccessible]{Environment.NewLine}";
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = unreachableFiles });
 
-                if (showInaccessibleFiles)
+                if (verbose)
                     searchMetrics.FailedReadFiles.ForEach(x => ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{x.Name}{Environment.NewLine}" }));
             }
 
@@ -527,7 +501,7 @@ public static class GrepEngine
                 string unwriteableFiles = $"[{searchMetrics.FailedWriteFiles.Count} file(s) could not be modified]{Environment.NewLine}";
                 ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = unwriteableFiles });
 
-                if (showInaccessibleFiles)
+                if (verbose)
                     searchMetrics.FailedWriteFiles.ForEach(x => ConsoleUtils.WriteConsoleItem(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{x.Name}{Environment.NewLine}" }));
             }
 

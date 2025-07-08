@@ -68,10 +68,6 @@
         {
             _cancellationTokenSource = new CancellationTokenSource();
 
-            // Load config
-            ConfigurationManager.Instance.Initialize();
-
-            // Publish Splash
             if (args.Length == 0)
                 ConsoleUtils.PublishSplash();
 

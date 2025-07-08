@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WindowsGrep.Common\WindowsGrep.Common.csproj" />
-    <ProjectReference Include="..\WindowsGrep.Configuration\WindowsGrep.Configuration.csproj" />
   </ItemGroup>
 
 </Project>

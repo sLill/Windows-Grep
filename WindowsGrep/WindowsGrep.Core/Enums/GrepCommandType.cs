@@ -3,5 +3,6 @@
 public enum GrepCommandType
 {
     Help,
+    Help_Full,
     Query
 }

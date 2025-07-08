@@ -157,18 +157,12 @@ public static class CommandUtils
     public static string GetPath(GrepCommand grepCommand)
     {
         bool directoryFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Directory);
-        bool targetFileFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.TargetFile);
-
-        // User specified file should overrule specified directory
-        string filepath = directoryFlag ? grepCommand.CommandArgs[ConsoleFlag.Directory] : Environment.CurrentDirectory;
-        filepath = targetFileFlag ? grepCommand.CommandArgs[ConsoleFlag.TargetFile] : filepath;
-
-        return filepath;
+        return directoryFlag ? grepCommand.CommandArgs[ConsoleFlag.Directory] : Environment.CurrentDirectory;
     }
 
     public static string BuildSearchPattern(GrepCommand grepCommand)
     {
-        bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedStrings);
+        bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedString);
         bool iIgnoreCaseFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
 
         string searchTerm = grepCommand.CommandArgs[ConsoleFlag.SearchTerm];

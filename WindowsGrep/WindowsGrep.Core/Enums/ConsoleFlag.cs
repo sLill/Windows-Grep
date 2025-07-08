@@ -4,7 +4,7 @@ public enum ConsoleFlag
 {
     SearchTerm,
 
-    // Targets a specific file directory
+    // Set the working directory
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"', '\\')]
     [DescriptionCollection("-d", "--directory=")]
@@ -19,28 +19,9 @@ public enum ConsoleFlag
     [DescriptionCollection("-c", "--context=")]
     Context,
 
-    // Returns the first n results
-    [ExpectsParameter(true)]
-    [DescriptionCollection("-n", "--results=")]
-    NResults,
-
-    // Suppresses console output
-    [DescriptionCollection("-s", "--suppress")]
-    Suppress,
-
-    // Interprets patterns as fixed strings, not regular expressions
-    [DescriptionCollection("-F", "--fixed-strings")]
-    FixedStrings,
-
-    // Interprets patterns as basic regular expressions. This is default
-    [DescriptionCollection("-G", "--basic-regexp")]
-    BasicRegex,
-
-    // Obtain patterns from a specific file
-    [ExpectsParameter(true)]
-    [FilterCharacterCollection('\'', '"', '\\')]
-    [DescriptionCollection("-f", "--file=")]
-    TargetFile,
+    // Interprets search term as a string literal instead of an expression
+    [DescriptionCollection("-F", "--fixed-string")]
+    FixedString,
 
     // Ignore breaks in-between lines within the file
     [DescriptionCollection("-b", "--ignore-breaks")]
@@ -104,11 +85,11 @@ public enum ConsoleFlag
     [DescriptionCollection("-Z", "--filesize-maximum=")]
     FileSizeMaximum,
 
-    // Write outputs to specified file
+    // Redirect output to file
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"', '\\')]
-    [DescriptionCollection("-w", "--write=")]
-    Write,
+    [DescriptionCollection("-o", "--out-file=")]
+    OutFile,
 
     // Replace instances of the search term with the replace parameter
     [ExpectsParameter(true)]
@@ -125,9 +106,13 @@ public enum ConsoleFlag
     [DescriptionCollection("--hash=")]
     FileHashes,
 
-    // Show all commands
-    [DescriptionCollection("-h", "--help")]
+    // Show help
+    [DescriptionCollection("-h")]
     Help,
+
+    // Show help (full)
+    [DescriptionCollection("--help")]
+    Help_Full,
 
     // Show hidden files
     [DescriptionCollection("--show-hidden")]
@@ -136,4 +121,7 @@ public enum ConsoleFlag
     // Show system files
     [DescriptionCollection("--show-system")]
     ShowSystem,
+
+    [DescriptionCollection("-v", "--verbose")]
+    Verbose
 }

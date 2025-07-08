@@ -139,19 +139,7 @@ public static class ConsoleUtils
 
     public static void PublishPrompt()
     {
-        string prompt = string.Empty;
-
-        bool displayWorkingDirectoryInPrompt = (bool)ConfigurationManager.Instance.ConfigItemCollection[ConfigItem.DisplayWorkingDirectoryInPrompt];
-        if (displayWorkingDirectoryInPrompt)
-        {
-            string currentDirectory = Directory.GetCurrentDirectory();
-            currentDirectory = WindowsUtils.GetCompressedPath(currentDirectory);
-            prompt = $"{currentDirectory}> ";
-        }
-        else
-            prompt = "$ ";
-
-        Console.Write(prompt);
+        Console.Write("$ ");
     }
 
     public static void WriteConsoleItem(ConsoleItem consoleItem)

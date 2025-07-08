@@ -6,6 +6,5 @@ global using System.Linq;
 global using System.Text.RegularExpressions;
 global using System.Threading;
 global using WindowsGrep.Common;
-global using WindowsGrep.Configuration;
 global using WindowsGrep.Core;
 global using WindowsGrep.Engine.Data;

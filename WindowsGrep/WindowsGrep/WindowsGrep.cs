@@ -28,6 +28,8 @@
                     // Help
                     if (grepCommandArgs.ContainsKey(ConsoleFlag.Help))
                         grepCommand = new GrepCommand(GrepCommandType.Help);
+                    else if (grepCommandArgs.ContainsKey(ConsoleFlag.Help_Full))
+                        grepCommand = new GrepCommand(GrepCommandType.Help_Full);
 
                     // Query
                     else

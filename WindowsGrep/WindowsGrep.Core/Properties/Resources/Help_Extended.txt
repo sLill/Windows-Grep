@@ -1,15 +1,11 @@
 
--h	--help				: Show all commands
+-h	--help				: Show help. Use --help to view all commands
 -r	--recursive			: Recursive search
--d	--directory=			: Target directory (surround with ' or ")
+-d	--directory=			: Set the working directory (surround with ' or ")
 -c	--context=			: Return n leading/trailing characters surrounding the matched term
--n	--results=			: Return first n results
--s	--suppress			: Suppress console output
 -b	--ignore-breaks			: Ignore line breaks
 -i	--ignore-case			: Ignore case
--f	--file=				: Target file (surround with ' or ")
--F	--fixed-strings			: Interpret patterns as fixed strings
--G	--basic-regexp			: Interpret patterns as basic regular expressions (default)
+-F	--fixed-string			: Interpret patterns as a fixed string instead of an expression
 -t	--filetype-filter=		: Filter files by type [Inclusive] (, or ; delimited)
 -T	--filetype-exclude-filter=	: Filter files by type [Exclusive] (, or ; delimited)
 -p	--path-filter=			: Filter filepaths by expression [Inclusive] (, or ; delimited)
@@ -17,12 +13,13 @@
 -k	--filenames-only		: Match file names
 -z	--filesize-minimum=		: Filter results smaller than n(kb|mb|gb|tb)
 -Z	--filesize-maximum=		: Filter results larger than n(kb|mb|gb|tb)
--w	--write=			: Write output to specified filepath (surround with ' or ")
+-o	--out-file=			: Redirect output to file (surround with ' or ")
+-v	--verbose			: Verbose output
 
 -RX	--replace=			: Replace text in matched files or filenames (surround with ' or ")
 -DX	--delete			: Delete matched files
 
 --hash=					: Match file hashes (0=SHA256, 1=MD5)
---max-depth=				: Sets the max search depth when recursion (-r) is enabled
+--max-depth=				: Max search depth from the working directory when recursion (-r) is enabled
 --show-hidden				: Show hidden files
 --show-system				: Show system files

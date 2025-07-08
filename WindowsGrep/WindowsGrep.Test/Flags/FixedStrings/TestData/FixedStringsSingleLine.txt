@@ -1,1 +1,0 @@
-﻿The quick brown fox jumps 8 times over the 4 lazy \s dogs and their 10 lazy owners who .* work with .* 10 lazy programmers

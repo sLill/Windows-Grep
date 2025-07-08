@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WindowsGrep.Common\WindowsGrep.Common.csproj" />
-    <ProjectReference Include="..\WindowsGrep.Configuration\WindowsGrep.Configuration.csproj" />
     <ProjectReference Include="..\WindowsGrep.Core\WindowsGrep.Core.csproj" />
   </ItemGroup>
 
