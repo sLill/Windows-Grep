@@ -5,3 +5,5 @@ global using System.Threading;
 global using System.Threading.Tasks;
 global using WindowsGrep.Common;
 global using WindowsGrep.Core;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Hosting;

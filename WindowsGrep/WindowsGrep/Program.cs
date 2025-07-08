@@ -11,6 +11,9 @@
         {
             Initialize(args);
 
+            var host = CreateHostBuilder(args).Build();
+            var windowsGrep = host.Services.GetRequiredService<WindowsGrep>();
+
             do
             {
                 string command = string.Empty;
@@ -30,7 +33,7 @@
                         commandResultCollection.ItemsAdded += OnResultsAdded;
 
                         _cancellationTokenSource = new CancellationTokenSource();
-                        await Task.Run(() => WindowsGrep.RunCommand(command, commandResultCollection, _cancellationTokenSource.Token));
+                        await Task.Run(() => windowsGrep.RunCommand(command, commandResultCollection, _cancellationTokenSource.Token));
                     }
                     catch (Exception ex)
                     {
@@ -66,8 +69,6 @@
 
         private static void Initialize(string[] args)
         {
-            _cancellationTokenSource = new CancellationTokenSource();
-
             // Only necessary on older versions of Windows 
             WindowsUtils.TryEnableAnsi();
 
@@ -77,6 +78,19 @@
             // Override the default behavior for the Ctrl+C shortcut if the application was not ran from the command line
             if (Environment.UserInteractive)
                 Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_OnCancelKeyPress);
+        }
+
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host
+            .CreateDefaultBuilder(args)
+            .ConfigureServices((hostContext, services) =>
+            {
+                services            
+                .AddTransient<WindowsGrep>()
+                .AddTransient<GrepService>()
+                .AddTransient<NativeService>();
+            });
         }
         #endregion Methods..
     }

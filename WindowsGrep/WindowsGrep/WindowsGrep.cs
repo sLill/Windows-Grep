@@ -1,9 +1,22 @@
 ﻿namespace WindowsGrep
 {
-    public static class WindowsGrep
+    public class WindowsGrep
     {
+        #region Fields..
+        private NativeService _nativeService;
+        private GrepService _grepService;
+        #endregion Fields..
+
+        #region Constructors..
+        public WindowsGrep(NativeService nativeService, GrepService grepService)
+        {
+            _nativeService = nativeService;
+            _grepService = grepService;
+        }
+        #endregion Constructors..
+
         #region Methods..
-        public static void RunCommand(string commandRaw, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
+        public void RunCommand(string commandRaw, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
         {
             string splitPattern = @"\|(?![^{]*}|[^\(]*\)|[^\[]*\])";
             string[] commandCollection = Regex.Split(commandRaw, splitPattern);
@@ -15,7 +28,7 @@
                 if (nativeCommandArgs != default)
                 {
                     var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter };
-                    NativeService.BeginProcessNativeCommand(nativeCommand, commandResultCollection, cancellationToken);
+                    _nativeService.BeginProcessNativeCommand(nativeCommand, commandResultCollection, cancellationToken);
                 }
 
                 // Grep commands
@@ -35,7 +48,7 @@
                     else
                         grepCommand = new GrepCommand(GrepCommandType.Query) { CommandArgs = grepCommandArgs };
 
-                    GrepService.BeginProcessGrepCommand(grepCommand, commandResultCollection, cancellationToken);
+                    _grepService.BeginProcessGrepCommand(grepCommand, commandResultCollection, cancellationToken);
                 }
             }
         }
