@@ -1,0 +1,40 @@
+﻿This is sample text for testing grep functionality.
+
+Lines can contain:
+- alphabetic characters (abcABC)
+- numeric values (123 45.6 7.8.9)
+- special characters (!@#$%^&*())
+- whitespace variations (   tabs	and  spaces)
+
+Search for:
+- the word "apple" in lowercase
+- the word "Apple" capitalized
+- the substring "ppl"
+- the regex pattern "a..e"
+
+Edge cases:
+- empty line follows:
+
+- line with only whitespace:  	 
+- line with single character: x
+- line with punctuation only: !?
+
+Phone numbers:
+123-456-7890
+(555) 123-4567
+
+Dates:
+2023-01-15
+01/02/2023
+15.03.2023
+
+IPv4 addresses:
+192.168.1.1
+8.8.8.8
+
+Common terms:
+user@example.com
+http://example.com
+https://www.example.com/path?query=string
+
+End of file.

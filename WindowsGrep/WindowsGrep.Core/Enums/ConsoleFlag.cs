@@ -3,11 +3,6 @@
 public enum ConsoleFlag
 {
     SearchTerm,
-
-    // Set the working directory
-    [ExpectsParameter(true)]
-    [FilterCharacterCollection('\'', '"', '\\')]
-    [DescriptionCollection("-d", "--directory=")]
     Directory,
 
     // Suppress normal output; Instead print a count of matching lines for each input file

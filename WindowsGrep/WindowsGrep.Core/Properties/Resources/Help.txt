@@ -1,7 +1,6 @@
 
 -h	--help				: Show help. Use --help to view all commands
 -r	--recursive			: Recursive search
--d	--directory=			: Set working directory (surround with ' or ")
 -c	--context=			: Return n leading/trailing characters around the matched term
 -b	--ignore-breaks			: Ignore line breaks
 -i	--ignore-case			: Ignore case
