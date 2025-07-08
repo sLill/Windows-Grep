@@ -1,4 +1,6 @@
-﻿namespace WindowsGrep
+﻿using WindowsGrep.Common;
+
+namespace WindowsGrep
 {
     public class Program
     {
@@ -67,6 +69,9 @@
         private static void Initialize(string[] args)
         {
             _cancellationTokenSource = new CancellationTokenSource();
+
+            // Only necessary on older versions of Windows 
+            WindowsUtils.TryEnableAnsi();
 
             if (args.Length == 0)
                 ConsoleUtils.PublishSplash();

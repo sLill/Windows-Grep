@@ -143,10 +143,6 @@ public static class WindowsUtils
         return isValidPattern && isValidLength;
     }
 
-    /// <summary>
-    /// Check that a given filesize is within bounds
-    /// </summary>
-    /// <returns></returns>
     private static bool ValidateFileSize(long fileSize, long fileSizeMinimum, long fileSizeMaximum)
     {
         bool isValid = true;
@@ -155,6 +151,20 @@ public static class WindowsUtils
         isValid &= (fileSizeMaximum == -1 || (fileSize <= fileSizeMaximum));
 
         return isValid;
+    }
+
+    public static void TryEnableAnsi()
+    {
+        try
+        {
+            // STD_OUTPUT_HANDLE
+            var handle = WindowsApi.GetStdHandle(-11);
+
+            // ENABLE_VIRTUAL_TERMINAL_PROCESSING
+            WindowsApi.GetConsoleMode(handle, out uint mode);
+            WindowsApi.SetConsoleMode(handle, mode | 0x4);
+        }
+        catch { }
     }
     #endregion Methods..
 }
