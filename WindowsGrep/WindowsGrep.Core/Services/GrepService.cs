@@ -39,13 +39,21 @@ public class GrepService
         Stopwatch commandTimer = Stopwatch.StartNew();
 
         RegexOptions optionsFlags = ConsoleCommandUtils.GetRegexOptions(grepCommand);
-        ProcessCommand(results, grepCommand, optionsFlags, cancellationToken);
+
+        try
+        {
+            ProcessCommand(results, grepCommand, optionsFlags, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = ex.Message });
+        }
 
         // Publish command run time
         commandTimer.Stop();
 
-        _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((commandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
-        _publisherService.Publish(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
+        _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = $"{Environment.NewLine}[{Math.Round((commandTimer.ElapsedMilliseconds / 1000.0), 2)} second(s)]" });
+        _publisherService.Publish(new ConsoleItem { Value = Environment.NewLine + Environment.NewLine });
     }
 
     private void BuildFileContentSearchResults(GrepCommand grepCommand, List<ResultBase> results, List<Match> matches,
@@ -401,7 +409,7 @@ public class GrepService
         bool fileNamesOnlyFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
 
         // FileName
-        _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file.Name} " });
+        _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{file.Name} " });
 
         try
         {
@@ -409,7 +417,7 @@ public class GrepService
             {
                 File.Delete(file.Name);
 
-                _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
+                _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = $"Deleted" });
 
                 lock (_metricsLock)
                     searchMetrics.DeleteSuccessCount++;
@@ -422,7 +430,7 @@ public class GrepService
                     string fileName = Path.GetFileName(file.Name);
 
                     File.Move(file.Name, Path.Combine(directory, Regex.Replace(fileName, searchPattern, grepCommand.CommandArgs[ConsoleFlag.Replace])));
-                    _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"Renamed" });
+                    _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = $"Renamed" });
                 }
                 else
                 {
@@ -430,7 +438,7 @@ public class GrepService
                     fileRaw = Regex.Replace(fileRaw, searchPattern, grepCommand.CommandArgs[ConsoleFlag.Replace]);
                     File.WriteAllText(file.Name, fileRaw);
 
-                    _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{fileMatchesCount} match(es)" });
+                    _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"{fileMatchesCount} match(es)" });
                 }
 
                 lock (_metricsLock)
@@ -439,7 +447,7 @@ public class GrepService
         }
         catch
         {
-            _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Gray, BackgroundColor = ConsoleColor.DarkRed, Value = $"Access Denied" });
+            _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Gray, BackgroundColor = ConsoleColor.DarkRed, Value = $"Access Denied" });
 
             lock (_metricsLock)
                 searchMetrics.FailedWriteFiles.Add(file);
@@ -447,7 +455,7 @@ public class GrepService
         finally
         {
             // Empty buffer
-            _publisherService.Publish(new ConsoleItem() { Value = Environment.NewLine });
+            _publisherService.Publish(new ConsoleItem { Value = Environment.NewLine });
 
             lock (_metricsLock)
                 searchMetrics.TotalFilesMatchedCount++;
@@ -470,7 +478,7 @@ public class GrepService
         else
             summary = $"[{results.Count} result(s) {searchMetrics.TotalFilesMatchedCount} file(s)]";
 
-        _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = summary });
+        _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = summary });
 
         if (fileSizeMinimumFlag || fileSizeMaximumFlag)
         {
@@ -478,7 +486,7 @@ public class GrepService
             var fileSizeReduced = WindowsUtils.GetReducedSize(totalFileSize, 3, out FileSizeType fileSizeType);
 
             summary = $" [{fileSizeReduced} {fileSizeType}(s)]";
-            _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = summary });
+            _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = summary });
         }
     }
 
@@ -491,22 +499,22 @@ public class GrepService
             if (searchMetrics.FailedReadFiles.Any())
             {
                 string unreachableFiles = $"[{searchMetrics.FailedReadFiles.Count} file(s) unreadable/inaccessible]{Environment.NewLine}";
-                _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = unreachableFiles });
+                _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = unreachableFiles });
 
                 if (verbose)
-                    searchMetrics.FailedReadFiles.ForEach(x => _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{x.Name}{Environment.NewLine}" }));
+                    searchMetrics.FailedReadFiles.ForEach(x => _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = $"{x.Name}{Environment.NewLine}" }));
             }
 
             if (searchMetrics.FailedWriteFiles.Any())
             {
                 string unwriteableFiles = $"[{searchMetrics.FailedWriteFiles.Count} file(s) could not be modified]{Environment.NewLine}";
-                _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = unwriteableFiles });
+                _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = unwriteableFiles });
 
                 if (verbose)
-                    searchMetrics.FailedWriteFiles.ForEach(x => _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = $"{x.Name}{Environment.NewLine}" }));
+                    searchMetrics.FailedWriteFiles.ForEach(x => _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = $"{x.Name}{Environment.NewLine}" }));
             }
 
-            _publisherService.Publish(new ConsoleItem() { Value = Environment.NewLine });
+            _publisherService.Publish(new ConsoleItem { Value = Environment.NewLine });
         }
     }
     #endregion Methods..

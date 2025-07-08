@@ -2,18 +2,8 @@
 
 public class ConsoleService
 {
-    #region Fields..
-    private readonly ILogger<ConsoleService> _logger;
-    #endregion Fields..
-
-    #region Properties..
-    #endregion Properties..
-
     #region Constructors..
-    public ConsoleService(ILogger<ConsoleService> logger)
-    {
-        _logger = logger;
-    }
+    public ConsoleService() { }
     #endregion Constructors..
 
     #region Methods..		

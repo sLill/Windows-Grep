@@ -18,20 +18,20 @@
         #region Methods..
         public async Task RunAsync(string[] args, CancellationTokenSource cancellationTokenSource)
         {
-            try
+            if (args.Length == 0)
+                ConsoleUtils.PublishSplash();
+
+            do
             {
-                if (args.Length == 0)
-                    ConsoleUtils.PublishSplash();
-
-                do
+                using (var serviceScope = _serviceProvider.CreateScope())
                 {
-                    using (var serviceScope = _serviceProvider.CreateScope())
-                    {
-                        var publisherService = serviceScope.ServiceProvider.GetRequiredService<PublisherService>();
-                        var consoleService = serviceScope.ServiceProvider.GetRequiredService<ConsoleService>();
-                        var grepService = serviceScope.ServiceProvider.GetRequiredService<GrepService>();
-                        var nativeService = serviceScope.ServiceProvider.GetRequiredService<NativeService>();
+                    var publisherService = serviceScope.ServiceProvider.GetRequiredService<PublisherService>();
+                    var consoleService = serviceScope.ServiceProvider.GetRequiredService<ConsoleService>();
+                    var grepService = serviceScope.ServiceProvider.GetRequiredService<GrepService>();
+                    var nativeService = serviceScope.ServiceProvider.GetRequiredService<NativeService>();
 
+                    try
+                    {
                         var results = new List<ResultBase>();
 
                         string commandRaw = string.Empty;
@@ -72,13 +72,14 @@
                             }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        consoleService.Write(new() { Value = $"\nError: {ex.Message}\n\n", ForegroundColor = ConsoleColor.Red });
+                    }
                 }
-                while (args.Length == 0 && !cancellationTokenSource.IsCancellationRequested);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{ex.Message}: {ex.StackTrace}");
-            }
+            while (args.Length == 0 && !cancellationTokenSource.IsCancellationRequested);
+
         }
 
         private static (NativeCommandType? CommandType, string CommandParameter) ParseNativeCommandArgs(string commandRaw)

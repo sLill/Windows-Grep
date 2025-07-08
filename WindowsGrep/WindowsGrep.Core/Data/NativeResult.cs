@@ -20,7 +20,7 @@ public class NativeResult : ResultBase
         var consoleItems = new List<ConsoleItem>();
 
         // Filename
-        consoleItems.Add(new ConsoleItem()
+        consoleItems.Add(new ConsoleItem
         {
             ForegroundColor = SourceFile.IsDirectory ? ConsoleColor.Cyan : ConsoleColor.DarkYellow,
             Value = SourceFile.Name
@@ -31,7 +31,7 @@ public class NativeResult : ResultBase
 
         // FileSize
         consoleItems.AddRange(GetFileSizeConsoleItems());
-        consoleItems.Add(new ConsoleItem() { Value = Environment.NewLine });
+        consoleItems.Add(new ConsoleItem { Value = Environment.NewLine });
 
         return consoleItems;
     }

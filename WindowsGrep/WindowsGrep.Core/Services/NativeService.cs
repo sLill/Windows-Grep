@@ -20,23 +20,30 @@ public class NativeService
     {
         _publisherService.Subscribe<ConsoleItem>(_consoleService.Write);
 
-        switch (nativeCommand.CommandType)
+        try
         {
-            case NativeCommandType.List:
-                ListFiles(results, cancellationToken);
-                break;
+            switch (nativeCommand.CommandType)
+            {
+                case NativeCommandType.List:
+                    ListFiles(results, cancellationToken);
+                    break;
 
-            case NativeCommandType.ChangeDirectory:
-                Directory.SetCurrentDirectory(nativeCommand.CommandParameter);
-                break;
+                case NativeCommandType.ChangeDirectory:
+                    Directory.SetCurrentDirectory(nativeCommand.CommandParameter);
+                    break;
 
-            case NativeCommandType.ClearConsole:
-                ConsoleUtils.ClearConsole();
-                break;
+                case NativeCommandType.ClearConsole:
+                    ConsoleUtils.ClearConsole();
+                    break;
 
-            case NativeCommandType.PrintWorkingDirectory:
-                _publisherService.Publish(new ConsoleItem() { Value = Directory.GetCurrentDirectory() + '\n' });
-                break;
+                case NativeCommandType.PrintWorkingDirectory:
+                    _publisherService.Publish(new ConsoleItem { Value = Directory.GetCurrentDirectory() + '\n' });
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = ex.Message });
         }
     }
 
