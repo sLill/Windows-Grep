@@ -1,4 +1,4 @@
-﻿namespace WindowsGrep.Engine.Data;
+﻿namespace WindowsGrep.Core;
 
 public class NativeCommandResult : CommandResultBase
 {

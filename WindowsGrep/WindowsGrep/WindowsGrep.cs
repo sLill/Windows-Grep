@@ -15,7 +15,7 @@
                 if (nativeCommandArgs != default)
                 {
                     var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter };
-                    NativeEngine.BeginProcessNativeCommand(nativeCommand, commandResultCollection, cancellationToken);
+                    NativeService.BeginProcessNativeCommand(nativeCommand, commandResultCollection, cancellationToken);
                 }
 
                 // Grep commands
@@ -35,7 +35,7 @@
                     else
                         grepCommand = new GrepCommand(GrepCommandType.Query) { CommandArgs = grepCommandArgs };
 
-                    GrepEngine.BeginProcessGrepCommand(grepCommand, commandResultCollection, cancellationToken);
+                    GrepService.BeginProcessGrepCommand(grepCommand, commandResultCollection, cancellationToken);
                 }
             }
         }

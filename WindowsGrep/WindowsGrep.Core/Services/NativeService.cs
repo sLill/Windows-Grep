@@ -1,9 +1,9 @@
-﻿namespace WindowsGrep.Engine;
+﻿namespace WindowsGrep.Core;
 
-public static class NativeEngine
+public class NativeService
 {
     #region Methods..
-    public static void BeginProcessNativeCommand(NativeCommand nativeCommand, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
+    public void BeginProcessNativeCommand(NativeCommand nativeCommand, CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
     {
         switch (nativeCommand.CommandType)
         {
@@ -25,7 +25,7 @@ public static class NativeEngine
         }
     }
 
-    private static void ListFiles(CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
+    private void ListFiles(CommandResultCollection commandResultCollection, CancellationToken cancellationToken)
     {
         FileAttributes fileAttributesToSkip = default;
         fileAttributesToSkip |= FileAttributes.System;

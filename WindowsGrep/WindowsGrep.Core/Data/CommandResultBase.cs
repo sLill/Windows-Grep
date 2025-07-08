@@ -1,4 +1,4 @@
-﻿namespace WindowsGrep.Engine;
+﻿namespace WindowsGrep.Core;
 
 public abstract class CommandResultBase
 {
