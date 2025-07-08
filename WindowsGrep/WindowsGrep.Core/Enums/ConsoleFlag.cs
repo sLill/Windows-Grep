@@ -44,29 +44,29 @@ public enum ConsoleFlag
     // Restricts search to files with the specified extensions. Comma delimited
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"', '.', '\\')]
-    [DescriptionCollection("-t", "--filetype-filter=")]
-    FileTypeFilter,
+    [DescriptionCollection("-t", "--filetype-include=")]
+    FileTypeIncludeFilter,
 
     // Excludes all files with the specified extensions. Comma delimited
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"', '.', '\\')]
-    [DescriptionCollection("-T", "--filetype-exclude-filter=")]
+    [DescriptionCollection("-T", "--filetype-exclude=")]
     FileTypeExcludeFilter,
 
     // Restricts search to filepaths matching the specified expressions. Comma delimited 
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"')]
-    [DescriptionCollection("-p", "--path-filter=")]
-    PathFilter,
+    [DescriptionCollection("-p", "--path-include=")]
+    PathIncludeFilter,
 
     // Restricts search to filepaths that do not match any of the specified expressions. Comma delimited 
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"')]
-    [DescriptionCollection("-P", "--path-exclude-filter=")]
+    [DescriptionCollection("-P", "--path-exclude=")]
     PathExcludeFilter,
 
     // Match against file names
-    [DescriptionCollection("-k", "--filenames-only")]
+    [DescriptionCollection("-k", "--filenames")]
     FileNamesOnly,
 
     // Return the filesize of items returned in the search that EXCEED this parameter
@@ -74,7 +74,7 @@ public enum ConsoleFlag
     // Default size is kb unless specified. Other accepted sizes are mb, gb, tb
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"')]
-    [DescriptionCollection("-z", "--filesize-minimum=")]
+    [DescriptionCollection("--filesize-min=")]
     FileSizeMinimum,
 
     // Return the filesize of items returned in the search that DO NOT EXCEED this parameter
@@ -82,7 +82,7 @@ public enum ConsoleFlag
     // Default size is kb unless specified. Other accepted sizes are mb, gb, tb
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"')]
-    [DescriptionCollection("-Z", "--filesize-maximum=")]
+    [DescriptionCollection("--filesize-max=")]
     FileSizeMaximum,
 
     // Redirect output to file

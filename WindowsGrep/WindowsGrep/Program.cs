@@ -1,6 +1,4 @@
-﻿using WindowsGrep.Common;
-
-namespace WindowsGrep
+﻿namespace WindowsGrep
 {
     public class Program
     {

@@ -5,3 +5,4 @@ global using System.Threading;
 global using System.Threading.Tasks;
 global using WindowsGrep.Core;
 global using WindowsGrep.Engine;
+global using WindowsGrep.Common;

@@ -108,8 +108,8 @@ public static class CommandUtils
 
     public static List<string>? GetFileTypeFilters(GrepCommand grepCommand)
     {
-        bool fileTypeFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeFilter);
-        var fileTypeFilters = fileTypeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.FileTypeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
+        bool fileTypeFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeIncludeFilter);
+        var fileTypeFilters = fileTypeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.FileTypeIncludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
 
         return fileTypeFilters;
     }
@@ -124,8 +124,8 @@ public static class CommandUtils
 
     public static List<string>? GetPathFilters(GrepCommand grepCommand)
     {
-        bool pathFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.PathFilter);
-        var pathFilters = pathFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.PathFilter].Split(new char[] { ',', ';' }).ToList() : null;
+        bool pathFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.PathIncludeFilter);
+        var pathFilters = pathFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.PathIncludeFilter].Split(new char[] { ',', ';' }).ToList() : null;
 
         return pathFilters;
     }
