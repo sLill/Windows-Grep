@@ -6,6 +6,13 @@ public static class ConsoleUtils
     public static void ClearConsole()
         => Console.Clear();
 
+    public static string FormatEscapeSequences(string input)
+    {
+        return input.Replace("\\u001b", "\u001b")
+                    .Replace("\\e", "\u001b")
+                    .Replace("\\033", "\u001b");
+    }
+
     private static string GetCommandPattern(string commandDescriptor, bool expectsParameter)
     {
         string pattern = $"(\\s|^){commandDescriptor}";
@@ -104,14 +111,30 @@ public static class ConsoleUtils
 
     public static void PublishSplash()
     {
-        string splash = Properties.Resources.Splash;
-        Console.WriteLine(splash);
+        var assembly = Assembly.GetExecutingAssembly();
+        var resource = "WindowsGrep.Core.Properties.Resources.Splash.txt";
+
+        using (Stream stream = assembly.GetManifestResourceStream(resource))
+        using (StreamReader streamReader = new StreamReader(stream))
+        {
+            string content = streamReader.ReadToEnd();
+            string formattedContent = ConsoleUtils.FormatEscapeSequences(content);
+            Console.WriteLine(formattedContent);
+        }
     }
 
-    public static void PublishHelp()
+    public static void PublishHelp(bool extended)
     {
-        string readMe = Properties.Resources.Help;
-        Console.WriteLine(readMe + Environment.NewLine);
+        var assembly = Assembly.GetExecutingAssembly();
+        var resource = extended ? "WindowsGrep.Core.Properties.Resources.Help_Extended.txt" : "WindowsGrep.Core.Properties.Resources.Help.txt";
+
+        using (Stream stream = assembly.GetManifestResourceStream(resource))
+        using (StreamReader streamReader = new StreamReader(stream))
+        {
+            string content = streamReader.ReadToEnd();
+            string formattedContent = ConsoleUtils.FormatEscapeSequences(content);
+            Console.WriteLine(formattedContent);
+        }
     }
 
     public static void PublishPrompt()

@@ -9,23 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\Resources\Help.txt" />
+    <None Remove="Properties\Resources\Splash.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources\Help_Extended.txt" />
+    <EmbeddedResource Include="Properties\Resources\Help.txt" />
+    <EmbeddedResource Include="Properties\Resources\Splash.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WindowsGrep.Common\WindowsGrep.Common.csproj" />
     <ProjectReference Include="..\WindowsGrep.Configuration\WindowsGrep.Configuration.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
