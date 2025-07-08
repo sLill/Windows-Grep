@@ -32,7 +32,7 @@
                         var grepService = serviceScope.ServiceProvider.GetRequiredService<GrepService>();
                         var nativeService = serviceScope.ServiceProvider.GetRequiredService<NativeService>();
 
-                        var commandResults = new List<CommandResultBase>();
+                        var results = new List<ResultBase>();
 
                         string commandRaw = string.Empty;
                         if (args.Length == 0)
@@ -53,7 +53,7 @@
                             if (nativeCommandArgs != default)
                             {
                                 var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter };
-                                await Task.Run(() => nativeService.RunCommand(nativeCommand, commandResults, cancellationTokenSource.Token));
+                                await Task.Run(() => nativeService.RunCommand(nativeCommand, results, cancellationTokenSource.Token));
                             }
 
                             // Grep commands
@@ -67,7 +67,7 @@
                                 else
                                 {
                                     var grepCommand = new GrepCommand() { CommandArgs = grepCommandArgs };
-                                    await Task.Run(() => grepService.RunCommand(grepCommand, commandResults, cancellationTokenSource.Token));
+                                    await Task.Run(() => grepService.RunCommand(grepCommand, results, cancellationTokenSource.Token));
                                 }
                             }
                         }

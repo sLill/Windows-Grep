@@ -1,6 +1,6 @@
 ﻿namespace WindowsGrep.Core;
 
-public class GrepCommandResult : CommandResultBase
+public class GrepResult : ResultBase
 {
     #region Fields..
     private ResultScope _scope;
@@ -17,7 +17,7 @@ public class GrepCommandResult : CommandResultBase
     #endregion Properties..
 
     #region Constructors..
-    public GrepCommandResult(FileItem sourceFile, ResultScope resultScope)
+    public GrepResult(FileItem sourceFile, ResultScope resultScope)
         : base(sourceFile)
     {
         _scope = resultScope;

@@ -25,7 +25,7 @@ public class GrepService
     #endregion Constructors..
 
     #region Methods..
-    public void RunCommand(GrepCommand grepCommand, List<CommandResultBase> commandResults, CancellationToken cancellationToken)
+    public void RunCommand(GrepCommand grepCommand, List<ResultBase> results, CancellationToken cancellationToken)
     {
         _publisherService.Subscribe<ConsoleItem>(_consoleService.Write);
 
@@ -39,7 +39,7 @@ public class GrepService
         Stopwatch commandTimer = Stopwatch.StartNew();
 
         RegexOptions optionsFlags = ConsoleCommandUtils.GetRegexOptions(grepCommand);
-        ProcessCommand(commandResults, grepCommand, optionsFlags, cancellationToken);
+        ProcessCommand(results, grepCommand, optionsFlags, cancellationToken);
 
         // Publish command run time
         commandTimer.Stop();
@@ -48,7 +48,7 @@ public class GrepService
         _publisherService.Publish(new ConsoleItem() { Value = Environment.NewLine + Environment.NewLine });
     }
 
-    private void BuildFileContentSearchResults(GrepCommand grepCommand, List<CommandResultBase> commandResults, List<Match> matches,
+    private void BuildFileContentSearchResults(GrepCommand grepCommand, List<ResultBase> results, List<Match> matches,
         FileItem file, string fileRaw, CancellationToken cancellationToken)
     {
         bool ignoreBreaksFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
@@ -82,7 +82,7 @@ public class GrepService
 
             string matchedString = match.Groups["MatchedString"].Value;
 
-            var result = new GrepCommandResult(file, ResultScope.FileContent)
+            var result = new GrepResult(file, ResultScope.FileContent)
             {
                 LeadingContextString = leadingContext,
                 TrailingContextString = trailingContext,
@@ -93,15 +93,15 @@ public class GrepService
             int lineNumber = fileRaw.Substring(0, match.Groups["MatchedString"].Index).Split('\n').Length;
             result.LineNumber = lineNumber;
 
-            lock (commandResults)
+            lock (results)
             {
-                commandResults.Add(result);
+                results.Add(result);
                 result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(y));
             }
         });
     }
 
-    private IEnumerable<FileItem> GetFiles(GrepCommand grepCommand, List<CommandResultBase> commandResults, string filepath, CancellationToken cancellationToken)
+    private IEnumerable<FileItem> GetFiles(GrepCommand grepCommand, List<ResultBase> results, string filepath, CancellationToken cancellationToken)
     {
         bool recursiveFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Recursive);
         bool maxDepthFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.MaxDepth);
@@ -115,8 +115,8 @@ public class GrepService
 
         IEnumerable<FileItem> files = null;
 
-        if (commandResults.Any())
-            files = commandResults.Select(result => result.SourceFile).DistinctBy(x => x.Name).ToList();
+        if (results.Any())
+            files = results.Select(result => result.SourceFile).DistinctBy(x => x.Name).ToList();
         else
         {
             FileAttributes fileAttributesToSkip = default;
@@ -130,7 +130,7 @@ public class GrepService
         return files;
     }
 
-    private void GetFileContentMatches(List<CommandResultBase> commandResults, IEnumerable<FileItem> files, GrepCommand grepCommand, string searchPattern,
+    private void GetFileContentMatches(List<ResultBase> results, IEnumerable<FileItem> files, GrepCommand grepCommand, string searchPattern,
         Regex searchRegex, SearchMetrics searchMetrics, CancellationToken cancellationToken)
     {
         bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedString);
@@ -169,7 +169,7 @@ public class GrepService
                         PerformWriteOperations(grepCommand, file, searchPattern, matches.Count, fileRaw, searchMetrics, cancellationToken);
                     else
                     {
-                        BuildFileContentSearchResults(grepCommand, commandResults, matches, file, fileRaw, cancellationToken);
+                        BuildFileContentSearchResults(grepCommand, results, matches, file, fileRaw, cancellationToken);
 
                         lock (_metricsLock)
                             searchMetrics.TotalFilesMatchedCount++;
@@ -184,10 +184,10 @@ public class GrepService
         }
     }
 
-    private void GetFileHashMatches(List<CommandResultBase> commandResults, IEnumerable<FileItem> files, GrepCommand grepCommand,
+    private void GetFileHashMatches(List<ResultBase> results, IEnumerable<FileItem> files, GrepCommand grepCommand,
         string searchTerm, SearchMetrics searchMetrics, HashType hashType, CancellationToken cancellationToken)
     {
-        var matches = new List<CommandResultBase>();
+        var matches = new List<ResultBase>();
 
         bool deleteFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
         bool writeFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.OutFile);
@@ -233,11 +233,11 @@ public class GrepService
                         }
                         else
                         {
-                            GrepCommandResult result = PerformReadOperations(grepCommand, file, fileNameMatch, searchMatch);
+                            GrepResult result = PerformReadOperations(grepCommand, file, fileNameMatch, searchMatch);
                             if (result != null)
                             {
                                 searchMetrics.TotalFilesMatchedCount++;
-                                commandResults.Add(result);
+                                results.Add(result);
                                 result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(y));
                             }
                         }
@@ -252,7 +252,7 @@ public class GrepService
         }
     }
 
-    private void GetFileNameMatches(List<CommandResultBase> commandResults, IEnumerable<FileItem> files, GrepCommand grepCommand,
+    private void GetFileNameMatches(List<ResultBase> results, IEnumerable<FileItem> files, GrepCommand grepCommand,
         string searchPattern, Regex searchRegex, SearchMetrics searchMetrics, CancellationToken cancellationToken)
     {
         bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedString);
@@ -294,11 +294,11 @@ public class GrepService
                     }
                     else
                     {
-                        GrepCommandResult result = PerformReadOperations(grepCommand, file, fileNameMatch, searchMatch);
+                        GrepResult result = PerformReadOperations(grepCommand, file, fileNameMatch, searchMatch);
                         if (result != null)
                         {
                             searchMetrics.TotalFilesMatchedCount++;
-                            commandResults.Add(result);
+                            results.Add(result);
                             result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(y));
                         }
                     }
@@ -307,7 +307,7 @@ public class GrepService
         }
     }
 
-    private void ProcessCommand(List<CommandResultBase> commandResults, GrepCommand grepCommand, RegexOptions optionsFlags, CancellationToken cancellationToken)
+    private void ProcessCommand(List<ResultBase> results, GrepCommand grepCommand, RegexOptions optionsFlags, CancellationToken cancellationToken)
     {
         bool fileNamesOnlyFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileNamesOnly);
         bool fileHashesOnlyFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileHashes);
@@ -315,10 +315,10 @@ public class GrepService
         string filepath = ConsoleCommandUtils.GetPath(grepCommand);
         HashType hashType = ConsoleCommandUtils.GetHashType(grepCommand);
 
-        IEnumerable<FileItem> files = GetFiles(grepCommand, commandResults, filepath, cancellationToken);
+        IEnumerable<FileItem> files = GetFiles(grepCommand, results, filepath, cancellationToken);
 
         // Clear the result collection between chained commands so that only the results of the final command are returned
-        commandResults.Clear();
+        results.Clear();
 
         var searchMetrics = new SearchMetrics();
 
@@ -333,28 +333,28 @@ public class GrepService
             if (!isValidFileHash)
                 throw new Exception($"Error: Hash does not match {hashType} format");
 
-            GetFileHashMatches(commandResults, files, grepCommand, searchTerm, searchMetrics, hashType, cancellationToken);
+            GetFileHashMatches(results, files, grepCommand, searchTerm, searchMetrics, hashType, cancellationToken);
         }
         else if (fileNamesOnlyFlag)
-            GetFileNameMatches(commandResults, files, grepCommand, searchPattern, searchRegex, searchMetrics, cancellationToken);
+            GetFileNameMatches(results, files, grepCommand, searchPattern, searchRegex, searchMetrics, cancellationToken);
         else
         {
             if (grepCommand.CommandArgs[ConsoleFlag.SearchTerm] == string.Empty)
                 throw new Exception("Error: Search term not supplied");
 
-            GetFileContentMatches(commandResults, files, grepCommand, searchPattern, searchRegex, searchMetrics, cancellationToken);
+            GetFileContentMatches(results, files, grepCommand, searchPattern, searchRegex, searchMetrics, cancellationToken);
         }
 
         // Notify user of files that could not be read from or written to
         PublishFileAccessSummary(grepCommand, searchMetrics);
 
         // Publish command summary to console
-        PublishCommandSummary(grepCommand, commandResults, searchMetrics);
+        PublishCommandSummary(grepCommand, results, searchMetrics);
     }
 
-    private GrepCommandResult PerformReadOperations(GrepCommand grepCommand, FileItem file, Group fileNameMatch, Match searchMatch)
+    private GrepResult PerformReadOperations(GrepCommand grepCommand, FileItem file, Group fileNameMatch, Match searchMatch)
     {
-        GrepCommandResult result = null;
+        GrepResult result = null;
 
         bool fileHashesFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileHashes);
 
@@ -383,7 +383,7 @@ public class GrepService
                 break;
         }
 
-        result = new GrepCommandResult(file, resultScope)
+        result = new GrepResult(file, resultScope)
         {
             LeadingContextString = leadingContextString,
             MatchedString = searchMatch.Value,
@@ -454,7 +454,7 @@ public class GrepService
         }
     }
 
-    private void PublishCommandSummary(GrepCommand grepCommand, List<CommandResultBase> commandResults, SearchMetrics searchMetrics)
+    private void PublishCommandSummary(GrepCommand grepCommand, List<ResultBase> results, SearchMetrics searchMetrics)
     {
         bool deleteFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Delete);
         bool replaceFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Replace);
@@ -468,13 +468,13 @@ public class GrepService
         else if (replaceFlag)
             summary = $"[{searchMetrics.ReplacedSuccessCount} occurrence(s) replaced in {searchMetrics.TotalFilesMatchedCount} file(s)]";
         else
-            summary = $"[{commandResults.Count} result(s) {searchMetrics.TotalFilesMatchedCount} file(s)]";
+            summary = $"[{results.Count} result(s) {searchMetrics.TotalFilesMatchedCount} file(s)]";
 
         _publisherService.Publish(new ConsoleItem() { ForegroundColor = ConsoleColor.Red, Value = summary });
 
         if (fileSizeMinimumFlag || fileSizeMaximumFlag)
         {
-            var totalFileSize = commandResults.Sum(x => x.SourceFile.FileSize);
+            var totalFileSize = results.Sum(x => x.SourceFile.FileSize);
             var fileSizeReduced = WindowsUtils.GetReducedSize(totalFileSize, 3, out FileSizeType fileSizeType);
 
             summary = $" [{fileSizeReduced} {fileSizeType}(s)]";

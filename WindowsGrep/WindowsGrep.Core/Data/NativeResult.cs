@@ -1,13 +1,13 @@
 ﻿namespace WindowsGrep.Core;
 
-public class NativeCommandResult : CommandResultBase
+public class NativeResult : ResultBase
 {
     #region Fields..
     private NativeCommandType _commandType;
     #endregion Fields..
 
     #region Constructors..
-    public NativeCommandResult(FileItem sourceFile, NativeCommandType nativeCommandType)
+    public NativeResult(FileItem sourceFile, NativeCommandType nativeCommandType)
         : base(sourceFile)
     {
         _commandType = nativeCommandType;

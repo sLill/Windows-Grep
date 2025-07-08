@@ -1,13 +1,13 @@
 ﻿namespace WindowsGrep.Core;
 
-public abstract class CommandResultBase
+public abstract class ResultBase
 {
     #region Properties..
     public FileItem SourceFile { get; set; }
     #endregion Properties..
 
     #region Constructors..
-    public CommandResultBase(FileItem sourceFile)
+    public ResultBase(FileItem sourceFile)
     {
         SourceFile = sourceFile;
     }

@@ -16,14 +16,14 @@ public class NativeService
     #endregion Constructors..
 
     #region Methods..
-    public void RunCommand(NativeCommand nativeCommand, List<CommandResultBase> commandResults, CancellationToken cancellationToken)
+    public void RunCommand(NativeCommand nativeCommand, List<ResultBase> results, CancellationToken cancellationToken)
     {
         _publisherService.Subscribe<ConsoleItem>(_consoleService.Write);
 
         switch (nativeCommand.CommandType)
         {
             case NativeCommandType.List:
-                ListFiles(commandResults, cancellationToken);
+                ListFiles(results, cancellationToken);
                 break;
 
             case NativeCommandType.ChangeDirectory:
@@ -40,7 +40,7 @@ public class NativeService
         }
     }
 
-    private void ListFiles(List<CommandResultBase> commandResults, CancellationToken cancellationToken)
+    private void ListFiles(List<ResultBase> results, CancellationToken cancellationToken)
     {
         FileAttributes fileAttributesToSkip = default;
         fileAttributesToSkip |= FileAttributes.System;
@@ -49,8 +49,8 @@ public class NativeService
         string targetDirectory = Directory.GetCurrentDirectory();
         foreach (var file in WindowsUtils.GetFiles(targetDirectory, false, int.MaxValue, -1, -1, cancellationToken, null, fileAttributesToSkip))
         {
-            var commandResult = new NativeCommandResult(file, NativeCommandType.List);
-            commandResult.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(y));
+            var result = new NativeResult(file, NativeCommandType.List);
+            result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(y));
         }
     }
     #endregion Methods..
