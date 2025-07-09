@@ -58,9 +58,9 @@
                             else
                             {
                                 var grepCommandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
-                                if (grepCommandArgs.ContainsKey(ConsoleFlag.Help))
+                                if (grepCommandArgs.ContainsKey(CommandFlag.Help))
                                     ConsoleUtils.PublishHelp(false);
-                                else if (grepCommandArgs.ContainsKey(ConsoleFlag.Help_Full))
+                                else if (grepCommandArgs.ContainsKey(CommandFlag.Help_Full))
                                     ConsoleUtils.PublishHelp(true);
                                 else
                                 {

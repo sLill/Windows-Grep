@@ -1,9 +1,9 @@
 ﻿namespace WindowsGrep.Core;
 
-public enum ConsoleFlag
+public enum CommandFlag
 {
     SearchTerm,
-    Directory,
+    Path,
 
     // Suppress normal output; Instead print a count of matching lines for each input file
     //[DescriptionCollection("-c", "--count")]

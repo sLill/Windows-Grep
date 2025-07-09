@@ -17,11 +17,11 @@ public static class WindowsUtils
         return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
     }
 
-    public static IEnumerable<FileItem> GetFiles(string root, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
+    public static IEnumerable<FileItem> GetFiles(string path, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
         CancellationToken cancellationToken, List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
-        => GetFiles(root, root, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip);
+        => GetFiles(path, path, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip);
 
-    private static IEnumerable<FileItem> GetFiles(string root, string targetDirectory, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
+    private static IEnumerable<FileItem> GetFiles(string path, string targetDirectory, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
         CancellationToken cancellationToken, List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
     {
         var enumerationOptions = new EnumerationOptions() { AttributesToSkip = fileAttributesToSkip };
@@ -60,7 +60,7 @@ public static class WindowsUtils
                         yield return new FileItem(file, false, fileSize);
                 }
 
-                string relativePath = Path.GetRelativePath(root, targetDirectory);
+                string relativePath = Path.GetRelativePath(path, targetDirectory);
                 int depth = relativePath == "." ? 0 : relativePath.Split(Path.DirectorySeparatorChar).Length;
 
                 // Recurse
@@ -73,7 +73,7 @@ public static class WindowsUtils
                         if (excludeDirectories != null && excludeDirectories.Any(x => directoryInfo.Name.Equals(x, StringComparison.OrdinalIgnoreCase)))
                             continue;
 
-                        foreach (var result in GetFiles(root, subDirectory, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip))
+                        foreach (var result in GetFiles(path, subDirectory, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip))
                             yield return result;
                     }
                 }

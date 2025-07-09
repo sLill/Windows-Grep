@@ -13,12 +13,12 @@ public static class ConsoleCommandUtils
     {
         long fileSizeMaximum = -1;
 
-        bool fileSizeMaximumFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMaximum);
+        bool fileSizeMaximumFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileSizeMaximum);
         if (fileSizeMaximumFlag)
         {
             try
             {
-                string fileSizeMaximumParameter = grepCommand.CommandArgs[ConsoleFlag.FileSizeMaximum];
+                string fileSizeMaximumParameter = grepCommand.CommandArgs[CommandFlag.FileSizeMaximum];
 
                 var match = _fileSizeRegex.Match(fileSizeMaximumParameter);
                 long size = Convert.ToInt64(match.Groups["Size"].Value);
@@ -49,12 +49,12 @@ public static class ConsoleCommandUtils
     {
         long fileSizeMinimum = -1;
 
-        bool fileSizeMinimumFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileSizeMinimum);
+        bool fileSizeMinimumFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileSizeMinimum);
         if (fileSizeMinimumFlag)
         {
             try
             {
-                string fileSizeMinimumParameter = grepCommand.CommandArgs[ConsoleFlag.FileSizeMinimum];
+                string fileSizeMinimumParameter = grepCommand.CommandArgs[CommandFlag.FileSizeMinimum];
 
                 var match = _fileSizeRegex.Match(fileSizeMinimumParameter);
                 long size = Convert.ToInt64(match.Groups["Size"].Value);
@@ -87,12 +87,12 @@ public static class ConsoleCommandUtils
     {
         HashType hashType = default;
 
-        bool fileHashesFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileHashes);
+        bool fileHashesFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileHashes);
         if (fileHashesFlag)
         {
             try
             {
-                string hashTypeParameter = grepCommand.CommandArgs[ConsoleFlag.FileHashes];
+                string hashTypeParameter = grepCommand.CommandArgs[CommandFlag.FileHashes];
                 hashType = (HashType)Convert.ToInt32(hashTypeParameter);
             }
             catch
@@ -108,32 +108,32 @@ public static class ConsoleCommandUtils
 
     public static List<string>? GetFileTypeFilters(GrepCommand grepCommand)
     {
-        bool fileTypeFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeIncludeFilter);
-        var fileTypeFilters = fileTypeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.FileTypeIncludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
+        bool fileTypeFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileTypeIncludeFilter);
+        var fileTypeFilters = fileTypeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeIncludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
 
         return fileTypeFilters;
     }
 
     public static List<string>? GetFileTypeExcludeFilters(GrepCommand grepCommand)
     {
-        bool fileTypeExcludeFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FileTypeExcludeFilter);
-        var fileTypeExcludeFilters = fileTypeExcludeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.FileTypeExcludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
+        bool fileTypeExcludeFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileTypeExcludeFilter);
+        var fileTypeExcludeFilters = fileTypeExcludeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeExcludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
 
         return fileTypeExcludeFilters;
     }
 
     public static List<string>? GetPathFilters(GrepCommand grepCommand)
     {
-        bool pathFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.PathIncludeFilter);
-        var pathFilters = pathFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.PathIncludeFilter].Split(new char[] { ',', ';' }).ToList() : null;
+        bool pathFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.PathIncludeFilter);
+        var pathFilters = pathFilterFlag ? grepCommand.CommandArgs[CommandFlag.PathIncludeFilter].Split(new char[] { ',', ';' }).ToList() : null;
 
         return pathFilters;
     }
 
     public static List<string>? GetPathExcludeFilters(GrepCommand grepCommand)
     {
-        bool pathExcludeFilterFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.PathExcludeFilter);
-        var pathExcludeFilters = pathExcludeFilterFlag ? grepCommand.CommandArgs[ConsoleFlag.PathExcludeFilter].Split(new char[] { ',', ';' }).ToList() : null;
+        bool pathExcludeFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.PathExcludeFilter);
+        var pathExcludeFilters = pathExcludeFilterFlag ? grepCommand.CommandArgs[CommandFlag.PathExcludeFilter].Split(new char[] { ',', ';' }).ToList() : null;
 
         return pathExcludeFilters;
     }
@@ -141,8 +141,8 @@ public static class ConsoleCommandUtils
     public static RegexOptions GetRegexOptions(GrepCommand grepCommand)
     {
         RegexOptions optionsFlags = 0;
-        bool ignoreCaseFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
-        bool ignoreBreaksFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreBreaks);
+        bool ignoreCaseFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IgnoreCase);
+        bool ignoreBreaksFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IgnoreBreaks);
 
         if (ignoreCaseFlag)
             optionsFlags |= RegexOptions.IgnoreCase;
@@ -154,18 +154,12 @@ public static class ConsoleCommandUtils
         return optionsFlags;
     }
 
-    public static string GetPath(GrepCommand grepCommand)
-    {
-        bool directoryFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.Directory);
-        return directoryFlag ? grepCommand.CommandArgs[ConsoleFlag.Directory] : Environment.CurrentDirectory;
-    }
-
     public static string BuildSearchPattern(GrepCommand grepCommand)
     {
-        bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.FixedString);
-        bool iIgnoreCaseFlag = grepCommand.CommandArgs.ContainsKey(ConsoleFlag.IgnoreCase);
+        bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FixedString);
+        bool iIgnoreCaseFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IgnoreCase);
 
-        string searchTerm = grepCommand.CommandArgs[ConsoleFlag.SearchTerm];
+        string searchTerm = grepCommand.CommandArgs[CommandFlag.SearchTerm];
         string ignoreCaseModifier = iIgnoreCaseFlag ? @"(?i)" : string.Empty;
 
         // Ignore carriage-return and newline characters when using endline regex to match expected behavior from other regex engines

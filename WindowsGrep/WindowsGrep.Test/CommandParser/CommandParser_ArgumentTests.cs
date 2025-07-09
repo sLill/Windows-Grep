@@ -3,13 +3,13 @@
 public class CommandParser_ArgumentTests : TestBase
 {
     [Theory]
-    [InlineData("-r -z -i search_term", new[] { ConsoleFlag.Recursive, ConsoleFlag.IgnoreCase })]
-    [InlineData("-r -k -i search_term", new[] { ConsoleFlag.Recursive, ConsoleFlag.IgnoreCase, ConsoleFlag.FileNamesOnly })]
-    [InlineData("-rk -i search_term", new[] { ConsoleFlag.Recursive, ConsoleFlag.IgnoreCase, ConsoleFlag.FileNamesOnly })]
-    [InlineData("-r --ignore-breaks -k -i search_term", new[] { ConsoleFlag.Recursive, ConsoleFlag.IgnoreCase, ConsoleFlag.FileNamesOnly })]
-    public void ShortDescriptors_Valid(string command, ConsoleFlag[] expectedArgs)
+    [InlineData("-r -z -i search_term", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase })]
+    [InlineData("-r -k -i search_term", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly })]
+    [InlineData("-rk -i search_term", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly })]
+    [InlineData("-r --ignore-breaks -k -i search_term", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly })]
+    public void ShortDescriptors_Valid(string command, CommandFlag[] expectedArgs)
     {
-        IDictionary<ConsoleFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
+        IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
         expectedArgs.ToList().ForEach(x => Assert.True(commandArgs.ContainsKey(x)));
     }
 
@@ -25,9 +25,9 @@ public class CommandParser_ArgumentTests : TestBase
     public void Path_Valid(string command)
     {
         command = string.Format(command, Environment.CurrentDirectory);
-        IDictionary<ConsoleFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
+        IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
 
-        Assert.True(commandArgs.ContainsKey(ConsoleFlag.Path));
+        Assert.True(commandArgs.ContainsKey(CommandFlag.Path));
     }
 
     [Theory]

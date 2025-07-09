@@ -3,7 +3,7 @@
 public class GrepCommand
 {
     #region Properties..
-    public IDictionary<ConsoleFlag, string> CommandArgs { get; set; } = new Dictionary<ConsoleFlag, string>();
+    public IDictionary<CommandFlag, string> CommandArgs { get; set; } = new Dictionary<CommandFlag, string>();
     #endregion Properties..
 
     #region Constructors..

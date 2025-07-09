@@ -41,21 +41,37 @@ public static class WindowsGrepUtils
         return default;
     }
 
-    public static IDictionary<ConsoleFlag, string> ParseGrepCommandArgs(string commandRaw)
+    public static IDictionary<CommandFlag, string> ParseGrepCommandArgs(string commandString)
     {
-        commandRaw = commandRaw.Trim();
-
-        Dictionary<ConsoleFlag, string> commandArgs = new Dictionary<ConsoleFlag, string>();
-        List<ConsoleFlag> consoleFlagCollection = EnumUtils.GetValues<ConsoleFlag>().ToList();
+        Dictionary<CommandFlag, string> commandArgs = new Dictionary<CommandFlag, string>();
 
         // Remove arbitrary "grep" from commands ran from the grep console
-        if (commandRaw.StartsWith("grep"))
-            commandRaw = commandRaw.Substring(4).Trim();
+        commandString = commandString.Trim();
+        if (commandString.StartsWith("grep"))
+            commandString = commandString.Substring(4).Trim();
 
-        // Option args
+        ParseCommandFlags(commandArgs, commandString);
+
+        // Return early for Help commands
+        if (commandArgs.ContainsKey(CommandFlag.Help) || commandArgs.ContainsKey(CommandFlag.Help_Full))
+            return commandArgs;
+
+        ParseSearchTermAndPath(commandArgs, commandString);
+
+        // Throw an exception if the command has not been fully consumed at this point
+        if (commandString.Trim().Length > 0)
+            throw new Exception($"Unrecognized command: {commandString}");
+
+        return commandArgs;
+    }
+
+    private static void ParseCommandFlags(Dictionary<CommandFlag, string> commandArgs, string commandString)
+    {
+        List<CommandFlag> consoleFlagCollection = EnumUtils.GetValues<CommandFlag>().ToList();
+
         while (true)
         {
-            Match descriptorMatch = _descriptorRegex.Match(commandRaw);
+            Match descriptorMatch = _descriptorRegex.Match(commandString);
             if (descriptorMatch.Groups["Descriptor"].Success)
             {
                 string descriptor = descriptorMatch.Groups["Descriptor"].Value;
@@ -109,31 +125,29 @@ public static class WindowsGrepUtils
                     }
                 }
 
-                commandRaw = _descriptorRegex.Replace(commandRaw, string.Empty);
+                commandString = _descriptorRegex.Replace(commandString, string.Empty);
             }
             else
                 break;
         }
+    }
 
-        // Return early for Help commands
-        if (commandArgs.ContainsKey(ConsoleFlag.Help) || commandArgs.ContainsKey(ConsoleFlag.Help_Full))
-            return commandArgs;
-
-        // Search term
-        commandRaw = commandRaw.Trim();
-        Match searchTermMatch = _parameterRegex.Match(commandRaw);
+    private static void ParseSearchTermAndPath(Dictionary<CommandFlag, string> commandArgs, string commandString)
+    {
+        commandString = commandString.Trim();
+        Match searchTermMatch = _parameterRegex.Match(commandString);
         string searchParameter = searchTermMatch.Groups["Parameter_Quoted"].Success ? searchTermMatch.Groups["Parameter_Quoted"].Value : string.Empty;
         searchParameter = string.IsNullOrEmpty(searchParameter) ? searchTermMatch.Groups["Parameter_Unquoted"].Value : searchParameter;
 
         if (!string.IsNullOrEmpty(searchParameter))
         {
-            commandArgs[ConsoleFlag.SearchTerm] = searchParameter;
-            commandRaw = _parameterRegex.Replace(commandRaw, string.Empty, 1);
-            commandRaw = commandRaw.Trim();
+            commandArgs[CommandFlag.SearchTerm] = searchParameter;
+            commandString = _parameterRegex.Replace(commandString, string.Empty, 1);
+            commandString = commandString.Trim();
 
             // Path
             string targetPath = Environment.CurrentDirectory;
-            Match pathMatch = _parameterRegex.Match(commandRaw);
+            Match pathMatch = _parameterRegex.Match(commandString);
             string pathParameter = pathMatch.Groups["Parameter_Quoted"].Success ? pathMatch.Groups["Parameter_Quoted"].Value : string.Empty;
             pathParameter = string.IsNullOrEmpty(pathParameter) ? pathMatch.Groups["Parameter_Unquoted"].Value : pathParameter;
 
@@ -142,24 +156,19 @@ public static class WindowsGrepUtils
                 if (Path.Exists(pathParameter))
                 {
                     targetPath = Path.IsPathFullyQualified(pathParameter) ? pathParameter : Path.GetFullPath(pathParameter);
-                    commandRaw = _parameterRegex.Replace(commandRaw, string.Empty, 1);
+                    commandString = _parameterRegex.Replace(commandString, string.Empty, 1);
                 }
                 else
                     throw new Exception($"Specified path does not exist '{pathParameter}'");
             }
 
             if (Path.Exists(targetPath))
-                commandArgs[ConsoleFlag.Path] = targetPath;
+                commandArgs[CommandFlag.Path] = targetPath;
             else
                 throw new Exception($"File or directory '{targetPath}' does not exist");
         }
         else
             throw new Exception("Missing Search Term");
-
-        if (commandRaw.Trim().Length > 0)
-            throw new Exception($"Unrecognized command: {commandRaw}");
-
-        return commandArgs;
     }
 
     public static string GetCommandPattern(string commandDescriptor, bool expectsParameter)
