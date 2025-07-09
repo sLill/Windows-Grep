@@ -6,7 +6,7 @@ Usage:	\u001b[38;2;255;165;0mgrep [options] search_term path\u001b[0m
 -c	--context=			: Return n leading/trailing characters around the matched term
 -b	--ignore-breaks			: Ignore line breaks
 -i	--ignore-case			: Ignore case
--F	--fixed-string			: Interpret patterns as a fixed string instead of an expression
+-F	--fixed-string			: Plaintext search, no regular expressions
 -t	--filetype-include=		: Include files of type n (, or ; delimited)
 -T	--filetype-exclude=		: Exclude files of type n (, or ; delimited)
 -p	--path-include=			: Include filepaths by expression (, or ; delimited)
