@@ -123,7 +123,7 @@ public class GrepService
 
         IEnumerable<FileItem> files = null;
 
-        if (results.Any())
+        if (results.Count > 0)
             files = results.Select(result => result.SourceFile).DistinctBy(x => x.Name).ToList();
         else
         {
@@ -170,7 +170,7 @@ public class GrepService
                 string fileRaw = File.ReadAllText(file.Name);
                 List<Match> matches = searchRegex.Matches(fileRaw).ToList();
                 
-                if (matches.Any())
+                if (matches.Count > 0)
                 {
                     bool isWriteOperation = replaceFlag || deleteFlag;
                     if (isWriteOperation)

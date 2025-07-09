@@ -77,7 +77,6 @@
                 }
             }
             while (args.Length == 0 && !cancellationTokenSource.IsCancellationRequested);
-
         }
         #endregion Methods..
     }
