@@ -5,8 +5,8 @@ public class GrepArgumentTests : TestBase
     [Fact]
     public void GrepArguments_Basic()
     {
-        string testText = "This is sample text";
-        string command = $"-rk -i --max-depth=\"3\" \"{testText}\" \"{TestDataDirectory}\"";
+        string testText = "This is \\\"sample\\\" text";
+        string command = $"-rk -i --max-depth=3 \"{testText}\" \"{TestDataDirectory}\"";
 
         IDictionary<ConsoleFlag, string> commandArgs = WindowsGrep.ParseGrepCommandArgs(command);
         
@@ -16,6 +16,6 @@ public class GrepArgumentTests : TestBase
         Assert.True(commandArgs.ContainsKey(ConsoleFlag.Directory));
 
         Assert.True(commandArgs[ConsoleFlag.SearchTerm] == testText);
-        Assert.True(commandArgs[ConsoleFlag.Directory] == TestDataDirectory);
+        Assert.True(WindowsGrepUtils.ArePathsEqual(commandArgs[ConsoleFlag.Directory], TestDataDirectory));
     }
 }

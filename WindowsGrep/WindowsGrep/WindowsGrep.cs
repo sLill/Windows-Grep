@@ -1,16 +1,20 @@
-﻿namespace WindowsGrep
+﻿using System.IO;
+
+namespace WindowsGrep
 {
     public class WindowsGrep
     {
         #region Fields..
-        private readonly ILogger<WindowsGrep> _logger;
+        private static Regex _descriptorRegex = new Regex(@"^[\s]*?(?<Descriptor>[-]+\S+)", RegexOptions.Compiled);
+        private static Regex _longDescriptorRegex = new Regex(@"^[^=$]*", RegexOptions.Compiled);
+        private static Regex _parameterRegex = new Regex(@"(?<!\\)(['""])(?<Parameter>.*?)(?<!\\)\1|^[^\s\'""]+", RegexOptions.Compiled);
+
         private readonly IServiceProvider _serviceProvider;
         #endregion Fields..
 
         #region Constructors..
-        public WindowsGrep(ILogger<WindowsGrep> logger, IServiceProvider serviceProvider)
+        public WindowsGrep(IServiceProvider serviceProvider)
         {
-            _logger = logger;
             _serviceProvider = serviceProvider;
         }
         #endregion Constructors..
@@ -82,7 +86,7 @@
 
         }
 
-        private static (NativeCommandType? CommandType, string CommandParameter) ParseNativeCommandArgs(string commandRaw)
+        public static (NativeCommandType? CommandType, string CommandParameter) ParseNativeCommandArgs(string commandRaw)
         {
             List<NativeCommandType> nativeCommandCollection = EnumUtils.GetValues<NativeCommandType>().ToList();
             foreach (var commandType in nativeCommandCollection)
@@ -106,40 +110,107 @@
             return default;
         }
 
-        private static IDictionary<ConsoleFlag, string> ParseGrepCommandArgs(string commandRaw)
+        public static IDictionary<ConsoleFlag, string> ParseGrepCommandArgs(string commandRaw)
         {
-            ConcurrentDictionary<ConsoleFlag, string> commandArgs = new ConcurrentDictionary<ConsoleFlag, string>();
+            commandRaw = commandRaw.Trim();
 
+            Dictionary<ConsoleFlag, string> commandArgs = new Dictionary<ConsoleFlag, string>();
             List<ConsoleFlag> consoleFlagCollection = EnumUtils.GetValues<ConsoleFlag>().ToList();
-            consoleFlagCollection.ForEach(flag =>
+
+            // Option args
+            while (true)
             {
-                bool expectsParameter = flag.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
-                List<string> flagDescriptionCollection = flag.GetCustomAttribute<DescriptionCollectionAttribute>()?.Value.ToList();
-
-                flagDescriptionCollection?.ForEach(flagDescription =>
+                Match descriptorMatch = _descriptorRegex.Match(commandRaw);
+                if (descriptorMatch.Success)
                 {
-                    string flagPattern = GetFlagPattern(flagDescription, expectsParameter);
-                    var matches = Regex.Matches(commandRaw, flagPattern);
+                    string descriptor = descriptorMatch.Groups["Descriptor"].Value;
 
-                    if (expectsParameter && matches.Count > 1)
-                        throw new Exception("Error: Arguments of parameter type cannot be specified more than once");
-                    else if (matches.Count > 0)
+                    // Long descriptors
+                    if (descriptor.StartsWith("--"))
                     {
-                        string flagArgument = matches.Select(match => match.Groups["Parameter"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
-                        flagArgument = GetSanitizedFlagArgument(flag, flagArgument);
+                        descriptor = descriptor.TrimStart('-');
+                        string descriptorFlag = _longDescriptorRegex.Match(descriptor).Value;
 
-                        commandArgs[flag] = flagArgument;
-                        commandRaw = Regex.Replace(commandRaw, flagPattern, " ");
+                        consoleFlagCollection.ForEach(x =>
+                        {
+                            var descriptionAttribute = x.GetCustomAttribute<DescriptionCollectionAttribute>();
+                            if (descriptionAttribute != default)
+                            {
+                                if (descriptionAttribute.Value.Select(y => y.Trim(['-', '='])).Contains(descriptorFlag))
+                                {
+                                    bool expectsParameter = x.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
+                                    if (expectsParameter)
+                                    {
+                                        if (descriptor.Split('=').Length < 2)
+                                            throw new Exception($"Option '{descriptor}' expects a parameter, but none was provided.");
+
+                                        string descriptorParameter = descriptor.Split('=')[1];
+                                        commandArgs[x] = descriptorParameter;
+                                    }
+                                    else
+                                        commandArgs[x] = string.Empty;
+                                }
+                            }
+                        });
                     }
-                });
-            });
+
+                    // Short descriptors
+                    else
+                    {
+                        descriptor = descriptor.TrimStart('-');
+                        
+                        // Handle combined/merged descriptors (ex. -ri)
+                        for (int i = 0; i < descriptor.Length; i++)
+                        {
+                            consoleFlagCollection.ForEach(x =>
+                            {
+                                var descriptionAttribute = x.GetCustomAttribute<DescriptionCollectionAttribute>();
+                                if (descriptionAttribute != default)
+                                {
+                                    if (descriptionAttribute.Value.Select(y => y.Trim('-')).Contains(descriptor[i].ToString()))
+                                        commandArgs[x] = string.Empty;
+                                }
+                            });
+                        }
+                    }
+
+                    commandRaw = _descriptorRegex.Replace(commandRaw, string.Empty);
+                }
+                else
+                    break;
+            }
 
             // Search term
-            commandArgs[ConsoleFlag.SearchTerm] = commandRaw.Trim();
+            commandRaw = commandRaw.Trim();
+            Match searchTermMatch = _parameterRegex.Match(commandRaw);
+            if (searchTermMatch.Success)
+            {
+                commandArgs[ConsoleFlag.SearchTerm] = searchTermMatch.Groups["Parameter"].Value;
+                commandRaw = _parameterRegex.Replace(commandRaw, string.Empty, 1);
+
+                // Directory
+                string targetPath = Environment.CurrentDirectory;
+                Match directoryMatch = _parameterRegex.Match(commandRaw);
+                if (directoryMatch.Success)
+                {
+                    if (Path.IsPathFullyQualified(commandRaw))
+                        targetPath = directoryMatch.Groups["Paramter"].Value;
+                    else
+                        targetPath = Path.GetFullPath(directoryMatch.Groups["Parameter"].Value);
+                }
+
+                if (Path.Exists(targetPath))
+                    commandArgs[ConsoleFlag.Directory] = targetPath;
+                else
+                    throw new Exception($"File or directory '{targetPath}' does not exist");
+            }
+            else
+                throw new Exception("Missing Search Term.\n\nUsage:   WindowsGrep [options] search_term directory");
+
             return commandArgs;
         }
 
-        private static string GetFlagPattern(string flagDescriptor, bool expectsParameter)
+        public static string GetFlagPattern(string flagDescriptor, bool expectsParameter)
         {
             string pattern = $"(\\s|^)(?<Descriptor>{flagDescriptor})(\\s+|$)?";
             pattern = expectsParameter ? pattern + "(?<Parameter>((['\"][^'\"]+.)|([\\\\/\\s\\S]*[\\\\/]\\s[^-]*)|[^\\s]+))\\s*" : pattern;
@@ -147,7 +218,7 @@
             return pattern;
         }
 
-        private static string GetSanitizedFlagArgument(ConsoleFlag flag, string flagArgument)
+        public static string GetSanitizedFlagArgument(ConsoleFlag flag, string flagArgument)
         {
             // Filter invalid strings from beginning/end of argument
             List<char> filterCharacterCollection = flag.GetCustomAttribute<FilterCharacterCollectionAttribute>()?.Value.ToList();
@@ -170,7 +241,7 @@
             return flagArgument;
         }
 
-        private static string GetCommandPattern(string commandDescriptor, bool expectsParameter)
+        public static string GetCommandPattern(string commandDescriptor, bool expectsParameter)
         {
             string pattern = $"(\\s|^){commandDescriptor}";
             pattern = expectsParameter ? $"{pattern}\\s.*?(?<Parameter>.*?)$" : $"{pattern}[^\\S]*?$";
