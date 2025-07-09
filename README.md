@@ -63,10 +63,10 @@ Open cmd/powershell > "grep [command]" <br/> <br/>
 | Max Depth                 |    | --max-depth=          |
 | Show Hidden Files         |    | --show-hidden         |
 | Show System Files         |    | --show-system         |
-| Filter Files by Type(s) [Inclusive]    | -t | --filetype-include=	|
-| Filter Files by Type(s) [Exclusive]    | -T | --filetype-exclude= |
-| Filter Filepath(s) by Expression(s) [Inclusive]    | -p | --path-include=    |
-| Filter Filepath(s) by Expression(s) [Exclusive]    | -P | --path-exclude=    |
+| Include files by Type(s)  | -t | --filetype-include=	|
+| Exclude files by Type(s)  | -T | --filetype-exclude= |
+| Include Filepaths by Expression    | -p | --path-include=    |
+| Exclude Filepaths by Expression    | -P | --path-exclude=    |
 | Minimum File Size           |    | --filesize-min=   |
 | Maximum File Size           |    | --filesize-max=   |
 | Replace Text                | -RX| --replace=        |
