@@ -17,69 +17,57 @@ public static class WindowsUtils
         return directories.Length > 1 ? @"..\" + directories[directories.Length - 1] : fullPath;
     }
 
-    public static IEnumerable<FileItem> GetFiles(string path, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
+    public static IEnumerable<FileItem> GetFiles(string rootPath, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
         CancellationToken cancellationToken, List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
-        => GetFiles(path, path, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip);
+        => GetFiles(rootPath, rootPath, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip);
 
-    private static IEnumerable<FileItem> GetFiles(string path, string targetDirectory, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
+    private static IEnumerable<FileItem> GetFiles(string rootPath, string subPath, bool recursive, int maxRecursionDepth, long fileSizeMin, long fileSizeMax, 
         CancellationToken cancellationToken, List<string> excludeDirectories = null, FileAttributes fileAttributesToSkip = default)
     {
         var enumerationOptions = new EnumerationOptions() { AttributesToSkip = fileAttributesToSkip };
 
         // File
-        if (Path.HasExtension(targetDirectory))
+        if (Path.HasExtension(subPath) && File.Exists(subPath))
         {
-            if (File.Exists(targetDirectory))
-            {
-                var fileSize = WindowsUtils.GetFileSizeOnDisk(targetDirectory);
-                yield return new FileItem(targetDirectory, false, fileSize);
-            }
-            else 
-                Console.WriteLine($"File '{targetDirectory}' does not exist or is not accessible.");
+            var fileSize = WindowsUtils.GetFileSizeOnDisk(subPath);
+            yield return new FileItem(subPath, false, fileSize);
         }
 
         // Directory
         else
         {
-            if (Directory.Exists(targetDirectory))
+            // Subdirectories
+            foreach (var subDirectory in Directory.EnumerateDirectories(subPath, "*", enumerationOptions))
             {
-                // Subdirectories
-                foreach (var subDirectory in Directory.EnumerateDirectories(targetDirectory, "*", enumerationOptions))
+                var directoryInfo = new DirectoryInfo(subDirectory);
+                yield return new FileItem(directoryInfo.FullName, true, -1);
+            }
+
+            // Files in current directory
+            foreach (var file in Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(subPath.TrimEnd()), "*", enumerationOptions))
+            {
+                var fileSize = WindowsUtils.GetFileSizeOnDisk(file);
+                bool fileSizeValidateSuccess = ValidateFileSize(fileSize, fileSizeMin, fileSizeMax);
+                if (fileSizeValidateSuccess)
+                    yield return new FileItem(file, false, fileSize);
+            }
+
+            string relativePath = Path.GetRelativePath(rootPath, subPath);
+            int depth = relativePath == "." ? 0 : relativePath.Split(Path.DirectorySeparatorChar).Length;
+
+            // Recurse
+            if (recursive && depth < maxRecursionDepth)
+            {
+                foreach (var subDirectory in Directory.EnumerateDirectories(subPath, "*", enumerationOptions))
                 {
                     var directoryInfo = new DirectoryInfo(subDirectory);
-                    yield return new FileItem(directoryInfo.FullName, true, -1);
-                }
+                    if (excludeDirectories != null && excludeDirectories.Any(x => directoryInfo.Name.Equals(x, StringComparison.OrdinalIgnoreCase)))
+                        continue;
 
-                // Files in current directory
-                foreach (var file in Directory.EnumerateFiles(Path.TrimEndingDirectorySeparator(targetDirectory.TrimEnd()), "*", enumerationOptions))
-                {
-                    var fileSize = WindowsUtils.GetFileSizeOnDisk(file);
-                    bool fileSizeValidateSuccess = ValidateFileSize(fileSize, fileSizeMin, fileSizeMax);
-
-                    if (fileSizeValidateSuccess)
-                        yield return new FileItem(file, false, fileSize);
-                }
-
-                string relativePath = Path.GetRelativePath(path, targetDirectory);
-                int depth = relativePath == "." ? 0 : relativePath.Split(Path.DirectorySeparatorChar).Length;
-
-                // Recurse
-                if (recursive && depth < maxRecursionDepth)
-                {
-                    foreach (var subDirectory in Directory.EnumerateDirectories(targetDirectory, "*", enumerationOptions))
-                    {
-                        var directoryInfo = new DirectoryInfo(subDirectory);
-
-                        if (excludeDirectories != null && excludeDirectories.Any(x => directoryInfo.Name.Equals(x, StringComparison.OrdinalIgnoreCase)))
-                            continue;
-
-                        foreach (var result in GetFiles(path, subDirectory, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip))
-                            yield return result;
-                    }
+                    foreach (var result in GetFiles(rootPath, subDirectory, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip))
+                        yield return result;
                 }
             }
-            else 
-                Console.WriteLine($"Directory '{targetDirectory}' does not exist or is not accessible.");
         }
     }
 
