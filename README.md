@@ -9,17 +9,19 @@
 
 Command line grep-like file search utility for Windows. 
 
-No bloated gui or custom console. Just a fast, simple tool that runs in native cmd/powershell. </br>
+Built to mimic the command style and behavior of Unix grep for those looking for familiarity.
+No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd/powershell.</br>
 
 <h2>Supports</h2>
-- Regular Expressions</br>
-- Chained commands</br>
-- Filter by Filetype/Filepath/Filesize</br>
-- Exports</br>
-- Mass replace/delete</br>
-- Ease of use: Run from cmd, Powershell and Windows Explorer</br>
 
-<h1>INSTALLATION</h1>
+- Most Unix grep options
+- Regular Expressions
+- Chaining commands
+- Filtering by filetypes, directory, and filesize
+- Mass editing with replace and delete
+- Ease of use. Runs from cmd, Powershell and Windows Explorer
+
+<h2>INSTALLATION</h2>
 
 <h3>Installer</h2>
 
@@ -28,61 +30,53 @@ No bloated gui or custom console. Just a fast, simple tool that runs in native c
 
 This will install Windows Grep in Program Files (x86), add "grep" to PATH for command line use, and insert a registry key for context menu use within Windows Explorer.
 
-<h3>Manual Compilation</h2>
+<h3>Manual Compilation</h3>
 
 1. Clone repo and build the `WindowsGrep` project as Release
 2. Publish `WindowsGrep`
 3. Download [Wix Toolset & Wix VS Extension](https://wixtoolset.org/docs/wix3/)
 4. Build the `WindowsGrep.Setup` project to generate a msi installer in the `WindowsGrep.Setup` bin
 
-<h1>USAGE</h1>
+<h2>USAGE</h2>
+<h4>grep [options] search_term [path]</h4><br/>
+
 Right-click in File Explorer > Windows Grep
-<br/><br/>
-OR
-<br/><br/>
+<br/><b>or</b><br/>
 Open cmd/powershell > "grep [command]" <br/> <br/>
 
 ![image](https://github.com/user-attachments/assets/6798a573-43db-4012-a4d0-04ff76e9ae3a)
 
 
-<h1>REFERENCE</h1>
+<h2>REFERENCE</h2>
 
 |                           |    |                       |
 | ------------------------- | -- | :-------------------: |
+| Show Help                 | -h | --help                |
 | Recursive Search          | -r | --recursive           |
-| Target Directory          | -d | --directory=          |
-| Context Characters        | -c | --context=            |
-| Limit n Results           | -n | --results=            |
-| Suppress output           | -s | --suppress            |
-| Ignore Line Breaks        | -b | --ignore-breaks       |
 | Ignore Case               | -i | --ignore-case         |
-| Target File               | -f | --file=               |
+| Show n Characters Around Match | -c | --context=            |
+| Ignore Line Breaks        | -b | --ignore-breaks       |
 | Plain Text Search         | -F | --fixed-strings       |
-| Regular Expression Search | -G | --basic-regexp        |
-| Filter Files by Type(s) [Inclusive]    | -t | --filetype-filter=    |
-| Filter Files by Type(s) [Exclusive]    | -T | --filetype-exclude-filter= |
-| Filter Filepath(s) by Expression(s) [Inclusive]    | -p | --path-filter=    |
-| Filter Filepath(s) by Expression(s) [Exclusive]    | -P | --path-exclude-filter= |
-| Filenames Only            | -k | --filenames-only      |
-| FileSize Minimum          | -z | --filesize-minimum=   |
-| FileSize Maximum          | -Z | --filesize-maximum=   |
-| Write Output to File      | -w | --write=              |
-| Replace Text              | -RX| --replace=            |
-| Delete Files              | -DX| --delete              |
-| File Hashes               |    | --hash=  (0=SHA256, 1=MD5)     |
+| Filenames Only            | -k | --filenames           |
+| Redirect Output to File   | -o | --out-file=           |
+| Match by File Hash        |    | --hash=  (0=SHA256, 1=MD5)     |
 | Max Depth                 |    | --max-depth=          |
 | Show Hidden Files         |    | --show-hidden         |
-| Show System Files         |    | --show-system         |  
+| Show System Files         |    | --show-system         |
+| Filter Files by Type(s) [Inclusive]    | -t | --filetype-include=	|
+| Filter Files by Type(s) [Exclusive]    | -T | --filetype-exclude= |
+| Filter Filepath(s) by Expression(s) [Inclusive]    | -p | --path-include=    |
+| Filter Filepath(s) by Expression(s) [Exclusive]    | -P | --path-exclude=    |
+| Minimum File Size           |    | --filesize-min=   |
+| Maximum File Size           |    | --filesize-max=   |
+| Replace Text                | -RX| --replace=        |
+| Delete Files                | -DX| --delete          |
 
 
 <i>* See <a href="https://github.com/sLill/Windows-Grep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
-
-<b>Command Order</b></br>
-Order of flags and the search term is completely flexible
-
 <br/>
 
-<h1>EXAMPLE COMMANDS</h1>
+<h2>EXAMPLE COMMANDS</h2>
 
 <i>Recursive search for file content containing "Dug".</i><br/>
 -r Dug
