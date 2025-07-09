@@ -1,6 +1,6 @@
 ﻿\u001b[38;2;255;165;0mWindows Grep\u001b[0m 
 \u001b[38;2;255;165;0mv5.0.0\u001b[0m
 
-Help (-h)
+\u001b[38;2;125;125;125mHelp (-h)
 Author: Sam Lill
-Source: https://github.com/sLill/Windows-Grep
+Source: https://github.com/sLill/Windows-Grep\u001b[0m
