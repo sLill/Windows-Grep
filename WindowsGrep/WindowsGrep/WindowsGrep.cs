@@ -72,7 +72,8 @@
                     }
                     catch (Exception ex)
                     {
-                        consoleService.Write(new() { Value = $"\n{ex.Message}\nUsage:   grep [options] search_term path\n\n", ForegroundColor = ConsoleColor.Red });
+                        consoleService.Write(new() { Value = $"\n{ex.Message}\n", ForegroundColor = ConsoleColor.Red });
+                        consoleService.Write(new() { Value = $"Usage:   grep [options] search_term [path]\n\n", ForegroundColor = ConsoleColor.White });
                     }
                 }
             }

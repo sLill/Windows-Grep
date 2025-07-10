@@ -50,13 +50,13 @@ public static class WindowsGrepUtils
         if (commandString.StartsWith("grep"))
             commandString = commandString.Substring(4).Trim();
 
-        ParseCommandFlags(commandArgs, commandString);
+        ParseCommandFlags(commandArgs, ref commandString);
 
         // Return early for Help commands
         if (commandArgs.ContainsKey(CommandFlag.Help) || commandArgs.ContainsKey(CommandFlag.Help_Full))
             return commandArgs;
 
-        ParseSearchTermAndPath(commandArgs, commandString);
+        ParseSearchTermAndPath(commandArgs, ref commandString);
 
         // Throw an exception if the command has not been fully consumed at this point
         if (commandString.Trim().Length > 0)
@@ -65,7 +65,7 @@ public static class WindowsGrepUtils
         return commandArgs;
     }
 
-    private static void ParseCommandFlags(Dictionary<CommandFlag, string> commandArgs, string commandString)
+    private static void ParseCommandFlags(Dictionary<CommandFlag, string> commandArgs, ref string commandString)
     {
         List<CommandFlag> consoleFlagCollection = EnumUtils.GetValues<CommandFlag>().ToList();
 
@@ -132,7 +132,7 @@ public static class WindowsGrepUtils
         }
     }
 
-    private static void ParseSearchTermAndPath(Dictionary<CommandFlag, string> commandArgs, string commandString)
+    private static void ParseSearchTermAndPath(Dictionary<CommandFlag, string> commandArgs, ref string commandString)
     {
         commandString = commandString.Trim();
         Match searchTermMatch = _parameterRegex.Match(commandString);
