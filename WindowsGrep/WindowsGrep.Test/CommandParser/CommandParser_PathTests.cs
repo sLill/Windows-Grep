@@ -3,9 +3,14 @@
 public class CommandParser_PathTests : TestBase
 {
     [Theory]
+    [InlineData("search_term")]
     [InlineData("-ri search_term {0}")]
     [InlineData("search_term {0}")]
     [InlineData("search_term .")]
+    [InlineData("-ri search_term \"{0}\"")]
+    [InlineData("search_term \"{0}\"")]
+    [InlineData("-ri search_term '{0}'")]
+    [InlineData("search_term '{0}'")]
     public void Path_Valid(string command)
     {
         command = string.Format(command, Environment.CurrentDirectory);

@@ -5,7 +5,8 @@ public static class WindowsGrepUtils
     #region Fields..
     private static Regex _descriptorRegex = new Regex(@"^[\s]*?(?<Descriptor>[-]+\S+)", RegexOptions.Compiled);
     private static Regex _longDescriptorRegex = new Regex(@"^[^=$]*", RegexOptions.Compiled);
-    private static Regex _parameterRegex = new Regex(@"(?<!\\)(['""])(?<Parameter_Quoted>.*?)(?<!\\)\1|(?<Parameter_Unquoted>[^\s\'""]+)", RegexOptions.Compiled);
+    private static Regex _shortParameterRegex = new Regex(@"^(?<Parameter>\S+)", RegexOptions.Compiled);
+    private static Regex _positionalParameterRegex = new Regex(@"(?<!\\)(['""])(?<Parameter_Quoted>.*?)(?<!\\)\1|(?<Parameter_Unquoted>[^\s\'""]+)", RegexOptions.Compiled);
     #endregion Fields..
 
     #region Methods..
@@ -67,7 +68,7 @@ public static class WindowsGrepUtils
 
     private static void ParseCommandFlags(Dictionary<CommandFlag, string> commandArgs, ref string commandString)
     {
-        List<CommandFlag> consoleFlagCollection = EnumUtils.GetValues<CommandFlag>().ToList();
+        List<CommandFlag> consoleFlags = EnumUtils.GetValues<CommandFlag>().ToList();
 
         while (true)
         {
@@ -82,27 +83,34 @@ public static class WindowsGrepUtils
                     descriptor = descriptor.TrimStart('-');
                     string descriptorFlag = _longDescriptorRegex.Match(descriptor).Value;
 
-                    consoleFlagCollection.ForEach(x =>
+                    for (int j = 0; j < consoleFlags.Count; j++)
                     {
-                        var descriptionAttribute = x.GetCustomAttribute<DescriptionCollectionAttribute>();
+                        var descriptionAttribute = consoleFlags[j].GetCustomAttribute<DescriptionCollectionAttribute>();
                         if (descriptionAttribute != default)
                         {
                             if (descriptionAttribute.Value.Select(y => y.Trim(['-', '='])).Contains(descriptorFlag))
                             {
-                                bool expectsParameter = x.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
+                                commandString = _descriptorRegex.Replace(commandString, string.Empty);
+
+                                bool expectsParameter = consoleFlags[j].GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
                                 if (expectsParameter)
                                 {
                                     if (descriptor.Split('=').Length < 2)
                                         throw new Exception($"Option '{descriptor}' expects a parameter, but none was provided");
 
                                     string descriptorParameter = descriptor.Split('=')[1];
-                                    commandArgs[x] = descriptorParameter;
+                                    commandArgs[consoleFlags[j]] = descriptorParameter;
                                 }
                                 else
-                                    commandArgs[x] = string.Empty;
+                                    commandArgs[consoleFlags[j]] = string.Empty;
+
+                                break;
                             }
                         }
-                    });
+
+                        if (j == consoleFlags.Count - 1)
+                            throw new Exception($"Unrecognized command flag: {descriptor}");
+                    }
                 }
 
                 // Short descriptors
@@ -113,19 +121,40 @@ public static class WindowsGrepUtils
                     // Handle combined/merged descriptors (ex. -ri)
                     for (int i = 0; i < descriptor.Length; i++)
                     {
-                        consoleFlagCollection.ForEach(x =>
+                        for (int j = 0; j < consoleFlags.Count; j++)
                         {
-                            var descriptionAttribute = x.GetCustomAttribute<DescriptionCollectionAttribute>();
+                            var descriptionAttribute = consoleFlags[j].GetCustomAttribute<DescriptionCollectionAttribute>();
                             if (descriptionAttribute != default)
                             {
                                 if (descriptionAttribute.Value.Select(y => y.Trim('-')).Contains(descriptor[i].ToString()))
-                                    commandArgs[x] = string.Empty;
+                                {
+                                    if (i == descriptor.Length - 1)
+                                        commandString = _descriptorRegex.Replace(commandString, string.Empty).Trim();
+
+                                    bool expectsParameter = consoleFlags[j].GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
+                                    if (expectsParameter)
+                                    {
+                                        var parameterMatch = _shortParameterRegex.Match(commandString);
+                                        
+                                        if (!parameterMatch.Groups["Parameter"].Success)
+                                            throw new Exception($"Option '{descriptor}' expects a parameter, but none was provided");
+
+                                        commandArgs[consoleFlags[j]] = parameterMatch.Groups["Parameter"].Value;
+                                        commandString = _shortParameterRegex.Replace(commandString, string.Empty).Trim();
+                                    }
+                                    else
+                                        commandArgs[consoleFlags[j]] = string.Empty;
+
+                                    break;
+                                }
                             }
-                        });
+
+                            if (j == consoleFlags.Count - 1)
+                                throw new Exception($"Unrecognized command flag: {descriptor}");
+                        }
                     }
                 }
 
-                commandString = _descriptorRegex.Replace(commandString, string.Empty);
             }
             else
                 break;
@@ -135,19 +164,19 @@ public static class WindowsGrepUtils
     private static void ParseSearchTermAndPath(Dictionary<CommandFlag, string> commandArgs, ref string commandString)
     {
         commandString = commandString.Trim();
-        Match searchTermMatch = _parameterRegex.Match(commandString);
+        Match searchTermMatch = _positionalParameterRegex.Match(commandString);
         string searchParameter = searchTermMatch.Groups["Parameter_Quoted"].Success ? searchTermMatch.Groups["Parameter_Quoted"].Value : string.Empty;
         searchParameter = string.IsNullOrEmpty(searchParameter) ? searchTermMatch.Groups["Parameter_Unquoted"].Value : searchParameter;
 
         if (!string.IsNullOrEmpty(searchParameter))
         {
             commandArgs[CommandFlag.SearchTerm] = searchParameter;
-            commandString = _parameterRegex.Replace(commandString, string.Empty, 1);
+            commandString = _positionalParameterRegex.Replace(commandString, string.Empty, 1);
             commandString = commandString.Trim();
 
             // Path
             string targetPath = Environment.CurrentDirectory;
-            Match pathMatch = _parameterRegex.Match(commandString);
+            Match pathMatch = _positionalParameterRegex.Match(commandString);
             string pathParameter = pathMatch.Groups["Parameter_Quoted"].Success ? pathMatch.Groups["Parameter_Quoted"].Value : string.Empty;
             pathParameter = string.IsNullOrEmpty(pathParameter) ? pathMatch.Groups["Parameter_Unquoted"].Value : pathParameter;
 
@@ -156,7 +185,7 @@ public static class WindowsGrepUtils
                 if (Path.Exists(pathParameter))
                 {
                     targetPath = Path.IsPathFullyQualified(pathParameter) ? pathParameter : Path.GetFullPath(pathParameter);
-                    commandString = _parameterRegex.Replace(commandString, string.Empty, 1);
+                    commandString = _positionalParameterRegex.Replace(commandString, string.Empty, 1);
                 }
                 else
                     throw new Exception($"Specified path does not exist '{pathParameter}'");

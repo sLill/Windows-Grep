@@ -7,6 +7,14 @@ public class CommandParser_SearchTermTests : TestBase
     [InlineData("-ri search_term")]
     [InlineData("search_term .")]
     [InlineData("search_term")]
+    [InlineData("-ri \"search_term\" .")]
+    [InlineData("-ri \"search_term\"")]
+    [InlineData("\"search_term\" .")]
+    [InlineData("\"search_term\"")]
+    [InlineData("-ri 'search_term' .")]
+    [InlineData("-ri 'search_term'")]
+    [InlineData("'search_term' .")]
+    [InlineData("'search_term'")]
     public void SearchTerm_Valid(string command)
     {
         IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
