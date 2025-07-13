@@ -68,96 +68,99 @@ public static class WindowsGrepUtils
 
     private static void ParseCommandFlags(Dictionary<CommandFlag, string> commandArgs, ref string commandString)
     {
-        List<CommandFlag> consoleFlags = EnumUtils.GetValues<CommandFlag>().ToList();
-
         while (true)
         {
             Match descriptorMatch = _descriptorRegex.Match(commandString);
             if (descriptorMatch.Groups["Descriptor"].Success)
             {
                 string descriptor = descriptorMatch.Groups["Descriptor"].Value;
-
-                // Long descriptors
                 if (descriptor.StartsWith("--"))
-                {
-                    descriptor = descriptor.TrimStart('-');
-                    string descriptorFlag = _longDescriptorRegex.Match(descriptor).Value;
-
-                    for (int j = 0; j < consoleFlags.Count; j++)
-                    {
-                        var descriptionAttribute = consoleFlags[j].GetCustomAttribute<DescriptionCollectionAttribute>();
-                        if (descriptionAttribute != default)
-                        {
-                            if (descriptionAttribute.Value.Select(y => y.Trim(['-', '='])).Contains(descriptorFlag))
-                            {
-                                commandString = _descriptorRegex.Replace(commandString, string.Empty);
-
-                                bool expectsParameter = consoleFlags[j].GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
-                                if (expectsParameter)
-                                {
-                                    if (descriptor.Split('=').Length < 2)
-                                        throw new Exception($"Option '{descriptor}' expects a parameter, but none was provided");
-
-                                    string descriptorParameter = descriptor.Split('=')[1];
-                                    commandArgs[consoleFlags[j]] = descriptorParameter;
-                                }
-                                else
-                                    commandArgs[consoleFlags[j]] = string.Empty;
-
-                                break;
-                            }
-                        }
-
-                        if (j == consoleFlags.Count - 1)
-                            throw new Exception($"Unrecognized command flag: {descriptor}");
-                    }
-                }
-
-                // Short descriptors
+                    ParseLongCommandFlag(commandArgs, descriptor, ref commandString);
                 else
-                {
-                    descriptor = descriptor.TrimStart('-');
-
-                    // Handle combined/merged descriptors (ex. -ri)
-                    for (int i = 0; i < descriptor.Length; i++)
-                    {
-                        for (int j = 0; j < consoleFlags.Count; j++)
-                        {
-                            var descriptionAttribute = consoleFlags[j].GetCustomAttribute<DescriptionCollectionAttribute>();
-                            if (descriptionAttribute != default)
-                            {
-                                if (descriptionAttribute.Value.Select(y => y.Trim('-')).Contains(descriptor[i].ToString()))
-                                {
-                                    if (i == descriptor.Length - 1)
-                                        commandString = _descriptorRegex.Replace(commandString, string.Empty).Trim();
-
-                                    bool expectsParameter = consoleFlags[j].GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
-                                    if (expectsParameter)
-                                    {
-                                        var parameterMatch = _shortParameterRegex.Match(commandString);
-                                        
-                                        if (!parameterMatch.Groups["Parameter"].Success)
-                                            throw new Exception($"Option '{descriptor}' expects a parameter, but none was provided");
-
-                                        commandArgs[consoleFlags[j]] = parameterMatch.Groups["Parameter"].Value;
-                                        commandString = _shortParameterRegex.Replace(commandString, string.Empty).Trim();
-                                    }
-                                    else
-                                        commandArgs[consoleFlags[j]] = string.Empty;
-
-                                    break;
-                                }
-                            }
-
-                            if (j == consoleFlags.Count - 1)
-                                throw new Exception($"Unrecognized command flag: {descriptor}");
-                        }
-                    }
-                }
-
+                   ParseShortCommandFlag(commandArgs, descriptor, ref commandString);
             }
             else
                 break;
+        }
+    }
+
+    private static void ParseShortCommandFlag(Dictionary<CommandFlag, string> commandArgs, string descriptor, ref string commandString)
+    {
+        List<CommandFlag> consoleFlags = EnumUtils.GetValues<CommandFlag>().ToList();
+
+        descriptor = descriptor.TrimStart('-');
+
+        // Handle combined/merged descriptors (ex. -ri)
+        for (int i = 0; i < descriptor.Length; i++)
+        {
+            for (int j = 0; j < consoleFlags.Count; j++)
+            {
+                var descriptionAttribute = consoleFlags[j].GetCustomAttribute<DescriptionCollectionAttribute>();
+                if (descriptionAttribute != default)
+                {
+                    if (descriptionAttribute.Value.Select(y => y.Trim('-')).Contains(descriptor[i].ToString()))
+                    {
+                        if (i == descriptor.Length - 1)
+                            commandString = _descriptorRegex.Replace(commandString, string.Empty).Trim();
+
+                        bool expectsParameter = consoleFlags[j].GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
+                        if (expectsParameter)
+                        {
+                            var parameterMatch = _shortParameterRegex.Match(commandString);
+
+                            if (!parameterMatch.Groups["Parameter"].Success)
+                                throw new Exception($"Option '{descriptor}' expects a parameter, but none was provided");
+
+                            commandArgs[consoleFlags[j]] = parameterMatch.Groups["Parameter"].Value;
+                            commandString = _shortParameterRegex.Replace(commandString, string.Empty).Trim();
+                        }
+                        else
+                            commandArgs[consoleFlags[j]] = string.Empty;
+
+                        break;
+                    }
+                }
+
+                if (j == consoleFlags.Count - 1)
+                    throw new Exception($"Unrecognized command flag: {descriptor}");
+            }
+        }
+    }
+
+    private static void ParseLongCommandFlag(Dictionary<CommandFlag, string> commandArgs, string descriptor, ref string commandString)
+    {
+        List<CommandFlag> consoleFlags = EnumUtils.GetValues<CommandFlag>().ToList();
+
+        descriptor = descriptor.TrimStart('-');
+        string descriptorFlag = _longDescriptorRegex.Match(descriptor).Value;
+
+        for (int j = 0; j < consoleFlags.Count; j++)
+        {
+            var descriptionAttribute = consoleFlags[j].GetCustomAttribute<DescriptionCollectionAttribute>();
+            if (descriptionAttribute != default)
+            {
+                if (descriptionAttribute.Value.Select(y => y.Trim(['-', '='])).Contains(descriptorFlag))
+                {
+                    commandString = _descriptorRegex.Replace(commandString, string.Empty);
+
+                    bool expectsParameter = consoleFlags[j].GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
+                    if (expectsParameter)
+                    {
+                        if (descriptor.Split('=').Length < 2)
+                            throw new Exception($"Option '{descriptor}' expects a parameter, but none was provided");
+
+                        string descriptorParameter = descriptor.Split('=')[1];
+                        commandArgs[consoleFlags[j]] = descriptorParameter;
+                    }
+                    else
+                        commandArgs[consoleFlags[j]] = string.Empty;
+
+                    break;
+                }
+            }
+
+            if (j == consoleFlags.Count - 1)
+                throw new Exception($"Unrecognized command flag: {descriptor}");
         }
     }
 
