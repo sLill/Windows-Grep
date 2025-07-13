@@ -15,7 +15,7 @@ public class CommandParser_PathTests : TestBase
     {
         command = string.Format(command, Environment.CurrentDirectory);
         IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
-        commandArgs.ContainsKey(CommandFlag.Path);
+        Assert.True(commandArgs.ContainsKey(CommandFlag.Path));
     }
 
     [Theory]

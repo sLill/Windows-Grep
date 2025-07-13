@@ -61,10 +61,10 @@
             {
                 services.AddSingleton<ConsoleService>()
                         .AddSingleton<FileService>()
+                        .AddSingleton<PublisherService>()
                         .AddScoped<WindowsGrep>()
                         .AddScoped<GrepService>()
-                        .AddScoped<NativeService>()
-                        .AddScoped<PublisherService>();
+                        .AddScoped<NativeService>();
             });
         }
         #endregion Methods..

@@ -23,10 +23,10 @@
             {
                 using (var serviceScope = _serviceProvider.CreateScope())
                 {
-                    var publisherService = serviceScope.ServiceProvider.GetRequiredService<PublisherService>();
                     var consoleService = serviceScope.ServiceProvider.GetRequiredService<ConsoleService>();
                     var grepService = serviceScope.ServiceProvider.GetRequiredService<GrepService>();
                     var nativeService = serviceScope.ServiceProvider.GetRequiredService<NativeService>();
+                    var publisherService = serviceScope.ServiceProvider.GetRequiredService<PublisherService>();
 
                     try
                     {

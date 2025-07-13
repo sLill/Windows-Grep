@@ -10,11 +10,12 @@ public class PublisherService
 
     #region Fields..
     private readonly ConcurrentDictionary<Type, SubscriberList> _subscribers = new();
-    private readonly ILogger<PublisherService> _logger;
+    private readonly ILogger _logger;
     #endregion Fields..
 
     #region Constructors..
-    public PublisherService(ILogger<PublisherService> logger)
+    public PublisherService() { }
+    public PublisherService(ILogger logger)
     {
         _logger = logger;
     }
@@ -78,7 +79,7 @@ public class PublisherService
         }
     } 
 
-    public void RemoveAllSubscribers()
+    public virtual void RemoveAllSubscribers()
     {
         _subscribers.Clear();
     }

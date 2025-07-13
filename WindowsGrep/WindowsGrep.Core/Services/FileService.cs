@@ -3,7 +3,7 @@
 public class FileService 
 {
     #region Fields..
-    private readonly ILogger<FileService> _logger;
+    private readonly ILogger _logger;
     private object _fileLock = new object();
     #endregion Fields..
 
@@ -12,7 +12,7 @@ public class FileService
     #endregion Properties..
 
     #region Constructors..
-    public FileService(ILogger<FileService> logger)
+    public FileService(ILogger logger)
     {
         _logger = logger;
     }

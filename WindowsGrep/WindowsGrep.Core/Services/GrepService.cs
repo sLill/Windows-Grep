@@ -5,7 +5,7 @@ public class GrepService
     #region Fields..
     private const string FILE_NAME_PATTERN = @"^(.+)[\/\\](?<FileName>[^\/\\]+)$";
 
-    private readonly ILogger<GrepService> _logger;
+    private readonly ILogger _logger;
     private readonly PublisherService _publisherService;
     private readonly ConsoleService _consoleService;
     private readonly FileService _fileService;
@@ -15,7 +15,7 @@ public class GrepService
     #endregion Fields..
 
     #region Constructors..
-    public GrepService(ILogger<GrepService> logger, PublisherService publisherService, ConsoleService consoleService, FileService fileService)
+    public GrepService(ILogger logger, PublisherService publisherService, ConsoleService consoleService, FileService fileService)
     {
         _logger = logger;
         _publisherService = publisherService;

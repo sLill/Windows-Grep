@@ -18,6 +18,6 @@ public class CommandParser_SearchTermTests : TestBase
     public void SearchTerm_Valid(string command)
     {
         IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
-        commandArgs.ContainsKey(CommandFlag.SearchTerm);
+        Assert.True(commandArgs.ContainsKey(CommandFlag.SearchTerm));
     }
 }

@@ -9,3 +9,5 @@ global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
 global using System.Linq;
 global using System.Collections.Concurrent;
+global using Moq;
+global using Microsoft.Extensions.Logging.Abstractions;
