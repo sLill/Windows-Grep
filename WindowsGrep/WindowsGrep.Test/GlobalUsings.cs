@@ -11,3 +11,4 @@ global using System.Linq;
 global using System.Collections.Concurrent;
 global using Moq;
 global using Microsoft.Extensions.Logging.Abstractions;
+global using WindowsGrep.Common;

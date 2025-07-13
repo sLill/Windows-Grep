@@ -10,11 +10,11 @@ public static class WindowsGrepUtils
     #endregion Fields..
 
     #region Methods..
-    public static bool ArePathsEqual(string path1, string path2)
+    public static bool ArePathsEqual(string pathOne, string pathTwo)
     {
         // Normalize paths to ensure consistent comparison
-        var normalizedPath1 = Path.GetFullPath(path1).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-        var normalizedPath2 = Path.GetFullPath(path2).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        var normalizedPath1 = Path.GetFullPath(pathOne).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        var normalizedPath2 = Path.GetFullPath(pathTwo).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         return string.Equals(normalizedPath1, normalizedPath2, StringComparison.OrdinalIgnoreCase);
     }
 

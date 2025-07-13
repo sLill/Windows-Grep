@@ -6,6 +6,10 @@
         private readonly IServiceProvider _serviceProvider;
         #endregion Fields..
 
+        #region Properties..
+        public List<ResultBase> Results { get; private set; } = new List<ResultBase>();
+        #endregion Properties..
+
         #region Constructors..
         public WindowsGrep(IServiceProvider serviceProvider)
         {
@@ -30,7 +34,7 @@
 
                     try
                     {
-                        var results = new List<ResultBase>();
+                        Results = new List<ResultBase>();
 
                         string commandRaw = string.Empty;
                         if (args.Length == 0)
@@ -51,7 +55,7 @@
                             if (nativeCommandArgs != default)
                             {
                                 var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter };
-                                await Task.Run(() => nativeService.RunCommand(nativeCommand, results, cancellationTokenSource.Token));
+                                await Task.Run(() => nativeService.RunCommand(nativeCommand, Results, cancellationTokenSource.Token));
                             }
 
                             // Grep commands
@@ -65,7 +69,7 @@
                                 else
                                 {
                                     var grepCommand = new GrepCommand() { CommandArgs = grepCommandArgs };
-                                    await Task.Run(() => grepService.RunCommand(grepCommand, results, cancellationTokenSource.Token));
+                                    await Task.Run(() => grepService.RunCommand(grepCommand, Results, cancellationTokenSource.Token));
                                 }
                             }
                         }

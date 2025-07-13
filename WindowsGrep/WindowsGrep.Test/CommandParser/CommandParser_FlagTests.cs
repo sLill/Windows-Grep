@@ -16,6 +16,9 @@ public class CommandParser_FlagTests : TestBase
     }
 
     [Theory]
+    [InlineData("-r -t '.cpp;.txt' search_term .", new[] { CommandFlag.Recursive, CommandFlag.FileTypeIncludeFilter })]
+    [InlineData("-r -t .cpp;.txt -i search_term .", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileTypeIncludeFilter })]
+    [InlineData("-r -t .cpp,.txt search_term .", new[] { CommandFlag.Recursive, CommandFlag.FileTypeIncludeFilter })]
     [InlineData("-r -i -c 20 search_term .", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.Context })]
     [InlineData("-r -c 20 -i search_term", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.Context })]
     [InlineData("-c 20 -rk -i search_term .", new[] { CommandFlag.Context, CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly })]
@@ -23,7 +26,14 @@ public class CommandParser_FlagTests : TestBase
     public void ShortDescriptors_Parameters_Valid(string command, CommandFlag[] expectedArgs)
     {
         IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
-        expectedArgs.ToList().ForEach(x => Assert.True(commandArgs.ContainsKey(x)));
+        expectedArgs.ToList().ForEach(x =>
+        {
+            Assert.True(commandArgs.ContainsKey(x));
+
+            bool expectsParameter = x.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
+            if (expectsParameter)
+                Assert.True(!string.IsNullOrEmpty(commandArgs[x]), $"Expected parameter for {x} but got empty/null string.");
+        });
     }
 
     [Theory]

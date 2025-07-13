@@ -13,7 +13,7 @@ public class CommandParser_PathTests : TestBase
     [InlineData("search_term '{0}'")]
     public void Path_Valid(string command)
     {
-        command = string.Format(command, Environment.CurrentDirectory);
+        command = string.Format(command, TestDataDirectory);
         IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
         Assert.True(commandArgs.ContainsKey(CommandFlag.Path));
     }

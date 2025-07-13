@@ -46,17 +46,6 @@
         {
             return Host
             .CreateDefaultBuilder(args)
-            .ConfigureLogging(builder =>
-            {
-                builder.SetMinimumLevel(LogLevel.Information)
-                       .AddFilter("Microsoft", LogLevel.Warning)
-                       .AddFilter("System", LogLevel.Warning)
-                       .AddDebug();
-#if DEBUG
-                builder.AddFilter("WindowsGrep", LogLevel.Debug)
-                       .AddConsole();
-#endif
-            })
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddSingleton<ConsoleService>()

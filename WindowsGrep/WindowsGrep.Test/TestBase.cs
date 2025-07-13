@@ -25,7 +25,6 @@ public abstract class TestBase
         var services = new ServiceCollection();
         services.AddSingleton<ConsoleService>()
                 .AddSingleton<FileService>()
-                .AddSingleton<ILogger>(_ => NullLogger.Instance)
                 .AddScoped<PublisherService>(_ => publisherMock.Object)
                 .AddScoped<WindowsGrep>()
                 .AddScoped<GrepService>()

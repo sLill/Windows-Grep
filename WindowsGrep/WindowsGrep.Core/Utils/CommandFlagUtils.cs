@@ -1,6 +1,6 @@
 ﻿namespace WindowsGrep.Core;
 
-public static class ConsoleCommandUtils
+public static class CommandFlagUtils
 {
     #region Fields..
     private const string FILE_SIZE_PATTERN = @"(?<Size>\d+)(?<SizeType>\S{2})?";
@@ -108,18 +108,18 @@ public static class ConsoleCommandUtils
 
     public static List<string>? GetFileTypeFilters(GrepCommand grepCommand)
     {
-        bool fileTypeFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileTypeIncludeFilter);
-        var fileTypeFilters = fileTypeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeIncludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
+        bool filetypeFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileTypeIncludeFilter);
+        var filetypeFilters = filetypeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeIncludeFilter].Trim(new[] { '"', '\'' }).Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
 
-        return fileTypeFilters;
+        return filetypeFilters;
     }
 
     public static List<string>? GetFileTypeExcludeFilters(GrepCommand grepCommand)
     {
-        bool fileTypeExcludeFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileTypeExcludeFilter);
-        var fileTypeExcludeFilters = fileTypeExcludeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeExcludeFilter].Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
+        bool filetypeExcludeFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileTypeExcludeFilter);
+        var filetypeExcludeFilters = filetypeExcludeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeExcludeFilter].Trim(new[] { '"', '\'' }).Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
 
-        return fileTypeExcludeFilters;
+        return filetypeExcludeFilters;
     }
 
     public static List<string>? GetPathFilters(GrepCommand grepCommand)

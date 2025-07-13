@@ -3,7 +3,7 @@ Usage:	\u001b[38;2;255;165;0mgrep [options] search_term [path]\u001b[0m
 
 -h	--help				: Show help. Use --help to view all commands
 -r	--recursive			: Recursive search
--c	--context=			: Return n leading/trailing characters around the matched term
+-c	--context=			: Return n leading/trailing characters around matches
 -b	--ignore-breaks			: Ignore line breaks
 -i	--ignore-case			: Ignore case
 -F	--fixed-string			: Plaintext search, no regular expressions
