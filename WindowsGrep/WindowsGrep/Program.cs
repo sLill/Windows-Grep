@@ -10,6 +10,10 @@
         private static async Task Main(string[] args)
         {
             Initialize(args);
+
+            if (args.Length == 0)
+                ConsoleUtils.PublishSplash();
+
             await RunAsync(args);
         }
         #endregion Main

@@ -20,9 +20,6 @@
         #region Methods..
         public async Task RunAsync(string[] args, CancellationTokenSource cancellationTokenSource)
         {
-            if (args.Length == 0)
-                ConsoleUtils.PublishSplash();
-
             do
             {
                 using (var serviceScope = _serviceProvider.CreateScope())
@@ -45,7 +42,7 @@
                         else
                             commandRaw = string.Join(" ", args);
 
-                        var commands = commandRaw.Split('|').Select(x => x.Trim());
+                        var commands = commandRaw?.Split('|').Select(x => x.Trim()) ?? Array.Empty<string>();
                         foreach (string command in commands)
                         {
                             publisherService.RemoveAllSubscribers();
