@@ -11,23 +11,23 @@ public enum CommandFlag
 
     // Returns local text surrounding the search term in each result
     [ExpectsParameter(true)]
-    [DescriptionCollection("-c", "--context=")]
+    [DescriptionCollection("-c")]
     Context,
 
     // Interprets search term as a string literal instead of an expression
-    [DescriptionCollection("-F", "--fixed-string")]
+    [DescriptionCollection("-F")]
     FixedString,
 
     // Ignore breaks in-between lines within the file
-    [DescriptionCollection("-b", "--ignore-breaks")]
+    [DescriptionCollection("--ignore-breaks")]
     IgnoreBreaks,
 
     // Ignore case distinctions in patterns and input data
-    [DescriptionCollection("-i", "--ignore-case")]
+    [DescriptionCollection("-i")]
     IgnoreCase,
 
     // Searches also in the subdirectories of the target directory
-    [DescriptionCollection("-r", "--recursive")]
+    [DescriptionCollection("-r")]
     Recursive,
 
     // Sets the max search depth when recursion (-r) is enabled
@@ -39,29 +39,29 @@ public enum CommandFlag
     // Restricts search to files with the specified extensions. Comma delimited
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"', '.', '\\')]
-    [DescriptionCollection("-t", "--filetype-include=")]
+    [DescriptionCollection("-t")]
     FileTypeIncludeFilter,
 
     // Excludes all files with the specified extensions. Comma delimited
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"', '.', '\\')]
-    [DescriptionCollection("-T", "--filetype-exclude=")]
+    [DescriptionCollection("-T")]
     FileTypeExcludeFilter,
 
     // Restricts search to filepaths matching the specified expressions. Comma delimited 
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"')]
-    [DescriptionCollection("-p", "--path-include=")]
+    [DescriptionCollection("-p")]
     PathIncludeFilter,
 
     // Restricts search to filepaths that do not match any of the specified expressions. Comma delimited 
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"')]
-    [DescriptionCollection("-P", "--path-exclude=")]
+    [DescriptionCollection("-P")]
     PathExcludeFilter,
 
     // Match against file names
-    [DescriptionCollection("-k", "--filenames")]
+    [DescriptionCollection("-k")]
     FileNamesOnly,
 
     // Return the filesize of items returned in the search that EXCEED this parameter
@@ -83,17 +83,17 @@ public enum CommandFlag
     // Redirect output to file
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"', '\\')]
-    [DescriptionCollection("-o", "--out-file=")]
+    [DescriptionCollection("-o")]
     OutFile,
 
     // Replace instances of the search term with the replace parameter
     [ExpectsParameter(true)]
     [FilterCharacterCollection('\'', '"')]
-    [DescriptionCollection("-RX", "--replace=")]
+    [DescriptionCollection("--replace=")]
     Replace,
 
     // Delete files returned in search
-    [DescriptionCollection("-DX", "--delete")]
+    [DescriptionCollection("--delete")]
     Delete,
 
     // Match againt file hashes (0=SHA256, 1=MD5)
@@ -117,6 +117,6 @@ public enum CommandFlag
     [DescriptionCollection("--show-system")]
     ShowSystem,
 
-    [DescriptionCollection("-v", "--verbose")]
+    [DescriptionCollection("-v")]
     Verbose
 }

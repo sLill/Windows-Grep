@@ -1,16 +1,15 @@
 
 Usage:	\u001b[38;2;255;165;0mgrep [options] search_term [path]\u001b[0m
 
--h	--help				: Show help. Use --help to view all commands
--r	--recursive			: Recursive search
--c	--context=			: Return n leading/trailing characters around matches
--b	--ignore-breaks			: Ignore line breaks
--i	--ignore-case			: Ignore case
--F	--fixed-string			: Plaintext search, no regular expressions
--t	--filetype-include=		: Include files by type(s) (, or ; delimited)
--T	--filetype-exclude=		: Exclude files by type(s) (, or ; delimited)
--p	--path-include=			: Include filepaths by expression (, or ; delimited)
--P	--path-exclude=			: Exclude filepaths by expression (, or ; delimited)
--k	--filenames			: Match file names
--o	--out-file=			: Redirect output to file
--v	--verbose			: Verbose output
+-h, --help					: Show help. Use --help to view all commands
+-r	\u001b[38;2;125;125;125mgrep -r dug C:/\u001b[0m				: Recursive search
+-c	\u001b[38;2;125;125;125mgrep -c 20 dug C:/\u001b[0m			: Return n leading/trailing characters around matches
+-i	\u001b[38;2;125;125;125mgrep -i dug C:/\u001b[0m				: Ignore case
+-F	\u001b[38;2;125;125;125mgrep -F dug C:/\u001b[0m				: Plaintext search, no regular expressions
+-t	\u001b[38;2;125;125;125mgrep -t .txt,.js dug C:/\u001b[0m		: Include files by type(s) (, or ; delimited)
+-T	\u001b[38;2;125;125;125mgrep -T .css,.git dug C:/inetpub\u001b[0m	: Exclude files by type(s) (, or ; delimited)
+-p	\u001b[38;2;125;125;125mgrep -p AppData,Desktop dug C:/Users\u001b[0m	: Include filepaths by expression (, or ; delimited)
+-P	\u001b[38;2;125;125;125mgrep -P Windows,Users dug C:/\u001b[0m		: Exclude filepaths by expression (, or ; delimited)
+-k	\u001b[38;2;125;125;125mgrep -k 'Log.*' C:/\u001b[0m			: Match file names
+-o	\u001b[38;2;125;125;125mgrep -o output.txt dug .\u001b[0m		: Redirect output to file
+-v	\u001b[38;2;125;125;125mgrep -v dug ../\u001b[0m				: Verbose output

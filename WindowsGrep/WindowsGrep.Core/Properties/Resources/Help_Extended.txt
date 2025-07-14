@@ -1,26 +1,26 @@
 
 Usage:	\u001b[38;2;255;165;0mgrep [options] search_term [path]\u001b[0m
 
--h	--help				: Show help. Use --help to view all commands
--r	--recursive			: Recursive search
--c	--context=			: Return n leading/trailing characters around matches
--b	--ignore-breaks			: Ignore line breaks
--i	--ignore-case			: Ignore case
--F	--fixed-string			: Plaintext search, no regular expressions
--t	--filetype-include=		: Include files by type(s) (, or ; delimited)
--T	--filetype-exclude=		: Exclude files by type(s) (, or ; delimited)
--p	--path-include=			: Include filepaths by expression (, or ; delimited)
--P	--path-exclude=			: Exclude filepaths by expression (, or ; delimited)
--k	--filenames			: Match file names
--o	--out-file=			: Redirect output to file
--v	--verbose			: Verbose output
+-h, --help							: Show help. Use --help to view all commands
+-r			\u001b[38;2;125;125;125mgrep -r dug C:/\u001b[0m				: Recursive search
+-c			\u001b[38;2;125;125;125mgrep -c 20 dug C:/\u001b[0m			: Return n leading/trailing characters around matches
+-i			\u001b[38;2;125;125;125mgrep -i dug C:/\u001b[0m				: Ignore case
+-F			\u001b[38;2;125;125;125mgrep -F dug C:/MyFile.txt\u001b[0m		: Plaintext search, no regular expressions
+-t			\u001b[38;2;125;125;125mgrep -t .txt,.js dug C:/\u001b[0m		: Include files by type(s) (, or ; delimited)
+-T			\u001b[38;2;125;125;125mgrep -T .css,.git dug C:/inetpub\u001b[0m	: Exclude files by type(s) (, or ; delimited)
+-p			\u001b[38;2;125;125;125mgrep -p AppData,Desktop dug C:/Users\u001b[0m	: Include filepaths by expression (, or ; delimited)
+-P			\u001b[38;2;125;125;125mgrep -P Windows,Users dug C:/\u001b[0m		: Exclude filepaths by expression (, or ; delimited)
+-k			\u001b[38;2;125;125;125mgrep -k 'Log.*' C:/\u001b[0m			: Match file names
+-o			\u001b[38;2;125;125;125mgrep -o output.txt dug .\u001b[0m		: Redirect output to file
+-v			\u001b[38;2;125;125;125mgrep -v dug ../\u001b[0m				: Verbose output
 
---hash=					: Match by file hash (0=SHA256, 1=MD5)
---max-depth=				: Max search depth from the working directory when recursion (-r) is enabled
---show-hidden				: Show hidden files
---show-system				: Show system files
---filesize-min=				: Filter results < n(kb|mb|gb|tb)
---filesize-max=				: Filter results > n(kb|mb|gb|tb)
+--max-depth=		\u001b[38;2;125;125;125mgrep --max-depth=3 dug C:/\u001b[0m		: Max search depth from the working directory when recursion (-r) is enabled
+--show-hidden		\u001b[38;2;125;125;125mgrep --show-hidden dug C:/\u001b[0m		: Show hidden files
+--show-system		\u001b[38;2;125;125;125mgrep --show-system dug C:/\u001b[0m		: Show system files
+--filesize-min=		\u001b[38;2;125;125;125mgrep --filesize-min=30mb dug C:/\u001b[0m	: Filter results < n(kb|mb|gb|tb)
+--filesize-max=		\u001b[38;2;125;125;125mgrep --filesize-max=3gb dug C:/\u001b[0m		: Filter results > n(kb|mb|gb|tb)
+--ignore-breaks		\u001b[38;2;125;125;125mgrep --ignore-breaks dug C:/\u001b[0m		: Ignore line breaks
+--hash=			\u001b[38;2;125;125;125mgrep --hash=0 74184D0\w+ C:/\u001b[0m		: Match by file hash (0=SHA256, 1=MD5)
 
--RX	--replace=			: Replace text in matched files or filenames (surround with ' or ")
--DX	--delete			: Delete matched files
+--replace=		\u001b[38;2;125;125;125mgrep --replace=dig dug C:/\u001b[0m		: Replace text in matched files or filenames (surround with ' or ")
+--delete		\u001b[38;2;125;125;125mgrep --delete dug C:/\u001b[0m			: Delete matched files
