@@ -37,13 +37,13 @@ No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd
 2. Download one of the pre-compiled binaries
 
 <h2>Usage</h2>
-<h4>grep [options] search_term [path]</h4><br/>
 
-Right-click in File Explorer > Windows Grep
+File Explorer > Right-Click > Windows Grep
 <br/><b>or</b><br/>
-Open cmd/powershell > "grep [command]" <br/> <br/>
+cmd/powershell
 
-<img width="602" height="94" alt="Snag_183c128d" src="https://github.com/user-attachments/assets/ef851094-5b04-4b9c-b0ad-7b3c6382c49e" />
+<h4>grep [options] search_term [path]</h4>
+<img width="582" height="92" alt="Snag_18400c60" src="https://github.com/user-attachments/assets/dea61c03-4ed0-408b-9b12-307b18308969" />
 
 <h2>Reference</h2>
 
