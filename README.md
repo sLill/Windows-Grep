@@ -43,8 +43,7 @@ Right-click in File Explorer > Windows Grep
 <br/><b>or</b><br/>
 Open cmd/powershell > "grep [command]" <br/> <br/>
 
-![image](https://github.com/user-attachments/assets/6798a573-43db-4012-a4d0-04ff76e9ae3a)
-
+<img width="602" height="94" alt="Snag_183c128d" src="https://github.com/user-attachments/assets/ef851094-5b04-4b9c-b0ad-7b3c6382c49e" />
 
 <h2>Reference</h2>
 
