@@ -9,35 +9,34 @@
 
 Command line grep-like file search utility for Windows. 
 
-Built to mimic the command style and behavior of Unix grep for those looking for familiarity.
+Built to mimic the command style and behavior of Unix grep.
 No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd/powershell.</br>
 
-<h2>Supports</h2>
+<h4>Supports</h4>
 
 - Most Unix grep options
 - Regular Expressions
-- Chaining commands
-- Filtering by filetypes, directory, and filesize
-- Mass editing with replace and delete
-- Ease of use. Runs from cmd, Powershell and Windows Explorer
+- Command Chaining
+- Filter by filetype, directory, filesize
+- Mass edits with replace and delete
+- Ease of use. Runs from cmd, Powershell and File Explorer
 
-<h2>INSTALLATION</h2>
+<h2>Installation Methods</h2>
 
-<h3>Installer</h2>
+<h4>Installer</h4>
 
 1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
 2. Download and run WindowsGrepSetup.msi (This is the only file you need)
+    - This will install Windows Grep in Program Files (x86)
+    - Add "grep" to PATH for command line use
+    -  Insert a registry key for context menu use within File Explorer
 
-This will install Windows Grep in Program Files (x86), add "grep" to PATH for command line use, and insert a registry key for context menu use within Windows Explorer.
+<h4>Standalone</h4>
 
-<h3>Manual Compilation</h3>
+1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
+2. Download one of the pre-compiled binaries
 
-1. Clone repo and build the `WindowsGrep` project as Release
-2. Publish `WindowsGrep`
-3. Download [Wix Toolset & Wix VS Extension](https://wixtoolset.org/docs/wix3/)
-4. Build the `WindowsGrep.Setup` project to generate a msi installer in the `WindowsGrep.Setup` bin
-
-<h2>USAGE</h2>
+<h2>Usage</h2>
 <h4>grep [options] search_term [path]</h4><br/>
 
 Right-click in File Explorer > Windows Grep
@@ -47,64 +46,28 @@ Open cmd/powershell > "grep [command]" <br/> <br/>
 ![image](https://github.com/user-attachments/assets/6798a573-43db-4012-a4d0-04ff76e9ae3a)
 
 
-<h2>REFERENCE</h2>
+<h2>Reference</h2>
 
-|                           |    |                       |
-| ------------------------- | -- | :-------------------: |
-| Show Help                 | -h | --help                |
-| Recursive Search          | -r | --recursive           |
-| Ignore Case               | -i | --ignore-case         |
-| Show n Characters Around Match | -c | --context=            |
-| Ignore Line Breaks        | -b | --ignore-breaks       |
-| Plain Text Search         | -F | --fixed-strings       |
-| Filenames Only            | -k | --filenames           |
-| Redirect Output to File   | -o | --out-file=           |
-| Match by File Hash        |    | --hash=  (0=SHA256, 1=MD5)     |
-| Max Depth                 |    | --max-depth=          |
-| Show Hidden Files         |    | --show-hidden         |
-| Show System Files         |    | --show-system         |
-| Include files by Type(s)  | -t | --filetype-include=	|
-| Exclude files by Type(s)  | -T | --filetype-exclude= |
-| Include Filepaths by Expression    | -p | --path-include=    |
-| Exclude Filepaths by Expression    | -P | --path-exclude=    |
-| Minimum File Size           |    | --filesize-min=   |
-| Maximum File Size           |    | --filesize-max=   |
-| Replace Text                | -RX| --replace=        |
-| Delete Files                | -DX| --delete          |
-
-
-<i>* See <a href="https://github.com/sLill/Windows-Grep/wiki/WindowsGrep.CommandFlags">documentation</a> for detailed command descriptions </i>
-<br/>
-
-<h2>EXAMPLE COMMANDS</h2>
-
-<i>Recursive search for file content containing "Dug".</i><br/>
--r Dug
-<br/><br/>
-
-<i>Recursive search for file names containing "Dug".</i><br/>
--r -k Dug
-<br/><br/>
-
-<i>Search for "Dug" or "Dig". Ignore-case.</i><br/>
--i D[ui]g
-<br/><br/>
-
-<i>Filter for .txt and .cs files only. Additionally, filter out files in bin and obj subdirectories</i><br/>
-Dug -t .txt;.cs -P bin;obj
-<br/><br/>
-
-<i>Show 100 characters of context around the match.</i><br/>
-Dug -c 100
-<br/><br/>
-
-<i>Search for filenames containing "Dug". Additionally, search the files returned from command one for content containing "mike"</i><br/>
--r Dug -k | -i mike
-<br/><br/>
-
-<i>Recursive search for US zipcodes. Filter out .dll's, limit results 10 and write output to a .csv</i><br/>
--r \d{5}(-\d{4})? -T .dll -n 10 -w 'C:\output.csv'
-<br/><br/>
-
-
-<b>For even more examples and detailed descriptions of each flag, visit the</b> <a href="https://github.com/sLill/Windows-Grep/wiki/WindowsGrep.CommandFlags">wiki</a>
+| Flag                          |    | Example                      |
+| ------------------------- | -- | ------------------- |
+| -h, --help | Show Help         |  | 
+| -r         | Recursive Search  | `grep -r dug C:/` |
+| -i         | Ignore Case       | `grep -c 20 dug C:/` | 
+| -c         |  Show n Characters Around Match | `grep -i dug C:/` |
+| -F         | Plain Text Search | `grep -F dug C:/MyFile.txt` |
+| -t | Include files by Type(s) | `grep -t .txt,.js dug C:/` |
+| -T | Exclude files by Type(s) | `grep -T .css,.git dug C:/inetpub` |
+| -p | Include Filepaths by Expression | `grep -p AppData,Desktop dug C:/Users` | 
+| -P | Exclude Filepaths by Expression | `grep -P Windows,Users dug C:/` |
+| -k         | Filenames Only | `grep -k 'Log.*' C:/` |
+| -o         | Redirect Output to File | `grep -o output.txt dug .` |
+| -v         | Verbose Output | `grep -v dug ../` |
+| --max-depth=    | Max Depth | `grep --max-depth=3 dug C:/` |
+| --show-hidden   | Show Hidden Files | `grep --show-hidden dug C:/` |
+| --show-system   | Show System Files | `grep --show-system dug C:/` |
+| --filesize-min= | Minimum File Size (kb,mb,gb,tb)  | `grep --filesize-min=30mb dug C:/` |
+| --filesize-max= | Maximum File Size (kb,mb,gb,tb)  | `grep --filesize-max=3gb dug C:/` |
+| --ignore-breaks | Ignore Line Breaks | `grep --ignore-breaks dug C:/` |
+| --hash= | Match by File Hash (0=SHA256, 1=MD5) | `grep --hash=0 74184D0\w+ C:/` |
+| --replace= | Replace Text       | `grep --replace=dig dug C:/` |
+| --delete   | Delete Files         | `grep --delete dug C:/` | 
