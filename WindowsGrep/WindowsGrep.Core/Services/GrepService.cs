@@ -496,7 +496,7 @@ public class GrepService
         {
             if (searchMetrics.FailedReadFiles.Any())
             {
-                string unreachableFiles = $"[{searchMetrics.FailedReadFiles.Count} file(s) unreadable/inaccessible]{Environment.NewLine}";
+                string unreachableFiles = $"[{searchMetrics.FailedReadFiles.Count} file(s) unreadable/inaccessible]";
                 _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = unreachableFiles });
 
                 if (verbose)

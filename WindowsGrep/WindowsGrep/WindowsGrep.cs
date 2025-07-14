@@ -40,7 +40,7 @@
                             commandRaw = Console.ReadLine();
                         }
                         else
-                            commandRaw = string.Join(" ", args);
+                            commandRaw = string.Join(' ', args.Select(x => x.Contains(' ') ? $"\"{x}\"" : x));
 
                         var commands = commandRaw?.Split('|').Select(x => x.Trim()) ?? Array.Empty<string>();
                         foreach (string command in commands)
