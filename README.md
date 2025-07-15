@@ -18,7 +18,7 @@ No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd
 - Regular Expressions
 - Command Chaining
 - Filter by filetype, directory, filesize
-- Mass edits with replace and delete
+- Mass editing
 - Ease of use. Runs from cmd, Powershell and File Explorer
 
 <h2>Installation Methods</h2>
