@@ -106,7 +106,7 @@ public static class CommandFlagUtils
         return hashType;
     }
 
-    public static List<string>? GetFileTypeFilters(GrepCommand grepCommand)
+    public static List<string>? GetFileTypeIncludeFilters(GrepCommand grepCommand)
     {
         bool filetypeFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileTypeIncludeFilter);
         var filetypeFilters = filetypeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeIncludeFilter].Trim(new[] { '"', '\'' }).Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
@@ -122,7 +122,7 @@ public static class CommandFlagUtils
         return filetypeExcludeFilters;
     }
 
-    public static List<string>? GetPathFilters(GrepCommand grepCommand)
+    public static List<string>? GetPathIncludeFilters(GrepCommand grepCommand)
     {
         bool pathFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.PathIncludeFilter);
         var pathFilters = pathFilterFlag ? grepCommand.CommandArgs[CommandFlag.PathIncludeFilter].Split(new char[] { ',', ';' }).ToList() : null;

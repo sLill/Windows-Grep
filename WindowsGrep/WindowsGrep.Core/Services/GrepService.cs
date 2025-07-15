@@ -145,9 +145,9 @@ public class GrepService
         bool writeFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.OutFile);
         bool fileNamesOnlyFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileNamesOnly);
 
-        var filetypeFilters = CommandFlagUtils.GetFileTypeFilters(grepCommand);
+        var filetypeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
         var filetypeExcludeFilters = CommandFlagUtils.GetFileTypeExcludeFilters(grepCommand);
-        var pathFilters = CommandFlagUtils.GetPathFilters(grepCommand);
+        var pathFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
 
         foreach (var file in files)
         {
@@ -198,9 +198,9 @@ public class GrepService
         bool deleteFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.Delete);
         bool writeFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.OutFile);
 
-        var filetypeFilters = CommandFlagUtils.GetFileTypeFilters(grepCommand);
+        var filetypeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
         var filetypeExcludeFilters = CommandFlagUtils.GetFileTypeExcludeFilters(grepCommand);
-        var pathFilters = CommandFlagUtils.GetPathFilters(grepCommand);
+        var pathFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
 
         Regex anyRegex = new Regex(@".*");
 
@@ -266,9 +266,9 @@ public class GrepService
         bool replaceFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.Replace);
         bool writeFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.OutFile);
 
-        var filetypeFilters = CommandFlagUtils.GetFileTypeFilters(grepCommand);
+        var filetypeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
         var filetypeExcludeFilters = CommandFlagUtils.GetFileTypeExcludeFilters(grepCommand);
-        var pathFilters = CommandFlagUtils.GetPathFilters(grepCommand);
+        var pathFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
 
         foreach (var file in files)
         {

@@ -77,7 +77,7 @@ public static class WindowsGrepUtils
                 if (descriptor.StartsWith("--"))
                     ParseLongCommandFlag(commandArgs, descriptor, ref commandString);
                 else
-                   ParseShortCommandFlag(commandArgs, descriptor, ref commandString);
+                    ParseShortCommandFlag(commandArgs, descriptor, ref commandString);
             }
             else
                 break;

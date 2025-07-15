@@ -1,4 +1,7 @@
-﻿namespace WindowsGrep
+﻿using System.Threading;
+using WindowsGrep.Core;
+
+namespace WindowsGrep
 {
     public class WindowsGrep
     {
@@ -57,18 +60,7 @@
 
                             // Grep commands
                             else
-                            {
-                                var grepCommandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
-                                if (grepCommandArgs.ContainsKey(CommandFlag.Help))
-                                    ConsoleUtils.PublishHelp(false);
-                                else if (grepCommandArgs.ContainsKey(CommandFlag.Help_Full))
-                                    ConsoleUtils.PublishHelp(true);
-                                else
-                                {
-                                    var grepCommand = new GrepCommand() { CommandArgs = grepCommandArgs };
-                                    await Task.Run(() => grepService.RunCommand(grepCommand, Results, cancellationTokenSource.Token));
-                                }
-                            }
+                               await RunGrepCommandAsync(grepService, command, cancellationTokenSource);
                         }
                     }
                     catch (Exception ex)
@@ -79,6 +71,20 @@
                 }
             }
             while (args.Length == 0 && !cancellationTokenSource.IsCancellationRequested);
+        }
+
+        public async Task RunGrepCommandAsync(GrepService grepService, string command, CancellationTokenSource cancellationTokenSource)
+        {
+            var grepCommandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
+            if (grepCommandArgs.ContainsKey(CommandFlag.Help))
+                ConsoleUtils.PublishHelp(false);
+            else if (grepCommandArgs.ContainsKey(CommandFlag.Help_Full))
+                ConsoleUtils.PublishHelp(true);
+            else
+            {
+                var grepCommand = new GrepCommand() { CommandArgs = grepCommandArgs };
+                await Task.Run(() => grepService.RunCommand(grepCommand, Results, cancellationTokenSource.Token));
+            }
         }
         #endregion Methods..
     }
