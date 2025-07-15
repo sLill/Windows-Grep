@@ -27,9 +27,9 @@ No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd
 
 1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
 2. Download and run WindowsGrepSetup.msi. This will:
-    - This will install Windows Grep in Program Files (x86)
+    - Install Windows Grep in Program Files (x86)
     - Add "grep" to PATH for command line use
-    -  Insert a registry key for context menu use within File Explorer
+    - Insert a registry key for context menu use within File Explorer
 
 <h4>Standalone</h4>
 
