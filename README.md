@@ -62,8 +62,8 @@ cmd/powershell
 | -o         | Redirect Output to File | `grep -o output.txt dug .` |
 | -v         | Verbose Output | `grep -v dug ../` |
 | --max-depth=    | Max Depth | `grep --max-depth=3 dug C:/` |
-| --show-hidden   | Show Hidden Files | `grep --show-hidden dug C:/` |
-| --show-system   | Show System Files | `grep --show-system dug C:/` |
+| --include-hidden   | Include Hidden Files | `grep --include-hidden dug C:/` |
+| --include-system   | Include System Files | `grep --include-system dug C:/` |
 | --filesize-min= | Minimum File Size (kb,mb,gb,tb)  | `grep --filesize-min=30mb dug C:/` |
 | --filesize-max= | Maximum File Size (kb,mb,gb,tb)  | `grep --filesize-max=3gb dug C:/` |
 | --ignore-breaks | Ignore Line Breaks | `grep --ignore-breaks dug C:/` |
