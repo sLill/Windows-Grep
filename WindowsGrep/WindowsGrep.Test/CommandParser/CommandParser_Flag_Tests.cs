@@ -1,6 +1,6 @@
 ﻿namespace WindowsGrep.Test;
 
-public class CommandParser_FlagTests : TestBase
+public class CommandParser_Flag_Tests : TestBase
 {
     [Theory]
     [InlineData("-r -i search_term .", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase })]

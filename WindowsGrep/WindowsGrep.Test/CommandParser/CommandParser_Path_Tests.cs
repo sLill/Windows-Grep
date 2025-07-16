@@ -1,6 +1,6 @@
 ﻿namespace WindowsGrep.Test;
 
-public class CommandParser_PathTests : TestBase
+public class CommandParser_Path_Tests : TestBase
 {
     [Theory]
     [InlineData("search_term")]

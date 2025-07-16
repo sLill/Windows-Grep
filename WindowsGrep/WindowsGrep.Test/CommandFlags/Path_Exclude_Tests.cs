@@ -1,6 +1,6 @@
 ﻿namespace WindowsGrep.Test;
 
-public class Path_ExcludeTests : TestBase
+public class Path_Exclude_Tests : TestBase
 {
     [Theory]
     [InlineData("-r -P TestData_0 'This is sample text' '{0}'", new[] { "TestData_0" })]

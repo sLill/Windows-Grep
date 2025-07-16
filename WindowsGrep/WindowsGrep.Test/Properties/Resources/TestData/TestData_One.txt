@@ -37,4 +37,6 @@ user@example.com
 http://example.com
 https://www.example.com/path?query=string
 
+**Markdown Formatting**
+
 End of file.

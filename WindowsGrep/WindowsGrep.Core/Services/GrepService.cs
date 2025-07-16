@@ -111,8 +111,8 @@ public class GrepService
     {
         bool recursiveFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.Recursive);
         bool maxDepthFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.MaxDepth);
-        bool showHiddenFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.ShowHidden);
-        bool showSystemFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.ShowSystem);
+        bool includeHiddenFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IncludeHidden);
+        bool includeSystemFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IncludeSystem);
 
         long fileSizeMin = CommandFlagUtils.GetFileSizeMinimum(grepCommand);
         long fileSizeMax = CommandFlagUtils.GetFileSizeMaximum(grepCommand);
@@ -126,8 +126,8 @@ public class GrepService
         else
         {
             FileAttributes fileAttributesToSkip = default;
-            fileAttributesToSkip |= (showSystemFlag ? 0 : FileAttributes.System);
-            fileAttributesToSkip |= (showHiddenFlag ? 0 : FileAttributes.Hidden);
+            fileAttributesToSkip |= (includeSystemFlag ? 0 : FileAttributes.System);
+            fileAttributesToSkip |= (includeHiddenFlag ? 0 : FileAttributes.Hidden);
 
             var pathExcludeFilters = CommandFlagUtils.GetPathExcludeFilters(grepCommand);
             files = WindowsUtils.GetFiles(path, recursiveFlag, maxDepth, fileSizeMin, fileSizeMax, cancellationToken, pathExcludeFilters, fileAttributesToSkip);

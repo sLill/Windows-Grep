@@ -1,6 +1,6 @@
 ﻿namespace WindowsGrep.Test;
 
-public class Filetype_ExcludeTests : TestBase
+public class Filetype_Exclude_Tests : TestBase
 {
     [Theory]
     [InlineData("-T .cpp 'Hello, World!' '{0}'", new[] { ".cpp" })]
@@ -13,7 +13,9 @@ public class Filetype_ExcludeTests : TestBase
         command = string.Format(command, TestDataDirectory);
 
         var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        await windowsGrep.RunAsync(new[] { command }, new CancellationTokenSource());
+        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+
+        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
         
         Assert.True(windowsGrep.Results.All(x => !invalidFiletypes.Contains(Path.GetExtension(x.SourceFile.Name))));
     }
