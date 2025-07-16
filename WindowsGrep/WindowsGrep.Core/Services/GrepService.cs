@@ -62,7 +62,6 @@ public class GrepService
         bool contextFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.Context);
 
         // Build file context search pattern
-        string searchTerm = grepCommand.CommandArgs[CommandFlag.SearchTerm];
         int contextLength = contextFlag ? Convert.ToInt32(grepCommand.CommandArgs[CommandFlag.Context]) : 0;
 
         matches.ForEach(match =>
@@ -158,8 +157,8 @@ public class GrepService
 
                 // Filters
                 bool isFiltered = false;
-                isFiltered |= (filetypeFilters != null && !filetypeFilters.Contains(Path.GetExtension(file.Name).Trim('.')));
-                isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).Trim('.')));
+                isFiltered |= (filetypeFilters != null && !filetypeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
+                isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
                 isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file.Name), x)));
 
                 if (isFiltered || file.IsDirectory)
@@ -213,8 +212,8 @@ public class GrepService
 
                 // Filters
                 bool isFiltered = false;
-                isFiltered |= (filetypeFilters != null && !filetypeFilters.Contains(Path.GetExtension(file.Name).Trim('.')));
-                isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).Trim('.')));
+                isFiltered |= (filetypeFilters != null && !filetypeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
+                isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
                 isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file.Name), x)));
 
                 if (isFiltered || file.IsDirectory)
@@ -277,8 +276,8 @@ public class GrepService
 
             // Filters
             bool isFiltered = false;
-            isFiltered |= (filetypeFilters != null && !filetypeFilters.Contains(Path.GetExtension(file.Name).Trim('.')));
-            isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).Trim('.')));
+            isFiltered |= (filetypeFilters != null && !filetypeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
+            isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
             isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file.Name), x)));
 
             if (isFiltered || file.IsDirectory)

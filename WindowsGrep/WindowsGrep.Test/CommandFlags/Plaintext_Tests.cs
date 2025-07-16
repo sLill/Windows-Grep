@@ -2,6 +2,7 @@
 
 public class Plaintext_Tests : TestBase
 {
+    #region Methods..
     [Theory]
     [InlineData("-F '*Markdown' '{0}'")]
     public async Task Plaintext_Enabled(string command)
@@ -28,5 +29,6 @@ public class Plaintext_Tests : TestBase
         await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
         Assert.True(windowsGrep.Results.Count == 0);
-    }
+    } 
+    #endregion Methods..
 }

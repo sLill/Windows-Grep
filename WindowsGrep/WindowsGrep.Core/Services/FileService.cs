@@ -16,7 +16,7 @@ public class FileService
     #region Methods..	
     public void Initialize(string filepath)
     {
-        filepath = filepath.Trim(new char[] { '\'', '"' });
+        filepath = filepath.TrimOnce(new char[] { '\'', '"' });
 
         if (string.IsNullOrEmpty(filepath))
             throw new Exception("OutFile parameter cannot be null");

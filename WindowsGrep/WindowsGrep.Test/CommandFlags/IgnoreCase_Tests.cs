@@ -2,6 +2,7 @@
 
 public class IgnoreCase_Tests : TestBase
 {
+    #region Methods..
     [Theory]
     [InlineData("-i 'THIS IS SAMPLE TEXT' '{0}'")]
     public async Task IgnoreCase_Enabled(string command)
@@ -28,5 +29,6 @@ public class IgnoreCase_Tests : TestBase
         await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
         Assert.True(windowsGrep.Results.Count == 0);
-    }
+    } 
+    #endregion Methods..
 }

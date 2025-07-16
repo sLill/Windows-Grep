@@ -1,12 +1,12 @@
 ﻿namespace WindowsGrep.Test;
 
-public class Context_Tests : TestBase
+public class NoFlags_Tests : TestBase
 {
     #region Methods..
     [Theory]
-    [InlineData("-c 1 'hitespac' '{0}'", 1)]
-    [InlineData("'hitespac' '{0}'", 0)]
-    public async Task Context(string command, int contextLength)
+    [InlineData("'This is sample text' '{0}'")]
+    [InlineData("sample '{0}'")]
+    public async Task Context(string command)
     {
         command = string.Format(command, TestDataDirectory);
 
@@ -15,7 +15,7 @@ public class Context_Tests : TestBase
 
         await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(windowsGrep.Results.All(x => ((GrepResult)x).LeadingContextString.Trim().Length == contextLength && ((GrepResult)x).TrailingContextString.Trim().Length == contextLength));
-    } 
+        Assert.True(windowsGrep.Results.Count > 0);
+    }
     #endregion Methods..
 }

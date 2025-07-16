@@ -2,6 +2,7 @@
 
 public class Filetype_IncludeTests : TestBase
 {
+    #region Methods..
     [Theory]
     [InlineData("-t .cpp 'Hello, World!' '{0}'", new[] { ".cpp" })]
     [InlineData("-t .cpp,.go 'Hello, World!' '{0}'", new[] { ".cpp", ".go" })]
@@ -18,5 +19,6 @@ public class Filetype_IncludeTests : TestBase
         await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
         Assert.True(windowsGrep.Results.All(x => validFiletypes.Contains(Path.GetExtension(x.SourceFile.Name))));
-    }
+    } 
+    #endregion Methods..
 }

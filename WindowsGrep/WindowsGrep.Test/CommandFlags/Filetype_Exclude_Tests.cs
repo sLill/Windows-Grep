@@ -2,6 +2,7 @@
 
 public class Filetype_Exclude_Tests : TestBase
 {
+    #region Methods..
     [Theory]
     [InlineData("-T .cpp 'Hello, World!' '{0}'", new[] { ".cpp" })]
     [InlineData("-T .cpp,.go 'Hello, World!' '{0}'", new[] { ".cpp", ".go" })]
@@ -16,7 +17,8 @@ public class Filetype_Exclude_Tests : TestBase
         var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
         await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
-        
+
         Assert.True(windowsGrep.Results.All(x => !invalidFiletypes.Contains(Path.GetExtension(x.SourceFile.Name))));
-    }
+    } 
+    #endregion Methods..
 }

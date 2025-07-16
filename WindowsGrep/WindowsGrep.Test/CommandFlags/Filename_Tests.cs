@@ -2,6 +2,7 @@
 
 public class Filename_Tests : TestBase
 {
+    #region Methods..
     [Theory]
     [InlineData("-k 'TestData_One' '{0}'")]
     public async Task Filename_Enabled(string command)
@@ -28,5 +29,6 @@ public class Filename_Tests : TestBase
         await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
         Assert.True(windowsGrep.Results.Count == 0);
-    }
+    } 
+    #endregion Methods..
 }

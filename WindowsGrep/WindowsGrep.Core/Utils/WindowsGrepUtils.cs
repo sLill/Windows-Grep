@@ -3,7 +3,7 @@
 public static class WindowsGrepUtils
 {
     #region Fields..
-    private static Regex _descriptorRegex = new Regex(@"^[\s]*?(?<Descriptor>[-]+\S+)", RegexOptions.Compiled);
+    private static Regex _descriptorRegex = new Regex(@"^(?<Descriptor>-+(?:[^\s'""]+|'[^']*'|""[^""]*"")+)", RegexOptions.Compiled);
     private static Regex _longDescriptorRegex = new Regex(@"^[^=$]*", RegexOptions.Compiled);
     private static Regex _shortParameterRegex = new Regex(@"^(?<Parameter>\S+)", RegexOptions.Compiled);
     private static Regex _positionalParameterRegex = new Regex(@"(?<!\\)(['""])(?<Parameter_Quoted>.*?)(?<!\\)\1|(?<Parameter_Unquoted>[^\s\'""]+)", RegexOptions.Compiled);
@@ -33,7 +33,7 @@ public static class WindowsGrepUtils
                 var matches = Regex.Matches(commandRaw, commandPattern);
                 if (matches.Count > 0)
                 {
-                    string commandParameter = matches.Select(match => match.Groups["Parameter"].Value?.Trim(' ', '\'', '"')).FirstOrDefault();
+                    string commandParameter = matches.Select(match => match.Groups["Parameter"].Value?.TrimOnce(' ', '\'', '"')).FirstOrDefault();
                     return (commandType, commandParameter);
                 }
             }
@@ -150,7 +150,7 @@ public static class WindowsGrepUtils
                             throw new Exception($"Option '{descriptor}' expects a parameter, but none was provided");
 
                         string descriptorParameter = descriptor.Split('=')[1];
-                        commandArgs[consoleFlags[j]] = descriptorParameter;
+                        commandArgs[consoleFlags[j]] = descriptorParameter.TrimOnce(new char[] { '\'', '"' });
                     }
                     else
                         commandArgs[consoleFlags[j]] = string.Empty;

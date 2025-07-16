@@ -109,7 +109,7 @@ public static class CommandFlagUtils
     public static List<string>? GetFileTypeIncludeFilters(GrepCommand grepCommand)
     {
         bool filetypeFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileTypeIncludeFilter);
-        var filetypeFilters = filetypeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeIncludeFilter].Trim(new[] { '"', '\'' }).Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
+        var filetypeFilters = filetypeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeIncludeFilter].TrimOnce(new[] { '"', '\'' }).Split(new char[] { ',', ';' }).Select(x => x.TrimOnce('.')).ToList() : null;
 
         return filetypeFilters;
     }
@@ -117,7 +117,7 @@ public static class CommandFlagUtils
     public static List<string>? GetFileTypeExcludeFilters(GrepCommand grepCommand)
     {
         bool filetypeExcludeFilterFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileTypeExcludeFilter);
-        var filetypeExcludeFilters = filetypeExcludeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeExcludeFilter].Trim(new[] { '"', '\'' }).Split(new char[] { ',', ';' }).Select(x => x.Trim('.')).ToList() : null;
+        var filetypeExcludeFilters = filetypeExcludeFilterFlag ? grepCommand.CommandArgs[CommandFlag.FileTypeExcludeFilter].TrimOnce(new[] { '"', '\'' }).Split(new char[] { ',', ';' }).Select(x => x.TrimOnce('.')).ToList() : null;
 
         return filetypeExcludeFilters;
     }
@@ -157,10 +157,10 @@ public static class CommandFlagUtils
     public static string BuildSearchPattern(GrepCommand grepCommand)
     {
         bool fixedStringsFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FixedString);
-        bool iIgnoreCaseFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IgnoreCase);
+        bool ignoreCaseFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IgnoreCase);
 
         string searchTerm = grepCommand.CommandArgs[CommandFlag.SearchTerm];
-        string ignoreCaseModifier = iIgnoreCaseFlag ? @"(?i)" : string.Empty;
+        string ignoreCaseModifier = ignoreCaseFlag ? @"(?i)" : string.Empty;
 
         // Ignore carriage-return and newline characters when using endline regex to match expected behavior from other regex engines
         searchTerm = searchTerm.Replace("$", "[\r\n]*$");

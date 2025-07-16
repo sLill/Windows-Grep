@@ -1,6 +1,6 @@
 ﻿namespace WindowsGrep.Test;
 
-public abstract class TestBase
+public abstract class TestBase : IDisposable
 {
     #region Properties..
     protected string TestDataDirectory { get; private set; }
@@ -32,5 +32,7 @@ public abstract class TestBase
 
         ServiceProvider = services.BuildServiceProvider();
     }
+
+    public virtual void Dispose() { }
     #endregion Methods..
 }

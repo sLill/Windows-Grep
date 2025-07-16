@@ -2,6 +2,7 @@
 
 public class Path_Exclude_Tests : TestBase
 {
+    #region Methods..
     [Theory]
     [InlineData("-r -P TestData_0 'This is sample text' '{0}'", new[] { "TestData_0" })]
     [InlineData("-r -P TestData_ 'This is sample text' '{0}'", new[] { "TestData_0" })]
@@ -23,5 +24,6 @@ public class Path_Exclude_Tests : TestBase
 
             return isValidSubdirectory;
         }));
-    }
+    } 
+    #endregion Methods..
 }

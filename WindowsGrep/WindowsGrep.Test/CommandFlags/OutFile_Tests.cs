@@ -2,6 +2,7 @@
 
 public class OutFile_Tests : TestBase
 {
+    #region Methods..
     [Theory]
     [InlineData("-o output.txt 'This is sample text' '{0}'", "output.txt")]
     [InlineData("-o 'output.txt' 'This is sample text' '{0}'", "output.txt")]
@@ -24,5 +25,6 @@ public class OutFile_Tests : TestBase
         string? subdirectory = Path.GetDirectoryName(outputPath);
         if (!string.IsNullOrEmpty(subdirectory) && Directory.Exists(subdirectory))
             Directory.Delete(subdirectory, true);
-    }
+    } 
+    #endregion Methods..
 }
