@@ -16,12 +16,16 @@ public class FileService
     #region Methods..	
     public void Initialize(string filepath)
     {
+        filepath = filepath.Trim(new char[] { '\'', '"' });
+
         if (string.IsNullOrEmpty(filepath))
             throw new Exception("OutFile parameter cannot be null");
-        else if (!Directory.Exists(Path.GetDirectoryName(filepath)))
-            throw new Exception("OutFile directory does not exist");
         else
         {
+            string? directory = Path.GetDirectoryName(filepath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
             Filepath = filepath;
 
             if (File.Exists(Filepath))
