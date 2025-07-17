@@ -14,7 +14,7 @@ Usage:	\u001b[38;2;255;165;0mgrep [options] search_term [path]\u001b[0m
 -o			\u001b[38;2;125;125;125mgrep -o output.txt dug .\u001b[0m		: Redirect output to file
 -v			\u001b[38;2;125;125;125mgrep -v dug ../\u001b[0m				: Verbose output
 
---max-depth=		\u001b[38;2;125;125;125mgrep --max-depth=3 dug C:/\u001b[0m		: Max search depth from the working directory when recursion (-r) is enabled
+--max-depth=		\u001b[38;2;125;125;125mgrep --max-depth=3 dug C:/\u001b[0m		: Max search depth relative to the current working directory (-r only)
 --include-hidden	\u001b[38;2;125;125;125mgrep --include-hidden dug C:/\u001b[0m		: Include hidden files
 --include-system	\u001b[38;2;125;125;125mgrep --include-system dug C:/\u001b[0m		: Include system files
 --filesize-min=		\u001b[38;2;125;125;125mgrep --filesize-min=30mb dug C:/\u001b[0m	: Filter results < n(kb|mb|gb|tb)

@@ -141,7 +141,7 @@ public static class WindowsGrepUtils
             {
                 if (descriptionAttribute.Value.Select(y => y.Trim(['-', '='])).Contains(descriptorFlag))
                 {
-                    commandString = _descriptorRegex.Replace(commandString, string.Empty);
+                    commandString = _descriptorRegex.Replace(commandString, string.Empty).Trim();
 
                     bool expectsParameter = consoleFlags[j].GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
                     if (expectsParameter)
@@ -174,8 +174,7 @@ public static class WindowsGrepUtils
         if (!string.IsNullOrEmpty(searchParameter))
         {
             commandArgs[CommandFlag.SearchTerm] = searchParameter;
-            commandString = _positionalParameterRegex.Replace(commandString, string.Empty, 1);
-            commandString = commandString.Trim();
+            commandString = _positionalParameterRegex.Replace(commandString, string.Empty, 1).Trim();
 
             // Path
             string targetPath = Environment.CurrentDirectory;

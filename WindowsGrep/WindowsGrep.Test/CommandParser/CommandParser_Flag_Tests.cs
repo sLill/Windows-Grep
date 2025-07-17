@@ -7,12 +7,19 @@ public class CommandParser_Flag_Tests : TestBase
     [InlineData("-r -k -i search_term", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly })]
     [InlineData("-rk -i search_term .", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly })]
     [InlineData("-rk -i search_term", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly })]
-    [InlineData("-r --ignore-breaks -k -i search_term", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly })]
-    [InlineData("-r --ignore-breaks -k -i search_term .", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly })]
+    [InlineData("-r --ignore-breaks -k -i search_term", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly, CommandFlag.IgnoreBreaks })]
+    [InlineData("-r --ignore-breaks -k -i search_term .", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly, CommandFlag.IgnoreBreaks })]
     public void ShortDescriptors_Basic_Valid(string command, CommandFlag[] expectedArgs)
     {
         IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
         expectedArgs.ToList().ForEach(x => Assert.True(commandArgs.ContainsKey(x)));
+
+        //command = string.Format(command, TestDataDirectory);
+
+        //var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+        //var grepService = ServiceProvider.GetRequiredService<GrepService>();
+
+        //await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
     }
 
     [Theory]
