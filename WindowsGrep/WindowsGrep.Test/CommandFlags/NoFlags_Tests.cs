@@ -6,7 +6,7 @@ public class NoFlags_Tests : TestBase
     [Theory]
     [InlineData("'This is sample text' '{0}'")]
     [InlineData("sample '{0}'")]
-    public async Task Context(string command)
+    public async Task NoFlag(string command)
     {
         command = string.Format(command, TestDataDirectory);
 
