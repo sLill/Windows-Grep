@@ -9,78 +9,33 @@ public static class CommandFlagUtils
     #endregion Fields..
 
     #region Methods..
-    public static long GetFileSizeMaximum(GrepCommand grepCommand)
+    public static long GetFileSize(string fileSizeString)
     {
-        long fileSizeMaximum = -1;
+        long fileSize = -1;
 
-        bool fileSizeMaximumFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileSizeMaximum);
-        if (fileSizeMaximumFlag)
+        try
         {
-            try
-            {
-                string fileSizeMaximumParameter = grepCommand.CommandArgs[CommandFlag.FileSizeMaximum];
+            var match = _fileSizeRegex.Match(fileSizeString);
+            long size = Convert.ToInt64(match.Groups["Size"].Value);
 
-                var match = _fileSizeRegex.Match(fileSizeMaximumParameter);
-                long size = Convert.ToInt64(match.Groups["Size"].Value);
+            if (size < 0)
+                throw new Exception("Error: Size parameter cannot be less than 0");
 
-                if (size < 0)
-                    throw new Exception("Error: Size parameter cannot be less than 0");
+            long fileSizeModifier = FileSizeType.Kb.GetCustomAttribute<ValueAttribute>().Value;
 
-                long fileSizeModifier = FileSizeType.Kb.GetCustomAttribute<ValueAttribute>().Value;
+            string sizeType = match.Groups["SizeType"].Value.ToUpper();
+            if (!sizeType.IsNullOrEmpty())
+                fileSizeModifier = Enum.Parse<FileSizeType>(sizeType, true).GetCustomAttribute<ValueAttribute>().Value;
 
-                string sizeType = match.Groups["SizeType"].Value.ToUpper();
-                if (!sizeType.IsNullOrEmpty())
-                    fileSizeModifier = Enum.Parse<FileSizeType>(sizeType, true).GetCustomAttribute<ValueAttribute>().Value;
-
-                fileSizeMaximum = size * fileSizeModifier;
-            }
-            catch
-            {
-                throw new Exception($"Error: Could not parse filesize parameter" +
-                    $"{Environment.NewLine}Format should follow [SIZE] or [SIZE][TYPE]. Acceptable TYPE parameters are kb, mb, gb, tb" +
-                    $"{Environment.NewLine}For more information, visit https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags");
-            }
+            fileSize = size * fileSizeModifier;
+        }
+        catch
+        {
+            throw new Exception($"Error: Could not parse filesize parameter" +
+                $"{Environment.NewLine}Format should follow [SIZE] or [SIZE][TYPE]. Acceptable TYPE parameters are kb, mb, gb, tb");
         }
 
-        return fileSizeMaximum;
-    }
-
-    public static long GetFileSizeMinimum(GrepCommand grepCommand)
-    {
-        long fileSizeMinimum = -1;
-
-        bool fileSizeMinimumFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileSizeMinimum);
-        if (fileSizeMinimumFlag)
-        {
-            try
-            {
-                string fileSizeMinimumParameter = grepCommand.CommandArgs[CommandFlag.FileSizeMinimum];
-
-                var match = _fileSizeRegex.Match(fileSizeMinimumParameter);
-                long size = Convert.ToInt64(match.Groups["Size"].Value);
-
-                if (size < 0)
-                {
-                    throw new Exception("Error: Size parameter cannot be less than 0");
-                }
-
-                long fileSizeModifier = FileSizeType.Kb.GetCustomAttribute<ValueAttribute>().Value;
-
-                string sizeType = match.Groups["SizeType"].Value.ToUpper();
-                if (!sizeType.IsNullOrEmpty())
-                    fileSizeModifier = Enum.Parse<FileSizeType>(sizeType, true).GetCustomAttribute<ValueAttribute>().Value;
-
-                fileSizeMinimum = size * fileSizeModifier;
-            }
-            catch
-            {
-                throw new Exception($"Error: could not parse filesize parameter" +
-                    $"{Environment.NewLine}Format should follow [SIZE] or [SIZE][TYPE]. Acceptable TYPE parameters are kb, mb, gb, tb" +
-                    $"{Environment.NewLine}For more information, visit https://github.com/sLill/Windows-BudgetGrep/wiki/WindowsGrep.CommandFlags");
-            }
-        }
-
-        return fileSizeMinimum;
+        return fileSize;
     }
 
     public static HashType GetHashType(GrepCommand grepCommand)

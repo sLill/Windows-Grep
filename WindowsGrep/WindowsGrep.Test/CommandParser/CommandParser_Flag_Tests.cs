@@ -13,13 +13,6 @@ public class CommandParser_Flag_Tests : TestBase
     {
         IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
         expectedArgs.ToList().ForEach(x => Assert.True(commandArgs.ContainsKey(x)));
-
-        //command = string.Format(command, TestDataDirectory);
-
-        //var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        //var grepService = ServiceProvider.GetRequiredService<GrepService>();
-
-        //await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
     }
 
     [Theory]

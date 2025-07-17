@@ -4,7 +4,7 @@ public class Recursive_Tests : TestBase
 {
     #region Methods..
     [Theory]
-    [InlineData("-r '.*' '{0}'")]
+    [InlineData("-r 'sample' '{0}'")]
     public async Task Recursive_Enabled(string command)
     {
         command = string.Format(command, TestDataDirectory);
@@ -21,7 +21,7 @@ public class Recursive_Tests : TestBase
     }
 
     [Theory]
-    [InlineData("'.*' '{0}'")]
+    [InlineData("'sample' '{0}'")]
     public async Task Recursive_Disabled(string command)
     {
         command = string.Format(command, TestDataDirectory);

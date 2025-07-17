@@ -112,9 +112,11 @@ public class GrepService
         bool maxDepthFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.MaxDepth);
         bool includeHiddenFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IncludeHidden);
         bool includeSystemFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IncludeSystem);
+        bool fileSizeMinimumFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileSizeMinimum);
+        bool fileSizeMaximumFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileSizeMaximum);
 
-        long fileSizeMin = CommandFlagUtils.GetFileSizeMinimum(grepCommand);
-        long fileSizeMax = CommandFlagUtils.GetFileSizeMaximum(grepCommand);
+        long fileSizeMin = fileSizeMinimumFlag ? CommandFlagUtils.GetFileSize(grepCommand.CommandArgs[CommandFlag.FileSizeMinimum]) : -1;
+        long fileSizeMax = fileSizeMaximumFlag ? CommandFlagUtils.GetFileSize(grepCommand.CommandArgs[CommandFlag.FileSizeMaximum]) : -1;
 
         int maxDepth = maxDepthFlag ? Convert.ToInt32(grepCommand.CommandArgs[CommandFlag.MaxDepth]) : int.MaxValue;
 
