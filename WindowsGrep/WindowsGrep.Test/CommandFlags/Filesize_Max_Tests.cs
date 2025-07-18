@@ -1,14 +1,14 @@
 ﻿namespace WindowsGrep.Test;
 
-public class Filesize_Min_Tests : TestBase
+public class Filesize_Max_Tests : TestBase
 {
     #region Methods..
     [Theory]
-    [InlineData("--filesize-min=5kb 'sample' '{0}'", 5000)]
-    [InlineData("--filesize-min=5KB 'sample' '{0}'", 5000)]
-    [InlineData("--filesize-min=5Kb 'sample' '{0}'", 5000)]
-    [InlineData("--filesize-min=5000 'sample' '{0}'", 5000)]
-    public async Task Filesize_Min(string command, long minSize)
+    [InlineData("--filesize-max=5kb 'sample' '{0}'", 5000)]
+    [InlineData("--filesize-max=5KB 'sample' '{0}'", 5000)]
+    [InlineData("--filesize-max=5Kb 'sample' '{0}'", 5000)]
+    [InlineData("--filesize-max=5000 'sample' '{0}'", 5000)]
+    public async Task Filesize_Max(string command, long maxSize)
     {
         command = string.Format(command, TestDataDirectory);
 
@@ -20,7 +20,7 @@ public class Filesize_Min_Tests : TestBase
         Assert.True(windowsGrep.Results.All(x =>
         {
             long fileSize = WindowsUtils.GetFileSizeOnDisk(x.SourceFile.Name);
-            return fileSize >= minSize;
+            return fileSize <= maxSize;
         }));
     }
     #endregion Methods..
