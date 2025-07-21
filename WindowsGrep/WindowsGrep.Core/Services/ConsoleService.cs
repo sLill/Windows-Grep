@@ -10,13 +10,7 @@ public class ConsoleService
     public void Write(ConsoleItem consoleItem)
     {
         lock (Console.Out)
-        {
-            Console.BackgroundColor = consoleItem.BackgroundColor;
-            Console.ForegroundColor = consoleItem.ForegroundColor;
-
-            Console.Write(consoleItem.Value);
-            Console.ResetColor();
-        }
+            Console.Write(consoleItem.ToString());
     }
     #endregion Methods..
 }

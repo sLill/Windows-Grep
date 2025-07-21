@@ -1,12 +1,10 @@
-﻿using System.Threading;
-using WindowsGrep.Core;
-
-namespace WindowsGrep
+﻿namespace WindowsGrep
 {
     public class WindowsGrep
     {
         #region Fields..
         private readonly IServiceProvider _serviceProvider;
+        private CancellationTokenSource _cancellationTokenSource;
         #endregion Fields..
 
         #region Properties..
@@ -21,10 +19,12 @@ namespace WindowsGrep
         #endregion Constructors..
 
         #region Methods..
-        public async Task RunAsync(string[] args, CancellationTokenSource cancellationTokenSource)
+        public async Task RunAsync(string[] args)
         {
             do
             {
+                _cancellationTokenSource = new CancellationTokenSource();
+
                 using (var serviceScope = _serviceProvider.CreateScope())
                 {
                     var consoleService = serviceScope.ServiceProvider.GetRequiredService<ConsoleService>();
@@ -55,22 +55,25 @@ namespace WindowsGrep
                             if (nativeCommandArgs != default)
                             {
                                 var nativeCommand = new NativeCommand() { CommandType = nativeCommandArgs.CommandType.Value, CommandParameter = nativeCommandArgs.CommandParameter };
-                                await Task.Run(() => nativeService.RunCommand(nativeCommand, Results, cancellationTokenSource.Token));
+                                await Task.Run(() => nativeService.RunCommand(nativeCommand, Results, _cancellationTokenSource.Token));
                             }
 
                             // Grep commands
                             else
-                               await RunGrepCommandAsync(grepService, command, cancellationTokenSource);
+                                await RunGrepCommandAsync(grepService, command, _cancellationTokenSource);
                         }
                     }
                     catch (Exception ex)
                     {
-                        consoleService.Write(new() { Value = $"\n{ex.Message}\n", ForegroundColor = ConsoleColor.Red });
-                        consoleService.Write(new() { Value = $"Usage:   grep [options] search_term [path]\n\n", ForegroundColor = ConsoleColor.White });
+                        consoleService.Write(new() { Value = $"\n{ex.Message}\n", ForegroundColor = AnsiColors.Red });
+                        consoleService.Write(new() { Value = $"Usage:   grep [options] search_term [path]\n\n", ForegroundColor = AnsiColors.Orange });
+#if DEBUG
+                        throw;
+#endif
                     }
                 }
             }
-            while (args.Length == 0 && !cancellationTokenSource.IsCancellationRequested);
+            while (args.Length == 0);
         }
 
         public async Task RunGrepCommandAsync(GrepService grepService, string command, CancellationTokenSource cancellationTokenSource)
@@ -84,6 +87,16 @@ namespace WindowsGrep
             {
                 var grepCommand = new GrepCommand() { CommandArgs = grepCommandArgs };
                 await Task.Run(() => grepService.RunCommand(grepCommand, Results, cancellationTokenSource.Token));
+            }
+        }
+
+        public void Cancel()
+        {
+            if (_cancellationTokenSource != null)
+            {
+                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource.Dispose();
+                _cancellationTokenSource = null;
             }
         }
         #endregion Methods..

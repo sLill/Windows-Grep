@@ -20,9 +20,9 @@ public abstract class ResultBase
 
         var fileAttributes = File.GetAttributes(SourceFile.Name);
         if ((fileAttributes & FileAttributes.System) == FileAttributes.System)
-            consoleItemCollection.Add(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = $"[System]" });
+            consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.Red, Value = $"[System]" });
         if ((fileAttributes & FileAttributes.Hidden) == FileAttributes.Hidden)
-            consoleItemCollection.Add(new ConsoleItem { ForegroundColor = ConsoleColor.DarkCyan, Value = $"[Hidden]" });
+            consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.DarkCyan, Value = $"[Hidden]" });
 
         if (consoleItemCollection.Count > 0)
             consoleItemCollection.Insert(0, new ConsoleItem() { Value = " " });
@@ -37,7 +37,7 @@ public abstract class ResultBase
         if (SourceFile.FileSize > -1)
         {
             var fileSizeReduced = WindowsUtils.GetReducedSize(SourceFile.FileSize, 3, out FileSizeType fileSizeType);
-            consoleItemCollection.Add(new ConsoleItem { ForegroundColor = ConsoleColor.Green, Value = $" {fileSizeReduced} {fileSizeType}(s) " });
+            consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.Green, Value = $" {fileSizeReduced} {fileSizeType}(s) " });
         }
 
         return consoleItemCollection;

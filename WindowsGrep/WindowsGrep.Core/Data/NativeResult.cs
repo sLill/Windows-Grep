@@ -22,7 +22,7 @@ public class NativeResult : ResultBase
         // Filename
         consoleItems.Add(new ConsoleItem
         {
-            ForegroundColor = SourceFile.IsDirectory ? ConsoleColor.Cyan : ConsoleColor.DarkYellow,
+            ForegroundColor = SourceFile.IsDirectory ? AnsiColors.Cyan : AnsiColors.DarkYellow,
             Value = SourceFile.Name
         });
 

@@ -3,10 +3,17 @@
 public class ConsoleItem
 {
     #region Properties..
-    public ConsoleColor BackgroundColor { get; set; } = Console.BackgroundColor;
+    public string BackgroundColor { get; set; } = AnsiColors.BlackBg;
 
-    public ConsoleColor ForegroundColor { get; set; } = Console.ForegroundColor;
+    public string ForegroundColor { get; set; } = AnsiColors.Gray;
 
     public string Value { get; set; }
     #endregion Properties..
+
+    #region Methods..
+    public override string ToString()
+    {
+        return $"{BackgroundColor}{ForegroundColor}{Value}{AnsiColors.Reset}";
+    }
+    #endregion Methods..
 }

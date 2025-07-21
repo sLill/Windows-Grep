@@ -1,9 +1,10 @@
-﻿namespace WindowsGrep
+﻿
+namespace WindowsGrep
 {
     public class Program
     {
         #region Fields..
-        private static CancellationTokenSource _cancellationTokenSource;
+        private static IHost _host;
         #endregion Fields..
 
         #region Main
@@ -23,14 +24,14 @@
         private static void Console_OnCancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
             e.Cancel = true;
-            _cancellationTokenSource?.Cancel();
+
+            var windowsGrep = _host.Services.GetRequiredService<WindowsGrep>();
+            windowsGrep.Cancel();
         }
         #endregion Event Handlers..
 
         private static void Initialize(string[] args)
         {
-            _cancellationTokenSource = new CancellationTokenSource();
-
             // Only necessary on older versions of Windows 
             WindowsUtils.TryEnableAnsi();
 
@@ -41,9 +42,9 @@
 
         private static async Task RunAsync(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            var windowsGrep = host.Services.GetRequiredService<WindowsGrep>();
-            await windowsGrep.RunAsync(args, _cancellationTokenSource);
+            _host = CreateHostBuilder(args).Build();
+            var windowsGrep = _host.Services.GetRequiredService<WindowsGrep>();
+            await windowsGrep.RunAsync(args);
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)

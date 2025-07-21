@@ -52,7 +52,7 @@ public class GrepResult : ResultBase
     private void BuildFileContentConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
     {
         // FileName
-        consoleItemCollection.Add(new ConsoleItem { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile.Name} " });
+        consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.DarkYellow, Value = $"{SourceFile.Name} " });
 
         // FileSize
         //if (SourceFile.FileSize > -1)
@@ -63,13 +63,13 @@ public class GrepResult : ResultBase
 
         // Line number
         if (LineNumber > -1)
-            consoleItemCollection.Add(new ConsoleItem { ForegroundColor = ConsoleColor.DarkMagenta, Value = $"Line {LineNumber}  " });
+            consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.DarkMagenta, Value = $"Line {LineNumber}  " });
 
         // Context start
         consoleItemCollection.Add(new ConsoleItem { Value = LeadingContextString });
 
         // Context matched
-        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
+        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = AnsiColors.DarkCyanBg, Value = MatchedString });
 
         // Context end
         consoleItemCollection.Add(new ConsoleItem { Value = TrailingContextString });
@@ -78,13 +78,13 @@ public class GrepResult : ResultBase
     private void BuildFileNameConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
     {
         // Context start
-        consoleItemCollection.Add(new ConsoleItem { ForegroundColor = ConsoleColor.DarkYellow, Value = LeadingContextString });
+        consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.DarkYellow, Value = LeadingContextString });
 
         // Context matched
-        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
+        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = AnsiColors.DarkCyanBg, Value = MatchedString });
 
         // Context end
-        consoleItemCollection.Add(new ConsoleItem { ForegroundColor = ConsoleColor.DarkYellow, Value = TrailingContextString });
+        consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.DarkYellow, Value = TrailingContextString });
 
         // File attributes
         consoleItemCollection.AddRange(GetFileAttributeConsoleItems());
@@ -96,10 +96,10 @@ public class GrepResult : ResultBase
     private void BuildFileHashConsoleItemCollection(List<ConsoleItem> consoleItemCollection)
     {
         // FileName
-        consoleItemCollection.Add(new ConsoleItem { ForegroundColor = ConsoleColor.DarkYellow, Value = $"{SourceFile.Name} " });
+        consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.DarkYellow, Value = $"{SourceFile.Name} " });
 
         // Context matched
-        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = ConsoleColor.DarkCyan, Value = MatchedString });
+        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = AnsiColors.DarkCyanBg, Value = MatchedString });
 
         // File attributes
         consoleItemCollection.AddRange(GetFileAttributeConsoleItems());

@@ -43,7 +43,7 @@ public class NativeService
         }
         catch (Exception ex)
         {
-            _publisherService.Publish(new ConsoleItem { ForegroundColor = ConsoleColor.Red, Value = ex.Message });
+            _publisherService.Publish(new ConsoleItem { ForegroundColor = AnsiColors.Red, Value = ex.Message });
         }
     }
 
