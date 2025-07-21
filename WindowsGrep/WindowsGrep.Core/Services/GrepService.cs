@@ -146,7 +146,7 @@ public class GrepService
         bool writeFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.OutFile);
         bool fileNamesOnlyFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileNamesOnly);
 
-        var filetypeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
+        var filetypeIncludeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
         var filetypeExcludeFilters = CommandFlagUtils.GetFileTypeExcludeFilters(grepCommand);
         var pathFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
 
@@ -159,7 +159,7 @@ public class GrepService
 
                 // Filters
                 bool isFiltered = false;
-                isFiltered |= (filetypeFilters != null && !filetypeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
+                isFiltered |= (filetypeIncludeFilters != null && !filetypeIncludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
                 isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
                 isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file.Name), x)));
 
@@ -199,7 +199,7 @@ public class GrepService
         bool deleteFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.Delete);
         bool writeFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.OutFile);
 
-        var filetypeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
+        var filetypeIncludeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
         var filetypeExcludeFilters = CommandFlagUtils.GetFileTypeExcludeFilters(grepCommand);
         var pathFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
 
@@ -214,7 +214,7 @@ public class GrepService
 
                 // Filters
                 bool isFiltered = false;
-                isFiltered |= (filetypeFilters != null && !filetypeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
+                isFiltered |= (filetypeIncludeFilters != null && !filetypeIncludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
                 isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
                 isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file.Name), x)));
 
@@ -267,7 +267,7 @@ public class GrepService
         bool replaceFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.Replace);
         bool writeFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.OutFile);
 
-        var filetypeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
+        var filetypeIncludeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
         var filetypeExcludeFilters = CommandFlagUtils.GetFileTypeExcludeFilters(grepCommand);
         var pathFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
 
@@ -278,7 +278,7 @@ public class GrepService
 
             // Filters
             bool isFiltered = false;
-            isFiltered |= (filetypeFilters != null && !filetypeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
+            isFiltered |= (filetypeIncludeFilters != null && !filetypeIncludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
             isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
             isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file.Name), x)));
 

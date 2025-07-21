@@ -16,6 +16,9 @@ public static class StringExtensions
     /// <summary>Trim at most one character from the start and end of the string</summary>
     public static string TrimOnce(this string value, params char[] characters)
     {
+        if (value.Length == 0)
+            return value;
+
         int startIndex = 0;
         int endIndex = value.Length - 1;
 

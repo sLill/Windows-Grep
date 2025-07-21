@@ -4,6 +4,7 @@ public class Filetype_IncludeTests : TestBase
 {
     #region Methods..
     [Theory]
+    [InlineData("-r -i -k -t \'txt\' \".*\" '{0}'", new[] { ".txt" })]
     [InlineData("-t .cpp 'Hello, World!' '{0}'", new[] { ".cpp" })]
     [InlineData("-t .cpp,.go 'Hello, World!' '{0}'", new[] { ".cpp", ".go" })]
     [InlineData("-t cpp 'Hello, World!' '{0}'", new[] { ".cpp" })]
