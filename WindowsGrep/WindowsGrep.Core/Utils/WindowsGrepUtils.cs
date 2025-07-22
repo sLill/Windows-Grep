@@ -5,7 +5,7 @@ public static class WindowsGrepUtils
     #region Fields..
     private static Regex _descriptorRegex = new Regex(@"^(?<Descriptor>-+(?:[^\s'""]+|'[^']*'|""[^""]*"")+)", RegexOptions.Compiled);
     private static Regex _longDescriptorRegex = new Regex(@"^[^=$]*", RegexOptions.Compiled);
-    private static Regex _shortParameterRegex = new Regex(@"^(?<Parameter>\S+)", RegexOptions.Compiled);
+    private static Regex _shortParameterRegex = new Regex(@"^(?<Parameter>(?:[^'""\s]|""[^""]*""|'[^']*')+)", RegexOptions.Compiled);
     private static Regex _positionalParameterRegex = new Regex(@"(?<!\\)(['""])(?<Parameter_Quoted>.*?)(?<!\\)\1|(?<Parameter_Unquoted>[^\s\'""]+)", RegexOptions.Compiled);
     #endregion Fields..
 
