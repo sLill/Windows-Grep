@@ -10,18 +10,25 @@ public class Filesize_Max_Tests : TestBase
     [InlineData("--filesize-max=5000 'sample' '{0}'", 5000)]
     public async Task Filesize_Max(string command, long maxSize)
     {
-        command = string.Format(command, TestDataDirectory);
-
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
-
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
-
-        Assert.True(windowsGrep.Results.All(x =>
+        try
         {
-            long fileSize = WindowsUtils.GetFileSizeOnDisk(x.SourceFile.Name);
-            return fileSize <= maxSize;
-        }));
+            command = string.Format(command, TestDataDirectory);
+
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
+
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+
+            Assert.True(windowsGrep.Results.All(x =>
+            {
+                long fileSize = WindowsUtils.GetFileSizeOnDisk(x.SourceFile.Name);
+                return fileSize <= maxSize;
+            }));
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
     #endregion Methods..
 }

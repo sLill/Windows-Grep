@@ -34,16 +34,23 @@ public class Replace_Tests : TestBase
     [InlineData("--replace='text sample is This' 'This is sample text' '{0}'", "text sample is This")]
     public async Task Replace(string command, string expectedText)
     {
-        string replaceTestFilePath = Path.Combine(TestDataDirectory, "ReplaceTest_Blue.txt");
-        command = string.Format(command, replaceTestFilePath);
+        try
+        {
+            string replaceTestFilePath = Path.Combine(TestDataDirectory, "ReplaceTest_Blue.txt");
+            command = string.Format(command, replaceTestFilePath);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        string testFileContent = await File.ReadAllTextAsync(replaceTestFilePath);
-        Assert.Contains(expectedText, testFileContent);
+            string testFileContent = await File.ReadAllTextAsync(replaceTestFilePath);
+            Assert.Contains(expectedText, testFileContent);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 
     [Theory]
@@ -51,28 +58,42 @@ public class Replace_Tests : TestBase
     [InlineData(@"-k --replace=Red 'Bl[^\.]*' '{0}'", "ReplaceTest_Red.txt")]
     public async Task Replace_Filename(string command, string expectedPath)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(File.Exists(Path.Combine(TestDataDirectory, expectedPath)));
+            Assert.True(File.Exists(Path.Combine(TestDataDirectory, expectedPath)));
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 
     [Theory]
     [InlineData("-r -k --replace=Red 'Green' '{0}'", "ReplaceTest_Green/ReplaceTest_Red.txt")]
     public async Task Replace_Filename_Subdirectory(string command, string expectedPath)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(File.Exists(Path.Combine(TestDataDirectory, expectedPath)));
-    } 
+            Assert.True(File.Exists(Path.Combine(TestDataDirectory, expectedPath)));
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
+    }
     #endregion Methods..
 }

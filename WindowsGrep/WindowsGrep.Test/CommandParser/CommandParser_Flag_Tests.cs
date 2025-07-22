@@ -11,8 +11,15 @@ public class CommandParser_Flag_Tests : TestBase
     [InlineData("-r --ignore-breaks -k -i search_term .", new[] { CommandFlag.Recursive, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly, CommandFlag.IgnoreBreaks })]
     public void ShortDescriptors_Basic_Valid(string command, CommandFlag[] expectedArgs)
     {
-        IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
-        expectedArgs.ToList().ForEach(x => Assert.True(commandArgs.ContainsKey(x)));
+        try
+        {
+            IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
+            expectedArgs.ToList().ForEach(x => Assert.True(commandArgs.ContainsKey(x)));
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 
     [Theory]
@@ -25,15 +32,22 @@ public class CommandParser_Flag_Tests : TestBase
     [InlineData("-c 20 --ignore-breaks -k -i search_term", new[] { CommandFlag.Context, CommandFlag.IgnoreBreaks, CommandFlag.IgnoreCase, CommandFlag.FileNamesOnly })]
     public void ShortDescriptors_Parameters_Valid(string command, CommandFlag[] expectedArgs)
     {
-        IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
-        expectedArgs.ToList().ForEach(x =>
+        try
         {
-            Assert.True(commandArgs.ContainsKey(x));
+            IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
+            expectedArgs.ToList().ForEach(x =>
+            {
+                Assert.True(commandArgs.ContainsKey(x));
 
-            bool expectsParameter = x.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
-            if (expectsParameter)
-                Assert.True(!string.IsNullOrEmpty(commandArgs[x]), $"Expected parameter for {x} but got empty/null string.");
-        });
+                bool expectsParameter = x.GetCustomAttribute<ExpectsParameterAttribute>()?.Value ?? false;
+                if (expectsParameter)
+                    Assert.True(!string.IsNullOrEmpty(commandArgs[x]), $"Expected parameter for {x} but got empty/null string.");
+            });
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 
     [Theory]

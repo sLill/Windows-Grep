@@ -17,7 +17,14 @@ public class CommandParser_SearchTerm_Tests : TestBase
     [InlineData("'search_term'")]
     public void SearchTerm_Valid(string command)
     {
-        IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
-        Assert.True(commandArgs.ContainsKey(CommandFlag.SearchTerm));
+        try
+        {
+            IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
+            Assert.True(commandArgs.ContainsKey(CommandFlag.SearchTerm));
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 }

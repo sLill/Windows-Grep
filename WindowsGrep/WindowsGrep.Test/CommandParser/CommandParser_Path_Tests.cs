@@ -13,9 +13,16 @@ public class CommandParser_Path_Tests : TestBase
     [InlineData("search_term '{0}'")]
     public void Path_Valid(string command)
     {
-        command = string.Format(command, TestDataDirectory);
-        IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
-        Assert.True(commandArgs.ContainsKey(CommandFlag.Path));
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
+            IDictionary<CommandFlag, string> commandArgs = WindowsGrepUtils.ParseGrepCommandArgs(command);
+            Assert.True(commandArgs.ContainsKey(CommandFlag.Path));
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 
     [Theory]

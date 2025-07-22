@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Properties\Resources\TestData\Test Data_1\TestData_Seven.txt">
+    <Content Include="Properties\Resources\TestData\Test Data %28x86%29_1\TestData_Seven.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Properties\Resources\TestData\TestData_0\TestData_Five.txt">

@@ -9,22 +9,29 @@ public class OutFile_Tests : TestBase
     [InlineData("-o './OutFile_Test/output.txt' 'This is sample text' '{0}'", "./OutFile_Test/output.txt")]
     public async Task OutFile_Enabled(string command, string outputPath)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(File.Exists(outputPath));
-        Assert.True(new FileInfo(outputPath).Length > 0);
+            Assert.True(File.Exists(outputPath));
+            Assert.True(new FileInfo(outputPath).Length > 0);
 
-        if (File.Exists(outputPath))
-            File.Delete(outputPath);
+            if (File.Exists(outputPath))
+                File.Delete(outputPath);
 
-        string? subdirectory = Path.GetDirectoryName(outputPath);
-        if (!string.IsNullOrEmpty(subdirectory) && Directory.Exists(subdirectory))
-            Directory.Delete(subdirectory, true);
-    } 
+            string? subdirectory = Path.GetDirectoryName(outputPath);
+            if (!string.IsNullOrEmpty(subdirectory) && Directory.Exists(subdirectory))
+                Directory.Delete(subdirectory, true);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
+    }
     #endregion Methods..
 }

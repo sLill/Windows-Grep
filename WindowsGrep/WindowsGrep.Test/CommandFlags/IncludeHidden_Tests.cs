@@ -7,56 +7,84 @@ public class IncludeHidden_Tests : TestBase
     [InlineData("--include-hidden 'This is a hidden file' '{0}'")]
     public async Task IncludeHidden_Enabled(string command)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(windowsGrep.Results.Count > 0);
+            Assert.True(windowsGrep.Results.Count > 0);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 
     [Theory]
     [InlineData("'This is a hidden file' '{0}'")]
     public async Task IncludeHidden_Disabled(string command)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(windowsGrep.Results.Count == 0);
+            Assert.True(windowsGrep.Results.Count == 0);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 
     [Theory]
     [InlineData("-k --include-hidden '_Hidden' '{0}'")]
     public async Task IncludeHidden_Filename_Enabled(string command)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(windowsGrep.Results.Count > 0);
+            Assert.True(windowsGrep.Results.Count > 0);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 
     [Theory]
     [InlineData("-k '_Hidden' '{0}'")]
     public async Task IncludeHidden_Filename_Disabled(string command)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(windowsGrep.Results.Count == 0);
+            Assert.True(windowsGrep.Results.Count == 0);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
     #endregion Methods..
 }

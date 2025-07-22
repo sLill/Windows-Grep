@@ -8,14 +8,21 @@ public class NoFlags_Tests : TestBase
     [InlineData("sample '{0}'")]
     public async Task NoFlag(string command)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(windowsGrep.Results.Count > 0);
+            Assert.True(windowsGrep.Results.Count > 0);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
     #endregion Methods..
 }

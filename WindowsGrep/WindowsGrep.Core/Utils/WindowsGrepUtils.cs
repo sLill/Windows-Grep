@@ -111,7 +111,7 @@ public static class WindowsGrepUtils
                             if (!parameterMatch.Groups["Parameter"].Success)
                                 throw new Exception($"Option '{descriptor}' expects a parameter, but none was provided");
 
-                            commandArgs[consoleFlags[j]] = parameterMatch.Groups["Parameter"].Value.TrimOnce('\'', '"');
+                            commandArgs[consoleFlags[j]] = parameterMatch.Groups["Parameter"].Value;
                             commandString = _shortParameterRegex.Replace(commandString, string.Empty).Trim();
                         }
                         else
@@ -150,7 +150,7 @@ public static class WindowsGrepUtils
                             throw new Exception($"Option '{descriptor}' expects a parameter, but none was provided");
 
                         string descriptorParameter = descriptor.Split('=')[1];
-                        commandArgs[consoleFlags[j]] = descriptorParameter.TrimOnce(new char[] { '\'', '"' });
+                        commandArgs[consoleFlags[j]] = descriptorParameter.TrimOnce('\'', '"');
                     }
                     else
                         commandArgs[consoleFlags[j]] = string.Empty;

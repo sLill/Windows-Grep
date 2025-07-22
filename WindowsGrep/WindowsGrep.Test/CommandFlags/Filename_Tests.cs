@@ -7,28 +7,42 @@ public class Filename_Tests : TestBase
     [InlineData("-k 'TestData_One' '{0}'")]
     public async Task Filename_Enabled(string command)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(windowsGrep.Results.Count == 1);
+            Assert.True(windowsGrep.Results.Count == 1);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 
     [Theory]
     [InlineData("'TestData_One' '{0}'")]
     public async Task Filename_Disabled(string command)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        {
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(windowsGrep.Results.Count == 0);
-    } 
+            Assert.True(windowsGrep.Results.Count == 0);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
+    }
     #endregion Methods..
 }

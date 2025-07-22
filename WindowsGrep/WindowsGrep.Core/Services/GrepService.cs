@@ -148,7 +148,7 @@ public class GrepService
 
         var filetypeIncludeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
         var filetypeExcludeFilters = CommandFlagUtils.GetFileTypeExcludeFilters(grepCommand);
-        var pathFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
+        var pathIncludeFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
 
         foreach (var file in files)
         {
@@ -161,7 +161,7 @@ public class GrepService
                 bool isFiltered = false;
                 isFiltered |= (filetypeIncludeFilters != null && !filetypeIncludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
                 isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
-                isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file.Name), x)));
+                isFiltered |= (pathIncludeFilters != null && !pathIncludeFilters.Any(x => Path.GetDirectoryName(file.Name).Contains(x.TrimOnce('\'', '"'))));
 
                 if (isFiltered || file.IsDirectory)
                     continue;
@@ -201,7 +201,7 @@ public class GrepService
 
         var filetypeIncludeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
         var filetypeExcludeFilters = CommandFlagUtils.GetFileTypeExcludeFilters(grepCommand);
-        var pathFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
+        var pathIncludeFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
 
         Regex anyRegex = new Regex(@".*");
 
@@ -216,7 +216,7 @@ public class GrepService
                 bool isFiltered = false;
                 isFiltered |= (filetypeIncludeFilters != null && !filetypeIncludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
                 isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
-                isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file.Name), x)));
+                isFiltered |= (pathIncludeFilters != null && !pathIncludeFilters.Any(x => Path.GetDirectoryName(file.Name).Contains(x.TrimOnce('\'', '"'))));
 
                 if (isFiltered || file.IsDirectory)
                     continue;
@@ -269,7 +269,7 @@ public class GrepService
 
         var filetypeIncludeFilters = CommandFlagUtils.GetFileTypeIncludeFilters(grepCommand);
         var filetypeExcludeFilters = CommandFlagUtils.GetFileTypeExcludeFilters(grepCommand);
-        var pathFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
+        var pathIncludeFilters = CommandFlagUtils.GetPathIncludeFilters(grepCommand);
 
         foreach (var file in files)
         {
@@ -280,7 +280,7 @@ public class GrepService
             bool isFiltered = false;
             isFiltered |= (filetypeIncludeFilters != null && !filetypeIncludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
             isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
-            isFiltered |= (pathFilters != null && !pathFilters.Any(x => Regex.IsMatch(Path.GetDirectoryName(file.Name), x)));
+            isFiltered |= (pathIncludeFilters != null && !pathIncludeFilters.Any(x => Path.GetDirectoryName(file.Name).Contains(x.TrimOnce('\'', '"'))));
 
             if (isFiltered || file.IsDirectory)
                 continue;

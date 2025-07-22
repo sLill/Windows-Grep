@@ -61,7 +61,7 @@ public static class WindowsUtils
                 foreach (var subDirectory in Directory.EnumerateDirectories(subPath, "*", enumerationOptions))
                 {
                     var directoryInfo = new DirectoryInfo(subDirectory);
-                    if (excludeDirectories != null && excludeDirectories.Any(x => directoryInfo.Name.Contains(x)))
+                    if (excludeDirectories != null && excludeDirectories.Any(x => directoryInfo.Name.Contains(x.TrimOnce('\'', '"'))))
                         continue;
 
                     foreach (var result in GetFiles(rootPath, subDirectory, recursive, maxRecursionDepth, fileSizeMin, fileSizeMax, cancellationToken, excludeDirectories, fileAttributesToSkip))

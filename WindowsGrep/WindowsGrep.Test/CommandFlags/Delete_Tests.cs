@@ -35,15 +35,22 @@ public class Delete_Tests : TestBase
     [InlineData("-r --delete 'quick brown fox' '{0}'")]
     public async Task Delete(string command)
     {
-        string deleteTestFilePath = Path.Combine(TestDataDirectory, "DeleteTest_Blue.txt");
-        command = string.Format(command, deleteTestFilePath);
+        try
+        {
+            string deleteTestFilePath = Path.Combine(TestDataDirectory, "DeleteTest_Blue.txt");
+            command = string.Format(command, deleteTestFilePath);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(windowsGrep.Results.All(x => !File.Exists(x.SourceFile.Name)));
+            Assert.True(windowsGrep.Results.All(x => !File.Exists(x.SourceFile.Name)));
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
 
     [Theory]
@@ -51,14 +58,21 @@ public class Delete_Tests : TestBase
     [InlineData("-r -k --delete 'DeleteTest_' '{0}'")]
     public async Task Delete_Filename(string command)
     {
-        command = string.Format(command, TestDataDirectory);
+        try
+        { 
+            command = string.Format(command, TestDataDirectory);
 
-        var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
-        var grepService = ServiceProvider.GetRequiredService<GrepService>();
+            var windowsGrep = ServiceProvider.GetRequiredService<WindowsGrep>();
+            var grepService = ServiceProvider.GetRequiredService<GrepService>();
 
-        await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
+            await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-        Assert.True(windowsGrep.Results.All(x => !File.Exists(x.SourceFile.Name)));
+            Assert.True(windowsGrep.Results.All(x => !File.Exists(x.SourceFile.Name)));
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Unexpected exception: {ex.Message}");
+        }
     }
     #endregion Methods..
 }
