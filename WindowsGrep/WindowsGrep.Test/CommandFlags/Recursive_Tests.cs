@@ -17,7 +17,13 @@ public class Recursive_Tests : TestBase
             await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
             HashSet<string> resultDirectories = new HashSet<string>();
-            windowsGrep.Results.ForEach(x => resultDirectories.Add(Path.GetDirectoryName(x.SourceFile.Name)));
+
+            windowsGrep.Results.ForEach(x =>
+            {
+                string? directory = Path.GetDirectoryName(x.SourceFile.Name);
+                if (!string.IsNullOrEmpty(directory))
+                    resultDirectories.Add(directory);
+            });
 
             Assert.True(resultDirectories.Count > 1);
         }
@@ -41,7 +47,13 @@ public class Recursive_Tests : TestBase
             await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
             HashSet<string> resultDirectories = new HashSet<string>();
-            windowsGrep.Results.ForEach(x => resultDirectories.Add(Path.GetDirectoryName(x.SourceFile.Name)));
+
+            windowsGrep.Results.ForEach(x =>
+            {
+                string? directory = Path.GetDirectoryName(x.SourceFile.Name);
+                if (!string.IsNullOrEmpty(directory))
+                    resultDirectories.Add(directory);
+            });
 
             Assert.True(resultDirectories.Count == 1);
         }

@@ -25,7 +25,7 @@ public class Path_Include_Tests : TestBase
             {
                 bool isValidSubdirectory = includePaths.ToList().Any(path =>
                 {
-                    return Path.GetDirectoryName(x.SourceFile.Name).Contains(path);
+                    return Path.GetDirectoryName(x.SourceFile.Name)?.Contains(path) ?? false;
                 });
 
                 return isValidSubdirectory;

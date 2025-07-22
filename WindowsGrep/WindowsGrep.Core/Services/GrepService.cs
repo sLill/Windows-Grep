@@ -161,7 +161,7 @@ public class GrepService
                 bool isFiltered = false;
                 isFiltered |= (filetypeIncludeFilters != null && !filetypeIncludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
                 isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
-                isFiltered |= (pathIncludeFilters != null && !pathIncludeFilters.Any(x => Path.GetDirectoryName(file.Name).Contains(x.TrimOnce('\'', '"'))));
+                isFiltered |= (pathIncludeFilters != null && !pathIncludeFilters.Any(x => Path.GetDirectoryName(file.Name)?.Contains(x.TrimOnce('\'', '"')) ?? false));
 
                 if (isFiltered || file.IsDirectory)
                     continue;
@@ -216,7 +216,7 @@ public class GrepService
                 bool isFiltered = false;
                 isFiltered |= (filetypeIncludeFilters != null && !filetypeIncludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
                 isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
-                isFiltered |= (pathIncludeFilters != null && !pathIncludeFilters.Any(x => Path.GetDirectoryName(file.Name).Contains(x.TrimOnce('\'', '"'))));
+                isFiltered |= (pathIncludeFilters != null && !pathIncludeFilters.Any(x => Path.GetDirectoryName(file.Name)?.Contains(x.TrimOnce('\'', '"')) ?? false));
 
                 if (isFiltered || file.IsDirectory)
                     continue;
@@ -280,7 +280,7 @@ public class GrepService
             bool isFiltered = false;
             isFiltered |= (filetypeIncludeFilters != null && !filetypeIncludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
             isFiltered |= (filetypeExcludeFilters != null && filetypeExcludeFilters.Contains(Path.GetExtension(file.Name).TrimOnce('.')));
-            isFiltered |= (pathIncludeFilters != null && !pathIncludeFilters.Any(x => Path.GetDirectoryName(file.Name).Contains(x.TrimOnce('\'', '"'))));
+            isFiltered |= (pathIncludeFilters != null && !pathIncludeFilters.Any(x => Path.GetDirectoryName(file.Name)?.Contains(x.TrimOnce('\'', '"')) ?? false));
 
             if (isFiltered || file.IsDirectory)
                 continue;

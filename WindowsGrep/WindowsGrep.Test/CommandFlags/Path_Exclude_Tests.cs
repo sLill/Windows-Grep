@@ -25,7 +25,7 @@ public class Path_Exclude_Tests : TestBase
             {
                 bool isValidSubdirectory = !excludePaths.ToList().Any(path =>
                 {
-                    return Path.GetDirectoryName(x.SourceFile.Name).Contains(path);
+                    return Path.GetDirectoryName(x.SourceFile.Name)?.Contains(path) ?? false;
                 });
 
                 return isValidSubdirectory;
