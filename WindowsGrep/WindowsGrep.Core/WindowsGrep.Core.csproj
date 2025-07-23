@@ -20,11 +20,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="iTextSharp" Version="5.5.13.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WindowsGrep.Common\WindowsGrep.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="C:\Users\samue\.nuget\packages\pdfium.windows\1.0.0\build\pdfium_x86.dll" Link="ExternalLibraries\pdfium_x86.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="C:\Users\samue\.nuget\packages\pdfium.windows\1.0.0\build\pdfium_x64.dll" Link="ExternalLibraries\pdfium_x64.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\samue\.nuget\packages\pdfium.net.sdk\4.100.2704\build\..\content\libpdfium.dylib" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\samue\.nuget\packages\pdfium.net.sdk\4.100.2704\build\..\content\icudt.dll" />
   </ItemGroup>
 
 </Project>

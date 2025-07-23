@@ -21,7 +21,7 @@ public static class CommandFlagUtils
             if (size < 0)
                 throw new Exception("Error: Size parameter cannot be less than 0");
 
-            long fileSizeModifier = FileSizeType.Kb.GetCustomAttribute<ValueAttribute>().Value;
+            long fileSizeModifier = FileSizeType.BYTES.GetCustomAttribute<ValueAttribute>().Value;
 
             string sizeType = match.Groups["SizeType"].Value.ToUpper();
             if (!sizeType.IsNullOrEmpty())

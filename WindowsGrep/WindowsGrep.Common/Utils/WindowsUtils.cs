@@ -130,7 +130,7 @@ public static class WindowsUtils
         long reducedSize = size;
 
         var fileSizeTypes = Enum.GetValues<FileSizeType>().Where(x => size > x.GetCustomAttribute<ValueAttribute>().Value);
-        fileSizeType = fileSizeTypes.Any() ? fileSizeTypes.Max() : FileSizeType.Kb;
+        fileSizeType = fileSizeTypes.Any() ? fileSizeTypes.Max() : FileSizeType.KB;
 
         long fileSizeTypeModifier = fileSizeType.GetCustomAttribute<ValueAttribute>().Value;
         return Math.Round(size / (double)fileSizeTypeModifier, targetNumberOfDigits);

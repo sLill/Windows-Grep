@@ -3,15 +3,18 @@
 public enum FileSizeType
 {
     // Value attributes represented in bytes
+    [ValueAttribute(1)]
+    BYTES,
+
     [ValueAttribute(1000)]
-    Kb,
+    KB,
 
     [ValueAttribute(1000000)]
-    Mb,
+    MB,
 
     [ValueAttribute(1000000000)]
-    Gb,
+    GB,
 
     [ValueAttribute(1000000000000)]
-    Tb
+    TB
 }

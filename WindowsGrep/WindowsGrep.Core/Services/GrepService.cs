@@ -164,16 +164,21 @@ public class GrepService
                 if (isFiltered || file.IsDirectory)
                     continue;
 
-                string fileRaw = File.ReadAllText(file.Name);
-                List<Match> matches = searchRegex.Matches(fileRaw).ToList();
-                
+                string fileText = string.Empty;
+
+                if (string.Equals(Path.GetExtension(file.Name), ".pdf", StringComparison.OrdinalIgnoreCase))
+                    fileText = PdfUtils.ReadPdf(file.Name);
+                else
+                    fileText = File.ReadAllText(file.Name);
+
+                List<Match> matches = searchRegex.Matches(fileText).ToList();
                 if (matches.Count > 0)
                 {
                     if (replaceFlag || deleteFlag)
-                        PerformWriteOperations(grepCommand, file, searchPattern, matches.Count, fileRaw, searchMetrics, cancellationToken);
+                        PerformWriteOperations(grepCommand, file, searchPattern, matches.Count, fileText, searchMetrics, cancellationToken);
                     else
                     {
-                        BuildFileContentSearchResults(grepCommand, results, matches, file, fileRaw, cancellationToken);
+                        BuildFileContentSearchResults(grepCommand, results, matches, file, fileText, cancellationToken);
 
                         lock (_metricsLock)
                             searchMetrics.TotalFilesMatchedCount++;
@@ -419,11 +424,19 @@ public class GrepService
                 }
                 else
                 {
-                    // Replace all matches in file
-                    fileRaw = Regex.Replace(fileRaw, searchPattern, grepCommand.CommandArgs[CommandFlag.Replace]);
-                    File.WriteAllText(file.Name, fileRaw);
+                    if (string.Equals(Path.GetExtension(file.Name), ".pdf", StringComparison.OrdinalIgnoreCase))
+                    {
+                        lock (_metricsLock)
+                            searchMetrics.FailedWriteFiles.Add(file);
+                    }
+                    else 
+                    {
+                        // Replace all matches in file
+                        fileRaw = Regex.Replace(fileRaw, searchPattern, grepCommand.CommandArgs[CommandFlag.Replace]);
+                        File.WriteAllText(file.Name, fileRaw);
 
-                    _publisherService.Publish(new ConsoleItem { ForegroundColor = AnsiColors.DarkMagenta, Value = $"{fileMatchesCount} match(es)" });
+                        _publisherService.Publish(new ConsoleItem { ForegroundColor = AnsiColors.DarkMagenta, Value = $"{fileMatchesCount} match(es)" });
+                    }
                 }
 
                 lock (_metricsLock)

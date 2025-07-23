@@ -81,6 +81,8 @@ public static class AnsiColors
     public const string ForestGreen = "\u001b[38;2;34;139;34m";
     public const string RoyalBlue = "\u001b[38;2;65;105;225m";
 
+    public const string DarkerCyanBg = "\u001b[48;2;0;139;139m";
+
     // 256-Color Palette (Popular Colors)
     public const string Orange256 = "\u001b[38;5;208m";
     public const string Pink256 = "\u001b[38;5;213m";

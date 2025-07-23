@@ -69,7 +69,7 @@ public class GrepResult : ResultBase
         consoleItemCollection.Add(new ConsoleItem { Value = LeadingContextString });
 
         // Context matched
-        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = AnsiColors.DarkCyanBg, Value = MatchedString });
+        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = AnsiColors.DarkerCyanBg, Value = MatchedString });
 
         // Context end
         consoleItemCollection.Add(new ConsoleItem { Value = TrailingContextString });
@@ -81,7 +81,7 @@ public class GrepResult : ResultBase
         consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.DarkYellow, Value = LeadingContextString });
 
         // Context matched
-        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = AnsiColors.DarkCyanBg, Value = MatchedString });
+        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = AnsiColors.DarkerCyanBg, Value = MatchedString });
 
         // Context end
         consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.DarkYellow, Value = TrailingContextString });
@@ -99,7 +99,7 @@ public class GrepResult : ResultBase
         consoleItemCollection.Add(new ConsoleItem { ForegroundColor = AnsiColors.DarkYellow, Value = $"{SourceFile.Name} " });
 
         // Context matched
-        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = AnsiColors.DarkCyanBg, Value = MatchedString });
+        consoleItemCollection.Add(new ConsoleItem { BackgroundColor = AnsiColors.DarkerCyanBg, Value = MatchedString });
 
         // File attributes
         consoleItemCollection.AddRange(GetFileAttributeConsoleItems());

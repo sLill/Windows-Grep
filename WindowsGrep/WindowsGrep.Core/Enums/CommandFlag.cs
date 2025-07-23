@@ -118,5 +118,5 @@ public enum CommandFlag
     IncludeSystem,
 
     [DescriptionCollection("-v")]
-    Verbose
+    Verbose,
 }
