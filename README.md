@@ -38,9 +38,9 @@ No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd
 
 <h2>Usage</h2>
 
-File Explorer > Right-Click > Windows Grep
+`File Explorer > Right-Click > Windows Grep`
 <br/><b>or</b><br/>
-cmd/powershell
+`cmd/powershell`
 
 <h4>grep [options] search_term [path]</h4>
 <img width="605" height="94" alt="image" src="https://github.com/user-attachments/assets/92d7c76e-7b64-4fed-a407-b8d6c6e1daaf" />
