@@ -12,14 +12,14 @@ Command line grep-like file search utility for Windows.
 Built to mimic the command style and behavior of Unix grep.
 No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd/powershell.</br>
 
-<h4>Supports</h4>
+<h4>Features</h4>
 
-- Most Unix grep options
-- Regular Expressions
-- Command Chaining
-- Filter by filetype, directory, filesize
-- Mass editing
-- Ease of use. Runs from cmd, Powershell and File Explorer
+- Search by file name, file content, or even file hash
+- Search non-standard filetypes (pdf, docx, etc)
+- Mass edit files
+- Filter by file type, directory or size
+- Colored output, even in non-interactive shells 
+- And more
 
 <h2>Installation Methods</h2>
 
