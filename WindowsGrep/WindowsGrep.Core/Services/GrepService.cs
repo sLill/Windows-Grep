@@ -165,9 +165,11 @@ public class GrepService
                     continue;
 
                 string fileText = string.Empty;
-
-                if (string.Equals(Path.GetExtension(file.Name), ".pdf", StringComparison.OrdinalIgnoreCase))
-                    fileText = PdfUtils.ReadPdf(file.Name);
+                
+                if (string.Equals(Path.GetExtension(file.Name), ".docx", StringComparison.OrdinalIgnoreCase))
+                    fileText = FileUtils.ReadDocX(file.Name);
+                else if (string.Equals(Path.GetExtension(file.Name), ".pdf", StringComparison.OrdinalIgnoreCase))
+                    fileText = FileUtils.ReadPdf(file.Name);
                 else
                     fileText = File.ReadAllText(file.Name);
 
@@ -424,7 +426,8 @@ public class GrepService
                 }
                 else
                 {
-                    if (string.Equals(Path.GetExtension(file.Name), ".pdf", StringComparison.OrdinalIgnoreCase))
+                    // Unsupported file types for replacement
+                    if (string.Equals(Path.GetExtension(file.Name), ".pdf", StringComparison.OrdinalIgnoreCase) || string.Equals(Path.GetExtension(file.Name), ".docx", StringComparison.OrdinalIgnoreCase))
                     {
                         lock (_metricsLock)
                             searchMetrics.FailedWriteFiles.Add(file);

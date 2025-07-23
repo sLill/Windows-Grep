@@ -1,11 +1,11 @@
 ﻿namespace WindowsGrep.Test;
 
-public class Pdf_Tests : TestBase
+public class DocX_Tests : TestBase
 {
     #region Methods..
     [Theory]
-    [InlineData("'This is a PDF' '{0}'")]
-    public async Task Pdf(string command)
+    [InlineData("'This is a docx file' '{0}'")]
+    public async Task DocX(string command)
     {
         try
         {
