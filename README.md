@@ -43,7 +43,7 @@ File Explorer > Right-Click > Windows Grep
 cmd/powershell
 
 <h4>grep [options] search_term [path]</h4>
-<img width="582" height="92" alt="Snag_18400c60" src="https://github.com/user-attachments/assets/dea61c03-4ed0-408b-9b12-307b18308969" />
+<img width="605" height="94" alt="image" src="https://github.com/user-attachments/assets/92d7c76e-7b64-4fed-a407-b8d6c6e1daaf" />
 
 <h2>Reference</h2>
 
