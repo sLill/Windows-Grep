@@ -1,7 +1,7 @@
 ﻿using iTextSharp.text.pdf.parser;
 using iTextSharp.text.pdf;
 using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
+using OpenXmlPowerTools;
 
 namespace WindowsGrep.Core;
 public static class FileUtils
@@ -24,14 +24,20 @@ public static class FileUtils
     {
         StringBuilder text = new StringBuilder();
 
-        using (WordprocessingDocument document = WordprocessingDocument.Open(filepath, false))
+        byte[] byteArray = File.ReadAllBytes(filepath);
+        using (var memoryStream = new MemoryStream(byteArray))
+        using (WordprocessingDocument document = WordprocessingDocument.Open(memoryStream, false))
         {
-            var paragraphs = document.MainDocumentPart.Document.Body.Elements<Paragraph>();
+            var xDocument = document.MainDocumentPart.GetXDocument();
+
+            var paragraphs = xDocument.Descendants(W.p);
             foreach (var paragraph in paragraphs)
             {
-                text.AppendLine(string.Join(" ", paragraph.Elements<Run>()
-                    .Select(run => run.Elements<Text>())
-                    .SelectMany(texts => texts.Select(t => t.Text))));
+                var paragraphText = paragraph.Descendants(W.t)
+                    .Select(t => t.Value)
+                    .StringConcatenate();
+
+                text.AppendLine(paragraphText);
             }
         }
 
