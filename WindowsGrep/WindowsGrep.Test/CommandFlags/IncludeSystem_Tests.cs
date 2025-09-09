@@ -4,7 +4,7 @@ public class IncludeSystem_Tests : TestBase
 {
     #region Methods..
     [Theory]
-    [InlineData("--include-system 'This is a system file' '{0}'")]
+    [InlineData("--system 'This is a system file' '{0}'")]
     public async Task IncludeSystem_Enabled(string command)
     {
         try
@@ -46,7 +46,7 @@ public class IncludeSystem_Tests : TestBase
     }
 
     [Theory]
-    [InlineData("-k --include-system '_System' '{0}'")]
+    [InlineData("-k --system '_System' '{0}'")]
     public async Task IncludeSystem_Filename_Enabled(string command)
     {
         try

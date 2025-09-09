@@ -4,7 +4,7 @@ public class IncludeHidden_Tests : TestBase
 {
     #region Methods..
     [Theory]
-    [InlineData("--include-hidden 'This is a hidden file' '{0}'")]
+    [InlineData("--hidden 'This is a hidden file' '{0}'")]
     public async Task IncludeHidden_Enabled(string command)
     {
         try
@@ -46,7 +46,7 @@ public class IncludeHidden_Tests : TestBase
     }
 
     [Theory]
-    [InlineData("-k --include-hidden '_Hidden' '{0}'")]
+    [InlineData("-k --hidden '_Hidden' '{0}'")]
     public async Task IncludeHidden_Filename_Enabled(string command)
     {
         try

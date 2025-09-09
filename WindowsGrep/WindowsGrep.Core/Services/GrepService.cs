@@ -112,8 +112,8 @@ public class GrepService
     {
         bool recursiveFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.Recursive);
         bool maxDepthFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.MaxDepth);
-        bool includeHiddenFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IncludeHidden);
-        bool includeSystemFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.IncludeSystem);
+        bool includeHiddenFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.Hidden);
+        bool includeSystemFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.System);
         bool fileSizeMinimumFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileSizeMinimum);
         bool fileSizeMaximumFlag = grepCommand.CommandArgs.ContainsKey(CommandFlag.FileSizeMaximum);
 

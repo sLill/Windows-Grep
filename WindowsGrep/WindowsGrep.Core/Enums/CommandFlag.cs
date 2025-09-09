@@ -110,12 +110,12 @@ public enum CommandFlag
     Help_Full,
 
     // Show hidden files
-    [DescriptionCollection("--include-hidden")]
-    IncludeHidden,
+    [DescriptionCollection("--hidden")]
+    Hidden,
 
     // Show system files
-    [DescriptionCollection("--include-system")]
-    IncludeSystem,
+    [DescriptionCollection("--system")]
+    System,
 
     [DescriptionCollection("-v")]
     Verbose,
