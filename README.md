@@ -62,8 +62,8 @@ No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd
 | -o         | Redirect Output to File | `grep -o output.txt dug .` |
 | -v         | Verbose Output | `grep -v dug ../` |
 | --max-depth=    | Max Depth | `grep --max-depth=3 dug C:/` |
-| --include-hidden   | Include Hidden Files | `grep --include-hidden dug C:/` |
-| --include-system   | Include System Files | `grep --include-system dug C:/` |
+| --hidden   | Include Hidden Files | `grep --hidden dug C:/` |
+| --system   | Include System Files | `grep --system dug C:/` |
 | --filesize-min= | Minimum File Size (kb,mb,gb,tb)  | `grep --filesize-min=30mb dug C:/` |
 | --filesize-max= | Maximum File Size (kb,mb,gb,tb)  | `grep --filesize-max=3gb dug C:/` |
 | --ignore-breaks | Ignore Line Breaks | `grep --ignore-breaks dug C:/` |
