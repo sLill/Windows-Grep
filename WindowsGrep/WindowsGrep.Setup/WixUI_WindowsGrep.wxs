@@ -1,30 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Fragment>
+	<Fragment>
+		<UI Id="WixUI_WindowsGrep">
+			<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+			<TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+			<TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
 
-    <UI Id="WixUI_WindowsGrep">
-      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
-      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
-      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+			<Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+			<Property Id="WixUI_Mode" Value="FeatureTree" />
+			<DialogRef Id="BrowseDlg" />
+			<DialogRef Id="DiskCostDlg" />
+			<DialogRef Id="ErrorDlg" />
+			<DialogRef Id="FatalError" />
+			<DialogRef Id="FilesInUse" />
+			<DialogRef Id="MsiRMFilesInUse" />
+			<DialogRef Id="PrepareDlg" />
+			<DialogRef Id="ProgressDlg" />
+			<DialogRef Id="ResumeDlg" />
+			<DialogRef Id="UserExit" />
 
-      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
-      <Property Id="WixUI_Mode" Value="FeatureTree" />
-      <DialogRef Id="BrowseDlg" />
-      <DialogRef Id="DiskCostDlg" />
-      <DialogRef Id="ErrorDlg" />
-      <DialogRef Id="FatalError" />
-      <DialogRef Id="FilesInUse" />
-      <DialogRef Id="MsiRMFilesInUse" />
-      <DialogRef Id="PrepareDlg" />
-      <DialogRef Id="ProgressDlg" />
-      <DialogRef Id="ResumeDlg" />
-      <DialogRef Id="UserExit" />
+			<DialogRef Id="CustomWelcomeDlg" />
+			<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="CustomWelcomeDlg">1</Publish>
+			<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="ExitDialog">Installed</Publish>
+			<Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return">1</Publish>
+		</UI>
 
-      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="PrepareDlg"></Publish>
-      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="ExitDialog" >Installed</Publish>
-      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return">1</Publish>
-    </UI>
+		<UIRef Id="WixUI_Common" />
+	</Fragment>
 
-    <UIRef Id="WixUI_Common" />
-  </Fragment>
+	<Fragment>
+		<Property Id="ADD_TO_PATH" Value="1" Secure="yes" />
+		<Property Id="ADD_TO_CONTEXT_MENU" Value="1" Secure="yes" />
+
+		<Binary Id="WixUIBmpBanner" SourceFile="Resources/WindowsGrep.bmp"/>
+		<Binary Id="WixUIBmpDialog" SourceFile="Resources/WindowsGrep.bmp" />
+		<Binary Id="WixUIBmpUp" SourceFile="Resources/WindowsGrep.bmp" />
+		<Binary Id="WixUIBmpDown" SourceFile="Resources/WindowsGrep.bmp" />
+
+		<UI>
+			<Dialog Id="CustomWelcomeDlg" Width="370" Height="270" Title="[ProductName] Setup" NoMinimize="yes">
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+					<Publish Event="NewDialog" Value="PrepareDlg">1</Publish>
+				</Control>
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)">
+					<Publish Event="NewDialog" Value="WelcomeDlg">1</Publish>
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+				</Control>
+
+				<Control Id="BottomLine" Type="Line" X="0" Y="264" Width="370" Height="0" />
+				<Control Id="BannerBitmap" Type="Bitmap" X="30" Y="70" Width="86" Height="86" TabSkip="no" Text="WixUIBmpBanner" />
+
+				<Control Id="PathCheckbox" Type="CheckBox" X="165" Y="100" Width="220" Height="17" Property="ADD_TO_PATH" CheckBoxValue="1" Text="Add to PATH" />
+				<Control Id="ContextMenuCheckbox" Type="CheckBox" X="165" Y="115" Width="220" Height="17" Property="ADD_TO_CONTEXT_MENU" CheckBoxValue="1" Text="Add to right-click context menu" />
+
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+			</Dialog>
+		</UI>
+	</Fragment>
 </Wix>
