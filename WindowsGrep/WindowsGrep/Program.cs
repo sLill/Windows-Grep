@@ -40,24 +40,23 @@ public class Program
 
     private static async Task RunAsync(string[] args)
     {
-        _host = CreateHostBuilder(args).Build();
-        var windowsGrep = _host.Services.GetRequiredService<WindowsGrep>();
+        var services = new ServiceCollection();
+        ConfigureServices(services);
+
+        var serviceProvider = services.BuildServiceProvider();
+        var windowsGrep = serviceProvider.GetRequiredService<WindowsGrep>();
+
         await windowsGrep.RunAsync(args);
     }
 
-    private static IHostBuilder CreateHostBuilder(string[] args)
+    private static void ConfigureServices(IServiceCollection services)
     {
-        return Host
-        .CreateDefaultBuilder(args)
-        .ConfigureServices((hostContext, services) =>
-        {
-            services.AddSingleton<ConsoleService>()
-                    .AddSingleton<FileService>()
-                    .AddSingleton<PublisherService>()
-                    .AddScoped<WindowsGrep>()
-                    .AddScoped<GrepService>()
-                    .AddScoped<NativeService>();
-        });
+        services.AddSingleton<ConsoleService>()
+                .AddSingleton<FileService>()
+                .AddSingleton<PublisherService>()
+                .AddScoped<WindowsGrep>()
+                .AddScoped<GrepService>()
+                .AddScoped<NativeService>();
     }
     #endregion Methods..
 }
