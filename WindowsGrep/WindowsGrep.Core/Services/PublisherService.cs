@@ -9,8 +9,8 @@ public class PublisherService
     }
 
     #region Fields..
-    private readonly ConcurrentDictionary<Type, SubscriberList> _subscribers = new();
     private readonly ILogger _logger;
+    private ConcurrentDictionary<PublisherMessage, SubscriberList> _subscribers = new();
     #endregion Fields..
 
     #region Constructors..
@@ -22,38 +22,28 @@ public class PublisherService
     #endregion Constructors..
 
     #region Methods..
-    public void Subscribe<T>(Action<T> handler)
+    public void Subscribe<T>(PublisherMessage messageType, Action<T> handler)
     {
         if (handler == null)
             throw new ArgumentNullException(nameof(handler));
 
-        var messageType = typeof(T);
         var subscriberList = _subscribers.GetOrAdd(messageType, _ => new SubscriberList());
 
         lock (subscriberList.Lock)
             subscriberList.Handlers.Add(handler);
     }
 
-    public void Unsubscribe<T>(Action<T> handler)
+    public void Unsubscribe<T>(PublisherMessage messageType, Action<T> handler)
     {
-        if (handler == null)
-            throw new ArgumentNullException(nameof(handler));
-
-        var messageType = typeof(T);
         if (_subscribers.TryGetValue(messageType, out var subscriberList))
         {
             lock (subscriberList.Lock)
-            {
                 subscriberList.Handlers.Remove(handler);
-                if (subscriberList.Handlers.Count == 0)
-                    _subscribers.TryRemove(messageType, out _);
-            }
         }
     }
 
-    public void Publish<T>(T message)
+    public void Publish<T>(PublisherMessage messageType, T message)
     {
-        var messageType = typeof(T);
         if (_subscribers.TryGetValue(messageType, out var subscriberList))
         {
             // Create a snapshot to avoid issues if handlers are added/removed during invocation
@@ -81,7 +71,7 @@ public class PublisherService
 
     public virtual void RemoveAllSubscribers()
     {
-        _subscribers.Clear();
+        _subscribers = new();
     }
     #endregion Methods..
 }

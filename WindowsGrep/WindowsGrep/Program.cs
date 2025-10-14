@@ -2,7 +2,7 @@
 public class Program
 {
     #region Fields..
-    private static IHost _host;
+    private static IServiceProvider _serviceProvider;
     #endregion Fields..
 
     #region Main
@@ -23,7 +23,7 @@ public class Program
     {
         e.Cancel = true;
 
-        var windowsGrep = _host.Services.GetRequiredService<WindowsGrep>();
+        var windowsGrep = _serviceProvider.GetRequiredService<WindowsGrep>();
         windowsGrep.Cancel();
     }
     #endregion Event Handlers..
@@ -43,8 +43,8 @@ public class Program
         var services = new ServiceCollection();
         ConfigureServices(services);
 
-        var serviceProvider = services.BuildServiceProvider();
-        var windowsGrep = serviceProvider.GetRequiredService<WindowsGrep>();
+        _serviceProvider = services.BuildServiceProvider();
+        var windowsGrep = _serviceProvider.GetRequiredService<WindowsGrep>();
 
         await windowsGrep.RunAsync(args);
     }
@@ -53,9 +53,9 @@ public class Program
     {
         services.AddSingleton<ConsoleService>()
                 .AddSingleton<FileService>()
-                .AddSingleton<PublisherService>()
+                .AddScoped<PublisherService>()
                 .AddScoped<WindowsGrep>()
-                .AddScoped<GrepService>()
+                .AddTransient<GrepService>()
                 .AddScoped<NativeService>();
     }
     #endregion Methods..

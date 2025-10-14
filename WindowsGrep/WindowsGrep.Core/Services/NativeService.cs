@@ -18,7 +18,7 @@ public class NativeService
     #region Methods..
     public void RunCommand(NativeCommand nativeCommand, List<ResultBase> results, CancellationToken cancellationToken)
     {
-        _publisherService.Subscribe<ConsoleItem>(_consoleService.Write);
+        _publisherService.Subscribe<ConsoleItem>(PublisherMessage.StandardOut, _consoleService.Write);
 
         try
         {
@@ -37,13 +37,13 @@ public class NativeService
                     break;
 
                 case NativeCommandType.PrintWorkingDirectory:
-                    _publisherService.Publish(new ConsoleItem { Value = Directory.GetCurrentDirectory() + '\n' });
+                    _publisherService.Publish(PublisherMessage.StandardOut, new ConsoleItem { Value = Directory.GetCurrentDirectory() + '\n' });
                     break;
             }
         }
         catch (Exception ex)
         {
-            _publisherService.Publish(new ConsoleItem { ForegroundColor = AnsiColors.Red, Value = ex.Message });
+            _publisherService.Publish(PublisherMessage.StandardOut, new ConsoleItem { ForegroundColor = AnsiColors.Red, Value = ex.Message });
         }
     }
 
@@ -57,7 +57,7 @@ public class NativeService
         foreach (var file in WindowsUtils.GetFiles(targetDirectory, false, int.MaxValue, -1, -1, cancellationToken, null, fileAttributesToSkip))
         {
             var result = new NativeResult(file, NativeCommandType.List);
-            result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(y));
+            result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(PublisherMessage.StandardOut, y));
         }
     }
     #endregion Methods..

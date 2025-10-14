@@ -25,7 +25,7 @@ public class Plaintext_Tests : TestBase
     }
 
     [Theory]
-    [InlineData("'*Markdown' '{0}'")]
+    [InlineData("'M\\Srkdown' '{0}'")]
     public async Task Plaintext_Disabled(string command)
     {
         try
@@ -37,7 +37,7 @@ public class Plaintext_Tests : TestBase
 
             await windowsGrep.RunGrepCommandAsync(grepService, command, new CancellationTokenSource());
 
-            Assert.True(windowsGrep.Results.Count == 0);
+            Assert.True(windowsGrep.Results.Count > 0);
         }
         catch (Exception ex)
         {
