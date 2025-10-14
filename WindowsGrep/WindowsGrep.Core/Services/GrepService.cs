@@ -152,9 +152,11 @@ public class GrepService
             result.LineNumber = lineNumber;
 
             lock (_results)
+            {
                 _results.Add(result);
+                result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(PublisherMessage.StandardOut, y));
+            }
 
-            result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(PublisherMessage.StandardOut, y));
         });
     }
 
@@ -320,9 +322,11 @@ public class GrepService
                                     _searchMetrics.TotalFilesMatchedCount++;
 
                                 lock (_results)
+                                {
                                     _results.Add(result);
+                                    result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(PublisherMessage.StandardOut, y));
+                                }
 
-                                result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(PublisherMessage.StandardOut, y));
                             }
                         }
                     }
@@ -378,9 +382,11 @@ public class GrepService
                             _searchMetrics.TotalFilesMatchedCount++;
 
                             lock (_results)
+                            {
                                 _results.Add(result);
+                                result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(PublisherMessage.StandardOut, y));
+                            }
 
-                            result.ToConsoleItemCollection().ForEach(y => _publisherService.Publish(PublisherMessage.StandardOut, y));
                         }
                     }
                 }
