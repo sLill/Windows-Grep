@@ -62,7 +62,6 @@
                             else
                                 await RunGrepCommandAsync(grepService, command, _cancellationTokenSource);
                         }
-
                     }
                     catch (Exception ex)
                     {
