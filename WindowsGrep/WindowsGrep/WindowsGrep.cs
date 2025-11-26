@@ -3,6 +3,7 @@
     public class WindowsGrep
     {
         #region Fields..
+        private readonly Regex _multiCommandRegex = new Regex(@"\|(?=(?:[^""']*[""'][^""']*[""'])*[^""']*$)", RegexOptions.Compiled);
         private readonly IServiceProvider _serviceProvider;
         private CancellationTokenSource _cancellationTokenSource;
         #endregion Fields..
@@ -45,7 +46,10 @@
                         else
                             commandRaw = string.Join(' ', args.Select(x => x.Contains(' ') ? $"\"{x}\"" : x));
 
-                        var commands = commandRaw?.Split('|').Select(x => x.Trim()) ?? Array.Empty<string>();
+                        var commands = commandRaw != null
+                            ? Regex.Split(commandRaw, @"\|(?=(?:[^""']*[""'][^""']*[""'])*[^""']*$)") 
+                            : Array.Empty<string>();
+                            
                         foreach (string command in commands)
                         {
                             publisherService.RemoveAllSubscribers();
