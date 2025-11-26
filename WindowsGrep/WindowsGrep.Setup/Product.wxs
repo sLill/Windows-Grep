@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="WindowsGrep" Language="1033" Version="5.2.0.0" Manufacturer="sLill" UpgradeCode="7121ded5-d689-4226-b128-4ca0800ee076">
+	<Product Id="*" Name="WindowsGrep" Language="1033" Version="5.4.0.0" Manufacturer="sLill" UpgradeCode="7121ded5-d689-4226-b128-4ca0800ee076">
 		<Package InstallerVersion="400" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade Schedule="afterInstallInitialize" AllowDowngrades="yes"/>
