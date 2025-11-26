@@ -456,7 +456,8 @@ public class GrepService
         bool fileNamesOnlyFlag = _grepCommand.CommandArgs.ContainsKey(CommandFlag.FileNamesOnly);
 
         // FileName
-        _publisherService.Publish(PublisherMessage.StandardOut, new ConsoleItem { ForegroundColor = AnsiColors.DarkYellow, Value = $"{file.Name} " });
+        ConsoleItem fileItem = new ConsoleItem { ForegroundColor = AnsiColors.DarkYellow, Value = $"{file.Name} " };
+        ConsoleItem emptyLineItem = new ConsoleItem { Value = Environment.NewLine };
 
         try
         {
@@ -464,7 +465,7 @@ public class GrepService
             {
                 File.Delete(file.Name);
 
-                _publisherService.Publish(PublisherMessage.StandardOut, new ConsoleItem { ForegroundColor = AnsiColors.Red, Value = $"Deleted" });
+                _publisherService.Publish(PublisherMessage.StandardOut, fileItem, new ConsoleItem { ForegroundColor = AnsiColors.Red, Value = $"Deleted" }, emptyLineItem);
 
                 lock (_metricsLock)
                     _searchMetrics.DeleteSuccessCount++;
@@ -477,7 +478,7 @@ public class GrepService
                     string fileName = Path.GetFileName(file.Name);
 
                     File.Move(file.Name, Path.Combine(directory, Regex.Replace(fileName, searchPattern, _grepCommand.CommandArgs[CommandFlag.Replace])));
-                    _publisherService.Publish(PublisherMessage.StandardOut, new ConsoleItem { ForegroundColor = AnsiColors.Red, Value = $"Renamed" });
+                    _publisherService.Publish(PublisherMessage.StandardOut, fileItem, new ConsoleItem { ForegroundColor = AnsiColors.Red, Value = $"Renamed" }, emptyLineItem);
                 }
                 else
                 {
@@ -493,7 +494,7 @@ public class GrepService
                         fileRaw = Regex.Replace(fileRaw, searchPattern, _grepCommand.CommandArgs[CommandFlag.Replace]);
                         File.WriteAllText(file.Name, fileRaw);
 
-                        _publisherService.Publish(PublisherMessage.StandardOut, new ConsoleItem { ForegroundColor = AnsiColors.DarkMagenta, Value = $"{fileMatchesCount} match(es)" });
+                        _publisherService.Publish(PublisherMessage.StandardOut, fileItem, new ConsoleItem { ForegroundColor = AnsiColors.DarkMagenta, Value = $"{fileMatchesCount} {(fileMatchesCount == 1 ? "match" : "matches")}" }, emptyLineItem);
                     }
                 }
 
@@ -503,16 +504,13 @@ public class GrepService
         }
         catch
         {
-            _publisherService.Publish(PublisherMessage.StandardOut, new ConsoleItem { ForegroundColor = AnsiColors.Gray, BackgroundColor = AnsiColors.DarkRedBg, Value = $"Access Denied" });
+            _publisherService.Publish(PublisherMessage.StandardOut, fileItem, new ConsoleItem { ForegroundColor = AnsiColors.Gray, BackgroundColor = AnsiColors.DarkRedBg, Value = $"Access Denied" }, emptyLineItem);
 
             lock (_metricsLock)
                 _searchMetrics.FailedWriteFiles.Add(file);
         }
         finally
         {
-            // Empty buffer
-            _publisherService.Publish(PublisherMessage.StandardOut, new ConsoleItem { Value = Environment.NewLine });
-
             lock (_metricsLock)
                 _searchMetrics.TotalFilesMatchedCount++;
         }

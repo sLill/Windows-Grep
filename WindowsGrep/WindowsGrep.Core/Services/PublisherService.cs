@@ -42,7 +42,7 @@ public class PublisherService
         }
     }
 
-    public void Publish<T>(PublisherMessage messageType, T message)
+    public void Publish<T>(PublisherMessage messageType, params T[] messages)
     {
         if (_subscribers.TryGetValue(messageType, out var subscriberList))
         {
@@ -59,7 +59,10 @@ public class PublisherService
             {
                 try
                 {
-                    handler(message);
+                    foreach (var message in messages)
+                    {
+                        handler(message);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -67,7 +70,7 @@ public class PublisherService
                 }
             }
         }
-    } 
+    }
 
     public virtual void RemoveAllSubscribers()
     {
