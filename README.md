@@ -34,7 +34,9 @@ No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd
 <h4>Standalone</h4>
 
 1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
-2. Download one of the pre-compiled binaries
+2. Download one of the pre-compiled binaries (Ends with `exe`)
+3. Rename into `grep.exe`
+4. Put in a folder which is within the system PATH
 
 <h2>Usage</h2>
 
