@@ -1,0 +1,6 @@
+[38;2;255;165;0mWindows Grep[0m
+[38;2;255;165;0mv5.0.0[0m
+
+[38;2;125;125;125mHelp (-h)
+Author: Sam Lill
+Source: https://github.com/sLill/Windows-Grep[0m

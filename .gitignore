@@ -349,3 +349,4 @@ MigrationBackup/
 /WindowsGrep/WindowsGrep/Properties/PublishProfiles/win-arm64.pubxml.user
 /WindowsGrep/WindowsGrep/Properties/PublishProfiles/win-x64.pubxml.user
 /WindowsGrep/WindowsGrep/Properties/PublishProfiles/win-x86.pubxml.user
+/WindowsGrep_Rust/target
