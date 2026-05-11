@@ -1,22 +1,15 @@
-mod enums;
-mod models;
-mod services;
-mod utils;
-
 use std::io::{self, BufRead, Write as _};
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 
-use models::grep_result::GrepResult;
-use services::console_service::ConsoleService;
-use services::grep_service::GrepService;
-use services::native_service::NativeService;
-use utils::console_utils;
-use utils::windows_grep_utils;
-use utils::windows_utils;
+use windows_grep::enums::command_flag::CommandFlag;
+use windows_grep::models::console_item::ConsoleItem;
+use windows_grep::models::grep_result::GrepResult;
+use windows_grep::services::console_service::ConsoleService;
+use windows_grep::services::grep_service::GrepService;
+use windows_grep::services::native_service::NativeService;
+use windows_grep::utils::{console_utils, windows_grep_utils, windows_utils};
 use colored::Color;
-use models::console_item::ConsoleItem;
-use enums::command_flag::CommandFlag;
 
 fn main() {
     windows_utils::try_enable_ansi();

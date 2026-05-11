@@ -693,3 +693,4 @@ fn read_file_text(path: &str) -> Result<String, String> {
         std::fs::read_to_string(path).map_err(|e| e.to_string())
     }
 }
+

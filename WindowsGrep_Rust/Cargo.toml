@@ -3,6 +3,10 @@ name = "windows-grep"
 version = "5.0.0"
 edition = "2021"
 
+[lib]
+name = "windows_grep"
+path = "src/lib.rs"
+
 [[bin]]
 name = "grep"
 path = "src/main.rs"
