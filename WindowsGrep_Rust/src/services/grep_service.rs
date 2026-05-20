@@ -557,7 +557,6 @@ fn perform_writes(
             }
         }
     }
-    // Matches the C# `finally { TotalFilesMatchedCount++ }` in PerformWrites
     metrics.lock().unwrap().total_files_matched_count += 1;
 }
 
@@ -690,7 +689,8 @@ fn read_file_text(path: &str) -> Result<String, String> {
     } else if ext == "pdf" {
         file_utils::read_pdf(path)
     } else {
-        std::fs::read_to_string(path).map_err(|e| e.to_string())
+        let bytes = std::fs::read(path).map_err(|e| e.to_string())?;
+        Ok(String::from_utf8_lossy(&bytes).into_owned())
     }
 }
 

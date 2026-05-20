@@ -25,6 +25,7 @@ ${UnStrRep}
 ; ----------------------------------------------------------------------------
 
 !define APP_NAME        "WindowsGrep"
+!define APP_DISPLAY     "Windows Grep"
 !define APP_VERSION     "5.0.0"
 !define APP_VERSION_4   "5.0.0.0"
 !define APP_PUBLISHER   "sLill"
@@ -152,12 +153,12 @@ SectionEnd
 
 Section "Explorer right-click integration" SecContext
   ; Right-click on folder background -> opens grep REPL in that folder.
-  WriteRegStr HKCR "${CTX_BG_KEY}" ""        "Open in ${APP_NAME}"
+  WriteRegStr HKCR "${CTX_BG_KEY}" ""        "${APP_DISPLAY}"
   WriteRegStr HKCR "${CTX_BG_KEY}" "Icon"    "$INSTDIR\${APP_EXE}"
   WriteRegStr HKCR "${CTX_BG_KEY}\command" "" '"$INSTDIR\${APP_EXE}"'
 
   ; Right-click on a folder -> opens grep REPL with that folder as CWD.
-  WriteRegStr HKCR "${CTX_DIR_KEY}" ""        "Open in ${APP_NAME}"
+  WriteRegStr HKCR "${CTX_DIR_KEY}" ""        "${APP_DISPLAY}"
   WriteRegStr HKCR "${CTX_DIR_KEY}" "Icon"    "$INSTDIR\${APP_EXE}"
   WriteRegStr HKCR "${CTX_DIR_KEY}\command" "" '"cmd.exe" /C start "" /D "%1" "$INSTDIR\${APP_EXE}"'
 

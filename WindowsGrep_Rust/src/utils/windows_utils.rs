@@ -326,5 +326,3 @@ pub fn try_enable_ansi() {
     }
 }
 
-#[cfg(not(windows))]
-pub fn try_enable_ansi() {}

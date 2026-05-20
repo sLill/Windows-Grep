@@ -64,7 +64,6 @@ fn local_name(name: &[u8]) -> &[u8] {
     name.splitn(2, |&b| b == b':').last().unwrap_or(name)
 }
 
-/// PDF text extraction is not supported in this Rust port.
-pub fn read_pdf(_filepath: &str) -> Result<String, String> {
-    Err("PDF text extraction is not supported in this Rust port".to_string())
+pub fn read_pdf(filepath: &str) -> Result<String, String> {
+    pdf_extract::extract_text(filepath).map_err(|e| e.to_string())
 }

@@ -24,6 +24,7 @@ md-5 = "0.10"
 hex = "0.4"
 zip = { version = "2", default-features = false, features = ["deflate"] }
 quick-xml = "0.36"
+pdf-extract = "0.7"
 once_cell = "1"
 ctrlc = "3"
 colored = "2"
@@ -38,3 +39,6 @@ winapi = { version = "0.3", features = [
     "minwinbase",
     "errhandlingapi",
 ] }
+
+[target.'cfg(windows)'.build-dependencies]
+winresource = "0.1"
