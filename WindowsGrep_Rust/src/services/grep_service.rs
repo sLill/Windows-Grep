@@ -303,8 +303,9 @@ fn build_content_results(
 
     for &(start, end, ref matched) in matches {
         let (leading, trailing) = if context_flag {
-            let lead_start = start.saturating_sub(context_len);
-            let trail_end = (end + context_len).min(text.len());
+            // Round to UTF-8 char boundaries to avoid panics on multi-byte text.
+            let lead_start = floor_char_boundary(text, start.saturating_sub(context_len));
+            let trail_end = ceil_char_boundary(text, (end + context_len).min(text.len()));
             (
                 format!("\n{}", &text[lead_start..start]),
                 format!("{}\n", &text[end..trail_end]),
@@ -676,6 +677,24 @@ fn is_file_filtered(
     }
 
     false
+}
+
+/// Walk backwards from `idx` until a UTF-8 char boundary is reached. `idx == 0`
+/// and `idx == s.len()` are always boundaries, so this terminates.
+fn floor_char_boundary(s: &str, mut idx: usize) -> usize {
+    while idx > 0 && !s.is_char_boundary(idx) {
+        idx -= 1;
+    }
+    idx
+}
+
+/// Walk forwards from `idx` until a UTF-8 char boundary is reached.
+fn ceil_char_boundary(s: &str, mut idx: usize) -> usize {
+    let len = s.len();
+    while idx < len && !s.is_char_boundary(idx) {
+        idx += 1;
+    }
+    idx
 }
 
 fn read_file_text(path: &str) -> Result<String, String> {

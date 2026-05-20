@@ -125,6 +125,29 @@ fn context_without_flag() {
     }
 }
 
+#[test]
+fn context_spans_utf8_boundary() {
+    // Match is ASCII 'X' surrounded by 3-byte UTF-8 chars. A context length of 1
+    // byte lands mid-codepoint on both sides — would panic before the fix.
+    let tmp = std::env::temp_dir().join("wgrep_utf8_context");
+    std::fs::create_dir_all(&tmp).unwrap();
+    let dest = tmp.join("utf8.txt");
+    std::fs::write(&dest, "日本語Xテスト").unwrap();
+
+    let cmd = format!("-c 1 'X' '{}'", dest.display());
+    let results = run_grep(&cmd);
+
+    assert_eq!(results.len(), 1, "expected exactly one match");
+    let r = &results[0];
+    // Boundary-rounding expands the slice to include the whole adjacent char.
+    assert!(r.leading_context_string.trim().ends_with('語'),
+        "leading context should include the preceding char, got {:?}", r.leading_context_string);
+    assert!(r.trailing_context_string.trim().starts_with('テ'),
+        "trailing context should include the following char, got {:?}", r.trailing_context_string);
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
 // --- FileTypeInclude (-t) ---
 
 #[test]
