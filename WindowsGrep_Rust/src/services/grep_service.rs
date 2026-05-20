@@ -10,6 +10,7 @@ use rayon::prelude::*;
 use regex::Regex;
 
 use crate::enums::command_flag::CommandFlag;
+use crate::enums::hash_type::HashType;
 use crate::enums::result_scope::ResultScope;
 use crate::models::console_item::ConsoleItem;
 use crate::models::file_item::FileItem;
@@ -19,8 +20,6 @@ use crate::services::console_service::ConsoleService;
 use crate::utils::command_flag_utils;
 use crate::utils::file_utils;
 use crate::utils::windows_utils;
-
-const FILES_PER_TASK: usize = 10;
 
 // ---------------------------------------------------------------------------
 // Publisher — thread-safe output to console + optional file
@@ -50,6 +49,27 @@ impl Publisher {
             self.publish(item);
         }
     }
+}
+
+// ---------------------------------------------------------------------------
+// SearchContext — immutable, shared across all parallel workers
+// ---------------------------------------------------------------------------
+
+struct SearchContext<'a> {
+    command_args: &'a HashMap<CommandFlag, String>,
+    pattern: &'a str,
+    regex: &'a Regex,
+    search_term: &'a str,
+    hash_type: Option<HashType>,
+    delete_flag: bool,
+    replace_flag: bool,
+    file_names_only: bool,
+    file_hashes_only: bool,
+    include_filters: Option<Vec<String>>,
+    exclude_filters: Option<Vec<String>>,
+    path_include: Option<Vec<String>>,
+    context_flag: bool,
+    context_len: usize,
 }
 
 // ---------------------------------------------------------------------------
@@ -96,7 +116,7 @@ impl GrepService {
         // ---- Build search regex ----
         let pattern = command_flag_utils::build_search_pattern(&command_args);
         let search_regex = match command_flag_utils::build_search_regex(&command_args, &pattern) {
-            Ok(r) => Arc::new(r),
+            Ok(r) => r,
             Err(e) => {
                 publisher.publish(&ConsoleItem::with_fg(
                     format!("Invalid regex: {}\n", e),
@@ -134,30 +154,43 @@ impl GrepService {
             return Vec::new();
         }
 
-        // ---- Parallel processing in batches of FILES_PER_TASK ----
-        let chunks: Vec<&[FileItem]> = all_files.chunks(FILES_PER_TASK).collect();
+        // ---- Build search context (immutable, shared across all workers) ----
+        let ctx = SearchContext {
+            command_args: &command_args,
+            pattern: &pattern,
+            regex: &search_regex,
+            search_term: &search_term,
+            hash_type,
+            delete_flag: command_args.contains_key(&CommandFlag::Delete),
+            replace_flag: command_args.contains_key(&CommandFlag::Replace),
+            file_names_only,
+            file_hashes_only,
+            include_filters: command_flag_utils::get_file_type_include_filters(&command_args),
+            exclude_filters: command_flag_utils::get_file_type_exclude_filters(&command_args),
+            path_include: command_flag_utils::get_path_include_filters(&command_args),
+            context_flag: command_args.contains_key(&CommandFlag::Context),
+            context_len: command_args
+                .get(&CommandFlag::Context)
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(0),
+        };
 
-        chunks.par_iter().for_each(|chunk| {
-            if cancelled.load(Ordering::SeqCst) {
+        // ---- Parallel per-file processing — rayon picks chunks adaptively ----
+        all_files.par_iter().for_each(|file| {
+            if cancelled.load(Ordering::SeqCst) { return; }
+            if file.is_directory { return; }
+            if is_file_filtered(&file.name, &ctx.include_filters, &ctx.exclude_filters, &ctx.path_include) {
                 return;
             }
-            if file_hashes_only {
-                if let Some(ht) = hash_type {
-                    process_hash_matches(
-                        chunk, &search_term, ht, &command_args,
-                        &publisher, &all_results, &metrics, &cancelled,
-                    );
+
+            if ctx.file_hashes_only {
+                if let Some(ht) = ctx.hash_type {
+                    process_hash_match(file, ht, &ctx, &publisher, &all_results, &metrics);
                 }
-            } else if file_names_only {
-                process_name_matches(
-                    chunk, &pattern, &search_regex, &command_args,
-                    &publisher, &all_results, &metrics, &cancelled,
-                );
+            } else if ctx.file_names_only {
+                process_name_match(file, &ctx, &publisher, &all_results, &metrics);
             } else {
-                process_content_matches(
-                    chunk, &pattern, &search_regex, &command_args,
-                    &publisher, &all_results, &metrics, &cancelled,
-                );
+                process_content_match(file, &ctx, &publisher, &all_results, &metrics);
             }
         });
 
@@ -237,50 +270,35 @@ fn collect_files(
 // Content search
 // ---------------------------------------------------------------------------
 
-fn process_content_matches(
-    files: &[FileItem],
-    pattern: &str,
-    regex: &Regex,
-    command_args: &HashMap<CommandFlag, String>,
+fn process_content_match(
+    file: &FileItem,
+    ctx: &SearchContext,
     publisher: &Publisher,
     results: &Mutex<Vec<GrepResult>>,
     metrics: &Mutex<SearchMetrics>,
-    cancelled: &AtomicBool,
 ) {
-    let delete_flag = command_args.contains_key(&CommandFlag::Delete);
-    let replace_flag = command_args.contains_key(&CommandFlag::Replace);
-    let include_filters = command_flag_utils::get_file_type_include_filters(command_args);
-    let exclude_filters = command_flag_utils::get_file_type_exclude_filters(command_args);
-    let path_include = command_flag_utils::get_path_include_filters(command_args);
-
-    for file in files {
-        if cancelled.load(Ordering::SeqCst) { return; }
-        if file.is_directory { continue; }
-        if is_file_filtered(&file.name, &include_filters, &exclude_filters, &path_include) { continue; }
-
-        let text = match read_file_text(&file.name) {
-            Ok(t) => t,
-            Err(_) => {
-                metrics.lock().unwrap().failed_read_files.push(file.clone());
-                continue;
-            }
-        };
-
-        // Collect match positions eagerly to avoid lifetime entanglement
-        let matches: Vec<(usize, usize, String)> = regex
-            .find_iter(&text)
-            .map(|m| (m.start(), m.end(), m.as_str().to_string()))
-            .collect();
-
-        if matches.is_empty() { continue; }
-
-        if delete_flag || replace_flag {
-            perform_writes(file, pattern, matches.len(), &text, command_args, publisher, metrics);
-        } else {
-            build_content_results(file, &matches, &text, command_args, publisher, results);
-            // Increment once per file (matching original behaviour)
-            metrics.lock().unwrap().total_files_matched_count += 1;
+    let text = match read_file_text(&file.name) {
+        Ok(t) => t,
+        Err(_) => {
+            metrics.lock().unwrap().failed_read_files.push(file.clone());
+            return;
         }
+    };
+
+    // Collect match positions eagerly to avoid lifetime entanglement
+    let matches: Vec<(usize, usize, String)> = ctx.regex
+        .find_iter(&text)
+        .map(|m| (m.start(), m.end(), m.as_str().to_string()))
+        .collect();
+
+    if matches.is_empty() { return; }
+
+    if ctx.delete_flag || ctx.replace_flag {
+        perform_writes(file, ctx.pattern, matches.len(), &text, ctx.command_args, publisher, metrics);
+    } else {
+        build_content_results(file, &matches, &text, ctx, publisher, results);
+        // Increment once per file (matching original behaviour)
+        metrics.lock().unwrap().total_files_matched_count += 1;
     }
 }
 
@@ -289,23 +307,17 @@ fn build_content_results(
     file: &FileItem,
     matches: &[(usize, usize, String)],
     text: &str,
-    command_args: &HashMap<CommandFlag, String>,
+    ctx: &SearchContext,
     publisher: &Publisher,
     results: &Mutex<Vec<GrepResult>>,
 ) {
-    let context_flag = command_args.contains_key(&CommandFlag::Context);
-    let context_len: usize = command_args
-        .get(&CommandFlag::Context)
-        .and_then(|s| s.parse().ok())
-        .unwrap_or(0);
-
     let mut file_results = Vec::with_capacity(matches.len());
 
     for &(start, end, ref matched) in matches {
-        let (leading, trailing) = if context_flag {
+        let (leading, trailing) = if ctx.context_flag {
             // Round to UTF-8 char boundaries to avoid panics on multi-byte text.
-            let lead_start = floor_char_boundary(text, start.saturating_sub(context_len));
-            let trail_end = ceil_char_boundary(text, (end + context_len).min(text.len()));
+            let lead_start = floor_char_boundary(text, start.saturating_sub(ctx.context_len));
+            let trail_end = ceil_char_boundary(text, (end + ctx.context_len).min(text.len()));
             (
                 format!("\n{}", &text[lead_start..start]),
                 format!("{}\n", &text[end..trail_end]),
@@ -335,61 +347,46 @@ fn build_content_results(
 // Filename search
 // ---------------------------------------------------------------------------
 
-fn process_name_matches(
-    files: &[FileItem],
-    pattern: &str,
-    regex: &Regex,
-    command_args: &HashMap<CommandFlag, String>,
+fn process_name_match(
+    file: &FileItem,
+    ctx: &SearchContext,
     publisher: &Publisher,
     results: &Mutex<Vec<GrepResult>>,
     metrics: &Mutex<SearchMetrics>,
-    cancelled: &AtomicBool,
 ) {
-    let delete_flag = command_args.contains_key(&CommandFlag::Delete);
-    let replace_flag = command_args.contains_key(&CommandFlag::Replace);
-    let include_filters = command_flag_utils::get_file_type_include_filters(command_args);
-    let exclude_filters = command_flag_utils::get_file_type_exclude_filters(command_args);
-    let path_include = command_flag_utils::get_path_include_filters(command_args);
+    let file_name = Path::new(&file.name)
+        .file_name()
+        .map(|n| n.to_string_lossy().into_owned())
+        .unwrap_or_default();
 
-    for file in files {
-        if cancelled.load(Ordering::SeqCst) { return; }
-        if file.is_directory { continue; }
-        if is_file_filtered(&file.name, &include_filters, &exclude_filters, &path_include) { continue; }
+    let (match_start, match_end, matched_str) = match ctx.regex.find(&file_name) {
+        Some(m) => (m.start(), m.end(), m.as_str().to_string()),
+        None => return,
+    };
 
-        let file_name = Path::new(&file.name)
-            .file_name()
-            .map(|n| n.to_string_lossy().into_owned())
-            .unwrap_or_default();
+    if ctx.delete_flag || ctx.replace_flag {
+        perform_writes(file, ctx.pattern, 1, &file.name, ctx.command_args, publisher, metrics);
+        // Match original: also increments TotalFilesMatchedCount after PerformWrites
+        metrics.lock().unwrap().total_files_matched_count += 1;
+    } else {
+        // Leading context = full path up to the filename portion, plus the start of the filename
+        let name_offset = file.name.len() - file_name.len();
+        let leading = file.name[..name_offset + match_start].to_string();
+        let trailing = file.name[name_offset + match_end..].to_string();
 
-        let (match_start, match_end, matched_str) = match regex.find(&file_name) {
-            Some(m) => (m.start(), m.end(), m.as_str().to_string()),
-            None => continue,
-        };
+        let mut result = GrepResult::new(file.clone(), ResultScope::FileName);
+        result.leading_context_string = leading;
+        result.matched_string = matched_str;
+        result.trailing_context_string = trailing;
 
-        if delete_flag || replace_flag {
-            perform_writes(file, pattern, 1, &file.name, command_args, publisher, metrics);
-            // Match original: also increments TotalFilesMatchedCount after PerformWrites
-            metrics.lock().unwrap().total_files_matched_count += 1;
-        } else {
-            // Leading context = full path up to the filename portion, plus the start of the filename
-            let name_offset = file.name.len() - file_name.len();
-            let leading = file.name[..name_offset + match_start].to_string();
-            let trailing = file.name[name_offset + match_end..].to_string();
+        let items = result.to_console_items();
+        publisher.publish_many(&items);
 
-            let mut result = GrepResult::new(file.clone(), ResultScope::FileName);
-            result.leading_context_string = leading;
-            result.matched_string = matched_str;
-            result.trailing_context_string = trailing;
-
-            let items = result.to_console_items();
-            publisher.publish_many(&items);
-
-            {
-                let mut r = results.lock().unwrap();
-                r.push(result);
-            }
-            metrics.lock().unwrap().total_files_matched_count += 1;
+        {
+            let mut r = results.lock().unwrap();
+            r.push(result);
         }
+        metrics.lock().unwrap().total_files_matched_count += 1;
     }
 }
 
@@ -397,59 +394,46 @@ fn process_name_matches(
 // Hash search
 // ---------------------------------------------------------------------------
 
-fn process_hash_matches(
-    files: &[FileItem],
-    search_term: &str,
-    hash_type: crate::enums::hash_type::HashType,
-    command_args: &HashMap<CommandFlag, String>,
+fn process_hash_match(
+    file: &FileItem,
+    hash_type: HashType,
+    ctx: &SearchContext,
     publisher: &Publisher,
     results: &Mutex<Vec<GrepResult>>,
     metrics: &Mutex<SearchMetrics>,
-    cancelled: &AtomicBool,
 ) {
-    let delete_flag = command_args.contains_key(&CommandFlag::Delete);
-    let include_filters = command_flag_utils::get_file_type_include_filters(command_args);
-    let exclude_filters = command_flag_utils::get_file_type_exclude_filters(command_args);
-    let path_include = command_flag_utils::get_path_include_filters(command_args);
-
-    for file in files {
-        if cancelled.load(Ordering::SeqCst) { return; }
-        if file.is_directory { continue; }
-        if is_file_filtered(&file.name, &include_filters, &exclude_filters, &path_include) { continue; }
-
-        let hash = match windows_utils::get_file_hash(&file.name, hash_type) {
-            Ok(h) => h,
-            Err(_) => {
-                metrics.lock().unwrap().failed_read_files.push(file.clone());
-                continue;
-            }
-        };
-
-        if !hash.eq_ignore_ascii_case(search_term) { continue; }
-
-        if delete_flag {
-            perform_writes(file, search_term, 1, &file.name, command_args, publisher, metrics);
-            metrics.lock().unwrap().total_files_matched_count += 1;
-        } else {
-            let file_name = Path::new(&file.name)
-                .file_name()
-                .map(|n| n.to_string_lossy().into_owned())
-                .unwrap_or_default();
-            let leading = file.name[..file.name.len() - file_name.len()].to_string();
-
-            let mut result = GrepResult::new(file.clone(), ResultScope::FileHash);
-            result.leading_context_string = leading;
-            result.matched_string = hash.clone();
-
-            let items = result.to_console_items();
-            publisher.publish_many(&items);
-
-            {
-                let mut r = results.lock().unwrap();
-                r.push(result);
-            }
-            metrics.lock().unwrap().total_files_matched_count += 1;
+    let hash = match windows_utils::get_file_hash(&file.name, hash_type) {
+        Ok(h) => h,
+        Err(_) => {
+            metrics.lock().unwrap().failed_read_files.push(file.clone());
+            return;
         }
+    };
+
+    if !hash.eq_ignore_ascii_case(ctx.search_term) { return; }
+
+    if ctx.delete_flag {
+        perform_writes(file, ctx.search_term, 1, &file.name, ctx.command_args, publisher, metrics);
+        metrics.lock().unwrap().total_files_matched_count += 1;
+    } else {
+        let file_name = Path::new(&file.name)
+            .file_name()
+            .map(|n| n.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        let leading = file.name[..file.name.len() - file_name.len()].to_string();
+
+        let mut result = GrepResult::new(file.clone(), ResultScope::FileHash);
+        result.leading_context_string = leading;
+        result.matched_string = hash.clone();
+
+        let items = result.to_console_items();
+        publisher.publish_many(&items);
+
+        {
+            let mut r = results.lock().unwrap();
+            r.push(result);
+        }
+        metrics.lock().unwrap().total_files_matched_count += 1;
     }
 }
 

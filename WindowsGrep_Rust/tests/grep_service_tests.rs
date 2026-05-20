@@ -279,6 +279,24 @@ fn plaintext_disabled() {
     assert!(!run_grep(&cmd).is_empty());
 }
 
+#[test]
+fn plaintext_treats_dollar_as_literal() {
+    // -F must treat '$' as a literal char. Before the fix, the search term was
+    // rewritten to 'price[\r\n]*$5' *before* being escaped, so it could never
+    // match the literal 'price$5'.
+    let tmp = std::env::temp_dir().join("wgrep_fixed_dollar");
+    std::fs::create_dir_all(&tmp).unwrap();
+    let dest = tmp.join("price.txt");
+    std::fs::write(&dest, "The product costs price$5 today.").unwrap();
+
+    let cmd = format!("-F 'price$5' '{}'", dest.display());
+    let results = run_grep(&cmd);
+    assert_eq!(results.len(), 1, "expected one literal '$' match");
+    assert_eq!(results[0].matched_string, "price$5");
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
 // --- Replace (--replace) ---
 
 #[test]

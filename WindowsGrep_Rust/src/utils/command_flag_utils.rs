@@ -73,12 +73,13 @@ pub fn build_search_pattern(command_args: &HashMap<CommandFlag, String>) -> Stri
         .cloned()
         .unwrap_or_default();
 
-    // Match original: replace $ with [\r\n]*$ to behave like other regex engines
-    let search_term = search_term.replace('$', r"[\r\n]*$");
     let search_term = if fixed_strings {
+        // In fixed-string mode, every char is literal — including '$'.
         regex::escape(&search_term)
     } else {
-        search_term
+        // Regex mode: rewrite '$' to also consume trailing \r\n so end-of-line
+        // anchors work the same across Unix/Windows line endings.
+        search_term.replace('$', r"[\r\n]*$")
     };
 
     let case_mod = if ignore_case { "(?i)" } else { "" };
