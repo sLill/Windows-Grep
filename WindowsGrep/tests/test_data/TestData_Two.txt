@@ -1,0 +1,73 @@
+﻿=== BASIC PATTERNS ===
+foo
+bar
+baz
+foobar
+foobaz
+barbaz
+food
+bard
+barn
+
+=== CASE VARIATIONS ===
+The Quick Brown Fox
+THE QUICK BROWN FOX
+the quick brown fox
+tHe qUiCk BrOwN fOx
+
+=== SPECIAL CHARACTERS ===
+Escaped \ characters
+$pecial ^characters* 
+[Square] {Brackets} (Parentheses)
+Line\twith\ttabs
+A   line   with   extra   spaces
+Ending with punctuation!?.
+
+=== NUMERIC FORMATS ===
+123
+3.14159
+-42
++99
+1e10
+0xDEADBEEF
+1,000,000
+1.234.567.890 (invalid)
+
+=== DATE/TIME FORMATS ===
+2024-02-29 (leap day)
+31/04/2023 (invalid)
+12:59:59
+23:60:00 (invalid)
+Jan 31, 2024
+December 32nd (invalid)
+
+=== PROGRAMMING SNIPPETS ===
+function(arg1, arg2) {
+  return arg1 + arg2;
+}
+if (x > 0 && y < 10) {
+  console.log("Hello");
+}
+<!-- HTML comment -->
+# Shell comment
+/* Multi-line
+   C comment */
+
+=== EDGE CASES ===
+
+(empty line above)
+Line with only:  
+Line with just: .
+Unicode: ✓ ☺ 你好
+Zero\x00Byte
+Mismatched ""quotes'
+Over 80 character line.........................................................................! 
+
+=== COMMON LOG PATTERNS ===
+[ERROR] 2024-03-15: Disk full
+[WARN] File not found: test.txt
+user=admin;action=delete;target=file1
+GET /index.html HTTP/1.1 200 4325
+POST /api/login 401 12
+
+End of test file

@@ -1,5 +1,6 @@
 use std::path::Path;
 use std::sync::Arc;
+use std::sync::Once;
 use std::sync::atomic::AtomicBool;
 
 use windows_grep::services::console_service::ConsoleService;
@@ -7,14 +8,27 @@ use windows_grep::services::grep_service::GrepService;
 use windows_grep::utils::windows_grep_utils::parse_grep_command_args;
 use windows_grep::utils::windows_utils::get_file_size_on_disk;
 
+static ATTR_SETUP: Once = Once::new();
+
 fn test_data_dir() -> std::path::PathBuf {
-    std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent().unwrap()
-        .join("WindowsGrep")
-        .join("WindowsGrep.Test")
-        .join("Properties")
-        .join("Resources")
-        .join("TestData")
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests")
+        .join("test_data");
+
+    // Git does not preserve NTFS Hidden/System attributes. Apply them once per
+    // test process so the hidden/system filter tests behave correctly.
+    ATTR_SETUP.call_once(|| {
+        let hidden = dir.join("TestData_Hidden");
+        let system = dir.join("TestData_System");
+        if hidden.exists() {
+            let _ = std::process::Command::new("attrib").arg("+H").arg(&hidden).status();
+        }
+        if system.exists() {
+            let _ = std::process::Command::new("attrib").arg("+S").arg(&system).status();
+        }
+    });
+
+    dir
 }
 
 fn run_grep(command: &str) -> Vec<windows_grep::models::grep_result::GrepResult> {

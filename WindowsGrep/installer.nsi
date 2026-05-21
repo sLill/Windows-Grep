@@ -1,9 +1,16 @@
 ; ============================================================================
 ; WindowsGrep NSIS installer
 ; ----------------------------------------------------------------------------
-; Build a release binary first:   cargo build --release
-; Then compile this script:       makensis installer.nsi
-; Output:                         WindowsGrep-<version>-Setup.exe
+; x64 build (default):
+;   cargo build --release
+;   makensis installer.nsi
+;   -> WindowsGrep-<version>-Setup.exe
+;
+; ARM64 build:
+;   rustup target add aarch64-pc-windows-msvc
+;   cargo build --release --target aarch64-pc-windows-msvc
+;   makensis /DTARGET_DIR=target\aarch64-pc-windows-msvc\release /DARCH_SUFFIX=-arm64 installer.nsi
+;   -> WindowsGrep-<version>-arm64-Setup.exe
 ; ----------------------------------------------------------------------------
 ; The installer offers two modes via MultiUser.nsh:
 ;   * "Install for me only"   — no admin needed, installs to %LOCALAPPDATA%,
@@ -35,6 +42,15 @@ SetCompressor /SOLID lzma
 !define ENV_KEY_HKCU    "Environment"
 !define CTX_BG_SUBKEY   "Directory\Background\shell\${APP_NAME}"
 !define CTX_DIR_SUBKEY  "Directory\shell\${APP_NAME}"
+
+; Override these from the makensis command line to build for other targets, e.g.
+;   makensis /DTARGET_DIR=target\aarch64-pc-windows-msvc\release /DARCH_SUFFIX=-arm64 installer.nsi
+!ifndef TARGET_DIR
+  !define TARGET_DIR    "target\release"
+!endif
+!ifndef ARCH_SUFFIX
+  !define ARCH_SUFFIX   ""
+!endif
 
 ; ----------------------------------------------------------------------------
 ; MultiUser configuration — must be defined before MultiUser.nsh is included.
@@ -80,7 +96,7 @@ ${UnStrRep}
 ; ----------------------------------------------------------------------------
 
 Name "${APP_NAME} ${APP_VERSION}"
-OutFile "WindowsGrep-${APP_VERSION}-Setup.exe"
+OutFile "WindowsGrep-${APP_VERSION}${ARCH_SUFFIX}-Setup.exe"
 ShowInstDetails show
 ShowUninstDetails show
 BrandingText "${APP_NAME} v${APP_VERSION}"
@@ -147,7 +163,7 @@ Section "Core files (required)" SecCore
   SetOutPath "$INSTDIR"
   SetOverwrite on
 
-  File "target\release\${APP_EXE}"
+  File "${TARGET_DIR}\${APP_EXE}"
   File "/oname=LICENSE.txt" "..\LICENSE"
 
   ; Track install

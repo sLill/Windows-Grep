@@ -3,12 +3,8 @@ use windows_grep::utils::windows_grep_utils::parse_grep_command_args;
 
 fn td() -> String {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent().unwrap()
-        .join("WindowsGrep")
-        .join("WindowsGrep.Test")
-        .join("Properties")
-        .join("Resources")
-        .join("TestData")
+        .join("tests")
+        .join("test_data")
         .to_string_lossy()
         .into_owned()
 }
