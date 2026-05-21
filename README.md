@@ -5,7 +5,7 @@
 <h1>Windows Grep</h1> 
 
 [![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-grep/badge)](https://www.codefactor.io/repository/github/slill/windows-grep)
-![.NET Core](https://github.com/sLill/Windows-Grep/workflows/.NET/badge.svg)
+![.NET Core](https://github.com/sLill/Windows-Grep/workflows/rust/badge.svg)
 
 Command line grep-like file search utility for Windows. 
 
@@ -26,8 +26,8 @@ No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd
 <h4>Installer</h4>
 
 1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
-2. Download and run WindowsGrepSetup.msi. This will:
-    - Install Windows Grep in Program Files (x86)
+2. Download and run the setup executable. This will:
+    - Install Windows Grep
     - Add "grep" to the system PATH for command line use
     - Add `Windows Grep` to the File Explorer context menu
 
