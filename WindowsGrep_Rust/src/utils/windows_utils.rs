@@ -257,20 +257,27 @@ pub fn get_file_size_on_disk(file_path: &str) -> Result<i64, String> {
 pub fn get_file_hash(file_path: &str, hash_type: HashType) -> Result<String, String> {
     use std::io::Read;
 
-    let mut buf = Vec::new();
-    std::io::BufReader::with_capacity(1024 * 1024, std::fs::File::open(file_path).map_err(|e| e.to_string())?)
-        .read_to_end(&mut buf)
-        .map_err(|e| e.to_string())?;
+    let file = std::fs::File::open(file_path).map_err(|e| e.to_string())?;
+    let mut reader = std::io::BufReader::with_capacity(64 * 1024, file);
+    let mut buf = [0u8; 64 * 1024];
 
     let hash = match hash_type {
         HashType::Sha256 => {
             let mut h = Sha256::new();
-            h.update(&buf);
+            loop {
+                let n = reader.read(&mut buf).map_err(|e| e.to_string())?;
+                if n == 0 { break; }
+                h.update(&buf[..n]);
+            }
             hex::encode(h.finalize())
         }
         HashType::Md5 => {
             let mut h = Md5::new();
-            h.update(&buf);
+            loop {
+                let n = reader.read(&mut buf).map_err(|e| e.to_string())?;
+                if n == 0 { break; }
+                h.update(&buf[..n]);
+            }
             hex::encode(h.finalize())
         }
     };

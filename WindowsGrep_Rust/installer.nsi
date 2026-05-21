@@ -4,11 +4,64 @@
 ; Build a release binary first:   cargo build --release
 ; Then compile this script:       makensis installer.nsi
 ; Output:                         WindowsGrep-<version>-Setup.exe
+; ----------------------------------------------------------------------------
+; The installer offers two modes via MultiUser.nsh:
+;   * "Install for me only"   — no admin needed, installs to %LOCALAPPDATA%,
+;                               writes everything under HKCU.
+;   * "Install for everyone"  — needs admin, installs to Program Files,
+;                               writes everything under HKLM/HKCR.
+; If the user picks "for everyone" from a non-elevated launch, MultiUser
+; re-launches the installer via UAC (so admins only see UAC when they ask
+; for a system-wide install).
 ; ============================================================================
 
 Unicode true
 SetCompressor /SOLID lzma
 
+; ----------------------------------------------------------------------------
+; Application metadata
+; ----------------------------------------------------------------------------
+
+!define APP_NAME        "WindowsGrep"
+!define APP_DISPLAY     "Windows Grep"
+!define APP_VERSION     "6.0.1"
+!define APP_VERSION_4   "6.0.1.0"
+!define APP_PUBLISHER   "sLill"
+!define APP_EXE         "grep.exe"
+!define APP_URL         "https://github.com/sLill/Windows-Grep"
+!define APP_REG_ROOT    "Software\${APP_NAME}"
+!define APP_UNINST_KEY  "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}"
+!define ENV_KEY_HKLM    "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"
+!define ENV_KEY_HKCU    "Environment"
+!define CTX_BG_SUBKEY   "Directory\Background\shell\${APP_NAME}"
+!define CTX_DIR_SUBKEY  "Directory\shell\${APP_NAME}"
+
+; ----------------------------------------------------------------------------
+; MultiUser configuration — must be defined before MultiUser.nsh is included.
+;
+; MULTIUSER_EXECUTIONLEVEL=Standard:
+;   Launch without UAC. If the user picks "All users" on the install-mode
+;   page and isn't already elevated, MultiUser relaunches via runas (UAC).
+;
+; ALLOW_BOTH_INSTALLATIONS=0:
+;   If an existing install of the other mode is detected, prompt to remove
+;   it first instead of letting two installs coexist.
+; ----------------------------------------------------------------------------
+
+!define MULTIUSER_EXECUTIONLEVEL                          Standard
+!define MULTIUSER_MUI
+!define MULTIUSER_INSTALLMODE_COMMANDLINE
+!define MULTIUSER_INSTALLMODE_DEFAULT_CURRENTUSER
+!define MULTIUSER_INSTALLMODE_ALLOW_ELEVATION             1
+!define MULTIUSER_INSTALLMODE_ALLOW_BOTH_INSTALLATIONS    0
+!define MULTIUSER_INSTALLMODE_INSTDIR                     "${APP_NAME}"
+!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_KEY        "${APP_REG_ROOT}"
+!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME  "InstallDir"
+!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_KEY        "${APP_REG_ROOT}"
+!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_VALUENAME  "InstallMode"
+!define MULTIUSER_USE_PROGRAMFILES64
+
+!include "MultiUser.nsh"
 !include "MUI2.nsh"
 !include "LogicLib.nsh"
 !include "WinMessages.nsh"
@@ -17,25 +70,7 @@ SetCompressor /SOLID lzma
 
 ; Declare StrFunc macros used below
 ${StrStr}
-${UnStrStr}
 ${UnStrRep}
-
-; ----------------------------------------------------------------------------
-; Application metadata
-; ----------------------------------------------------------------------------
-
-!define APP_NAME        "WindowsGrep"
-!define APP_DISPLAY     "Windows Grep"
-!define APP_VERSION     "5.0.0"
-!define APP_VERSION_4   "5.0.0.0"
-!define APP_PUBLISHER   "sLill"
-!define APP_EXE         "grep.exe"
-!define APP_URL         "https://github.com/sLill/Windows-Grep"
-!define APP_REG_ROOT    "Software\${APP_NAME}"
-!define APP_UNINST_KEY  "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}"
-!define ENV_REG_KEY     "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"
-!define CTX_BG_KEY      "Directory\Background\shell\${APP_NAME}"
-!define CTX_DIR_KEY     "Directory\shell\${APP_NAME}"
 
 ; ----------------------------------------------------------------------------
 ; Installer settings
@@ -43,9 +78,6 @@ ${UnStrRep}
 
 Name "${APP_NAME} ${APP_VERSION}"
 OutFile "WindowsGrep-${APP_VERSION}-Setup.exe"
-InstallDir "$PROGRAMFILES64\${APP_NAME}"
-InstallDirRegKey HKLM "${APP_REG_ROOT}" "InstallDir"
-RequestExecutionLevel admin
 ShowInstDetails show
 ShowUninstDetails show
 BrandingText "${APP_NAME} v${APP_VERSION}"
@@ -68,6 +100,7 @@ VIAddVersionKey "LegalCopyright"  "Copyright (c) Samuel Turner-Lill. MIT license
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "..\LICENSE"
+!insertmacro MULTIUSER_PAGE_INSTALLMODE
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -81,19 +114,26 @@ VIAddVersionKey "LegalCopyright"  "Copyright (c) Samuel Turner-Lill. MIT license
 !insertmacro MUI_LANGUAGE "English"
 
 ; ----------------------------------------------------------------------------
-; Init — operate on the 64-bit registry view on 64-bit Windows.
+; Init — operate on the 64-bit registry view and pick install mode.
 ; ----------------------------------------------------------------------------
 
 Function .onInit
   SetRegView 64
+  !insertmacro MULTIUSER_INIT
 FunctionEnd
 
 Function un.onInit
   SetRegView 64
+  !insertmacro MULTIUSER_UNINIT
 FunctionEnd
 
 ; ----------------------------------------------------------------------------
 ; Install sections
+;
+; SHCTX is the "shell context" hive — HKLM in AllUsers mode, HKCU in
+; CurrentUser mode. We use it for everything that should follow the
+; install-mode choice; everything else branches explicitly on
+; $MultiUser.InstallMode.
 ; ----------------------------------------------------------------------------
 
 Section "Core files (required)" SecCore
@@ -105,46 +145,64 @@ Section "Core files (required)" SecCore
   File "/oname=LICENSE.txt" "..\LICENSE"
 
   ; Track install
-  WriteRegStr HKLM "${APP_REG_ROOT}" "InstallDir" "$INSTDIR"
-  WriteRegStr HKLM "${APP_REG_ROOT}" "Version"    "${APP_VERSION}"
+  WriteRegStr SHCTX "${APP_REG_ROOT}" "InstallDir"  "$INSTDIR"
+  WriteRegStr SHCTX "${APP_REG_ROOT}" "Version"     "${APP_VERSION}"
+  WriteRegStr SHCTX "${APP_REG_ROOT}" "InstallMode" "$MultiUser.InstallMode"
 
   ; Uninstaller
   WriteUninstaller "$INSTDIR\uninstall.exe"
 
   ; Add / Remove Programs
-  WriteRegStr   HKLM "${APP_UNINST_KEY}" "DisplayName"          "${APP_NAME}"
-  WriteRegStr   HKLM "${APP_UNINST_KEY}" "DisplayVersion"       "${APP_VERSION}"
-  WriteRegStr   HKLM "${APP_UNINST_KEY}" "Publisher"            "${APP_PUBLISHER}"
-  WriteRegStr   HKLM "${APP_UNINST_KEY}" "URLInfoAbout"         "${APP_URL}"
-  WriteRegStr   HKLM "${APP_UNINST_KEY}" "DisplayIcon"          "$INSTDIR\${APP_EXE}"
-  WriteRegStr   HKLM "${APP_UNINST_KEY}" "InstallLocation"      "$INSTDIR"
-  WriteRegStr   HKLM "${APP_UNINST_KEY}" "UninstallString"      '"$INSTDIR\uninstall.exe"'
-  WriteRegStr   HKLM "${APP_UNINST_KEY}" "QuietUninstallString" '"$INSTDIR\uninstall.exe" /S'
-  WriteRegDWORD HKLM "${APP_UNINST_KEY}" "NoModify" 1
-  WriteRegDWORD HKLM "${APP_UNINST_KEY}" "NoRepair" 1
+  WriteRegStr   SHCTX "${APP_UNINST_KEY}" "DisplayName"          "${APP_NAME}"
+  WriteRegStr   SHCTX "${APP_UNINST_KEY}" "DisplayVersion"       "${APP_VERSION}"
+  WriteRegStr   SHCTX "${APP_UNINST_KEY}" "Publisher"            "${APP_PUBLISHER}"
+  WriteRegStr   SHCTX "${APP_UNINST_KEY}" "URLInfoAbout"         "${APP_URL}"
+  WriteRegStr   SHCTX "${APP_UNINST_KEY}" "DisplayIcon"          "$INSTDIR\${APP_EXE}"
+  WriteRegStr   SHCTX "${APP_UNINST_KEY}" "InstallLocation"      "$INSTDIR"
+  WriteRegStr   SHCTX "${APP_UNINST_KEY}" "UninstallString"      '"$INSTDIR\uninstall.exe"'
+  WriteRegStr   SHCTX "${APP_UNINST_KEY}" "QuietUninstallString" '"$INSTDIR\uninstall.exe" /S'
+  WriteRegDWORD SHCTX "${APP_UNINST_KEY}" "NoModify" 1
+  WriteRegDWORD SHCTX "${APP_UNINST_KEY}" "NoRepair" 1
+
+  ; For per-user installs, tell Windows not to prompt for UAC on uninstall.
+  ${If} $MultiUser.InstallMode == "CurrentUser"
+    WriteRegDWORD SHCTX "${APP_UNINST_KEY}" "NoElevateOnModify" 1
+  ${EndIf}
 
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
-  WriteRegDWORD HKLM "${APP_UNINST_KEY}" "EstimatedSize" $0
+  WriteRegDWORD SHCTX "${APP_UNINST_KEY}" "EstimatedSize" $0
 SectionEnd
 
-Section "Add to system PATH" SecPath
+Section "Add to PATH" SecPath
   Push $0
   Push $1
 
-  ReadRegStr $0 HKLM "${ENV_REG_KEY}" "PATH"
+  ${If} $MultiUser.InstallMode == "AllUsers"
+    ReadRegStr $0 HKLM "${ENV_KEY_HKLM}" "PATH"
+  ${Else}
+    ReadRegStr $0 HKCU "${ENV_KEY_HKCU}" "PATH"
+  ${EndIf}
+
   ; Wrap with ';' so we don't match a substring of another entry.
   ${StrStr} $1 ";$0;" ";$INSTDIR;"
   ${If} $1 == ""
     ${If} $0 == ""
-      WriteRegExpandStr HKLM "${ENV_REG_KEY}" "PATH" "$INSTDIR"
+      StrCpy $1 "$INSTDIR"
     ${Else}
-      WriteRegExpandStr HKLM "${ENV_REG_KEY}" "PATH" "$0;$INSTDIR"
+      StrCpy $1 "$0;$INSTDIR"
     ${EndIf}
+
+    ${If} $MultiUser.InstallMode == "AllUsers"
+      WriteRegExpandStr HKLM "${ENV_KEY_HKLM}" "PATH" "$1"
+    ${Else}
+      WriteRegExpandStr HKCU "${ENV_KEY_HKCU}" "PATH" "$1"
+    ${EndIf}
+
     SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
-    WriteRegDWORD HKLM "${APP_REG_ROOT}" "PathAdded" 1
-    DetailPrint "Added $INSTDIR to system PATH"
+    WriteRegDWORD SHCTX "${APP_REG_ROOT}" "PathAdded" 1
+    DetailPrint "Added $INSTDIR to PATH"
   ${Else}
-    DetailPrint "$INSTDIR is already in system PATH"
+    DetailPrint "$INSTDIR is already in PATH"
   ${EndIf}
 
   Pop $1
@@ -152,17 +210,26 @@ Section "Add to system PATH" SecPath
 SectionEnd
 
 Section "Explorer right-click integration" SecContext
-  ; Right-click on folder background -> opens grep REPL in that folder.
-  WriteRegStr HKCR "${CTX_BG_KEY}" ""        "${APP_DISPLAY}"
-  WriteRegStr HKCR "${CTX_BG_KEY}" "Icon"    "$INSTDIR\${APP_EXE}"
-  WriteRegStr HKCR "${CTX_BG_KEY}\command" "" '"$INSTDIR\${APP_EXE}"'
+  ; HKCR writes go to HKLM\Software\Classes (system-wide). For a per-user
+  ; install we use HKCU\Software\Classes instead — Explorer merges the two
+  ; on read, so context menus show up either way.
+  ${If} $MultiUser.InstallMode == "AllUsers"
+    WriteRegStr HKCR "${CTX_BG_SUBKEY}"          ""     "${APP_DISPLAY}"
+    WriteRegStr HKCR "${CTX_BG_SUBKEY}"          "Icon" "$INSTDIR\${APP_EXE}"
+    WriteRegStr HKCR "${CTX_BG_SUBKEY}\command"  ""     '"$INSTDIR\${APP_EXE}"'
+    WriteRegStr HKCR "${CTX_DIR_SUBKEY}"         ""     "${APP_DISPLAY}"
+    WriteRegStr HKCR "${CTX_DIR_SUBKEY}"         "Icon" "$INSTDIR\${APP_EXE}"
+    WriteRegStr HKCR "${CTX_DIR_SUBKEY}\command" ""     '"cmd.exe" /C start "" /D "%1" "$INSTDIR\${APP_EXE}"'
+  ${Else}
+    WriteRegStr HKCU "Software\Classes\${CTX_BG_SUBKEY}"          ""     "${APP_DISPLAY}"
+    WriteRegStr HKCU "Software\Classes\${CTX_BG_SUBKEY}"          "Icon" "$INSTDIR\${APP_EXE}"
+    WriteRegStr HKCU "Software\Classes\${CTX_BG_SUBKEY}\command"  ""     '"$INSTDIR\${APP_EXE}"'
+    WriteRegStr HKCU "Software\Classes\${CTX_DIR_SUBKEY}"         ""     "${APP_DISPLAY}"
+    WriteRegStr HKCU "Software\Classes\${CTX_DIR_SUBKEY}"         "Icon" "$INSTDIR\${APP_EXE}"
+    WriteRegStr HKCU "Software\Classes\${CTX_DIR_SUBKEY}\command" ""     '"cmd.exe" /C start "" /D "%1" "$INSTDIR\${APP_EXE}"'
+  ${EndIf}
 
-  ; Right-click on a folder -> opens grep REPL with that folder as CWD.
-  WriteRegStr HKCR "${CTX_DIR_KEY}" ""        "${APP_DISPLAY}"
-  WriteRegStr HKCR "${CTX_DIR_KEY}" "Icon"    "$INSTDIR\${APP_EXE}"
-  WriteRegStr HKCR "${CTX_DIR_KEY}\command" "" '"cmd.exe" /C start "" /D "%1" "$INSTDIR\${APP_EXE}"'
-
-  WriteRegDWORD HKLM "${APP_REG_ROOT}" "ContextMenuAdded" 1
+  WriteRegDWORD SHCTX "${APP_REG_ROOT}" "ContextMenuAdded" 1
 SectionEnd
 
 ; ----------------------------------------------------------------------------
@@ -170,7 +237,7 @@ SectionEnd
 ; ----------------------------------------------------------------------------
 
 LangString DESC_SecCore    ${LANG_ENGLISH} "Installs ${APP_EXE} and the license. Required."
-LangString DESC_SecPath    ${LANG_ENGLISH} "Appends the install directory to the system PATH so '${APP_EXE}' is runnable from any shell."
+LangString DESC_SecPath    ${LANG_ENGLISH} "Appends the install directory to PATH so '${APP_EXE}' is runnable from any shell."
 LangString DESC_SecContext ${LANG_ENGLISH} "Adds 'Open in ${APP_NAME}' to the Explorer right-click menu for folders."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -185,11 +252,17 @@ LangString DESC_SecContext ${LANG_ENGLISH} "Adds 'Open in ${APP_NAME}' to the Ex
 
 Section "Uninstall"
   ; --- Remove PATH entry if we added one ---
-  ReadRegDWORD $0 HKLM "${APP_REG_ROOT}" "PathAdded"
+  ReadRegDWORD $0 SHCTX "${APP_REG_ROOT}" "PathAdded"
   ${If} $0 == 1
     Push $1
     Push $2
-    ReadRegStr $1 HKLM "${ENV_REG_KEY}" "PATH"
+
+    ${If} $MultiUser.InstallMode == "AllUsers"
+      ReadRegStr $1 HKLM "${ENV_KEY_HKLM}" "PATH"
+    ${Else}
+      ReadRegStr $1 HKCU "${ENV_KEY_HKCU}" "PATH"
+    ${EndIf}
+
     ${If} $1 != ""
       ; Wrap with ';' on each side, replace ";INSTDIR;" with ";", then unwrap.
       StrCpy $2 ";$1;"
@@ -197,23 +270,35 @@ Section "Uninstall"
       ${If} $2 == ";"
         StrCpy $2 ""
       ${Else}
-        ; Strip leading and trailing ';'
         StrLen $0 $2
         IntOp $0 $0 - 2
         StrCpy $2 $2 $0 1
       ${EndIf}
-      WriteRegExpandStr HKLM "${ENV_REG_KEY}" "PATH" "$2"
+
+      ${If} $MultiUser.InstallMode == "AllUsers"
+        WriteRegExpandStr HKLM "${ENV_KEY_HKLM}" "PATH" "$2"
+      ${Else}
+        WriteRegExpandStr HKCU "${ENV_KEY_HKCU}" "PATH" "$2"
+      ${EndIf}
       SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
     ${EndIf}
+
     Pop $2
     Pop $1
   ${EndIf}
 
-  ; --- Remove context menu entries (unconditional cleanup) ---
-  DeleteRegKey HKCR "${CTX_BG_KEY}\command"
-  DeleteRegKey HKCR "${CTX_BG_KEY}"
-  DeleteRegKey HKCR "${CTX_DIR_KEY}\command"
-  DeleteRegKey HKCR "${CTX_DIR_KEY}"
+  ; --- Remove context menu entries ---
+  ${If} $MultiUser.InstallMode == "AllUsers"
+    DeleteRegKey HKCR "${CTX_BG_SUBKEY}\command"
+    DeleteRegKey HKCR "${CTX_BG_SUBKEY}"
+    DeleteRegKey HKCR "${CTX_DIR_SUBKEY}\command"
+    DeleteRegKey HKCR "${CTX_DIR_SUBKEY}"
+  ${Else}
+    DeleteRegKey HKCU "Software\Classes\${CTX_BG_SUBKEY}\command"
+    DeleteRegKey HKCU "Software\Classes\${CTX_BG_SUBKEY}"
+    DeleteRegKey HKCU "Software\Classes\${CTX_DIR_SUBKEY}\command"
+    DeleteRegKey HKCU "Software\Classes\${CTX_DIR_SUBKEY}"
+  ${EndIf}
 
   ; --- Files ---
   Delete "$INSTDIR\${APP_EXE}"
@@ -222,6 +307,6 @@ Section "Uninstall"
   RMDir  "$INSTDIR"
 
   ; --- Registry cleanup ---
-  DeleteRegKey HKLM "${APP_UNINST_KEY}"
-  DeleteRegKey HKLM "${APP_REG_ROOT}"
+  DeleteRegKey SHCTX "${APP_UNINST_KEY}"
+  DeleteRegKey SHCTX "${APP_REG_ROOT}"
 SectionEnd

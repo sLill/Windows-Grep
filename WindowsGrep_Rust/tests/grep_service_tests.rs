@@ -126,6 +126,30 @@ fn context_without_flag() {
 }
 
 #[test]
+fn context_streams_across_line_boundary() {
+    // Streaming search is line-by-line, but -c context must still pull bytes
+    // from the previous/next line. Match 'X' starts at the first byte of line
+    // 2; -c 3 leading context needs 'ef\n' from line 1.
+    let tmp = std::env::temp_dir().join("wgrep_cross_line_ctx");
+    std::fs::create_dir_all(&tmp).unwrap();
+    let dest = tmp.join("multi.txt");
+    std::fs::write(&dest, "abcdef\nXyzabc\n").unwrap();
+
+    let cmd = format!("-c 3 'X' '{}'", dest.display());
+    let results = run_grep(&cmd);
+
+    assert_eq!(results.len(), 1, "expected one match");
+    let r = &results[0];
+    assert!(r.leading_context_string.contains("ef"),
+        "leading context should reach into the prior line, got {:?}", r.leading_context_string);
+    assert!(r.trailing_context_string.contains("yza"),
+        "trailing context wrong, got {:?}", r.trailing_context_string);
+    assert_eq!(r.line_number, 2, "match is on line 2");
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
 fn context_spans_utf8_boundary() {
     // Match is ASCII 'X' surrounded by 3-byte UTF-8 chars. A context length of 1
     // byte lands mid-codepoint on both sides — would panic before the fix.

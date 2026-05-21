@@ -102,6 +102,24 @@ pub fn build_search_regex(
         .map_err(|e| e.to_string())
 }
 
+/// Byte-level variant of `build_search_regex`, used by the streaming content
+/// search path so match positions correspond to real file byte offsets (no
+/// UTF-8 lossy remapping). Same pattern syntax.
+pub fn build_search_regex_bytes(
+    command_args: &HashMap<CommandFlag, String>,
+    pattern: &str,
+) -> Result<regex::bytes::Regex, String> {
+    let ignore_case = command_args.contains_key(&CommandFlag::IgnoreCase);
+    let ignore_breaks = command_args.contains_key(&CommandFlag::IgnoreBreaks);
+
+    regex::bytes::RegexBuilder::new(pattern)
+        .case_insensitive(ignore_case)
+        .dot_matches_new_line(ignore_breaks)
+        .multi_line(!ignore_breaks)
+        .build()
+        .map_err(|e| e.to_string())
+}
+
 // Trim at most one occurrence of any of `chars` from start and end.
 pub fn trim_once_chars<'a>(s: &'a str, chars: &[char]) -> &'a str {
     if s.is_empty() {

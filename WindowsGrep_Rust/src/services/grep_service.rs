@@ -59,6 +59,7 @@ struct SearchContext<'a> {
     command_args: &'a HashMap<CommandFlag, String>,
     pattern: &'a str,
     regex: &'a Regex,
+    bytes_regex: &'a regex::bytes::Regex,
     search_term: &'a str,
     hash_type: Option<HashType>,
     delete_flag: bool,
@@ -125,6 +126,16 @@ impl GrepService {
                 return Vec::new();
             }
         };
+        let search_regex_bytes = match command_flag_utils::build_search_regex_bytes(&command_args, &pattern) {
+            Ok(r) => r,
+            Err(e) => {
+                publisher.publish(&ConsoleItem::with_fg(
+                    format!("Invalid regex: {}\n", e),
+                    Color::BrightRed,
+                ));
+                return Vec::new();
+            }
+        };
 
         let search_term = command_args
             .get(&CommandFlag::SearchTerm)
@@ -159,6 +170,7 @@ impl GrepService {
             command_args: &command_args,
             pattern: &pattern,
             regex: &search_regex,
+            bytes_regex: &search_regex_bytes,
             search_term: &search_term,
             hash_type,
             delete_flag: command_args.contains_key(&CommandFlag::Delete),
@@ -277,6 +289,18 @@ fn process_content_match(
     results: &Mutex<Vec<GrepResult>>,
     metrics: &Mutex<SearchMetrics>,
 ) {
+    // Stream line-by-line when possible.
+    // Fall back to whole-file when we need the entire text in memory:
+    //   - delete/replace need to rewrite the file body
+    //   - --ignore-breaks lets patterns span newlines
+    //   - PDF/DOCX yield extracted text from a binary format
+    if can_stream(file, ctx) {
+        if stream_content_match(file, ctx, publisher, results, metrics).is_err() {
+            metrics.lock().unwrap().failed_read_files.push(file.clone());
+        }
+        return;
+    }
+
     let text = match read_file_text(&file.name) {
         Ok(t) => t,
         Err(_) => {
@@ -299,6 +323,141 @@ fn process_content_match(
         build_content_results(file, &matches, &text, ctx, publisher, results);
         // Increment once per file (matching original behaviour)
         metrics.lock().unwrap().total_files_matched_count += 1;
+    }
+}
+
+fn can_stream(file: &FileItem, ctx: &SearchContext) -> bool {
+    if ctx.delete_flag || ctx.replace_flag {
+        return false;
+    }
+    if ctx.command_args.contains_key(&CommandFlag::IgnoreBreaks) {
+        return false;
+    }
+    let ext = Path::new(&file.name)
+        .extension()
+        .map(|e| e.to_string_lossy().to_lowercase())
+        .unwrap_or_default();
+    ext != "pdf" && ext != "docx"
+}
+
+fn stream_content_match(
+    file: &FileItem,
+    ctx: &SearchContext,
+    publisher: &Publisher,
+    results: &Mutex<Vec<GrepResult>>,
+    metrics: &Mutex<SearchMetrics>,
+) -> std::io::Result<()> {
+    use std::io::{BufRead, BufReader};
+
+    let fh = std::fs::File::open(&file.name)?;
+    let mut reader = BufReader::with_capacity(64 * 1024, fh);
+
+    // Second handle opened lazily — only needed if we hit a match AND -c is set.
+    let mut context_handle: Option<std::fs::File> = None;
+    let mut file_results: Vec<GrepResult> = Vec::new();
+    let mut line_buf: Vec<u8> = Vec::new();
+    let mut file_offset: u64 = 0;
+    let mut line_number: i32 = 0;
+
+    loop {
+        line_buf.clear();
+        let n = reader.read_until(b'\n', &mut line_buf)?;
+        if n == 0 {
+            break;
+        }
+        line_number += 1;
+
+        for m in ctx.bytes_regex.find_iter(&line_buf) {
+            let abs_start = file_offset + m.start() as u64;
+            let abs_end = file_offset + m.end() as u64;
+            let matched = String::from_utf8_lossy(m.as_bytes()).into_owned();
+
+            let (leading, trailing) = if ctx.context_flag {
+                let handle = match context_handle.as_mut() {
+                    Some(h) => h,
+                    None => {
+                        context_handle = Some(std::fs::File::open(&file.name)?);
+                        context_handle.as_mut().unwrap()
+                    }
+                };
+                let lead = read_around(handle, abs_start, ctx.context_len, true)?;
+                let trail = read_around(handle, abs_end, ctx.context_len, false)?;
+                (
+                    format!("\n{}", String::from_utf8_lossy(&lead)),
+                    format!("{}\n", String::from_utf8_lossy(&trail)),
+                )
+            } else {
+                (String::new(), String::new())
+            };
+
+            let mut result = GrepResult::new(file.clone(), ResultScope::FileContent);
+            result.leading_context_string = leading;
+            result.matched_string = matched;
+            result.trailing_context_string = trailing;
+            result.line_number = line_number;
+
+            publisher.publish_many(&result.to_console_items());
+            file_results.push(result);
+        }
+
+        file_offset += n as u64;
+    }
+
+    if !file_results.is_empty() {
+        results.lock().unwrap().extend(file_results);
+        metrics.lock().unwrap().total_files_matched_count += 1;
+    }
+
+    Ok(())
+}
+
+/// Read up to `len` bytes around `pivot`, rounded outward to UTF-8 char
+/// boundaries so `from_utf8_lossy` doesn't produce U+FFFD from a half-read
+/// codepoint. `leading=true` returns bytes ending at `pivot`; otherwise bytes
+/// starting at `pivot`. Reads clamped at the file's actual size.
+fn read_around(
+    file: &mut std::fs::File,
+    pivot: u64,
+    len: usize,
+    leading: bool,
+) -> std::io::Result<Vec<u8>> {
+    use std::io::{Read, Seek, SeekFrom};
+
+    // UTF-8 codepoints are at most 4 bytes — 3 extra bytes is enough slack to
+    // walk to a boundary in either direction without re-reading.
+    const PAD: usize = 3;
+
+    if leading {
+        let read_start = pivot.saturating_sub((len + PAD) as u64);
+        let read_len = (pivot - read_start) as usize;
+        file.seek(SeekFrom::Start(read_start))?;
+        let mut buf = vec![0u8; read_len];
+        let n = file.read(&mut buf)?;
+        buf.truncate(n);
+
+        let ideal_start = pivot.saturating_sub(len as u64);
+        let mut start_in_buf = ((ideal_start - read_start) as usize).min(buf.len());
+        // Walk back over UTF-8 continuation bytes (0b10xxxxxx) to a boundary.
+        while start_in_buf > 0
+            && start_in_buf < buf.len()
+            && (buf[start_in_buf] & 0xC0) == 0x80
+        {
+            start_in_buf -= 1;
+        }
+        Ok(buf[start_in_buf..].to_vec())
+    } else {
+        let read_len = len + PAD;
+        file.seek(SeekFrom::Start(pivot))?;
+        let mut buf = vec![0u8; read_len];
+        let n = file.read(&mut buf)?;
+        buf.truncate(n);
+
+        let mut end_in_buf = len.min(buf.len());
+        while end_in_buf < buf.len() && (buf[end_in_buf] & 0xC0) == 0x80 {
+            end_in_buf += 1;
+        }
+        buf.truncate(end_in_buf);
+        Ok(buf)
     }
 }
 
