@@ -39,20 +39,23 @@ SetCompressor /SOLID lzma
 ; ----------------------------------------------------------------------------
 ; MultiUser configuration — must be defined before MultiUser.nsh is included.
 ;
-; MULTIUSER_EXECUTIONLEVEL=Standard:
-;   Launch without UAC. If the user picks "All users" on the install-mode
-;   page and isn't already elevated, MultiUser relaunches via runas (UAC).
+; MULTIUSER_EXECUTIONLEVEL=Highest:
+;   Standard users launch with no UAC and can install per-user. Admin users
+;   get one UAC prompt at launch (same as the old admin-only installer) and
+;   then choose per-user or all-users on the install-mode page. NSIS's
+;   built-in MultiUser.nsh requires Highest/Admin/Power for the mode page;
+;   "Standard" with on-demand elevation needs the Drizin NsisMultiUser
+;   plugin, which isn't installed.
 ;
 ; ALLOW_BOTH_INSTALLATIONS=0:
 ;   If an existing install of the other mode is detected, prompt to remove
 ;   it first instead of letting two installs coexist.
 ; ----------------------------------------------------------------------------
 
-!define MULTIUSER_EXECUTIONLEVEL                          Standard
+!define MULTIUSER_EXECUTIONLEVEL                          Highest
 !define MULTIUSER_MUI
 !define MULTIUSER_INSTALLMODE_COMMANDLINE
 !define MULTIUSER_INSTALLMODE_DEFAULT_CURRENTUSER
-!define MULTIUSER_INSTALLMODE_ALLOW_ELEVATION             1
 !define MULTIUSER_INSTALLMODE_ALLOW_BOTH_INSTALLATIONS    0
 !define MULTIUSER_INSTALLMODE_INSTDIR                     "${APP_NAME}"
 !define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_KEY        "${APP_REG_ROOT}"
@@ -68,8 +71,8 @@ SetCompressor /SOLID lzma
 !include "FileFunc.nsh"
 !include "StrFunc.nsh"
 
-; Declare StrFunc macros used below
-${StrStr}
+; Declare StrFunc macros used below. StrStr is already declared by
+; MultiUser.nsh; we only need to declare UnStrRep for the uninstaller.
 ${UnStrRep}
 
 ; ----------------------------------------------------------------------------
@@ -100,6 +103,9 @@ VIAddVersionKey "LegalCopyright"  "Copyright (c) Samuel Turner-Lill. MIT license
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "..\LICENSE"
+
+; Override the "all users" radio button label to flag that it needs admin.
+!define MULTIUSER_INSTALLMODEPAGE_TEXT_ALLUSERS "Install for anyone using this computer (Requires Admin)"
 !insertmacro MULTIUSER_PAGE_INSTALLMODE
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
