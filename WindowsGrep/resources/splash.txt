@@ -1,0 +1,5 @@
+[38;2;255;165;0mWindows Grep[0m
+[38;2;255;165;0mv6.0.1[0m
+
+[38;2;125;125;125mHelp (-h)
+https://github.com/sLill/Windows-Grep[0m

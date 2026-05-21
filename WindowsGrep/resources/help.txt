@@ -1,0 +1,15 @@
+
+Usage:	[38;2;255;165;0mgrep [options] search_term [path][0m
+
+-h, --help					: Show help. Use --help to view all commands
+-r	[38;2;125;125;125mgrep -r dug C:/[0m				: Recursive search
+-c	[38;2;125;125;125mgrep -c 20 dug C:/[0m			: Return n leading/trailing characters around matches
+-i	[38;2;125;125;125mgrep -i dug C:/[0m				: Ignore case
+-F	[38;2;125;125;125mgrep -F dug C:/[0m				: Plaintext search, no regular expressions
+-t	[38;2;125;125;125mgrep -t .txt,.js dug C:/[0m		: Include files by type(s) (, or ; delimited)
+-T	[38;2;125;125;125mgrep -T .css,.git dug C:/inetpub[0m	: Exclude files by type(s) (, or ; delimited)
+-p	[38;2;125;125;125mgrep -p AppData,Desktop dug C:/Users[0m	: Include filepaths by expression (, or ; delimited)
+-P	[38;2;125;125;125mgrep -P Windows,Users dug C:/[0m		: Exclude filepaths by expression (, or ; delimited)
+-k	[38;2;125;125;125mgrep -k 'Log.*' C:/[0m			: Match file names
+-o	[38;2;125;125;125mgrep -o output.txt dug .[0m		: Redirect output to file
+-v	[38;2;125;125;125mgrep -v dug ../[0m				: Verbose output
