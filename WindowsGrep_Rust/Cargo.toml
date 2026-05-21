@@ -13,6 +13,8 @@ path = "src/main.rs"
 
 [profile.release]
 opt-level = 3
+codegen-units = 1
+panics = "abort"
 lto = true
 strip = true
 
