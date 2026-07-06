@@ -1,72 +1,146 @@
 <p align="center">
-    <img src="https://i.imgur.com/15SNWH7.png" alt="Windows Grep logo" width="200" height="200">
+    <img src="https://i.imgur.com/15SNWH7.png" alt="Windows Grep logo" width="180" height="180">
 </p>
 
-<h1>Windows Grep</h1> 
+<h1 align="center">Windows Grep</h1>
 
-[![CodeFactor](https://www.codefactor.io/repository/github/slill/windows-grep/badge)](https://www.codefactor.io/repository/github/slill/windows-grep)
-![Rust](https://github.com/sLill/Windows-Grep/workflows/Rust/badge.svg)
+<p align="center">A fast, grep-style file search utility for Windows.</p>
 
-Command line grep-like file search utility for Windows. 
+<p align="center">
+    <a href="https://www.codefactor.io/repository/github/slill/windows-grep"><img src="https://www.codefactor.io/repository/github/slill/windows-grep/badge" alt="CodeFactor"></a>
+    <a href="https://github.com/sLill/Windows-Grep/actions/workflows/rust.yml"><img src="https://github.com/sLill/Windows-Grep/actions/workflows/rust.yml/badge.svg" alt="Build"></a>
+    <a href="https://github.com/sLill/Windows-Grep/releases"><img src="https://img.shields.io/github/v/release/sLill/Windows-Grep" alt="Release"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+</p>
 
-Built to mimic the command style and behavior of Unix grep.
-No bloated gui or custom shell. Just a fast, simple tool that runs in native cmd/powershell.</br>
+Windows Grep mirrors the command style and behavior of Unix `grep`. There's no GUI to learn or shell to install - run it as a one-shot
+command in cmd/PowerShell, right-click a folder in File Explorer, or drop into its optional
+interactive shell.
 
-<h4>Features</h4>
+## Features
 
-- Search by file name, file content, or even file hash
-- Search non-standard filetypes (pdf, docx, etc)
-- Mass edit files
-- Filter by file type, directory or size
-- Colored output, even in non-interactive shells 
-- And more
+- **Search contents, names, or hashes** - match file text, file names (`-k`), or an exact SHA-256/MD5 hash (`--hash`)
+- **Search non-plaintext filetypes** - extracts and searches text inside of all standard filetypes and extended filetypes (PDF, DOCX, XLSX, etc) 
+- **Mass edit** - find-and-replace or delete across thousands of files in a single command
+- **Rich filtering** - by file type, path expression, size, recursion depth, and hidden/system attributes
+- **Interactive shell** - optional REPL with built-in `cd`, `ls`, `pwd`, and `clear`
+- **Colored output**, even in remote shells
 
-<h2>Installation Methods</h2>
+## Installation
 
-<h4>Installer</h4>
+### Installer
 
-1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
-2. Download and run the setup executable. This will:
+1. Go to the [Releases](https://github.com/sLill/Windows-Grep/releases) page.
+2. Download and run the setup executable (`x64` or `arm64`). This will:
     - Install Windows Grep
-    - Add "grep" to the system PATH for command line use
-    - Add `Windows Grep` to the File Explorer context menu
+    - Add `grep` to the system `PATH` for command-line use
+    - Add **Windows Grep** to the File Explorer context menu
 
-<h4>Standalone</h4>
+### Standalone
 
-1. Visit the release tab (https://github.com/sLill/Windows-Grep/releases)
-2. Download one of the pre-compiled binaries
+1. Go to the [Releases](https://github.com/sLill/Windows-Grep/releases) page.
+2. Download a pre-compiled binary and run it directly.
 
-<h2>Usage</h2>
+### Build from source
 
-`File Explorer > Right-Click > Windows Grep`
-<br/><b>or</b><br/>
-`cmd/powershell`
+Requires the [Rust toolchain](https://rustup.rs/).
 
-<h4>grep [options] search_term [path]</h4>
-<img width="605" height="94" alt="image" src="https://github.com/user-attachments/assets/92d7c76e-7b64-4fed-a407-b8d6c6e1daaf" />
+```sh
+git clone https://github.com/sLill/Windows-Grep
+cd Windows-Grep/WindowsGrep
+cargo build --release
+# Binary: target/release/grep.exe
+```
 
-<h2>Reference</h2>
+## Usage
 
-| Flag                          |    | Example                      |
-| ------------------------- | -- | ------------------- |
-| -h, --help | Show Help         |  | 
-| -r         | Recursive Search  | `grep -r dug C:/` |
-| -i         | Ignore Case       | `grep -c 20 dug C:/` | 
-| -c         |  Show n Characters Around Match | `grep -i dug C:/` |
-| -F         | Plain Text Search | `grep -F dug C:/MyFile.txt` |
-| -t | Include files by Type(s) | `grep -t .txt,.js dug C:/` |
-| -T | Exclude files by Type(s) | `grep -T .css,.git dug C:/inetpub` |
-| -p | Include Filepaths by Expression | `grep -p AppData,Desktop dug C:/Users` | 
-| -P | Exclude Filepaths by Expression | `grep -P Windows,Users dug C:/` |
-| -k         | Filenames Only | `grep -k 'Log.*' C:/` |
-| -o         | Redirect Output to File | `grep -o output.txt dug .` |
-| -v         | Verbose Output | `grep -v dug ../` |
-| --max-depth=    | Max Depth | `grep --max-depth=3 dug C:/` |
-| --hidden   | Include Hidden Files | `grep --hidden dug C:/` |
-| --system   | Include System Files | `grep --system dug C:/` |
-| --filesize-min= | Minimum File Size (kb,mb,gb,tb)  | `grep --filesize-min=30mb dug C:/` |
-| --filesize-max= | Maximum File Size (kb,mb,gb,tb)  | `grep --filesize-max=3gb dug C:/` |
-| --ignore-breaks | Ignore Line Breaks | `grep --ignore-breaks dug C:/` |
-| --hash= | Match by File Hash (0=SHA256, 1=MD5) | `grep --hash=0 74184D0\w+ C:/` |
-| --replace= | Replace Text       | `grep --replace=dig dug C:/` |
-| --delete   | Delete Files         | `grep --delete dug C:/` | 
+```
+grep [options] search_term [path]
+```
+
+The `search_term` is treated as a regular expression unless `-F` is used. `path` is optional and
+defaults to the current directory. Searches are non-recursive unless `-r` is supplied.
+
+Launch from **File Explorer → Right-Click → Windows Grep**, or from cmd/PowerShell:
+
+<img width="605" alt="Windows Grep output example" src="https://github.com/user-attachments/assets/92d7c76e-7b64-4fed-a407-b8d6c6e1daaf" />
+
+## Examples
+
+```sh
+# Search the current directory for the term "error"
+grep error .
+
+# Recursive, case-insensitive search from C:\
+grep -r -i error C:/
+
+# Show 30 characters of context around each match
+grep -c 30 TODO .
+
+# Filter for .js and .ts filetypes only
+grep -t .js,.ts useEffect C:/app
+
+# Skip node_modules and .git directories
+grep -P node_modules,.git useEffect C:/app 
+
+# Match by file name instead of contents
+grep -k "report.pdf" C:/Users
+
+# Match a file by its exact SHA-256 hash
+grep --hash=0 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 C:/
+
+# Find and replace text across many files at once
+grep --replace=newName oldName C:/app
+
+# Delete every file that contains the term "dug" (use with care)
+grep --delete dug C:/temp
+```
+
+## Reference
+
+### Options
+
+| Flag | Description | Example |
+| --- | --- | --- |
+| `-h`, `--help` | Show help (`--help` lists every option) | `grep --help` |
+| `-r` | Search subdirectories recursively | `grep -r dug C:/` |
+| `-i` | Ignore case | `grep -i dug C:/` |
+| `-c <n>` | Print *n* characters of context around each match | `grep -c 20 dug C:/` |
+| `-F` | Treat the search term as plain text (no regex) | `grep -F "v1.2.0" .` |
+| `-t <types>` | Include only these file types (`,` or `;` delimited) | `grep -t .txt,.js dug C:/` |
+| `-T <types>` | Exclude these file types (`,` or `;` delimited) | `grep -T .png,.jpg dug C:/` |
+| `-p <exprs>` | Include only paths matching these expressions | `grep -p AppData,Desktop dug C:/Users` |
+| `-P <exprs>` | Exclude paths matching these expressions | `grep -P Windows,Users dug C:/` |
+| `-k` | Match file names instead of contents | `grep -k "Log.*" C:/` |
+| `-o <file>` | Mirror output to a file | `grep -o results.txt dug .` |
+| `-v` | Verbose — also list files that couldn't be read or modified | `grep -v dug ../` |
+
+### Long options
+
+| Flag | Description | Example |
+| --- | --- | --- |
+| `--hidden` | Include hidden files | `grep --hidden dug C:/` |
+| `--system` | Include system files | `grep --system dug C:/` |
+| `--max-depth=<n>` | Limit recursion depth (use with `-r`) | `grep -r --max-depth=3 dug C:/` |
+| `--filesize-min=<n>` | Skip files smaller than *n* (`kb`/`mb`/`gb`/`tb`) | `grep --filesize-min=30mb dug C:/` |
+| `--filesize-max=<n>` | Skip files larger than *n* (`kb`/`mb`/`gb`/`tb`) | `grep --filesize-max=3gb dug C:/` |
+| `--ignore-breaks` | Allow matches to span line breaks | `grep --ignore-breaks dug C:/` |
+| `--hash=<algo>` | Match by exact file hash — `0`=SHA-256, `1`=MD5 | `grep --hash=0 <hash> C:/` |
+| `--replace=<text>` | Replace matches in file contents (or rename files with `-k`) | `grep --replace=dig dug C:/` |
+| `--delete` | Delete matched files | `grep --delete dug C:/` |
+
+### Shell commands
+
+Available inside the interactive shell.
+
+| Command | Description |
+| --- | --- |
+| `cd <path>` | Change the working directory |
+| `ls` | List the working directory |
+| `pwd` | Print the working directory |
+| `clear` | Clear the screen |
+| `exit`, `quit` | Leave the shell |
+
+## License
+
+[MIT](LICENSE) © Samuel Turner-Lill
