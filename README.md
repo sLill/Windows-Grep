@@ -129,18 +129,6 @@ grep --delete dug C:/temp
 | `--replace=<text>` | Replace matches in file contents (or rename files with `-k`) | `grep --replace=dig dug C:/` |
 | `--delete` | Delete matched files | `grep --delete dug C:/` |
 
-### Shell commands
-
-Available inside the interactive shell.
-
-| Command | Description |
-| --- | --- |
-| `cd <path>` | Change the working directory |
-| `ls` | List the working directory |
-| `pwd` | Print the working directory |
-| `clear` | Clear the screen |
-| `exit`, `quit` | Leave the shell |
-
 ## License
 
 [MIT](LICENSE) © Samuel Turner-Lill
