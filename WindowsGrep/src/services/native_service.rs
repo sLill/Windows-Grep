@@ -59,7 +59,7 @@ fn list_files(console: &Arc<ConsoleService>) {
     let cancelled = AtomicBool::new(false);
 
     // List without recursion, excluding hidden and system files
-    let files = windows_utils::get_files(&cwd, false, usize::MAX, -1, -1, &cancelled, None, true, true);
+    let files = windows_utils::get_files(&cwd, false, usize::MAX, -1, -1, &cancelled, None, true, true, &|_| true);
 
     for file in files {
         let mut items = Vec::new();
@@ -67,9 +67,14 @@ fn list_files(console: &Arc<ConsoleService>) {
         let color = if file.is_directory { Color::BrightCyan } else { Color::Yellow };
         items.push(ConsoleItem::with_fg(file.name.clone(), color));
 
-        // File size
-        if !file.is_directory && file.file_size > -1 {
-            let (v, t) = windows_utils::get_reduced_size(file.file_size, 3);
+        // File size (get_files leaves it unmeasured)
+        let file_size = if file.is_directory {
+            -1
+        } else {
+            windows_utils::get_file_size_on_disk(&file.name).unwrap_or(-1)
+        };
+        if file_size > -1 {
+            let (v, t) = windows_utils::get_reduced_size(file_size, 3);
             items.push(ConsoleItem::with_fg(
                 format!(" {} {}(s)", v, t),
                 Color::BrightGreen,

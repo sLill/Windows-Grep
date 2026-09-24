@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::io::Write as _;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
@@ -66,9 +66,6 @@ struct SearchContext<'a> {
     replace_flag: bool,
     file_names_only: bool,
     file_hashes_only: bool,
-    include_filters: Option<Vec<String>>,
-    exclude_filters: Option<Vec<String>>,
-    path_include: Option<Vec<String>>,
     context_flag: bool,
     context_len: usize,
 }
@@ -177,9 +174,6 @@ impl GrepService {
             replace_flag: command_args.contains_key(&CommandFlag::Replace),
             file_names_only,
             file_hashes_only,
-            include_filters: command_flag_utils::get_file_type_include_filters(&command_args),
-            exclude_filters: command_flag_utils::get_file_type_exclude_filters(&command_args),
-            path_include: command_flag_utils::get_path_include_filters(&command_args),
             context_flag: command_args.contains_key(&CommandFlag::Context),
             context_len: command_args
                 .get(&CommandFlag::Context)
@@ -191,9 +185,6 @@ impl GrepService {
         all_files.par_iter().for_each(|file| {
             if cancelled.load(Ordering::SeqCst) { return; }
             if file.is_directory { return; }
-            if is_file_filtered(&file.name, &ctx.include_filters, &ctx.exclude_filters, &ctx.path_include) {
-                return;
-            }
 
             if ctx.file_hashes_only {
                 if let Some(ht) = ctx.hash_type {
@@ -205,6 +196,14 @@ impl GrepService {
                 process_content_match(file, &ctx, &publisher, &all_results, &metrics);
             }
         });
+
+        // The size summary totals every result, but the walk only measures files
+        // for a size filter: piped input or an unparsable size flag leaves gaps.
+        if command_args.contains_key(&CommandFlag::FileSizeMinimum)
+            || command_args.contains_key(&CommandFlag::FileSizeMaximum)
+        {
+            fill_missing_file_sizes(&mut all_results.lock().unwrap());
+        }
 
         let elapsed = start.elapsed().as_secs_f64();
 
@@ -238,9 +237,17 @@ fn collect_files(
     previous_results: &Option<Vec<GrepResult>>,
     cancelled: &Arc<AtomicBool>,
 ) -> Vec<FileItem> {
+    // Filtering here lets the walk drop files before it does any work for them
+    let include_filters = command_flag_utils::get_file_type_include_filters(command_args);
+    let exclude_filters = command_flag_utils::get_file_type_exclude_filters(command_args);
+    let path_include = command_flag_utils::get_path_include_filters(command_args);
+    let include_file = |name: &str| {
+        !is_file_filtered(name, &include_filters, &exclude_filters, &path_include)
+    };
+
     if let Some(prev) = previous_results {
         if !prev.is_empty() {
-            let mut seen = std::collections::HashSet::new();
+            let mut seen = HashSet::new();
             return prev
                 .iter()
                 .filter_map(|r| {
@@ -250,6 +257,7 @@ fn collect_files(
                         None
                     }
                 })
+                .filter(|f| include_file(&f.name))
                 .collect();
         }
     }
@@ -275,7 +283,26 @@ fn collect_files(
     windows_utils::get_files(
         path, recursive, max_depth, file_size_min, file_size_max,
         cancelled.as_ref(), exclude_dirs.as_deref(), skip_hidden, skip_system,
+        &include_file,
     )
+}
+
+fn fill_missing_file_sizes(results: &mut [GrepResult]) {
+    let unmeasured: HashSet<&str> = results
+        .iter()
+        .filter(|r| r.source_file.file_size == -1)
+        .map(|r| r.source_file.name.as_str())
+        .collect();
+    let sizes: HashMap<String, i64> = unmeasured
+        .into_par_iter()
+        .map(|name| (name.to_string(), windows_utils::get_file_size_on_disk(name).unwrap_or(-1)))
+        .collect();
+
+    for r in results.iter_mut() {
+        if let Some(&size) = sizes.get(&r.source_file.name) {
+            r.source_file.file_size = size;
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------

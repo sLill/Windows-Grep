@@ -1,5 +1,6 @@
 use std::path::Path;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, OnceLock};
 
 use once_cell::sync::Lazy;
 use sha2::{Digest as Sha256Digest, Sha256};
@@ -21,6 +22,14 @@ static CLUSTER_CACHE: Lazy<std::sync::Mutex<std::collections::HashMap<String, u6
 // Public API
 // ---------------------------------------------------------------------------
 
+/// Lists the directories under `root_path` and the files that pass
+/// `include_file` and the size limits (or just `root_path` when it is a file).
+/// With `recursive`, subdirectories are listed in parallel, but the result keeps
+/// the order of a sequential depth-first walk: each directory's entries, then
+/// each subdirectory's subtree in listing order.
+///
+/// Measuring a file's on-disk size opens it, so the walk only measures files
+/// when a size limit is set; otherwise their `file_size` is -1.
 pub fn get_files(
     root_path: &str,
     recursive: bool,
@@ -31,53 +40,96 @@ pub fn get_files(
     exclude_dirs: Option<&[String]>,
     skip_hidden: bool,
     skip_system: bool,
+    include_file: &(dyn Fn(&str) -> bool + Sync),
 ) -> Vec<FileItem> {
-    let mut result = Vec::new();
-    get_files_inner(
-        root_path, root_path, recursive, max_depth,
-        file_size_min, file_size_max, cancelled,
-        exclude_dirs, skip_hidden, skip_system,
-        &mut result,
-    );
-    result
+    if cancelled.load(Ordering::SeqCst) {
+        return Vec::new();
+    }
+
+    let path = Path::new(root_path);
+
+    // If the path points directly at a file, yield it and return
+    if path.extension().is_some() && path.is_file() {
+        if !include_file(root_path) {
+            return Vec::new();
+        }
+        return match get_file_size_on_disk(root_path) {
+            Ok(size) if validate_file_size(size, file_size_min, file_size_max) => {
+                vec![FileItem::new(root_path.to_string(), false, size)]
+            }
+            _ => Vec::new(),
+        };
+    }
+
+    let options = WalkOptions {
+        recursive, max_depth, file_size_min, file_size_max, cancelled,
+        exclude_dirs, skip_hidden, skip_system, include_file,
+    };
+    let root = Arc::new(DirScan::new(root_path.to_string(), 0));
+    rayon::scope(|scope| scan_dir(scope, Arc::clone(&root), &options));
+    flatten(root)
 }
 
-fn get_files_inner(
-    root_path: &str,
-    sub_path: &str,
+struct WalkOptions<'a> {
     recursive: bool,
     max_depth: usize,
     file_size_min: i64,
     file_size_max: i64,
-    cancelled: &AtomicBool,
-    exclude_dirs: Option<&[String]>,
+    cancelled: &'a AtomicBool,
+    exclude_dirs: Option<&'a [String]>,
     skip_hidden: bool,
     skip_system: bool,
-    result: &mut Vec<FileItem>,
+    include_file: &'a (dyn Fn(&str) -> bool + Sync),
+}
+
+/// A directory in the walk. The job that lists it fills `listing`; `flatten`
+/// reads the tree back once every job has finished.
+struct DirScan {
+    path: String,
+    depth: usize,
+    listing: OnceLock<DirListing>,
+}
+
+struct DirListing {
+    items: Vec<FileItem>,
+    subdirs: Vec<Arc<DirScan>>,
+}
+
+impl DirScan {
+    fn new(path: String, depth: usize) -> Self {
+        DirScan { path, depth, listing: OnceLock::new() }
+    }
+}
+
+// Each directory is its own job that spawns its subdirectories and returns, so
+// stack depth stays flat however deep the tree goes.
+fn scan_dir<'scope>(
+    scope: &rayon::Scope<'scope>,
+    dir: Arc<DirScan>,
+    options: &'scope WalkOptions<'scope>,
 ) {
-    if cancelled.load(Ordering::SeqCst) {
+    if options.cancelled.load(Ordering::SeqCst) {
         return;
     }
 
-    let path = Path::new(sub_path);
-
-    // If the path points directly at a file, yield it and return
-    if path.extension().is_some() && path.is_file() {
-        match get_file_size_on_disk(sub_path) {
-            Ok(size) if validate_file_size(size, file_size_min, file_size_max) => {
-                result.push(FileItem::new(sub_path.to_string(), false, size));
-            }
-            _ => {}
-        }
-        return;
+    let listing = list_dir(&dir, options);
+    for subdir in &listing.subdirs {
+        let subdir = Arc::clone(subdir);
+        scope.spawn(move |scope| scan_dir(scope, subdir, options));
     }
+    let _ = dir.listing.set(listing);
+}
 
-    let read_dir = match std::fs::read_dir(sub_path) {
+fn list_dir(dir: &DirScan, options: &WalkOptions) -> DirListing {
+    let mut listing = DirListing { items: Vec::new(), subdirs: Vec::new() };
+
+    let read_dir = match std::fs::read_dir(&dir.path) {
         Ok(rd) => rd,
-        Err(_) => return,
+        Err(_) => return listing,
     };
 
-    let mut subdirs: Vec<String> = Vec::new();
+    let descend = options.recursive && dir.depth < options.max_depth;
+    let measure_size = options.file_size_min != -1 || options.file_size_max != -1;
 
     for entry in read_dir {
         let entry = match entry {
@@ -88,74 +140,85 @@ fn get_files_inner(
         let entry_path = entry.path();
         let entry_path_str = entry_path.to_string_lossy().into_owned();
 
+        // On Windows this is read from the directory listing: no extra syscall
+        let metadata = entry.metadata().ok();
+
         // Skip hidden / system files on Windows
-        if skip_hidden || skip_system {
-            if let Ok(metadata) = entry.metadata() {
-                if should_skip_entry(&metadata, skip_hidden, skip_system) {
+        if options.skip_hidden || options.skip_system {
+            if let Some(ref metadata) = metadata {
+                if should_skip_entry(metadata, options.skip_hidden, options.skip_system) {
                     continue;
                 }
             }
         }
 
-        if entry_path.is_dir() {
-            result.push(FileItem::new(entry_path_str.clone(), true, -1));
-            subdirs.push(entry_path_str);
-        } else {
-            let size = get_file_size_on_disk(&entry_path_str).unwrap_or(-1);
-            if validate_file_size(size, file_size_min, file_size_max) {
-                result.push(FileItem::new(entry_path_str, false, size));
+        if is_dir_entry(metadata.as_ref(), &entry_path) {
+            if descend && !is_excluded_dir(&entry_path, options.exclude_dirs) {
+                listing.subdirs.push(Arc::new(DirScan::new(entry_path_str.clone(), dir.depth + 1)));
+            }
+            listing.items.push(FileItem::new(entry_path_str, true, -1));
+        } else if (options.include_file)(&entry_path_str) {
+            let size = if measure_size {
+                get_file_size_on_disk(&entry_path_str).unwrap_or(-1)
+            } else {
+                -1
+            };
+            if validate_file_size(size, options.file_size_min, options.file_size_max) {
+                listing.items.push(FileItem::new(entry_path_str, false, size));
             }
         }
     }
 
-    if !recursive {
-        return;
-    }
-
-    let depth = compute_depth(root_path, sub_path);
-    if depth >= max_depth {
-        return;
-    }
-
-    for subdir in subdirs {
-        if cancelled.load(Ordering::SeqCst) {
-            return;
-        }
-
-        if let Some(excludes) = exclude_dirs {
-            let dir_name = Path::new(&subdir)
-                .file_name()
-                .map(|n| n.to_string_lossy().into_owned())
-                .unwrap_or_default();
-            if excludes.iter().any(|ex| {
-                let trimmed = ex.trim_matches(|c| c == '\'' || c == '"');
-                dir_name.contains(trimmed)
-            }) {
-                continue;
-            }
-        }
-
-        get_files_inner(
-            root_path, &subdir, recursive, max_depth,
-            file_size_min, file_size_max, cancelled,
-            exclude_dirs, skip_hidden, skip_system,
-            result,
-        );
-    }
+    listing
 }
 
-fn compute_depth(root: &str, sub: &str) -> usize {
-    if root == sub {
-        return 0;
+fn flatten(root: Arc<DirScan>) -> Vec<FileItem> {
+    let mut result = Vec::new();
+    let mut pending = vec![root];
+    while let Some(dir) = pending.pop() {
+        // A directory left unlisted by cancellation has no listing
+        if let Some(listing) = Arc::into_inner(dir).and_then(|d| d.listing.into_inner()) {
+            result.extend(listing.items);
+            pending.extend(listing.subdirs.into_iter().rev());
+        }
     }
-    Path::new(sub)
-        .strip_prefix(root)
-        .map(|rel| rel.components().count())
-        .unwrap_or(0)
+    result
+}
+
+fn is_excluded_dir(dir: &Path, exclude_dirs: Option<&[String]>) -> bool {
+    if let Some(excludes) = exclude_dirs {
+        let dir_name = dir
+            .file_name()
+            .map(|n| n.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        return excludes.iter().any(|ex| {
+            let trimmed = ex.trim_matches(|c| c == '\'' || c == '"');
+            dir_name.contains(trimmed)
+        });
+    }
+    false
 }
 
 fn validate_file_size(size: i64, min: i64, max: i64) -> bool {
     (min == -1 || size >= min) && (max == -1 || size <= max)
+}
+
+/// Same answer as `entry_path.is_dir()` without opening the entry. The listing
+/// describes a junction or symlink itself rather than its target, so reparse
+/// points still get the link-following stat and are descended into as before.
+#[cfg(windows)]
+fn is_dir_entry(metadata: Option<&std::fs::Metadata>, entry_path: &Path) -> bool {
+    use std::os::windows::fs::MetadataExt;
+    const FILE_ATTRIBUTE_REPARSE_POINT: u32 = 0x400;
+    match metadata {
+        Some(m) if m.file_attributes() & FILE_ATTRIBUTE_REPARSE_POINT == 0 => m.is_dir(),
+        _ => entry_path.is_dir(),
+    }
+}
+
+#[cfg(not(windows))]
+fn is_dir_entry(_: Option<&std::fs::Metadata>, entry_path: &Path) -> bool {
+    entry_path.is_dir()
 }
 
 #[cfg(windows)]

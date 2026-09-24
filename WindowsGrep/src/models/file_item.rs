@@ -2,6 +2,7 @@
 pub struct FileItem {
     pub name: String,
     pub is_directory: bool,
+    /// On-disk size in bytes, or -1 when unmeasured or unavailable
     pub file_size: i64,
 }
 

@@ -6,7 +6,7 @@ use std::sync::atomic::AtomicBool;
 use windows_grep::services::console_service::ConsoleService;
 use windows_grep::services::grep_service::GrepService;
 use windows_grep::utils::windows_grep_utils::parse_grep_command_args;
-use windows_grep::utils::windows_utils::get_file_size_on_disk;
+use windows_grep::utils::windows_utils::{get_file_size_on_disk, get_files};
 
 static ATTR_SETUP: Once = Once::new();
 
@@ -95,6 +95,99 @@ fn recursive_disabled() {
         .filter_map(|r| Path::new(&r.source_file.name).parent().map(|p| p.to_string_lossy().into_owned()))
         .collect();
     assert_eq!(dirs.len(), 1, "expected results from exactly one directory");
+}
+
+// --- Directory walk ---
+
+#[test]
+fn walk_matches_sequential_order() {
+    // The walk lists directories in parallel but must return what a sequential
+    // depth-first walk would: each directory's entries, then each subdirectory's
+    // subtree in listing order.
+    fn sequential_walk(dir: &Path, out: &mut Vec<(String, bool)>) {
+        let mut subdirs = Vec::new();
+        for entry in std::fs::read_dir(dir).unwrap() {
+            let path = entry.unwrap().path();
+            let is_dir = path.is_dir();
+            out.push((path.to_string_lossy().into_owned(), is_dir));
+            if is_dir {
+                subdirs.push(path);
+            }
+        }
+        for sub in subdirs {
+            sequential_walk(&sub, out);
+        }
+    }
+
+    let tmp = std::env::temp_dir().join("wgrep_walk_order");
+    std::fs::remove_dir_all(&tmp).ok();
+    for a in 0..4 {
+        for b in 0..4 {
+            let dir = tmp.join(format!("dir_{}", a)).join(format!("sub_{}", b));
+            std::fs::create_dir_all(&dir).unwrap();
+            std::fs::write(dir.join("leaf.txt"), "x").unwrap();
+        }
+        std::fs::write(tmp.join(format!("file_{}.txt", a)), "x").unwrap();
+    }
+
+    let mut expected = Vec::new();
+    sequential_walk(&tmp, &mut expected);
+
+    let cancelled = AtomicBool::new(false);
+    let root = tmp.to_string_lossy();
+    let files = get_files(&root, true, usize::MAX, -1, -1, &cancelled, None, false, false, &|_| true);
+    let actual: Vec<(String, bool)> = files.iter().map(|f| (f.name.clone(), f.is_directory)).collect();
+    assert_eq!(actual, expected);
+    assert!(files.iter().all(|f| f.file_size == -1), "no size filter, so nothing should be measured");
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
+fn recursive_follows_junctions() {
+    // Directory-ness comes from the listing, which describes a junction rather than
+    // its target; the walk must still descend into it.
+    let tmp = std::env::temp_dir().join("wgrep_junction");
+    std::fs::remove_dir_all(&tmp).ok();
+    let target = tmp.join("target");
+    std::fs::create_dir_all(&target).unwrap();
+    std::fs::write(target.join("inside.txt"), "junction needle").unwrap();
+    let status = std::process::Command::new("cmd")
+        .args(["/C", "mklink", "/J"])
+        .arg(tmp.join("link"))
+        .arg(&target)
+        .status()
+        .unwrap();
+    assert!(status.success(), "mklink /J failed");
+
+    let cmd = format!("-r 'junction needle' '{}'", tmp.display());
+    let names: Vec<String> = run_grep(&cmd).into_iter().map(|r| r.source_file.name).collect();
+    assert!(names.iter().any(|n| n.ends_with("target\\inside.txt")), "missing direct match: {:?}", names);
+    assert!(names.iter().any(|n| n.ends_with("link\\inside.txt")), "junction not descended: {:?}", names);
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
+fn piped_results_are_filtered_and_measured() {
+    // A piped command searches the previous results' files instead of walking:
+    // its -t filter must still apply, and its size summary needs sizes that the
+    // first command never measured.
+    let td = test_data_dir();
+    let first = run_grep(&format!("-r sample '{}'", td.display()));
+    assert!(first.iter().any(|r| !r.source_file.name.ends_with(".txt")), "expected non-.txt matches to filter out");
+
+    let console = Arc::new(ConsoleService::new());
+    let cancelled = Arc::new(AtomicBool::new(false));
+    let args = parse_grep_command_args(&format!("-t txt --filesize-min=1 sample '{}'", td.display())).unwrap();
+    let results = GrepService::new(console).run_command(args, Some(first), cancelled);
+
+    assert!(!results.is_empty());
+    for r in &results {
+        assert!(r.source_file.name.ends_with(".txt"), "-t txt let through '{}'", r.source_file.name);
+        assert_eq!(Some(r.source_file.file_size), get_file_size_on_disk(&r.source_file.name).ok(),
+            "size not filled in for '{}'", r.source_file.name);
+    }
 }
 
 // --- FileNamesOnly (-k) ---
