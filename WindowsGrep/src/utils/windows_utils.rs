@@ -259,7 +259,9 @@ pub fn get_file_hash(file_path: &str, hash_type: HashType) -> Result<String, Str
 
     let file = std::fs::File::open(file_path).map_err(|e| e.to_string())?;
     let mut reader = std::io::BufReader::with_capacity(64 * 1024, file);
-    let mut buf = [0u8; 64 * 1024];
+    // Heap, not stack: LTO inlines this into rayon's recursive work-splitter, so a
+    // stack array here is paid at every split/steal level and overflows worker stacks.
+    let mut buf = vec![0u8; 64 * 1024];
 
     let hash = match hash_type {
         HashType::Sha256 => {
