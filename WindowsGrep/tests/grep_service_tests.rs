@@ -1,4 +1,6 @@
+use std::io::{Read, Write};
 use std::path::Path;
+use std::process::Stdio;
 use std::sync::Arc;
 use std::sync::Once;
 use std::sync::atomic::AtomicBool;
@@ -33,7 +35,8 @@ fn test_data_dir() -> std::path::PathBuf {
 }
 
 fn run_grep(command: &str) -> Vec<windows_grep::models::grep_result::GrepResult> {
-    let console = Arc::new(ConsoleService::new());
+    // Silent, since results go straight to stdout, past the test harness's capture
+    let console = Arc::new(ConsoleService::silent());
     let cancelled = Arc::new(AtomicBool::new(false));
     let args = parse_grep_command_args(command)
         .unwrap_or_else(|e| panic!("parse failed for '{}': {}", command, e));
@@ -200,7 +203,7 @@ fn piped_results_are_filtered_and_measured() {
     let first = run_grep(&format!("-r sample '{}'", td.display()));
     assert!(first.iter().any(|r| !r.source_file.name.ends_with(".txt")), "expected non-.txt matches to filter out");
 
-    let console = Arc::new(ConsoleService::new());
+    let console = Arc::new(ConsoleService::silent());
     let cancelled = Arc::new(AtomicBool::new(false));
     let args = parse_grep_command_args(&format!("-t txt --filesize-min=1 sample '{}'", td.display())).unwrap();
     let results = GrepService::new(console).run_command(args, Some(first), cancelled);
@@ -944,6 +947,104 @@ fn pdf_extraction_prints_nothing_of_its_own() {
     let ansi = regex::Regex::new("\x1b\\[[0-9;]*m").unwrap();
     let stdout = String::from_utf8(grep.stdout).unwrap();
     assert_eq!(ansi.replace_all(&stdout, ""), published, "stdout carries more than grep published");
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+// --- Closed stdout ---
+
+/// Creates `count` files in `dir`, each with `lines` lines reading "needle".
+fn write_needle_files(dir: &Path, count: usize, lines: usize) {
+    std::fs::create_dir_all(dir).unwrap();
+    let content = "needle\n".repeat(lines);
+    for i in 0..count {
+        std::fs::write(dir.join(format!("needles_{}.txt", i)), &content).unwrap();
+    }
+}
+
+#[test]
+fn closed_stdout_pipe_cancels_search_quietly() {
+    // Printing to a pipe whose reader had exited, as `head -c 400` does, panicked in
+    // every worker still publishing results, and grep exited with code 101.
+    let tmp = std::env::temp_dir().join("wgrep_closed_pipe");
+    std::fs::remove_dir_all(&tmp).ok();
+    let docs = tmp.join("docs");
+    write_needle_files(&docs, 200, 50);
+    let out = tmp.join("output.txt");
+
+    let mut grep = std::process::Command::new(env!("CARGO_BIN_EXE_grep"))
+        .arg("-o").arg(&out).arg("-r").arg("needle").arg(&docs)
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .unwrap();
+    // The results, about 1 MB, can't all fit in the pipe, so grep is still writing
+    // when the read end closes here
+    let mut head = [0u8; 400];
+    grep.stdout.take().unwrap().read_exact(&mut head).unwrap();
+    let grep = grep.wait_with_output().unwrap();
+
+    assert!(grep.status.success(), "grep exited with {:?}", grep.status);
+    assert!(grep.stderr.is_empty(), "stderr: {}", String::from_utf8_lossy(&grep.stderr));
+    // -o still gets everything published; its summary shows that the search
+    // stopped early, as it does for Ctrl+C
+    let published = std::fs::read_to_string(&out).unwrap();
+    let summary = regex::Regex::new(r"\[(\d+) result\(s\) \d+ file\(s\)\]").unwrap();
+    let results: usize = summary.captures(&published).expect("no summary in -o file")[1].parse().unwrap();
+    assert!(results < 200 * 50, "the search wasn't cancelled: {} result(s)", results);
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
+fn closed_stdout_pipe_ends_repl() {
+    // Each REPL command clears the cancellation flag, so the loop has to stop by
+    // itself rather than run the next command with nowhere to print it.
+    let tmp = std::env::temp_dir().join("wgrep_closed_pipe_repl");
+    std::fs::remove_dir_all(&tmp).ok();
+    let docs = tmp.join("docs");
+    write_needle_files(&docs, 200, 50);
+    let next_out = tmp.join("next.txt");
+
+    let mut grep = std::process::Command::new(env!("CARGO_BIN_EXE_grep"))
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .unwrap();
+    // Unquoted -o path: the parser would keep quote characters in it
+    let commands = format!("-r needle '{0}'\n-o {1} -r needle '{0}'\n", docs.display(), next_out.display());
+    grep.stdin.take().unwrap().write_all(commands.as_bytes()).unwrap();
+    let mut head = [0u8; 400];
+    grep.stdout.take().unwrap().read_exact(&mut head).unwrap();
+    let grep = grep.wait_with_output().unwrap();
+
+    assert!(grep.status.success(), "grep exited with {:?}", grep.status);
+    assert!(grep.stderr.is_empty(), "stderr: {}", String::from_utf8_lossy(&grep.stderr));
+    assert!(!next_out.exists(), "the REPL ran the next command after stdout closed");
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
+fn failed_stdout_write_is_reported() {
+    // Unlike a reader closing the pipe, any other failed write loses output
+    let tmp = std::env::temp_dir().join("wgrep_readonly_stdout");
+    std::fs::remove_dir_all(&tmp).ok();
+    std::fs::create_dir_all(&tmp).unwrap();
+    let target = tmp.join("stdout.txt");
+    std::fs::write(&target, "").unwrap();
+
+    // A handle opened only for reading refuses writes (access denied)
+    let grep = std::process::Command::new(env!("CARGO_BIN_EXE_grep"))
+        .arg("-h")
+        .stdout(std::fs::File::open(&target).unwrap())
+        .output()
+        .unwrap();
+
+    assert_eq!(grep.status.code(), Some(1));
+    let stderr = String::from_utf8_lossy(&grep.stderr);
+    assert!(stderr.starts_with("Failed writing to stdout: "), "stderr: {}", stderr);
 
     std::fs::remove_dir_all(&tmp).ok();
 }

@@ -1,4 +1,5 @@
 use std::io::{self, BufRead, Write as _};
+use std::process::ExitCode;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 
@@ -11,12 +12,13 @@ use windows_grep::services::native_service::NativeService;
 use windows_grep::utils::{console_utils, windows_grep_utils, windows_utils};
 use colored::Color;
 
-fn main() {
+fn main() -> ExitCode {
     windows_utils::try_enable_ansi();
 
     let args: Vec<String> = std::env::args().skip(1).collect();
     let cancelled = Arc::new(AtomicBool::new(false));
-    let console = Arc::new(ConsoleService::new());
+    // A failed write to stdout also sets the cancellation flag, ending the search
+    let console = Arc::new(ConsoleService::new(Arc::clone(&cancelled)));
 
     // Handle Ctrl+C: set the cancellation flag rather than killing the process
     {
@@ -29,7 +31,7 @@ fn main() {
     if args.is_empty() {
         // REPL mode
         console_utils::publish_splash(&console);
-        repl_loop(console, cancelled);
+        repl_loop(Arc::clone(&console), cancelled);
     } else {
         // Single command from CLI args
         let command = args
@@ -39,12 +41,26 @@ fn main() {
             .join(" ");
         run_command(&command, &console, Arc::clone(&cancelled));
     }
+
+    // A reader that exits early, like `head`, closes the pipe (ERROR_NO_DATA or
+    // ERROR_BROKEN_PIPE, both BrokenPipe), which just ends the output. Any other
+    // failed write lost results, so report it.
+    match console.write_error() {
+        Some(e) if e.kind() != io::ErrorKind::BrokenPipe => {
+            let _ = writeln!(io::stderr(), "Failed writing to stdout: {}", e);
+            ExitCode::FAILURE
+        }
+        _ => ExitCode::SUCCESS,
+    }
 }
 
 fn repl_loop(console: Arc<ConsoleService>, cancelled: Arc<AtomicBool>) {
     let stdin = io::stdin();
     loop {
         console_utils::publish_prompt(&console);
+        if console.write_error().is_some() {
+            break;
+        }
         let _ = io::stdout().flush();
 
         let mut line = String::new();

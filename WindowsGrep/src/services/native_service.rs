@@ -1,5 +1,4 @@
 use std::sync::Arc;
-use std::io::Write as _;
 
 use crate::enums::native_command_type::NativeCommandType;
 use crate::models::console_item::ConsoleItem;
@@ -7,7 +6,7 @@ use crate::models::native_command::NativeCommand;
 use crate::services::console_service::ConsoleService;
 use colored::Color;
 
-use crate::utils::windows_utils;
+use crate::utils::{console_utils, windows_utils};
 
 pub struct NativeService;
 
@@ -31,11 +30,7 @@ impl NativeService {
                     ));
                 }
             }
-            NativeCommandType::ClearConsole => {
-                // ANSI clear screen + move cursor to top
-                print!("\x1b[2J\x1b[H");
-                let _ = std::io::stdout().flush();
-            }
+            NativeCommandType::ClearConsole => console_utils::clear_console(console),
             NativeCommandType::PrintWorkingDirectory => {
                 let cwd = std::env::current_dir()
                     .map(|p| p.to_string_lossy().into_owned())

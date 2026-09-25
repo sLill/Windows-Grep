@@ -21,6 +21,7 @@ pub fn publish_prompt(console: &Arc<ConsoleService>) {
     console.write_raw("$ ");
 }
 
-pub fn clear_console() {
-    print!("\x1b[2J\x1b[H");
+pub fn clear_console(console: &Arc<ConsoleService>) {
+    // ANSI clear screen + move cursor to top
+    console.write_raw("\x1b[2J\x1b[H");
 }
