@@ -5,6 +5,7 @@ use std::sync::atomic::AtomicBool;
 
 use windows_grep::services::console_service::ConsoleService;
 use windows_grep::services::grep_service::GrepService;
+use windows_grep::utils::file_utils::read_pdf;
 use windows_grep::utils::windows_grep_utils::parse_grep_command_args;
 use windows_grep::utils::windows_utils::{get_file_size_on_disk, get_files};
 
@@ -715,6 +716,126 @@ fn outfile_enabled() {
         assert!(out_path.exists(), "output file not created: {}", out_path.display());
         assert!(out_path.metadata().unwrap().len() > 0, "output file is empty");
     }
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+// --- PDF extraction ---
+
+/// Writes a PDF from its object bodies, numbered from 1; object 1 is the catalog.
+fn write_pdf(path: &Path, objects: &[&str]) {
+    let mut pdf = b"%PDF-1.4\n".to_vec();
+    let mut offsets = Vec::new();
+    for (i, body) in objects.iter().enumerate() {
+        offsets.push(pdf.len());
+        pdf.extend_from_slice(format!("{} 0 obj\n{}\nendobj\n", i + 1, body).as_bytes());
+    }
+    let xref_offset = pdf.len();
+    pdf.extend_from_slice(format!("xref\n0 {}\n0000000000 65535 f \n", objects.len() + 1).as_bytes());
+    for offset in offsets {
+        pdf.extend_from_slice(format!("{:010} 00000 n \n", offset).as_bytes());
+    }
+    pdf.extend_from_slice(format!(
+        "trailer\n<< /Size {} /Root 1 0 R >>\nstartxref\n{}\n%%EOF\n",
+        objects.len() + 1, xref_offset
+    ).as_bytes());
+    std::fs::write(path, pdf).unwrap();
+}
+
+/// Writes a one-page PDF that lopdf parses but pdf-extract panics on: the page
+/// selects an /Indexed colour space, a family pdf-extract doesn't model.
+fn write_pdf_that_panics_pdf_extract(path: &Path) {
+    write_pdf(path, &[
+        "<< /Type /Catalog /Pages 2 0 R >>",
+        "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R \
+         /Resources << /ColorSpace << /CS0 [/Indexed /DeviceRGB 1 <000000FFFFFF>] >> >> >>",
+        "<< /Length 7 >>\nstream\n/CS0 cs\nendstream",
+    ]);
+}
+
+/// Writes a one-page PDF showing "needle" in a font whose /Differences names code
+/// 101 /E while its ToUnicode CMap maps it to "e"; pdf-extract 0.7 printed that
+/// conflict to stdout ("Unicode mismatch ...").
+fn write_pdf_with_unicode_mismatch(path: &Path) {
+    let content = "BT /F1 12 Tf 72 720 Td (needle) Tj ET";
+    let cmap = "begincmap\n1 begincodespacerange <00> <FF> endcodespacerange\n\
+                1 beginbfrange <20> <7E> <0020> endbfrange\nendcmap";
+    write_pdf(path, &[
+        "<< /Type /Catalog /Pages 2 0 R >>",
+        "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R \
+         /Resources << /Font << /F1 5 0 R >> >> >>",
+        &format!("<< /Length {} >>\nstream\n{}\nendstream", content.len(), content),
+        "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica \
+         /Encoding << /Differences [101 /E] >> /ToUnicode 6 0 R >>",
+        &format!("<< /Length {} >>\nstream\n{}\nendstream", cmap.len(), cmap),
+    ]);
+}
+
+#[test]
+fn pdf_extraction_panic_becomes_error() {
+    let tmp = std::env::temp_dir().join("wgrep_pdf_panic_read");
+    std::fs::create_dir_all(&tmp).unwrap();
+    let pdf = tmp.join("indexed.pdf");
+    write_pdf_that_panics_pdf_extract(&pdf);
+
+    match read_pdf(&pdf.to_string_lossy()) {
+        Err(e) => assert!(e.contains("panicked"), "expected a contained panic, got error {:?}", e),
+        Ok(text) => panic!("fixture no longer makes pdf-extract panic (extracted {:?})", text),
+    }
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
+fn pdf_extraction_panic_counts_file_as_unreadable() {
+    // The panic used to unwind out of the parallel search, ending the process
+    // (exit code 101) before any summary was printed.
+    let tmp = std::env::temp_dir().join("wgrep_pdf_panic_search");
+    std::fs::remove_dir_all(&tmp).ok();
+    let docs = tmp.join("docs");
+    std::fs::create_dir_all(&docs).unwrap();
+    write_pdf_that_panics_pdf_extract(&docs.join("indexed.pdf"));
+    std::fs::write(docs.join("notes.txt"), "needle").unwrap();
+    let out = tmp.join("output.txt");
+
+    let results = run_grep(&format!("-o {} needle '{}'", out.display(), docs.display()));
+
+    assert_eq!(results.len(), 1, "the search should still cover the text file");
+    assert!(results[0].source_file.name.ends_with("notes.txt"));
+    let output = std::fs::read_to_string(&out).unwrap();
+    assert!(output.contains("[1 file(s) unreadable/inaccessible]"), "PDF not counted as unreadable: {:?}", output);
+    assert!(output.contains("[1 result(s) 1 file(s)]"), "summary missing: {:?}", output);
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
+fn pdf_extraction_prints_nothing_of_its_own() {
+    // pdf-extract 0.7 println!'d font diagnostics straight to stdout, outside the
+    // console lock, so they landed among and inside result lines. stdout must carry
+    // exactly what grep published, which -o also copies to a file.
+    let tmp = std::env::temp_dir().join("wgrep_pdf_quiet");
+    std::fs::remove_dir_all(&tmp).ok();
+    std::fs::create_dir_all(&tmp).unwrap();
+    let pdf = tmp.join("mismatch.pdf");
+    write_pdf_with_unicode_mismatch(&pdf);
+    let out = tmp.join("output.txt");
+
+    // The real binary, since in-process prints would vanish into the test harness's capture
+    let grep = std::process::Command::new(env!("CARGO_BIN_EXE_grep"))
+        .arg("-o").arg(&out).arg("needle").arg(&pdf)
+        .output()
+        .unwrap();
+
+    assert!(grep.status.success(), "grep exited with {:?}", grep.status);
+    assert!(grep.stderr.is_empty(), "stderr: {}", String::from_utf8_lossy(&grep.stderr));
+    let published = std::fs::read_to_string(&out).unwrap();
+    assert!(published.contains("[1 result(s) 1 file(s)]"), "PDF text not searched: {:?}", published);
+    let ansi = regex::Regex::new("\x1b\\[[0-9;]*m").unwrap();
+    let stdout = String::from_utf8(grep.stdout).unwrap();
+    assert_eq!(ansi.replace_all(&stdout, ""), published, "stdout carries more than grep published");
 
     std::fs::remove_dir_all(&tmp).ok();
 }
