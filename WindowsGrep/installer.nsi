@@ -31,8 +31,8 @@ SetCompressor /SOLID lzma
 
 !define APP_NAME        "WindowsGrep"
 !define APP_DISPLAY     "Windows Grep"
-!define APP_VERSION     "6.0.1"
-!define APP_VERSION_4   "6.0.1.0"
+!define APP_VERSION     "6.0.2"
+!define APP_VERSION_4   "6.0.2.0"
 !define APP_PUBLISHER   "sLill"
 !define APP_EXE         "grep.exe"
 !define APP_URL         "https://github.com/sLill/Windows-Grep"
