@@ -40,6 +40,28 @@ fn run_grep(command: &str) -> Vec<windows_grep::models::grep_result::GrepResult>
     GrepService::new(console).run_command(args, None, cancelled)
 }
 
+/// Runs `command` with its output copied to `out_path` and returns the command
+/// summary, the line printed just before the elapsed time.
+fn run_grep_summary(command: &str, out_path: &Path) -> String {
+    // Unquoted: the parser would keep quote characters in the -o path
+    run_grep(&format!("-o {} {}", out_path.display(), command));
+    let text = std::fs::read_to_string(out_path).unwrap();
+    let lines: Vec<&str> = text.lines().collect();
+    let timing = lines
+        .iter()
+        .position(|l| l.ends_with(" second(s)]"))
+        .unwrap_or_else(|| panic!("no timing line in output:\n{}", text));
+    lines[timing - 1].to_string()
+}
+
+/// Creates CountTest_0.txt to CountTest_2.txt in `dir`, each containing `content`.
+fn write_count_test_files(dir: &Path, content: &str) {
+    std::fs::create_dir_all(dir).unwrap();
+    for i in 0..3 {
+        std::fs::write(dir.join(format!("CountTest_{}.txt", i)), content).unwrap();
+    }
+}
+
 // --- NoFlags ---
 
 #[test]
@@ -497,6 +519,21 @@ fn replace_filename_subdirectory() {
     std::fs::remove_dir_all(&tmp).ok();
 }
 
+#[test]
+fn replace_filename_counts_each_file_once() {
+    let tmp = std::env::temp_dir().join("wgrep_replace_filename_count");
+    std::fs::remove_dir_all(&tmp).ok();
+    let tree = tmp.join("tree");
+    write_count_test_files(&tree, "fox");
+
+    let cmd = format!("-k --replace=Renamed 'CountTest' '{}'", tree.display());
+    let summary = run_grep_summary(&cmd, &tmp.join("output.txt"));
+
+    assert!(summary.ends_with(" replaced in 3 file(s)]"), "unexpected summary: {}", summary);
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
 // --- Delete (--delete) ---
 
 #[test]
@@ -549,6 +586,47 @@ fn delete_filename_recursive() {
         assert!(!Path::new(&r.source_file.name).exists(),
             "file should have been deleted: {}", r.source_file.name);
     }
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
+fn delete_filename_counts_each_file_once() {
+    let tmp = std::env::temp_dir().join("wgrep_delete_filename_count");
+    std::fs::remove_dir_all(&tmp).ok();
+    let tree = tmp.join("tree");
+    write_count_test_files(&tree, "fox");
+
+    let cmd = format!("-k --delete 'CountTest_' '{}'", tree.display());
+    assert_eq!(run_grep_summary(&cmd, &tmp.join("output.txt")), "[3 of 3 file(s) deleted]");
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
+fn delete_content_counts_each_file_once() {
+    let tmp = std::env::temp_dir().join("wgrep_delete_content_count");
+    std::fs::remove_dir_all(&tmp).ok();
+    let tree = tmp.join("tree");
+    write_count_test_files(&tree, "fox");
+
+    let cmd = format!("--delete 'fox' '{}'", tree.display());
+    assert_eq!(run_grep_summary(&cmd, &tmp.join("output.txt")), "[3 of 3 file(s) deleted]");
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
+fn delete_hash_counts_each_file_once() {
+    let tmp = std::env::temp_dir().join("wgrep_delete_hash_count");
+    std::fs::remove_dir_all(&tmp).ok();
+    let tree = tmp.join("tree");
+    write_count_test_files(&tree, "fox");
+
+    // SHA-256 of "fox"
+    let hash = "776cb326ab0cd5f0a974c1b9606044d8485201f2db19cf8e3749bdee5f36e200";
+    let cmd = format!("--hash=0 --delete {} '{}'", hash, tree.display());
+    assert_eq!(run_grep_summary(&cmd, &tmp.join("output.txt")), "[3 of 3 file(s) deleted]");
 
     std::fs::remove_dir_all(&tmp).ok();
 }
@@ -716,6 +794,36 @@ fn outfile_enabled() {
         assert!(out_path.exists(), "output file not created: {}", out_path.display());
         assert!(out_path.metadata().unwrap().len() > 0, "output file is empty");
     }
+
+    std::fs::remove_dir_all(&tmp).ok();
+}
+
+#[test]
+fn outfile_results_are_not_interleaved() {
+    // Parallel workers publish results as several items each; every result must
+    // still land in the out-file as one whole line.
+    let tmp = std::env::temp_dir().join("wgrep_outfile_interleave");
+    std::fs::remove_dir_all(&tmp).ok();
+    let mut expected = Vec::new();
+    for d in 0..8 {
+        let dir = tmp.join(format!("dir_{}", d));
+        std::fs::create_dir_all(&dir).unwrap();
+        for f in 0..50 {
+            let path = dir.join(format!("match_{}.txt", f));
+            std::fs::write(&path, "x").unwrap();
+            expected.push(path.to_string_lossy().into_owned());
+        }
+    }
+    let out_path = tmp.join("output.txt");
+
+    let cmd = format!("-r -k -o {} 'match_' '{}'", out_path.display(), tmp.display());
+    assert_eq!(run_grep(&cmd).len(), expected.len());
+
+    let text = std::fs::read_to_string(&out_path).unwrap();
+    let mut lines: Vec<&str> = text.lines().take(expected.len()).collect();
+    lines.sort_unstable();
+    expected.sort_unstable();
+    assert_eq!(lines, expected);
 
     std::fs::remove_dir_all(&tmp).ok();
 }

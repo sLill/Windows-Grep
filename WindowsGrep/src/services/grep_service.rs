@@ -36,17 +36,16 @@ impl Publisher {
     }
 
     pub fn publish(&self, item: &ConsoleItem) {
-        self.console.write(item);
-        if let Some(ref f) = self.out_file {
-            if let Ok(mut file) = f.lock() {
-                let _ = write!(file, "{}", item.value);
-            }
-        }
+        self.publish_many(std::slice::from_ref(item));
     }
 
     pub fn publish_many(&self, items: &[ConsoleItem]) {
-        for item in items {
-            self.publish(item);
+        self.console.write_items(items);
+        if let Some(ref f) = self.out_file {
+            let text: String = items.iter().map(|item| item.value.as_str()).collect();
+            if let Ok(mut file) = f.lock() {
+                let _ = file.write_all(text.as_bytes());
+            }
         }
     }
 }
@@ -552,8 +551,6 @@ fn process_name_match(
 
     if ctx.delete_flag || ctx.replace_flag {
         perform_writes(file, ctx.pattern, 1, &file.name, ctx.command_args, publisher, metrics);
-        // Match original: also increments TotalFilesMatchedCount after PerformWrites
-        metrics.lock().unwrap().total_files_matched_count += 1;
     } else {
         // Leading context = full path up to the filename portion, plus the start of the filename
         let name_offset = file.name.len() - file_name.len();
@@ -600,7 +597,6 @@ fn process_hash_match(
 
     if ctx.delete_flag {
         perform_writes(file, ctx.search_term, 1, &file.name, ctx.command_args, publisher, metrics);
-        metrics.lock().unwrap().total_files_matched_count += 1;
     } else {
         let file_name = Path::new(&file.name)
             .file_name()
@@ -641,21 +637,23 @@ fn perform_writes(
     let file_names_only = command_args.contains_key(&CommandFlag::FileNamesOnly);
     let replacement = command_args.get(&CommandFlag::Replace).cloned().unwrap_or_default();
 
-    let file_item = ConsoleItem::with_fg(format!("{} ", file.name), Color::Yellow);
-    let newline = ConsoleItem::new("\n");
+    // Published as one line so other workers' output can't land inside it
+    let publish_status = |status: ConsoleItem| {
+        publisher.publish_many(&[
+            ConsoleItem::with_fg(format!("{} ", file.name), Color::Yellow),
+            status,
+            ConsoleItem::new("\n"),
+        ]);
+    };
 
     if delete_flag {
         match std::fs::remove_file(&file.name) {
             Ok(_) => {
-                publisher.publish(&file_item);
-                publisher.publish(&ConsoleItem::with_fg("Deleted", Color::BrightRed));
-                publisher.publish(&newline);
+                publish_status(ConsoleItem::with_fg("Deleted", Color::BrightRed));
                 metrics.lock().unwrap().delete_success_count += 1;
             }
             Err(_) => {
-                publisher.publish(&file_item);
-                publisher.publish(&ConsoleItem::with_colors("Access Denied", Color::White, Color::Red));
-                publisher.publish(&newline);
+                publish_status(ConsoleItem::with_colors("Access Denied", Color::White, Color::Red));
                 metrics.lock().unwrap().failed_write_files.push(file.clone());
             }
         }
@@ -677,14 +675,10 @@ fn perform_writes(
                     let new_path = Path::new(&dir).join(&new_name).to_string_lossy().into_owned();
                     match std::fs::rename(&file.name, &new_path) {
                         Ok(_) => {
-                            publisher.publish(&file_item);
-                            publisher.publish(&ConsoleItem::with_fg("Renamed", Color::BrightRed));
-                            publisher.publish(&newline);
+                            publish_status(ConsoleItem::with_fg("Renamed", Color::BrightRed));
                         }
                         Err(_) => {
-                            publisher.publish(&file_item);
-                            publisher.publish(&ConsoleItem::with_colors("Access Denied", Color::White, Color::Red));
-                            publisher.publish(&newline);
+                            publish_status(ConsoleItem::with_colors("Access Denied", Color::White, Color::Red));
                             metrics.lock().unwrap().failed_write_files.push(file.clone());
                         }
                     }
@@ -706,19 +700,15 @@ fn perform_writes(
                         let new_content = re.replace_all(file_raw, replacement.as_str()).into_owned();
                         match std::fs::write(&file.name, new_content.as_bytes()) {
                             Ok(_) => {
-                                publisher.publish(&file_item);
-                                publisher.publish(&ConsoleItem::with_fg(
+                                publish_status(ConsoleItem::with_fg(
                                     format!("{} {}", match_count,
                                         if match_count == 1 { "match" } else { "matches" }),
                                     Color::Magenta,
                                 ));
-                                publisher.publish(&newline);
                                 metrics.lock().unwrap().replaced_success_count += match_count as i32;
                             }
                             Err(_) => {
-                                publisher.publish(&file_item);
-                                publisher.publish(&ConsoleItem::with_colors("Access Denied", Color::White, Color::Red));
-                                publisher.publish(&newline);
+                                publish_status(ConsoleItem::with_colors("Access Denied", Color::White, Color::Red));
                                 metrics.lock().unwrap().failed_write_files.push(file.clone());
                             }
                         }
@@ -728,6 +718,7 @@ fn perform_writes(
             }
         }
     }
+    // Counts the file as matched for every caller, whether or not the write worked
     metrics.lock().unwrap().total_files_matched_count += 1;
 }
 

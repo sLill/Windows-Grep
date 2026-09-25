@@ -19,6 +19,9 @@ impl ConsoleService {
 
     pub fn write_items(&self, items: &[ConsoleItem]) {
         let _guard = self.lock.lock().unwrap_or_else(|p| p.into_inner());
+        // Also hold stdout itself (print! re-enters it), so code printing straight to
+        // stdout, as pdf-extract 0.7 did from worker threads, can't land mid-slice.
+        let _stdout = std::io::stdout().lock();
         for item in items {
             print!("{}", item);
         }
